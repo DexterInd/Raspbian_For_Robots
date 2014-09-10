@@ -3,6 +3,7 @@ echo "GIT UPDATE"
 echo "----------"
 cd /home/pi/Desktop/GoPiGo
 sudo git fetch origin
+git reset --hard
 sudo git merge origin/master
 
 cd Setup
