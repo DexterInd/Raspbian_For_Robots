@@ -16,9 +16,9 @@ mkdir /home/pi/wifi
 
 # Install wifi
 echo "Install wifi drivers."
-sudo mv RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip /home/pi/wifi
+sudo mv 0001-RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip /home/pi/wifi
 cd /home/pi/wifi
-sudo unzip RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip
+sudo unzip 0001-RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip
 cd RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911
 cd wpa_supplicant_hostapd
 sudo tar -xvf wpa_supplicant_hostapd-0.8_rtw_r7475.20130812.tar.gz
