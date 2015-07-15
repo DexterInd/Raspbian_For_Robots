@@ -11,6 +11,11 @@ sudo apt-get clean
 # This updates the Github Repositories.
 sudo fetch.sh
 
+# Update Wifi Drivers
+cd wifi
+sudo chmod +x setup_wifi.sh
+sudo ./setup_wifi.sh
+cd ..
 
 
 echo "This is just a test script.  And it has run."
