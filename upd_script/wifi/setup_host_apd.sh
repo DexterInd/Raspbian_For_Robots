@@ -23,17 +23,10 @@ sudo apt-get install apache2 -y
 # Follows Dave Conroy's Directions to Bridge the Network
 # http://www.daveconroy.com/turn-your-raspberry-pi-into-a-wifi-hotspot-with-edimax-nano-usb-ew-7811un-rtl8188cus-chipset/
 
-sudo nano /etc/network/interfaces
+# Delete and replace interfaces file
+sudo rm /etc/network/interfaces
+### COPY INTERFACES HERE
 
-#loopback adapter
-auto lo
-iface lo inet loopback
-#wired adapter
-iface eth0 inet dhcp
-#bridge
-auto br0
-iface br0 inet dhcp
-bridge_ports eth0 wlan0
 
 # Modify hostapd.conf
 
@@ -41,21 +34,10 @@ sudo mkdir /etc/hostapd
 cd hostapd
 sudo nano hostapd.conf
 
-sudo nano /etc/hostapd/hostapd.conf
+# Copy the hostapd.conf file
+sudo cp hostapd.conf /etc/hostapd/
 
-interface=wlan0
-driver=rtl871xdrv
-bridge=br0
-ssid=DaveConroyPi
-channel=1
-wmm_enabled=0
-wpa=1
-wpa_passphrase=ConroyPi
-wpa_key_mgmt=WPA-PSK
-wpa_pairwise=TKIP
-rsn_pairwise=CCMP
-auth_algs=1
-macaddr_acl=0
+
 
 
 start everything up:
