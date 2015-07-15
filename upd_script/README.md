@@ -1,3 +1,5 @@
+
+
 1. Make both **upd.sh** and **upd_start.sh** execuatable:
 
   > sudo chmod +x upd.sh
