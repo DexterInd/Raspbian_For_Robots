@@ -1,0 +1,36 @@
+/* LICENSE & DETAILS
+   ==================================================
+
+	Theme Name: Neighborhood Child Theme
+	Theme URI: http://neighborhood.swiftideas.net
+	Description: A Retina Responsive Multi-Purpose WordPress Theme - Designed & Developed by Swift Ideas ( www.swiftideas.net )
+	License: GNU General Public License version 3.0
+	License URI: http://www.gnu.org/licenses/gpl-3.0.html
+	Template: neighborhood
+	Version: 1.0
+	Author: Swift Ideas
+	Author URI: www.swiftideas.net
+
+	All files, unless otherwise stated, are released under the GNU General Public License
+	version 3.0 (http://www.gnu.org/licenses/gpl-3.0.html)
+
+   ==================================================
+*/
+
+/* --------------------------------------------
+	NEIGHBORHOOD CSS IMPORT
+-------------------------------------------- */
+
+@import url("../neighborhood/style.css");
+
+
+/* --------------------------------------------
+	CHILD THEME CSS
+-------------------------------------------- */
+.recent-post {
+  height: auto;
+  display: inline-block;
+  overflow: hidden;
+  float: none;
+  margin-bottom: 20px;
+}

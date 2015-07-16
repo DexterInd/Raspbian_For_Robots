@@ -31,6 +31,9 @@ sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 ##############################################################################################################
 # 3.    Reboot the Pi.
 #               We must reboot for folks.
+echo "To finish changes, we will reboot the Pi."
+echo "Pi must reboot for changes and updates to take effect."
+echo "If you need to abort the reboot, press Ctrl+C.  Otherwise, reboot!"
 echo "Rebooting in 5 seconds!"
 sleep 1
 echo "Rebooting in 4 seconds!"

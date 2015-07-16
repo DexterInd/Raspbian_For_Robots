@@ -7,7 +7,6 @@
 
 echo "Begin wifi update."
 echo "Remove previous versions of hostapd"
-sudo apt-get autoremove hostapd
 
 #Make a directory.   If the directory is already there, remove it.
 echo "Make a directory for wifi drivers"
@@ -27,11 +26,5 @@ cd hostapd
 echo "Compile wifi drivers."
 sudo make
 sudo make install
-
-#Setup hostapd
-echo "Move files into hostapd!"
-sudo mv hostapd /usr/sbin/hostapd
-sudo chown root.root /usr/sbin/hostapd
-sudo chmod 755 /usr/sbin/hostapd
 
 echo "Done installing wifi drivers!"
