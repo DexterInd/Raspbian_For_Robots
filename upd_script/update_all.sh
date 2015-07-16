@@ -23,14 +23,6 @@ sudo fetch.sh
 sudo rm /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.png /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 
-# Install PHP
-if [ -f $PHP ];then echo ""
-else
-   echo "$PHP command is not installed."
-   echo "Running sudo apt-get install php"
-   sudo apt-get install -y php5
-   TEMPVAR = "1";
-fi
 
 ########################################################################
 ## These Changes to the image are all optional.  Some users may not want
@@ -38,6 +30,25 @@ fi
 
 # Update Wifi Interface
 sudo apt-get install raspberrypi-net-mods -y	# Updates wifi configuration.  Does it wipe out network information?
+
+# Setup Apache
+sudo apt-get install apache2 -y
+sudo apt-get install php5 libapache2-mod-php5 -y
+
+# Setup Webpage
+sudo rm -r /var/www
+sudo cp /home/pi/di_update/Raspbian_For_Robots/www /var/
+
+# Setup Shellinabox
+sudo apt-get install shellinabox -y
+
+# Setup noVNC
+#
+#
+#
+#
+#
+#
 
 # Update Wifi Drivers
 cd wifi
@@ -51,7 +62,8 @@ sudo chmod +x setup_host_apd.sh
 sudo ./setup_host_apd.sh
 cd ..
 
-sudo apt-get clean	# Remove any unused packages.
+sudo apt-get clean		# Remove any unused packages.
+sudo apt-get autoremove # Remove unused packages.
 
 #Finally, if everything installed correctly, update the version on the Desktop!
 cd /home/pi/Desktop
