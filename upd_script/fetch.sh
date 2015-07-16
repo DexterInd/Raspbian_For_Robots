@@ -20,6 +20,13 @@ echo "------------------"
 sudo chmod +x firmware_update.sh
 sudo ./firmware_update.sh
 
+#GoPiGo Scratch Permissions
+sudo rm /home/pi/Desktop/GoPiGo_Scratch_Start.desktop  					# Delete old icons off desktop
+sudo cp /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.desktop /home/pi/Desktop	# Move icons to desktop
+sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh					# Change script permissions
+sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh					# Change script permissions
+
+
 # BrickPi Update
 echo "Start BrickPi Update."
 echo "----------"
@@ -86,5 +93,12 @@ sudo git merge origin/master
 cd /home/pi/Raspbian_For_Robots/upd_script
 sudo chmod +x update_GrovePi.sh
 sudo ./update_GrovePi.sh
+
+# GrovePi Scratch Setup
+sudo rm /home/pi/Desktop/GrovePi_Scratch_Start.desktop  					# Delete old icons off desktop
+sudo cp /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.desktop /home/pi/Desktop	# Move icons to desktop
+sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePiScratch_debug.sh						# Change script permissions
+sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.sh					# Change script permissions
+
 
 echo "Done updating Dexter Industries Github repos!"
