@@ -4,6 +4,7 @@
 # 1. Removes any hostapd previously installed.
 # 2. Make a directory in home directory for wifi installation.
 # 3. Install wifi and setup hostapd
+# 4. Disable sleep mode for wifi to prevent dropout.
 
 echo "Begin wifi update."
 echo "Remove previous versions of hostapd"
@@ -28,3 +29,6 @@ sudo make
 sudo make install
 
 echo "Done installing wifi drivers!"
+echo "Turning off sleep function for wifi."
+sudo chmod +x wifi_disable_sleep.sh
+sudo sh ./wifi_disable_sleep.sh
