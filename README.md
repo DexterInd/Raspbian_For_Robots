@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Raspbian Pi For Robots
 
 ![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
@@ -38,6 +39,8 @@ All software here is released under the [GNU GL3 license.](http://www.gnu.org/li
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 =======
+=======
+>>>>>>> parent of 5b445eb... Update Readme.
 Raspbian_Pi_For_Robots
 ======================
 
