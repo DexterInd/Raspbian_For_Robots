@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 # Raspbian Pi For Robots
 
-![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
+![Dex Logo](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Dexter Industries Logo.")
 
 
 This is a customized version of the Raspbian Image for the Raspberry Pi.  It has been updated to help inexperienced users get started quickly with Dexter Industries Robots.
@@ -38,10 +37,4 @@ All software here is released under the [GNU GL3 license.](http://www.gnu.org/li
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-=======
-=======
->>>>>>> parent of 5b445eb... Update Readme.
-Raspbian_Pi_For_Robots
-======================
 
-Raspbian image changes to make it work well with robots.
