@@ -42,13 +42,29 @@ sudo cp /home/pi/di_update/Raspbian_For_Robots/www /var/
 # Setup Shellinabox
 sudo apt-get install shellinabox -y
 
+#######################################################################
 # Setup noVNC
-#
-#
-#
-#
-#
-#
+sudo apt-get install screen
+echo "Setup noVNC"
+cd /usr/local/share/
+sudo git clone git://github.com/DexterInd/noVNC
+cd noVNC
+sudo cp vnc_auto.html index.html
+cd /etc/init.d/
+sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
+sudo chmod 755 vncboot
+sudo update-rc.d vncboot defaults
+sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
+#### CHECK HERE ON LINE 22 - IS THIS WHERE YOU CAN LAUNCH IT IN A FOLDER?
+sudo chmod 755 vncproxy 
+sudo update-rc.d vncproxy defaults 98
+
+cd /usr/local/share/noVNC/utils
+sudo ./launch.sh --vnc localhost:5900
+## TRY RUNNING .launch.sh first.  
+
+echo "Finished setting up noVNC"
+##########################################################################
 
 # Update Wifi Drivers
 cd wifi
