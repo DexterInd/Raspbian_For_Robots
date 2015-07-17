@@ -42,7 +42,6 @@ sudo cp /home/pi/di_update/Raspbian_For_Robots/www /var/
 # Setup Shellinabox
 sudo apt-get install shellinabox -y
 
-#######################################################################
 # Setup noVNC
 sudo apt-get install screen
 echo "Setup noVNC"
@@ -61,10 +60,7 @@ sudo update-rc.d vncproxy defaults 98
 
 cd /usr/local/share/noVNC/utils
 sudo ./launch.sh --vnc localhost:5900
-## TRY RUNNING .launch.sh first.  
-
 echo "Finished setting up noVNC"
-##########################################################################
 
 # Update Wifi Drivers
 cd wifi
@@ -77,6 +73,14 @@ cd wifi
 sudo chmod +x setup_host_apd.sh
 sudo ./setup_host_apd.sh
 cd ..
+
+# Setup Hostname Changer
+echo "Change hostname."
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh
+# 2 - Run hostname updates
+# 3 - Add change to rc.local to new rc.local that checks for hostname on bootup.
+echo "End hostname change setup."
 
 sudo apt-get clean		# Remove any unused packages.
 sudo apt-get autoremove # Remove unused packages.
