@@ -1,5 +1,8 @@
-Create and edit a new file in /etc/modprobe.d/8192cu.conf
- sudo nano /etc/modprobe.d/8192cu.conf
-and paste the following in
- # Disable power saving
-options 8192cu rtw_power_mgnt=0 rtw_enusbss=1 rtw_ips_mode=1
+#! /bin/bash
+# This script disables wifi sleep mode of the Dexter Industries Wifi Dongle
+#Create and edit a new file /etc/modprobe.d/8192cu.conf
+#Paste the following in:
+## Disable power saving
+## options 8192cu rtw_power_mgnt=0 rtw_enusbss=1 rtw_ips_mode=1
+
+sudo cp 8192cu.conf /etc/modprobe.d/
