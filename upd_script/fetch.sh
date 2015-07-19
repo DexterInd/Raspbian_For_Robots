@@ -44,7 +44,7 @@ git reset --hard
 sudo git merge origin/master
 
 sudo apt-get install python-setuptools
-sudo python setup.py install
+sudo python /home/pi/Desktop/BrickPi_Python/setup.py install
 
 # BrickPi_Scratch Update
 echo "Start BrickPi_Scratch Update."

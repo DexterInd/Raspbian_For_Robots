@@ -6,7 +6,8 @@
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
 
-sudo apt-get install python3-serial
+sudo apt-get install python3-serial -y
+sudo apt-get install python-serial -y
 # sudo apt-get update	
 # sudo apt-get upgrade
 
@@ -94,5 +95,11 @@ cd /home/pi/Desktop
 rm Version
 cp /home/pi/di_update/Raspbian_For_Robots/Version /home/pi/Desktop
 
-echo "This is just a test script.  And it has run."
+echo "Installation Complete."
+
+echo "If this is an update remember to do the following: "
+
+echo "Run BrickPi_Python\Project_Examples\browserStreamingRobot\browser_stream_setup.sh"
+echo "Reduce image size."
+echo "Midori and web browsers should point to local setup of help files."
 
