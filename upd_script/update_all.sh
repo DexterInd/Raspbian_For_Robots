@@ -75,12 +75,16 @@ sudo ./setup_host_apd.sh
 cd ..
 
 # Setup Hostname Changer
-echo "Change hostname."
+echo "Setup Hostname Changer."
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh
-# 2 - Run hostname updates
-# 3 - Add change to rc.local to new rc.local that checks for hostname on bootup.
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
 echo "End hostname change setup."
+
+# Install Samba
+echo "Start installing Samba."
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
+echo "End installing Samba."
 
 sudo apt-get clean		# Remove any unused packages.
 sudo apt-get autoremove # Remove unused packages.
