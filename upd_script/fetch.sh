@@ -1,8 +1,6 @@
 #! /bin/bash
 # This script updates the the code repos on Raspbian for Robots.
 
-https://github.com/DexterInd/scratchpy
-
 # GoPiGo Update
 echo "Start GoPiGo Update."
 echo "----------"
