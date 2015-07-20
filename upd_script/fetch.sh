@@ -22,7 +22,14 @@ echo "------------------"
 sudo chmod +x firmware_update.sh
 sudo ./firmware_update.sh
 
+echo "Install Scratch dependency ScratchPy."
+cd Desktop/GoPiGo/Software/Scratch
+git clone https://github.com/DexterInd/scratchpy.git
+cd scratchpy
+sudo make install
+
 #GoPiGo Scratch Permissions
+echo "Install Scratch Shortcuts and Permissions."
 sudo rm /home/pi/Desktop/GoPiGo_Scratch_Start.desktop  					# Delete old icons off desktop
 sudo cp /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.desktop /home/pi/Desktop	# Move icons to desktop
 sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh					# Change script permissions
