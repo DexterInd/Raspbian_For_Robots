@@ -8,6 +8,14 @@
 
 sudo apt-get install python3-serial -y
 sudo apt-get install python-serial -y
+sudo apt-get install i2c-tools -y
+sudo apt-get install python-wxgtk2.8 -y		# Install wx for python for windows / GUI programs.
+
+sudo apt-get purge python-rpi.gpio
+sudo apt-get purge python3-rpi.gpio
+sudo apt-get install python-rpi.gpio
+sudo apt-get install python3-rpi.gpio
+
 # sudo apt-get update	
 # sudo apt-get upgrade
 
