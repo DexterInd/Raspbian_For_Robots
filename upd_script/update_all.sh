@@ -80,7 +80,7 @@ sudo apt-get install php5 libapache2-mod-php5 -y
 # Setup Webpage
 echo "--> Setup webpage."
 sudo rm -r /var/www
-sudo cp /home/pi/di_update/Raspbian_For_Robots/www /var/
+sudo cp -r /home/pi/di_update/Raspbian_For_Robots/www /var/
 
 # Setup Shellinabox
 echo "--> Setup Shellinabox."
