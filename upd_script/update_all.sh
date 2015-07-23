@@ -55,7 +55,7 @@ sudo rm /home/pi/Desktop/python-games.desktop 		# Not sure how this Icon got her
 
 # Call fetch.sh - This updates the Github Repositories, installs necessary dependencies.
 echo "--> Begin Update Software Packages."
-sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
 
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/
