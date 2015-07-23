@@ -87,7 +87,7 @@ git reset --hard
 sudo git merge origin/master
 
 sudo chmod +x /home/pi/Desktop/ArduBerry/script/install.sh
-sudo sh ./home/pi/Desktop/ArduBerry/script/install.sh
+sudo sh /home/pi/Desktop/ArduBerry/script/install.sh
 
 # GrovePi Update
 echo "--> Start GrovePi Update."
@@ -100,7 +100,7 @@ echo "--> Start GrovePi update install."
 echo "----------"
 cd /home/pi/di_update/Raspbian_For_Robots/upd_script
 sudo chmod +x update_GrovePi.sh
-sudo sh ./update_GrovePi.sh
+sudo sh /update_GrovePi.sh
 
 # GrovePi Scratch Setup
 # sudo rm /home/pi/Desktop/GrovePi_Scratch_Start.desktop  					# Delete old icons off desktop
@@ -112,8 +112,8 @@ sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/
 echo "--> Install DexterEd Software"
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
-chmod +x /home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
-sudo sh ./home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
+sudo chmod +x /home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
+sudo sh /home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
 
 
 echo "--> Done updating Dexter Industries Github repos!"
