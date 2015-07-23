@@ -105,17 +105,20 @@ sudo chmod 755 vncproxy
 sudo update-rc.d vncproxy defaults 98
 
 cd /usr/local/share/noVNC/utils
-sudo ./launch.sh --vnc localhost:5900
+sudo ./launch.sh --vnc localhost:5900 &
 echo "--> Finished setting up noVNC"
 
 echo "--> !"
 echo "--> !"
 echo "--> !"
 
-read -p "Install Wifi Adhoc? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+#read -p "Install Wifi Adhoc? " -n 1 -r
+#echo    # (optional) move to a new line
+#if [[ ! $REPLY =~ ^[Yy]$ ]]
+
+echo -n "Install Wifi Adhoc? " -r
+read ANSWER
+if echo "$ANSWER" | grep -iq "^y" ;then
 	# Update Wifi Drivers
 	echo "--> Update Wifi Drivers"
 	cd wifi

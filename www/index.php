@@ -24,6 +24,9 @@ $address = "<a href=\"".$address;
 $address = $address."\"/> Open Terminal (Command Line Interface). </a>";
 echo $address;
 
+<BR>
+<BR>
+
 // Link for noVNC
 // Enters via port 8001.
 $address = "http://".$ethernetIP;
