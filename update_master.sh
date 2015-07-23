@@ -28,7 +28,7 @@ cd Raspbian_For_Robots
 # Make sure we keep a log file.
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
-LOG_FILE="log_output.$NOW.txt"
+LOG_FILE="/home/pi/log_output.$NOW.txt"
 sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
 # All output and errors should go to a local file.
 

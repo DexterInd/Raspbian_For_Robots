@@ -22,7 +22,7 @@ sudo ./firmware_update.sh
 
 echo "Install Scratch dependency ScratchPy."
 cd Desktop/GoPiGo/Software/Scratch
-git clone https://github.com/DexterInd/scratchpy.git
+sudo git clone https://github.com/DexterInd/scratchpy.git
 cd scratchpy
 sudo make install
 
