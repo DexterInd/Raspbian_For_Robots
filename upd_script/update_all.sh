@@ -30,8 +30,8 @@ echo "--> Begin Kernel Updates."
 echo "--> Start Update /etc/modules."
 sudo sed -i "/i2c-bcm2708/d" /etc/modules
 sudo sed -i "/i2c-dev/d" /etc/modules
-sudo echo "--> i2c-bcm2708" >> /etc/modules
-sudo echo "--> i2c-dev" >> /etc/modules
+sudo echo "i2c-bcm2708" >> /etc/modules
+sudo echo "i2c-dev" >> /etc/modules
 echo "--> Start Update Raspberry Pi Blacklist.conf" 	#blacklist spi-bcm2708 #blacklist i2c-bcm2708
 sudo sed -i "/blacklist spi-bcm2708/d" /etc/modprobe.d/raspi-blacklist.conf
 sudo sed -i "/blacklist i2c-bcm2708/d" /etc/modprobe.d/raspi-blacklist.conf
@@ -41,8 +41,8 @@ sudo echo "##blacklist i2c-bcm2708" >> /etc/modprobe.d/raspi-blacklist.conf
 echo "--> Update Config.txt file"   #dtparam=i2c_arm=on  #dtparam=spi=on
 sudo sed -i "/dtparam=i2c_arm=on/d" /boot/config.txt
 sudo sed -i "/dtparam=spi=on/d" /boot/config.txt
-sudo echo "--> dtparam=spi=on" >> /boot/config.txt
-sudo echo "--> dtparam=i2c_arm=on" >> /boot/config.txt
+sudo echo "dtparam=spi=on" >> /boot/config.txt
+sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
 echo "--> End Kernel Updates."
 
 ########################################################################
@@ -111,10 +111,6 @@ echo "--> Finished setting up noVNC"
 echo "--> !"
 echo "--> !"
 echo "--> !"
-
-#read -p "Install Wifi Adhoc? " -n 1 -r
-#echo    # (optional) move to a new line
-#if [[ ! $REPLY =~ ^[Yy]$ ]]
 
 echo -n "Install Wifi Adhoc? " -r
 read ANSWER

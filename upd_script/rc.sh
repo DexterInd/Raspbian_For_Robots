@@ -1,15 +1,5 @@
 #!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
+# This Script updates the hostname by reading it from "/boot/hostname" 
 echo "  _____            _                                ";
 echo " |  __ \          | |                               ";
 echo " | |  | | _____  _| |_ ___ _ __                     ";
@@ -27,6 +17,27 @@ echo " "
 
 # First get the hostname.
 
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
+THISHOST=$(hostname -f)	# Gets current hostname
+echo $THISHOST
+read -r NEW_HOST < /boot/hostnames	# Gets hostname in file
+echo $NEW_HOST
 
-exit 0
+if [ "$FIRSTLINE" != "$THISHOST" ];	# If the hostname isn't the same as the First line of the filename . . .
+	then echo "Host is different name.  Rewriting hosts"
+	# Rewrite hosts
+	IP="127.0.1.1  		$NEW_HOST"
+	sed -i '$ d' /etc/hosts
+	echo $IP >> hosts
+
+	echo "Delete hostname."
+
+	sudo rm /etc/hostname
+	echo "Deleted hostname.  Create new hostname."
+	echo $NEW_HOST >> /etc/hostname
+	echo "New hostname file created."
+	
+	echo "Commit hostname change."
+	sudo /etc/init.d/hostname.sh
+
+	sudo reboot
+fi

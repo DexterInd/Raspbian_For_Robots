@@ -10,6 +10,7 @@ fi
 # Copy the new rc.local script in place, set permissions. 
 cp /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.local /etc/rc.local
 sudo chmod 755 /etc/rc.local	# Change permissions to -rwxr-xr-x
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
 
 # Now run the code in rc.local that updates the hostname.  
 
@@ -21,18 +22,17 @@ echo $NEW_HOST
 if [ "$FIRSTLINE" != "$THISHOST" ];	# If the hostname isn't the same as the First line of the filename . . .
 	then echo "Host is different name.  Rewriting hosts"
 	# Rewrite hosts
-	IP="127.0.1.1 \t$NEW_HOST"
-	sed -i '$ d' /etc/hosts
-	echo $IP >> hosts
+	IP="127.0.1.1  		$NEW_HOST"
+	sudo sed -i '$ d' /etc/hosts
+	sudo echo $IP >> /etc/hosts
 
 	echo "Delete hostname."
 
 	sudo rm /etc/hostname
 	echo "Deleted hostname.  Create new hostname."
-	echo $NEW_HOST >> /etc/hostname
+	sudo echo $NEW_HOST >> /etc/hostname
 	echo "New hostname file created."
 	
 	echo "Commit hostname change."
 	sudo /etc/init.d/hostname.sh
-
 fi
