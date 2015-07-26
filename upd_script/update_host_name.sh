@@ -4,7 +4,7 @@
 
 if [ ! -f /boot/hostnames ]; then
     echo "File not found!"
-	cp /home/pi/di_update/Raspbian_For_Robots/upd_script/hostnames /boot 	# Copy our own "hostnames" file in so there's a file there.
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/hostnames /boot 	# Copy our own "hostnames" file in so there's a file there.
 fi
 
 # Copy the new rc.local script in place, set permissions. 
@@ -22,7 +22,7 @@ echo $NEW_HOST
 if [ "$FIRSTLINE" != "$THISHOST" ];	# If the hostname isn't the same as the First line of the filename . . .
 	then echo "Host is different name.  Rewriting hosts"
 	# Rewrite hosts
-	IP="127.0.1.1  		$NEW_HOST"
+	IP="127.0.1.1       $NEW_HOST"
 	sudo sed -i '$ d' /etc/hosts
 	sudo echo $IP >> /etc/hosts
 
