@@ -25,8 +25,7 @@ echo "                                                    ";
 echo "                                                    ";
 echo " "
 
-# First get the hostname.
-
+# First get update the hostname.
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
 
 exit 0

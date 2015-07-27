@@ -147,6 +147,9 @@ echo " "
 ## Sometimes we may not want to do this.  To make it easy, 
 ## Put it inside an if statement
 
+# This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
+pause 10
+
 echo -n "Install Wifi Adhoc? " -r
 read ANSWER
 if echo "$ANSWER" | grep -iq "^y" ;then
@@ -169,6 +172,7 @@ fi
 
 ########################################################################
 ## Last bit of house cleaning.
+
 # Setup Hostname Changer
 echo "--> Setup Hostname Changer."
 echo "--> ======================================="
