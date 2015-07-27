@@ -129,7 +129,6 @@ sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/m
 sudo chmod 755 vncboot
 sudo update-rc.d vncboot defaults
 sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
-#### CHECK HERE ON LINE 22 - IS THIS WHERE YOU CAN LAUNCH IT IN A FOLDER?
 sudo chmod 755 vncproxy 
 sudo update-rc.d vncproxy defaults 98
 
