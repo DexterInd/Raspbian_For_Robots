@@ -16,12 +16,23 @@ else
 	exit 0
 fi
 
+
 ##############################################################################################################
 # 1.    Github pull on itself.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi
+
 mkdir /home/pi/di_update
 cd /home/pi/di_update
-sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
+git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
+
+cd /home/pi/di_update/Raspbian_For_Robots/
+sudo git fetch origin
+git reset --hard
+sudo git merge origin/master
+git checkout update201507
+
+
+
 
 ##############################################################################################################
 # 2.    Execute the file update_all.sh
@@ -31,6 +42,14 @@ NOW=$(date +%m-%d-%Y-%H%M%S)
 LOG_FILE="/home/pi/log_output.$NOW.txt"
 sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
 # All output and errors should go to a local file.
+
+# Update the Desktop Shortcut
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
+sudo rm /home/pi/Desktop/desktop_shortcut_update.desktop
+sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.desktop /home/pi/Desktop
+sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
+
 
 ##############################################################################################################
 # 3.    Reboot the Pi.
