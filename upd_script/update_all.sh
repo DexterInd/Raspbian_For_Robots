@@ -91,7 +91,7 @@ echo " "
 sudo apt-get install raspberrypi-net-mods -y	# Updates wifi configuration.  Does it wipe out network information?
 
 # Setup Apache
-echo "--> Install Apache."
+echo "--> Install Apache. and PHP"
 echo "--> ======================================="
 echo " "
 sudo apt-get install apache2 -y
@@ -103,6 +103,7 @@ echo "--> ======================================="
 echo " "
 sudo rm -r /var/www
 sudo cp -r /home/pi/di_update/Raspbian_For_Robots/www /var/
+sudo chmod +x /var/www/index.php
 
 # Setup Shellinabox
 echo "--> Setup Shellinabox."
@@ -148,7 +149,7 @@ echo " "
 ## Put it inside an if statement
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
-pause 10
+sleep 10
 
 echo -n "Install Wifi Adhoc? " -r
 read ANSWER

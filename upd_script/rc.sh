@@ -21,9 +21,9 @@ echo " "
 
 THISHOST=$(hostname -f)	# Gets current hostname
 echo $THISHOST
-# read -r NEW_HOST < /boot/hostnames	# Gets hostname in file
-line=$(head -n 1 /boot/hostnames)
-NEW_HOST=$line
+read -r NEW_HOST < /boot/hostnames	# Gets hostname in file
+# line=$(head -n 1 /boot/hostnames)
+# NEW_HOST=$line
 
 echo $NEW_HOST
 
@@ -33,14 +33,14 @@ if [ "$FIRSTLINE" != "$THISHOST" ];	# If the hostname isn't the same as the Firs
 	IP="127.0.1.1       $NEW_HOST"
 	
 	sudo rm /etc/hosts
-	sudo echo "127.0.0.1     localhost" >> /etc/hosts
-	sudo echo "::1           ip6-localhost ip6-loopback" >> /etc/hosts
-	sudo echo "fe00::0       ip6-localnet" >> /etc/hosts
-	sudo echo "ff00::0       ip6-mcastprefix" >> /etc/hosts
-	sudo echo "ff02::1       ip6-allnodes" >> /etc/hosts
-	sudo echo "ff02::2       ip6-allrouters" >> /etc/hosts
-	sudo echo " " >> /etc/hosts            # Add that blank line in there.
-	sudo echo $IP >> /etc/hosts
+	sudo sh -c "echo '127.0.0.1     localhost' >> /etc/hosts"
+	sudo sh -c "echo '::1           ip6-localhost ip6-loopback' >> /etc/hosts"
+	sudo sh -c "echo 'fe00::0       ip6-localnet' >> /etc/hosts"
+	sudo sh -c "echo 'ff00::0       ip6-mcastprefix' >> /etc/hosts"
+	sudo sh -c "echo 'ff02::1       ip6-allnodes' >> /etc/hosts"
+	sudo sh -c "echo 'ff02::2       ip6-allrouters' >> /etc/hosts"
+	sudo sh -c "echo ' ' >> /etc/hosts"            # Add that blank line in there.
+	sudo sh -c "echo $IP >> /etc/hosts"
 
 	echo "Delete hostname."
 
@@ -52,5 +52,5 @@ if [ "$FIRSTLINE" != "$THISHOST" ];	# If the hostname isn't the same as the Firs
 	echo "Commit hostname change."
 	sudo /etc/init.d/hostname.sh
 	
-	sudo reboot
+	# sudo reboot
 fi

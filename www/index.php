@@ -5,9 +5,10 @@
 
 <img src="dexter-logo-sm.png" alt="Dexter Industries!" > <!--- style="width:304px;height:228px;"> -->]
 
+
 <BR>
 <BR>
-</body></html>
+
 <?php
 
 	// Check for Lan IP on ethernet.
@@ -29,8 +30,8 @@
 	$address = $address."\"/> Open Terminal (Command Line Interface). </a>";
 	echo $address;
 
-	<BR>
-	<BR>
+	echo '<BR>';
+	echo '<BR>';
 
 	// Link for noVNC
 	// Enters via port 8001.
@@ -42,3 +43,5 @@
 
 ?>
 
+</body>
+</html>
