@@ -25,6 +25,7 @@ sudo apt-get install python-rpi.gpio
 sudo apt-get install python3-rpi.gpio
 sudo apt-get install python-psutil -y 		# Used in Scratch GUI
 sudo pip install -U RPi.GPIO
+
 echo "--> End Install Packages."
 echo "--> ======================================="
 
@@ -134,6 +135,14 @@ sudo update-rc.d vncproxy defaults 98
 
 cd /usr/local/share/noVNC/utils
 sudo ./launch.sh --vnc localhost:5900 &
+
+# Change permissions so you can execute from the desktop
+####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html
+####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
+
+echo "Change bash permissions for desktop."
+sudo echo "xhost +" >> /home/pi/.bashrc
+
 echo "--> Finished setting up noVNC"
 echo "--> ======================================="
 echo "--> !"
@@ -149,6 +158,7 @@ echo " "
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
+:'
 
 echo -n "Install Wifi Adhoc? " -r
 read ANSWER
@@ -169,6 +179,7 @@ if echo "$ANSWER" | grep -iq "^y" ;then
 	sudo ./setup_host_apd.sh
 	cd ..
 fi
+'
 
 ########################################################################
 ## Last bit of house cleaning.

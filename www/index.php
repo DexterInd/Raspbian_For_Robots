@@ -3,7 +3,7 @@
 <p>Where do you want to go?</p>
 
 
-<img src="dexter-logo-sm.png" alt="Dexter Industries!" > <!--- style="width:304px;height:228px;"> -->]
+<img src="dexter-logo-sm.png" alt="Dexter Industries!" > <!--- style="width:304px;height:228px;"> -->
 
 
 <BR>
