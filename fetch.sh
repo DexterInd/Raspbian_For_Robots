@@ -19,3 +19,6 @@ sudo chmod +x firmware_update.sh
 sudo ./firmware_update.sh
 echo "Please restart the Raspberry Pi for the changes to take effect"
 
+echo "MAKE GOPIGO SCRATCH EXECUTABLE"
+echo "------------------"
+sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/*.sh
