@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Version=1.0
 Type=Application
-Exec=/home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
+Exec=lxterminal --command "gksu sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh"
 Icon=/usr/share/icons/gnome/32x32/apps/zen-icon.png
 Terminal=false
 Name=DI Software Update
