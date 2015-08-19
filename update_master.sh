@@ -43,6 +43,8 @@ LOG_FILE="/home/pi/log_output.$NOW.txt"
 sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
 # All output and errors should go to a local file.
 
+echo "START DESKTOP SHORTCUT UPDATE."
+echo "=============================="
 # Update the Desktop Shortcut for Software Update
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
