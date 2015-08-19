@@ -13,12 +13,6 @@ echo "--> UPDATING LIBRARIES"
 echo "------------------"
 sudo chmod +x install.sh
 sudo ./install.sh
-cd ../Firmware/
-echo "--> UPDATING FIRMWARE"
-echo "--> Remove motors from the GoPiGo."
-echo "------------------"
-sudo chmod +x firmware_update.sh
-sudo ./firmware_update.sh
 
 echo "--> Install Scratch dependency ScratchPy."
 cd Desktop/GoPiGo/Software/Scratch
