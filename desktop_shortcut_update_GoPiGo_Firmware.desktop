@@ -2,9 +2,9 @@
 Encoding=UTF-8
 Version=1.0
 Type=Application
-Exec=/home/pi/Desktop/GoPiGo/Firmware/firmware_update.sh
+Exec=lxterminal --command "sudo sh /home/pi/Desktop/GoPiGo/Firmware/firmware_update.sh"
 Icon=/usr/share/icons/gnome/32x32/actions/up.png
 Terminal=false
-Name=DI Software Update
+Name=GoPiGo Firmware Update
 Comment= Programming system and content development tool
 Categories=Accessories;
