@@ -141,7 +141,13 @@ sudo ./launch.sh --vnc localhost:5900 &
 ####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
 
 echo "Change bash permissions for desktop."
-sudo echo "xhost +" >> /home/pi/.bashrc
+if grep -Fxq "xhost +" /home/pi/.bashrc
+then
+	#Found it, do nothing!
+	echo "Found xhost in .bashrc"
+else
+	sudo echo "xhost +" >> /home/pi/.bashrc
+fi
 
 echo "--> Finished setting up noVNC"
 echo "--> ======================================="
