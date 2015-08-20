@@ -20,22 +20,43 @@ fi
 ##############################################################################################################
 # 1.    Update the Configuration Files.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi
 
+# If the directory exists, delete it.
+
 if [ -d /home/pi/di_update ] ; then
 	sudo rm -r /home/pi/di_update
-else #if needed #also: elif [new condition] 
-	mkdir /home/pi/di_update
 fi
 
+# Make the directory again.  Clone into it.  
+mkdir /home/pi/di_update
 cd /home/pi/di_update
 git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# Take this part out when you're done!
 cd /home/pi/di_update/Raspbian_For_Robots/
-sudo git fetch origin
-git reset --hard
-sudo git merge origin/master
 git checkout update201507
-
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 
 ##############################################################################################################
 # 2.    Execute the file update_all.sh
