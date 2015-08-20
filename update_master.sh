@@ -29,7 +29,7 @@ fi
 # Make the directory again.  Clone into it.  
 mkdir /home/pi/di_update
 cd /home/pi/di_update
-git clone https://github.com/DexterInd/Raspbian_For_Robots/
+sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
 
 #
@@ -57,6 +57,8 @@ git checkout update201507
 #
 #
 #
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
+
 
 ##############################################################################################################
 # 2.    Execute the file update_all.sh
