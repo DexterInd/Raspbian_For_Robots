@@ -18,9 +18,14 @@ fi
 
 
 ##############################################################################################################
-# 1.    Github pull on itself.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi
+# 1.    Update the Configuration Files.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi
 
-mkdir /home/pi/di_update
+if [ -d /home/pi/di_update ] ; then
+	sudo rm -r /home/pi/di_update
+else #if needed #also: elif [new condition] 
+	mkdir /home/pi/di_update
+fi
+
 cd /home/pi/di_update
 git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
@@ -32,16 +37,9 @@ sudo git merge origin/master
 git checkout update201507
 
 
-
-
 ##############################################################################################################
 # 2.    Execute the file update_all.sh
 # Make sure we keep a log file.
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
-NOW=$(date +%m-%d-%Y-%H%M%S)
-LOG_FILE="/home/pi/log_output.$NOW.txt"
-sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
-# All output and errors should go to a local file.
 
 echo "START DESKTOP SHORTCUT UPDATE."
 echo "=============================="
@@ -55,6 +53,14 @@ sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
+
+# Run update_all.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+NOW=$(date +%m-%d-%Y-%H%M%S)
+LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
+sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
+# All output and errors should go to a local file.
+
 
 ##############################################################################################################
 # 3.    Reboot the Pi.
