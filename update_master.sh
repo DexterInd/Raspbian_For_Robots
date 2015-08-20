@@ -81,7 +81,10 @@ sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
 LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
-sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
+
+# sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
+sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+
 # All output and errors should go to a local file.
 
 
