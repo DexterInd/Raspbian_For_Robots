@@ -5,15 +5,11 @@
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
+
 echo "--> Begin Update."
 echo "--> ======================================="
-sudo apt-get update
-echo "--> Begin Upgrade."
-echo "--> ======================================="
-sudo apt-get upgrade
+sudo apt-get update -y
 
-echo "--> Begin Install Packages."
-echo "--> ======================================="
 sudo apt-get install python3-serial -y
 sudo apt-get install python-serial -y
 sudo apt-get install i2c-tools -y
@@ -25,6 +21,13 @@ sudo apt-get install python-rpi.gpio
 sudo apt-get install python3-rpi.gpio
 sudo apt-get install python-psutil -y 		# Used in Scratch GUI
 sudo pip install -U RPi.GPIO
+
+echo "--> Begin Upgrade."
+echo "--> ======================================="
+sudo apt-get upgrade -y
+
+echo "--> Begin Install Packages."
+echo "--> ======================================="
 
 echo "--> End Install Packages."
 echo "--> ======================================="
