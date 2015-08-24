@@ -72,6 +72,13 @@ echo "--> ======================================="
 echo " "
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
 
+# Enable LRC Infrared Control on Pi.
+echo "--> Enable LRC Infrared Control on Pi."
+echo "--> ======================================="
+echo " "
+sudo sh /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
+
+
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/
 echo "--> Update the background image on LXE Desktop."
