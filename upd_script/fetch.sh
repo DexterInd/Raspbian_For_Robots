@@ -104,6 +104,7 @@ sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/
 
 # Install DexterEd Software
 echo "--> Install DexterEd Software"
+sudo rm -r /home/pi/Desktop/DexterEd
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
 sudo chmod +x /home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
