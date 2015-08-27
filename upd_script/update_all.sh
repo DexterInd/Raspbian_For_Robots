@@ -20,6 +20,8 @@ sudo apt-get purge python3-rpi.gpio -y
 sudo apt-get install python-rpi.gpio
 sudo apt-get install python3-rpi.gpio
 sudo apt-get install python-psutil -y 		# Used in Scratch GUI
+sudo apt-get install python-picamera -y
+sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO
 
 echo "--> Begin Upgrade."
