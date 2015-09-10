@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Version=1.0
 Type=Application
-Exec=lxterminal --command "gksu sh /home/pi/Desktop/GrovePi/Firmware/firmware_update.sh"
+Exec=lxterminal --command "gksu sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi_Firmware.sh"
 Icon=/usr/share/icons/gnome/32x32/actions/up.png
 Terminal=false
 Name=GrovePi Firmware Update
