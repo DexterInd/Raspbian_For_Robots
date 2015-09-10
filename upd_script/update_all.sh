@@ -24,6 +24,8 @@ sudo apt-get install python-picamera -y
 sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO
 
+sudo adduser pi i2c
+
 echo "--> Begin Upgrade."
 echo "--> ======================================="
 sudo apt-get upgrade -y
