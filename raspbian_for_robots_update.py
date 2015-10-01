@@ -38,7 +38,7 @@ def write_debug(in_string):
 	error_file.close()
 
 def write_state(in_string):
-	error_file = open('selected_state', 'w')		# File: selected state
+	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
 	error_file.write(in_string)
 	error_file.close()
 
@@ -76,7 +76,8 @@ class MainPanel(wx.Panel):
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		hSizer = wx.BoxSizer(wx.HORIZONTAL)
  
-		
+		wx.StaticText(self, -1, "Raspbian For Robots Update", (25, 5))					# (Minus 50, minus 0)
+ 
 		#-------------------------------------------------------------------
 		# Standard Buttons
 
@@ -93,7 +94,7 @@ class MainPanel(wx.Panel):
 		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
 
 		# Exit
-		exit_button = wx.Button(self, label="Exit", pos=(25,125))
+		exit_button = wx.Button(self, label="Exit", pos=(25,225))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
 	
 
@@ -105,9 +106,8 @@ class MainPanel(wx.Panel):
 
 		# Select Platform.
 		
-		robotDrop = wx.ComboBox(self, -1, "GoPiGo", pos=(25, 25), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, " ", pos=(200, 175), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
-		wx.StaticText(self, -1, "Select a Robot:", (25, 5))					# (Minus 50, minus 0)
 		
 		# Drop Boxes
 		#-------------------------------------------------------------------
@@ -144,7 +144,7 @@ class MainPanel(wx.Panel):
 	# This is the function called whenever the drop down box is called.
 	def robotDrop(self, event):
 		write_debug("robotDrop Selected.")
-		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
+		controls = ['dex', 'GoPiGo', 'GrovePi']	# Options for drop down.
 		value = event.GetSelection()
 		print controls[value]
 		# position = 0					# Position in the key list on file
@@ -161,7 +161,7 @@ class MainPanel(wx.Panel):
 		dlg = wx.MessageDialog(self, 'Operating System Update has started!  Depending on your internet speed this could take a few hours.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
 		dlg.Destroy()
-		start_command = "sudo python /home/pi/di_update/Raspbian_For_Robots/update_os.sh"
+		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_os.sh"
 		send_bash_command_in_background(start_command)
 
 	# Update the Software.
@@ -170,7 +170,7 @@ class MainPanel(wx.Panel):
 		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
 		dlg.Destroy()
-		start_command = "sudo python /home/pi/di_update/Raspbian_For_Robots/update_all.sh"
+		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_all.sh"
 		send_bash_command_in_background(start_command)
 		
 		write_debug("Update Dexter Software Finished.")	
@@ -180,7 +180,7 @@ class MainPanel(wx.Panel):
 
 		folder = read_state()
 
-		if folder == ' ':
+		if folder == 'dex':
 			dlg = wx.MessageDialog(self, 'Use the dropdown to select the hardware to update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
 			dlg.ShowModal()
 			dlg.Destroy()
@@ -208,7 +208,7 @@ class MainFrame(wx.Frame):
 		"""Constructor"""
 		# wx.ComboBox
 
-		wx.Icon('/home/pi/di_update/Raspbian_For_Robots/upd_script/update_gui_elements/favicon.ico', wx.BITMAP_TYPE_ICO)
+		wx.Icon('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/favicon.ico', wx.BITMAP_TYPE_ICO)
 		wx.Log.SetVerbose(False)
 		wx.Frame.__init__(self, None, title="Update Raspbian for Robots", size=(400,300))		# Set the frame size
 
@@ -230,7 +230,7 @@ class Main(wx.App):
 if __name__ == "__main__":
 	send_bash_command_in_background("xhost +")
 	write_debug(" # Program # started # !")
-	write_state(" ")
+	write_state("dex")
 	# reset_file()	#Reset the file every time we turn this program on.
 	app = Main()
 	app.MainLoop()
