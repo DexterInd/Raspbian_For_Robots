@@ -1,6 +1,6 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
-# This script should OFTEN be changed. 
+# This script will be changed OFTEN! 
 
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
@@ -25,16 +25,6 @@ sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO
 
 sudo adduser pi i2c
-
-echo "--> Begin Upgrade."
-echo "--> ======================================="
-sudo apt-get upgrade -y
-
-echo "--> Begin Install Packages."
-echo "--> ======================================="
-
-echo "--> End Install Packages."
-echo "--> ======================================="
 
 ########################################################################
 ## Kernel Updates
@@ -237,4 +227,3 @@ echo "--> If this is an update remember to do the following: "
 echo "--> Run BrickPi_Python\Project_Examples\browserStreamingRobot\browser_stream_setup.sh"
 echo "--> Reduce image size."
 echo "--> Midori and web browsers should point to local setup of help files."
-

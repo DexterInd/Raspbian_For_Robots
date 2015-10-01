@@ -16,9 +16,9 @@ else
 	exit 0
 fi
 
-
 ##############################################################################################################
-# 1.    Update the Configuration Files.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi
+# 1.    Update the Source Files.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi.
+#		Get the latest update information.
 
 # If the directory exists, delete it.
 
@@ -57,8 +57,12 @@ git checkout update201507
 #
 #
 #
+# Make files executable.
+echo "MAKE FILES EXECUTABLE."
+echo "=============================="
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
-
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
 
 ##############################################################################################################
 # 2.    Execute the file update_all.sh
@@ -77,13 +81,25 @@ sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 
+
 # Run update_all.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
 LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
 
+# Start raspbian_for_robots_update.py
+# This is the GUI that will let you choose to: 
+# 	1. OS Update
+#	2. DI Software Update
+#	3. DI Hardware Update
+
+echo "START UPDATE GUI."
+echo "=============================="
+sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+
+###
+# Old Code John's holding onto as backup.
 # sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh 2>&1 | tee ${LOG_FILE}
-sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+# sudo /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 
 # All output and errors should go to a local file.
 
