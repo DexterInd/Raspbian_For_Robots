@@ -94,7 +94,7 @@ class MainPanel(wx.Panel):
 		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
 
 		# Exit
-		exit_button = wx.Button(self, label="Exit", pos=(25,225))
+		exit_button = wx.Button(self, label="Exit", pos=(25,250))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
 	
 		# End Standard Buttons		
@@ -105,7 +105,7 @@ class MainPanel(wx.Panel):
 
 		# Select Platform.
 		
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 175), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 200), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 		
 		# Drop Boxes
