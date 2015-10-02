@@ -82,15 +82,15 @@ class MainPanel(wx.Panel):
 		# Standard Buttons
 
 		# Upate Raspbian
-		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(25,75))
+		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(25,50))
 		update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
 		
 		# Update DI Software
-		update_software = wx.Button(self, label="Update Dexter Software", pos=(25, 125))
+		update_software = wx.Button(self, label="Update Dexter Software", pos=(25, 100))
 		update_software.Bind(wx.EVT_BUTTON, self.update_software)			
 		
 		# Update Firmware
-		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(25,175))
+		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(25,150))
 		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
 
 		# Exit
@@ -105,7 +105,7 @@ class MainPanel(wx.Panel):
 
 		# Select Platform.
 		
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(200, 175), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 175), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 		
 		# Drop Boxes
