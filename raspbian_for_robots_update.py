@@ -170,7 +170,7 @@ class MainPanel(wx.Panel):
 		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
 		dlg.Destroy()
-		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_all.sh"
+		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
 		send_bash_command_in_background(start_command)
 		
 		write_debug("Update Dexter Software Finished.")	
@@ -195,6 +195,9 @@ class MainPanel(wx.Panel):
 		
 	def onClose(self, event):	# Close the entire program.
 		write_debug("Close Pressed.")
+		dlg = wx.MessageDialog(self, 'The Pi will now restart.  Please save all open files before pressing OK.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
+		dlg.ShowModal()
+		dlg.Destroy()
 		"""
 		"""
 		self.frame.Close()
