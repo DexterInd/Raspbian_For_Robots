@@ -8,7 +8,6 @@ sudo apt-get update -y
 echo "--> End Update."
 echo "--> ======================================="
 
-
 echo "--> Begin Upgrade."
 echo "--> ======================================="
 sudo apt-get upgrade -y
