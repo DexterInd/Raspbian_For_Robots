@@ -107,7 +107,14 @@ echo "--> Install DexterEd Software"
 sudo rm -r /home/pi/Desktop/DexterEd
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
-sudo chmod +x /home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
-sudo sh /home/pi/Desktop/DexterEd/Scratch_GUI/install_scratch_start.sh
+
+
+# Install GoBox Software
+echo "--> Install GoBox Software"
+sudo rm -r /home/pi/Desktop/GoBox
+cd /home/pi/Desktop
+sudo git clone https://github.com/DexterInd/GoBox.git
+sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
+sudo sh /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
 
 echo "--> Done updating Dexter Industries Github repos!"
