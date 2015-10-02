@@ -37,7 +37,8 @@ def write_debug(in_string):
 
 def write_state(in_string):
 	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
-	if(' ' in in_string) then in_string = "dex"
+	if(' ' in in_string): 
+		in_string = "dex"
 	error_file.write(in_string)
 	error_file.close()
 
