@@ -122,4 +122,4 @@ echo "Rebooting in 1 seconds!"
 sleep 1
 echo "Rebooting now!  Your Pi wake up with a freshly updated Raspberry Pi!"
 sleep 1
-sudo reboot
+# sudo reboot

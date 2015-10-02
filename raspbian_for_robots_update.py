@@ -25,8 +25,6 @@ import signal
 # Developer Notes and References:
 # http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/
 # ComboBoxes!  		http://wiki.wxpython.org/AnotherTutorial#wx.ComboBox
-# dfu-programmer:  	http://dfu-programmer.github.io/
-
 
 # Writes debug to file "error_log"
 def write_debug(in_string):
@@ -39,6 +37,7 @@ def write_debug(in_string):
 
 def write_state(in_string):
 	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
+	if(' ' in in_string) then in_string = "dex"
 	error_file.write(in_string)
 	error_file.close()
 
@@ -97,7 +96,6 @@ class MainPanel(wx.Panel):
 		exit_button = wx.Button(self, label="Exit", pos=(25,225))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
 	
-
 		# End Standard Buttons		
 		#-------------------------------------------------------------------
 		# Drop Boxes
@@ -132,8 +130,8 @@ class MainPanel(wx.Panel):
 			rect = self.GetUpdateRegion().GetBox()
 			dc.SetClippingRect(rect)
 		dc.Clear()	
-		bmp = wx.Bitmap("/home/pi/Desktop/DexterEd/Scratch_GUI/dex.png")	# Draw the photograph.
-		dc.DrawBitmap(bmp, 0, 400)						# Absolute position of where to put the picture
+		# bmp = wx.Bitmap("/home/pi/Desktop/DexterEd/Scratch_GUI/dex.png")	# Draw the photograph.
+		# dc.DrawBitmap(bmp, 0, 400)						# Absolute position of where to put the picture
 		
 		# Add a second picture.
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
@@ -174,7 +172,7 @@ class MainPanel(wx.Panel):
 		send_bash_command_in_background(start_command)
 		
 		write_debug("Update Dexter Software Finished.")	
-	
+		
 	def update_firmware(self, event):
 		write_debug("Update Dexter Software")	
 
