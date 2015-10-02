@@ -78,9 +78,8 @@ sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.desktop /
 sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
 
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
-
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
+# sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 
 # Run update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
