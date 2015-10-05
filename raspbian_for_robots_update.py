@@ -157,15 +157,11 @@ class MainPanel(wx.Panel):
 	# Update the Operating System.
 	def update_raspbian(self, event):
 		write_debug("update_raspbian")
-		progressMax = 100
-		dlg = wx.ProgressDialog("Update Uperating System", "Operating System Update has started!  Depending on your internet speed this could take a few hours.  Please do not close the terminal window or restart the update.", progressMax,style=wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME)
-		# dlg = wx.MessageDialog(self, 'Operating System Update has started!  Depending on your internet speed this could take a few hours.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
-		# dlg.ShowModal()
-		# dlg.Destroy()
-		dlg.Update(25)
+		dlg = wx.MessageDialog(self, 'Operating System Update has started!  Depending on your internet speed this could take a few hours.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
+		dlg.ShowModal()
+		dlg.Destroy()
 		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_os.sh"
 		send_bash_command_in_background(start_command)
-		dlg.Destroy()
 
 	# Update the Software.
 	def update_software(self, event):
@@ -175,7 +171,7 @@ class MainPanel(wx.Panel):
 		dlg.Destroy()
 		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
 		send_bash_command_in_background(start_command)
-		write_debug("Update Dexter Software Finished.")	
+		write_debug("Update Dexter Software Finished.")
 		
 	def update_firmware(self, event):
 		write_debug("Update Dexter Software")	
