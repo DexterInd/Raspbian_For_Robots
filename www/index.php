@@ -1,10 +1,9 @@
-<html><body><h1>Raspbian for Robots!</h1>
+<html>
+<body>
+<img src="dexter-logo-sm.png" alt="Dexter Industries!" > <!--- style="width:304px;height:228px;"> -->
+<h1>Raspbian for Robots!</h1>
 <p>You've Connected to the Raspbian for Robots Server!</p>
 <p>Where do you want to go?</p>
-
-
-<img src="dexter-logo-sm.png" alt="Dexter Industries!" > <!--- style="width:304px;height:228px;"> -->
-
 
 <BR>
 <BR>
