@@ -1,9 +1,7 @@
-<html>
-<body>
+<html><body>
 <img src="dexter-logo-sm.png" alt="Dexter Industries!" > <!--- style="width:304px;height:228px;"> -->
-<h1>Raspbian for Robots!</h1>
-<p>You've Connected to the Raspbian for Robots Server!</p>
-<p>Where do you want to go?</p>
+
+<strong><p>Raspbian for Robots.</p></strong>
 
 <BR>
 <BR>
@@ -26,7 +24,16 @@
 	$address = "http://".$ethernetIP;
 	$address = $address.":4200";
 	$address = "<a href=\"".$address;
-	$address = $address."\"/> Open Terminal (Command Line Interface). </a>";
+	$address = $address."\"/> ";
+        $bash = '<img src="bash.png" style="width:180px;height:156px;" >';
+	$address = $address.$bash;
+	$address = $address." <BR> Open Terminal (Command Line Interface). </a>";
+	
+	$vnc =  '<img src="vnc.png" style="width:180px;height:156px;">';
+
+
+	// echo $vnc;
+
 	echo $address;
 
 	echo '<BR>';
@@ -37,7 +44,9 @@
 	$address = "http://".$ethernetIP;
 	$address = $address.":8001";
 	$address = "<a href=\"".$address;
-	$address = $address."\"/> Open VNC (Desktop). </a>";
+	$address = $address."\"/>";
+	$address = $address.$vnc; 
+	$address = $address."<BR> Open VNC (Desktop). </a>";
 	echo $address;
 
 ?>
