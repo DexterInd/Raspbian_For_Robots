@@ -22,6 +22,8 @@ fi
 
 # If the directory exists, delete it.
 
+sudo rm /home/pi/index.html*
+
 if [ -d /home/pi/di_update ] ; then
 	sudo rm -r /home/pi/di_update
 fi
