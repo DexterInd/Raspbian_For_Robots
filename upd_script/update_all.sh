@@ -10,10 +10,13 @@ echo "--> Begin Update."
 echo "--> ======================================="
 sudo apt-get update -y
 
+echo "Install Specific Libraries."
 sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n	
+echo "Purged wxpython tools"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
+echo "Installed wxpython tools"
 sudo apt-get install python-psutil --force-yes
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes
+echo "Python-PSUtil"
 
 sudo apt-get install python3-serial -y
 sudo apt-get install python-serial -y
