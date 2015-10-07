@@ -210,9 +210,12 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 echo "--> End installing Samba."
 
-sudo apt-get clean		# Remove any unused packages.
-sudo apt-get autoremove # Remove unused packages.
+echo "--> Begin cleanup."
+sudo apt-get clean -y		# Remove any unused packages.
+sudo apt-get autoremove -y 	# Remove unused packages.
+echo "--> End cleanup."
 
+echo "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
 cd /home/pi/Desktop
 rm Version
@@ -221,9 +224,7 @@ cp /home/pi/di_update/Raspbian_For_Robots/Version /home/pi/Desktop
 echo "--> ======================================="
 echo "--> ======================================="
 echo "--> Installation Complete."
-
 echo "--> If this is an update remember to do the following: "
-
 echo "--> Run BrickPi_Python\Project_Examples\browserStreamingRobot\browser_stream_setup.sh"
 echo "--> Reduce image size."
 echo "--> Midori and web browsers should point to local setup of help files."
