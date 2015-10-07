@@ -10,10 +10,14 @@ echo "--> Begin Update."
 echo "--> ======================================="
 sudo apt-get update -y
 
+sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n	
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
+sudo apt-get install python-psutil --force-yes
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes
+
 sudo apt-get install python3-serial -y
 sudo apt-get install python-serial -y
 sudo apt-get install i2c-tools -y
-sudo apt-get install python-wxgtk2.8 -y		# Install wx for python for windows / GUI programs.
 
 sudo apt-get purge python-rpi.gpio -y
 sudo apt-get purge python3-rpi.gpio -y
