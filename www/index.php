@@ -30,8 +30,7 @@
 	$address = $address." <BR> Open Terminal (Command Line Interface). </a>";
 	
 	$vnc =  '<img src="vnc.png" style="width:180px;height:156px;">';
-
-
+	
 	// echo $vnc;
 
 	echo $address;
