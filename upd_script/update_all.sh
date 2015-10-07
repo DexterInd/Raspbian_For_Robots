@@ -11,7 +11,7 @@ echo "--> ======================================="
 sudo apt-get update -y
 
 echo "Install Specific Libraries."
-sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n	
+# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n	  			# Removed, this can sometimes cause hangups.  
 echo "Purged wxpython tools"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
