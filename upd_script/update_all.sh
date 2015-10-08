@@ -12,7 +12,7 @@ sudo apt-get update -y
 
 echo "Install Specific Libraries."
 sudo dpkg --configure -a
-# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
+sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
 
 echo "Purged wxpython tools"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.

@@ -11,8 +11,12 @@ echo "=================================="
 wget -q --tries=2 --timeout=100 http://google.com
 if [ $? -eq 0 ];then
 	echo "Connected"
+	sleep 1
 else
 	echo "Unable to Connect, try again !!!"
+	echo "Connect your Pi to the internet and try again."
+	echo "This window will close in 10 seconds."
+	sleep 10
 	exit 0
 fi
 
