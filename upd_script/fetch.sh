@@ -119,4 +119,11 @@ sudo git clone https://github.com/DexterInd/GoBox.git
 sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
 sudo sh /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
 
+
+# Install GoBox Troubleshooting Software
+sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
+sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+sudo sh /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+
+
 echo "--> Done updating Dexter Industries Github repos!"
