@@ -169,9 +169,13 @@ class MainPanel(wx.Panel):
 		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
 		dlg.Destroy()
+
+		dlg = wx.MessageDialog(self, 'We are performing a software update!  Please do not close the terminal window or restart the update.', 'Alert!', wx.ICON_INFORMATION)
+		dlg.ShowModal()
 		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
 		send_bash_command_in_background(start_command)
 		write_debug("Update Dexter Software Finished.")
+		dlg.Destroy()
 		
 	def update_firmware(self, event):
 		write_debug("Update Dexter Software")	
