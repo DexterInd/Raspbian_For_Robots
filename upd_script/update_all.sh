@@ -11,8 +11,9 @@ echo "--> ======================================="
 sudo apt-get update -y
 
 echo "Install Specific Libraries."
-# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n	  			# Removed, this can sometimes cause hangups.  
 sudo dpkg --configure -a
+sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n	  			# Removed, this can sometimes cause hangups.  
+
 echo "Purged wxpython tools"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
@@ -71,11 +72,13 @@ echo " "
 sudo rm /home/pi/Desktop/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
 sudo rm /home/pi/Desktop/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
 
+
 # Call fetch.sh - This updates the Github Repositories, installs necessary dependencies.
 echo "--> Begin Update Dexter Industries Software Packages."
 echo "--> ======================================="
 echo " "
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
+
 
 # Enable LRC Infrared Control on Pi.
 echo "--> Enable LRC Infrared Control on Pi."
@@ -231,6 +234,19 @@ cp /home/pi/di_update/Raspbian_For_Robots/Version /home/pi/Desktop
 
 echo "--> ======================================="
 echo "--> ======================================="
+echo "  _    _               _           _                         ";
+echo " | |  | |             | |         | |                        ";
+echo " | |  | |  _ __     __| |   __ _  | |_    ___                ";
+echo " | |  | | | '_ \   / _\ |  / _\ | | __|  / _ \               ";
+echo " | |__| | | |_) | | (_| | | (_| | | |_  |  __/               ";
+echo "  \____/  | .__/   \__,_|  \__,_|  \__|_ \___|    _          ";
+echo "  / ____| | |                         | |        | |         ";
+echo " | |      |_|__    _ __ ___    _ __   | |   ___  | |_    ___ ";
+echo " | |       / _ \  |  _ \  _ \ |  _ \  | |  / _ \ | __|  / _ \";
+echo " | |____  | (_) | | | | | | | | |_) | | | |  __/ | |_  |  __/";
+echo "  \_____|  \___/  |_| |_| |_| | .__/  |_|  \___|  \__|  \___|";
+echo "                              | |                            ";
+echo "                              |_|                            ";
 echo "--> Installation Complete."
 echo "--> If this is an update remember to do the following: "
 echo "--> Run BrickPi_Python\Project_Examples\browserStreamingRobot\browser_stream_setup.sh"

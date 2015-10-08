@@ -1,3 +1,28 @@
+
+GKSU is used to call python GUI's.  However, GKSU does not work with command line input.  If the user needs to input information (like a y/n or a 1/2) the sh script will hangup and not move forward.  
+
+========================================================================================
+
+This hack help solves permissions for VNC.
+
+http://stackoverflow.com/questions/20286705/tkinter-through-vnc-without-physical-display
+
+You need to run "xhost +" in the command line before running a program in Scratch.
+Finally solved the problem: In the desktop shortcut, use "gksu" instead of sudo to call the startup script for Scratch.
+Also took "lxterminal" out of some of the calls.  lxterminal starts open new windows, so I removed that.
+
+========================================================================================
+
+If the Pi goes into a continous reboot, try this:
+https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=27905
+
+cd ~
+ls -A
+mv .Xauthority .Xauthority.bkp
+reboot
+
+
+========================================================================================
 How we reduce the image size.
 
 When changing an image around you may want to reduce the image size or cut out extra un-used space.  This is how we squeeze a 3GB image onto a 4GB SD card.
