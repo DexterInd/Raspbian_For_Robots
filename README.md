@@ -12,6 +12,13 @@ If all this looks too complicated, don't fear!  You can [download a pre-configur
 
 We have detailed step by step instructions on how to [install this image onto an SD Card here.](http://www.dexterindustries.com/howto/raspberry-pi-tutorials/install-raspbian-for-robots-image-on-an-sd-card/)
 
+## Features
+
+Default hostname is dex.  Default user is pi.  Default password is raspberry.
+Change the hostname directly on the sdcard.  Open "hostname" in a file editor and change the name to the hostname you desire.
+noVNC
+Terminal
+
 ## This Repository
 
 These scripts manage to update the Raspbian for Robots image.  These changes are all executed using the Update button on the LXE Desktop of the Raspberry Pi.  
