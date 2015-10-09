@@ -1,5 +1,10 @@
+Here are developer notes and things we don't want to forget from the software work done.
+
+========================================================================================
 
 GKSU is used to call python GUI's.  However, GKSU does not work with command line input.  If the user needs to input information (like a y/n or a 1/2) the sh script will hangup and not move forward.  
+
+https://bugs.launchpad.net/ubuntu/+source/gksu/+bug/244930
 
 ========================================================================================
 
@@ -20,7 +25,6 @@ cd ~
 ls -A
 mv .Xauthority .Xauthority.bkp
 reboot
-
 
 ========================================================================================
 How we reduce the image size.
