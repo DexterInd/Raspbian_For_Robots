@@ -14,14 +14,14 @@ We have detailed step by step instructions on how to [install this image onto an
 
 ## Features
 
-* Default hostname is dex.  Default user is pi.  Default password is raspberry.
+* Default hostname is dex.  Default user is pi.  The default password is raspberry.
 * Login on dex.local through your browser.
 * Change the hostname directly on the sdcard.  Open "hostname" in a file editor and change the name to the hostname you desire.  Boot once, and restart to initiate the new hostname.
 * noVNC available in the browser.  You can access from http://dex.local
 * Terminal available in the browser.  You can access from http://dex.local
-* Scratch Starter Program
-* Test and Troublshoot Program
-* Update Program.  
+* Scratch Starter Program - Start Scratch for the different robots in the Dexter Industries Scratch Program.
+* Test and Troublshoot Program - We've added a Test and Troubleshoot program.
+* Update Program - We have a dedicated program for updating the software, the operating system, and the firmware of your robot.
 
 
 ## This Repository
