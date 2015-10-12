@@ -23,6 +23,11 @@ We have detailed step by step instructions on how to [install this image onto an
 * Test and Troublshoot Program - We've added a Test and Troubleshoot program.
 * Update Program - We have a dedicated program for updating the software, the operating system, and the firmware of your robot.
 
+## Host Name
+
+You can change the hostname of your Raspberry Pi from "dex" to whatever you like.  This is particularly helpful if you have more than one Raspberry Pi on the same wifi network.  
+
+Place the microSD card in the SD card adapter, and place in your PC or Mac.  Open the file "hostname" in a text editor.  It should say "dex" by default.  Change that name to whatever name you like, with no spaces, tabs or special characters.  And be sure to use lower case letters.  Save the file.  Replace the SD card in the Raspberry Pi and power it up.  Wait 5 minutes.  Remove the power to turn off the Raspberry Pi.  Power up the Raspberry Pi again.  The Raspberry Pi should have the new hostname.
 
 ## This Repository
 
