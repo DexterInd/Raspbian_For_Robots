@@ -14,7 +14,7 @@ We have detailed step by step instructions on how to [install this image onto an
 
 ## Features
 
-* Default hostname is dex.  Default user is pi.  The default password is robots.  VNC password is robots.
+* Default hostname is dex.  Default user is pi.  The default password is robots1234.  VNC password is robots1234.
 * Login on dex.local through your browser.
 * Change the hostname directly on the sdcard.  Open "hostname" in a file editor and change the name to the hostname you desire.  Boot once, and restart to initiate the new hostname.
 * noVNC available in the browser.  You can access from http://dex.local

@@ -120,6 +120,7 @@ echo " "
 sudo rm -r /var/www
 sudo cp -r /home/pi/di_update/Raspbian_For_Robots/www /var/
 sudo chmod +x /var/www/index.php
+sudo chmod +x /var/www/css/main.css
 
 # Setup Shellinabox
 echo "--> Setup Shellinabox."

@@ -1,0 +1,84 @@
+h1 {
+	font-family: 'Open Sans';
+	font-size: 23px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 23px;
+}
+h3 {
+	font-family: 'Open Sans';
+	font-size: 17px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 23px;
+}
+p {
+	font-family: 'Open Sans';
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 23px;
+}
+blockquote {
+	font-family: 'Open Sans';
+	font-size: 17px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 23px;
+}
+pre {
+	font-family: 'Open Sans';
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 23px;
+}
+a {
+        font-family: 'Open Sans';
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: 400;
+        line-height: 23px;
+	color: #0000FF;
+}
+
+#nav {
+    width:350px;
+    float:left;
+    padding:10px; 
+}
+#section {
+    width:350px;
+    float:left;
+    padding:10px; 
+}
+
+#footer {
+    float:left;
+    padding:10px; 
+    clear:both;
+}
+
+ul {
+    list-style-type: circle;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 23px;
+ 
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1 em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 40px;
+}
+}

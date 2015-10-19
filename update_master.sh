@@ -10,7 +10,7 @@ echo "Check for internet connectivity..."
 echo "=================================="
 wget -q --tries=2 --timeout=100 http://google.com
 if [ $? -eq 0 ];then
-	echo "Connected"
+	echo "Connected.  Do not close this window!"
 	sleep 1
 else
 	echo "Unable to Connect, try again !!!"
@@ -80,6 +80,10 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_sta
 sudo rm /home/pi/Desktop/desktop_shortcut_update.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
+
+sudo rm /home/pi/Desktop/shutdown.desktop
+sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
+sudo chmod +x /home/pi/Desktop/shutdown.desktop
 
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
