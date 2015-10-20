@@ -1,5 +1,7 @@
 Here are developer notes and things we don't want to forget from the software work done.
 
+To change the desktop locale to the US:  run sudo dpkg-configure locales  unselect en_GB.UTF-8 and select en_US.UTF-8
+
 ========================================================================================
 
 GKSU is used to call python GUI's.  However, GKSU does not work with command line input.  If the user needs to input information (like a y/n or a 1/2) the sh script will hangup and not move forward.  

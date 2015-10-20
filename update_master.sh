@@ -85,6 +85,13 @@ sudo rm /home/pi/Desktop/shutdown.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/shutdown.desktop
 
+sudo rm idle3.desktop
+sudo rm idle.desktop
+sudo rm gksu.desktop
+# Rename the wifi control.
+sudo sed -i "Name=wpa_gui" /home/pi/Desktop/wpa_gui.desktop
+sudo echo "Name=Wifi Setup" >> /home/pi/Desktop/wpa_gui.desktop
+
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 # sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
