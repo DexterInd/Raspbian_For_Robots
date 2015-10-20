@@ -84,9 +84,9 @@ sudo rm /home/pi/Desktop/shutdown.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/shutdown.desktop
 
-sudo rm sudo rm /home/pi/Desktop/idle3.desktop
-sudo rm sudo rm /home/pi/Desktop/idle.desktop
-sudo rm sudo rm /home/pi/Desktop/gksu.desktop
+sudo rm /home/pi/Desktop/idle3.desktop
+sudo rm /home/pi/Desktop/idle.desktop
+sudo rm /home/pi/Desktop/gksu.desktop
 # Rename the wifi control.
 sudo sed -i "Name=wpa_gui" /home/pi/Desktop/wpa_gui.desktop
 sudo echo "Name=Wifi Setup" >> /home/pi/Desktop/wpa_gui.desktop
