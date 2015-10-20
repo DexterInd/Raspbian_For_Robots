@@ -69,9 +69,8 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
 
 ##############################################################################################################
-# 2.    Execute the file update_all.sh
-# Make sure we keep a log file.
-
+# 2.	Change all desktop icons around.
+#
 echo "START DESKTOP SHORTCUT UPDATE."
 echo "=============================="
 # Update the Desktop Shortcut for Software Update
@@ -85,9 +84,9 @@ sudo rm /home/pi/Desktop/shutdown.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/shutdown.desktop
 
-sudo rm idle3.desktop
-sudo rm idle.desktop
-sudo rm gksu.desktop
+sudo rm sudo rm /home/pi/Desktop/idle3.desktop
+sudo rm sudo rm /home/pi/Desktop/idle.desktop
+sudo rm sudo rm /home/pi/Desktop/gksu.desktop
 # Rename the wifi control.
 sudo sed -i "Name=wpa_gui" /home/pi/Desktop/wpa_gui.desktop
 sudo echo "Name=Wifi Setup" >> /home/pi/Desktop/wpa_gui.desktop
@@ -95,6 +94,10 @@ sudo echo "Name=Wifi Setup" >> /home/pi/Desktop/wpa_gui.desktop
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 # sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
+
+##############################################################################################################
+# 3.    Execute the file update_all.sh
+# Make sure we keep a log file.
 
 # Run update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
@@ -120,7 +123,7 @@ sudo rm /home/pi/index.html*
 
 
 ##############################################################################################################
-# 3.    Reboot the Pi.
+# 4.    Reboot the Pi.
 #               We must reboot for folks.
 echo "To finish changes, we will reboot the Pi."
 echo "Pi must reboot for changes and updates to take effect."
