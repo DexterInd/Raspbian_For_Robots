@@ -157,21 +157,34 @@ class MainPanel(wx.Panel):
 	# Update the Operating System.
 	def update_raspbian(self, event):
 		write_debug("update_raspbian")
-		dlg = wx.MessageDialog(self, 'Operating System Update has started!  Depending on your internet speed this could take a few hours.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
-		dlg.ShowModal()
+		dlg = wx.MessageDialog(self, 'Operating System Update will start!  Depending on your internet speed this could take a few hours.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+		ran_dialog = False
+		if dlg.ShowModal() == wx.ID_OK:
+			start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_os.sh"
+			send_bash_command_in_background(start_command)
+			print "Start Operating System update!"
+			ran_dialog = True
+		else:
+			print "Cancel Operating System Update!"
 		dlg.Destroy()
-		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_os.sh"
-		send_bash_command_in_background(start_command)
+		
+		write_debug("Cancel Operating System Update.")
 
 	# Update the Software.
 	def update_software(self, event):
 		write_debug("Update Dexter Software")	
-		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
-		dlg.ShowModal()
+		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+		
+		ran_dialog = False
+		if dlg.ShowModal() == wx.ID_OK:
+			start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
+			send_bash_command_in_background(start_command)
+			print "Start software update!"
+			ran_dialog = True
+		else:
+			print "Cancel Firmware Update!"
 		dlg.Destroy()
-
-		start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
-		send_bash_command_in_background(start_command)
+		
 		write_debug("Update Dexter Software Finished.")
 		
 	def update_firmware(self, event):
@@ -187,8 +200,31 @@ class MainPanel(wx.Panel):
 			program = "/home/pi/di_update/Raspbian_For_Robots/upd_script/update_GoPiGo_Firmware.sh"
 		elif folder == 'GrovePi':
 			program = "/home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi_Firmware.sh"
-		start_command = "sudo sh "+program
-		send_bash_command_in_background(start_command)
+			
+		dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+		
+		ran_dialog = False
+		if dlg.ShowModal() == wx.ID_OK:
+			start_command = "sudo sh "+program
+			send_bash_command_in_background(start_command)
+			print "Start Firmware test!" + str(folder)
+			# send_bash_command(program)
+			ran_dialog = True
+		else:
+			print "Cancel Firmware Update!"
+		dlg.Destroy()
+		
+		# Depending on what the user chose, we either cancel or complete.  
+		if ran_dialog:
+			dlg = wx.MessageDialog(self, 'Firmware update will begin.', 'Begin', wx.OK|wx.ICON_INFORMATION)
+			dlg.ShowModal()
+			dlg.Destroy()
+		else:
+			dlg = wx.MessageDialog(self, 'Firmware update is canceled.', 'Canceled', wx.OK|wx.ICON_HAND)
+			dlg.ShowModal()
+			dlg.Destroy()
+		
+
 		
 		write_debug("Programming Started.")	
 		
