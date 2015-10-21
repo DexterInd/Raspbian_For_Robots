@@ -232,8 +232,8 @@ echo "--> Update version on Desktop."
 cd /home/pi/Desktop
 rm Version
 rm version.desktop
-cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
-chmod +x /home/pi/Desktop/version.desktop
+sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
+sudo chmod +x /home/pi/Desktop/version.desktop
 
 echo "--> ======================================="
 echo "--> ======================================="
