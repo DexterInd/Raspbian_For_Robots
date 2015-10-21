@@ -1,5 +1,6 @@
 #! /bin/bash
 # This script will install Samba.
+# Reference: http://elinux.org/R-Pi_NAS#Connect_the_RPi_to_a_network
 
 sudo apt-get install samba samba-common-bin -y
 echo "Modify Samba configuration."
