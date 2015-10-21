@@ -188,23 +188,28 @@ class MainPanel(wx.Panel):
 		write_debug("Update Dexter Software Finished.")
 		
 	def update_firmware(self, event):
+	
+		ran_dialog = False		# For the first loop of choices.
+		show_dialog = False		# For the second loop of choices.
+		
 		write_debug("Update Dexter Software")	
-
 		folder = read_state()
-
 		if folder == 'dex':
-			dlg = wx.MessageDialog(self, 'Use the dropdown to select the hardware to update.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
-			dlg.ShowModal()
-			dlg.Destroy()
+			dlg = wx.MessageDialog(self, 'Use the dropdown to select the hardware to update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+			program = " "
+			show_dialog = False
+
 		elif folder == 'GoPiGo':
 			program = "/home/pi/di_update/Raspbian_For_Robots/upd_script/update_GoPiGo_Firmware.sh"
+			dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+			show_dialog = True
 		elif folder == 'GrovePi':
 			program = "/home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi_Firmware.sh"
-			
-		dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
-		
+			dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+			show_dialog = True
+
 		ran_dialog = False
-		if dlg.ShowModal() == wx.ID_OK:
+		if ((dlg.ShowModal() == wx.ID_OK) and (show_dialog)):
 			start_command = "sudo sh "+program
 			send_bash_command_in_background(start_command)
 			print "Start Firmware test!" + str(folder)
@@ -224,7 +229,6 @@ class MainPanel(wx.Panel):
 			dlg.ShowModal()
 			dlg.Destroy()
 		
-
 		
 		write_debug("Programming Started.")	
 		
