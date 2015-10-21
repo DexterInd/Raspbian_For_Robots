@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Comment=Graphical user interface for wpa_supplicant
+Exec=/usr/sbin/wpa_gui
+Icon=/home/pi/di_update/Raspbian_For_Robots/desktop/DXT_Icon_64x64_Wifi.png
+GenericName=wpa_supplicant user interface
+Terminal=false
+Type=Application
+Categories=Qt;Network;
+Name=Wifi Setup
