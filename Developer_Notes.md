@@ -10,6 +10,11 @@ https://bugs.launchpad.net/ubuntu/+source/gksu/+bug/244930
 
 ========================================================================================
 
+Chrome with touchscreens can fail on noVNC:
+https://groups.google.com/forum/#!topic/novnc/bOpKeuZCd7s
+
+========================================================================================
+
 This hack help solves permissions for VNC.
 
 http://stackoverflow.com/questions/20286705/tkinter-through-vnc-without-physical-display
