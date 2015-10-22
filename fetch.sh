@@ -56,3 +56,4 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.
 
 # Run the update master program.  
 sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
