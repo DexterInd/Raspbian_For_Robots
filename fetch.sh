@@ -53,6 +53,7 @@ echo "=============================="
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+sudo rm /home/pi/Desktop/upd_start.desktop
 
 # Run the update master program.  
 sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh
