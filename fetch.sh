@@ -1,24 +1,58 @@
 #! /bin/bash
-echo "GIT UPDATE"
-echo "----------"
-cd /home/pi/Desktop/GoPiGo
-sudo git fetch origin
-git reset --hard
-sudo git merge origin/master
+echo "Update"
+echo "This is a crossover for updating Dexter Industries Raspbian for Robots."
+echo "This should update the 2015.03.20 image to the 2015.10 image."
+echo "The only time you would run this is if you have an old version of the image.  This will update it to the latest version."
 
-cd Setup
-echo "UPDATING LIBRARIES"
-echo "------------------"
-sudo chmod +x install.sh
-sudo ./install.sh
-cd ../Firmware/
+##############################################################################################################
+# This is a crossover version for update.  This should update the 2015.03.20 image to the 2015.10 image.
+##############################################################################################################
+# 1.    Update the Source Files.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi.
+#		Get the latest update information.
 
-echo "UPDATING FIRMWARE"
-echo "------------------"
-sudo chmod +x firmware_update.sh
-sudo ./firmware_update.sh
-echo "Please restart the Raspberry Pi for the changes to take effect"
+# If the directory exists, delete it.
 
-echo "MAKE GOPIGO SCRATCH EXECUTABLE"
-echo "------------------"
-sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/*.sh
+if [ -d /home/pi/di_update ] ; then
+	sudo rm -r /home/pi/di_update
+fi
+
+# Make the directory again.  Clone into it.  
+mkdir /home/pi/di_update
+cd /home/pi/di_update
+sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
+cd Raspbian_For_Robots
+
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# Take this part out when you're done!
+cd /home/pi/di_update/Raspbian_For_Robots/
+git checkout update201507
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# Make files executable.
+echo "MAKE FILES EXECUTABLE."
+echo "=============================="
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+
+# Run the update master program.  
+sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh
