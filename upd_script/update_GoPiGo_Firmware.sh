@@ -37,3 +37,6 @@ avrdude -c gpio -p m328p -U efuse:w:0x05:m
 # avrdude -c gpio -p m328p -U flash:w:/home/pi/Desktop/GoPiGo/Firmware/fw_ver_13.cpp.hex
 avrdude -c gpio -p m328p -U flash:w:/home/pi/Desktop/GoPiGo/Firmware/fw_ver_16/fw_ver_16.cpp.hex
 
+echo "GoPiGo Firmware updated succesfully."
+echo "GoPiGo Firmware complete."
+
