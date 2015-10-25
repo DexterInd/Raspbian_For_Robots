@@ -102,7 +102,7 @@ else
 fi
 if grep -q "spi-dev" /etc/modules; then
 	echo "spi-dev already there"
-else
+els
 	echo spi-dev >> /etc/modules
 	echo "spi-dev added"
 fi
