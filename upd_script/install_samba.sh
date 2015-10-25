@@ -1,6 +1,8 @@
 #! /bin/bash
 # This script will install Samba.
 # Reference: http://elinux.org/R-Pi_NAS#Connect_the_RPi_to_a_network
+# Reference: http://www.raspians.com/Knowledgebase/how-to-nas-with-samba-and-window/
+#
 
 sudo apt-get install samba samba-common-bin -y
 echo "Modify Samba configuration."
@@ -10,4 +12,4 @@ sudo sed -i '250s/.*/read only = no/' /etc/samba/smb.conf		# Enable write to dir
 echo "Restart Samba service"
 sudo service samba reload
 echo "Set samba password for the default pi user."
-sudo echo -e "raspberry\nraspberry" | (smbpasswd -s pi)
+sudo echo -e "robots1234\nrobots1234" | (smbpasswd -s pi)

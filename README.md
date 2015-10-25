@@ -22,6 +22,7 @@ We have detailed step by step instructions on how to [install this image onto an
 * Scratch Starter Program - Start Scratch for the different robots in the Dexter Industries Scratch Program.
 * Test and Troublshoot Program - We've added a Test and Troubleshoot program.
 * Update Program - We have a dedicated program for updating the software, the operating system, and the firmware of your robot.
+* Samba - Samba is installed.  The login credentials are "pi" and "robots1234".
 
 ## Host Name
 
