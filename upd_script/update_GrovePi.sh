@@ -111,6 +111,9 @@ echo " "
 echo "Making I2C changes in /boot/config.txt . . ."
 echo "================================================"
 
+# First delete any instances.  
+sudo sed -e s/"dtparam=i2c1=on"//g -i /boot/config.txt
+sudo sed -e s/"dtparam=i2c_arm=on"//g -i /boot/config.txt
 echo dtparam=i2c1=on >> /boot/config.txt
 echo dtparam=i2c_arm=on >> /boot/config.txt
 
