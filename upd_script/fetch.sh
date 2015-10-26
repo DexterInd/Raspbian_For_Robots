@@ -128,5 +128,39 @@ sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo sh /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 
+#########################################
+# Install All Python Scripts
+
+#########################################
+# BrickPi Python Installation
+cd /home/pi/Desktop/BrickPi_Python/
+sudo python setup.py install --record files.txt
+
+# This will cause all the installed files to be printed to that directory.
+# Remove the files.txt
+
+sudo cat files.txt | xargs sudo rm -rf
+sudo rm files.txt
+sudo python setup.py install
+
+##########################################
+#GoPiGo Python Installation
+cd /home/pi/Desktop/GoPiGo/Software/Python/
+sudo python setup.py install --record files.txt
+sudo cat files.txt | xargs sudo rm -rf
+sudo rm files.txt
+sudo python setup.py install
+
+##########################################
+# GoPiGo Line Follower Installation
+# TBA
+
+#########################################
+#  GrovePi
+cd /home/pi/Desktop/GrovePi/Software/Python/
+sudo python setup.py install --record files.txt
+sudo cat files.txt | xargs sudo rm -rf
+sudo rm files.txt
+sudo python setup.py install
 
 echo "--> Done updating Dexter Industries Github repos!"
