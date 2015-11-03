@@ -131,4 +131,7 @@ wget http://project-downloads.drogon.net/gertboard/setup.sh
 chmod +x setup.sh
 sudo ./setup.sh
 
-
+echo " "
+echo "Making libraries global . . ."
+echo "============================="
+sudo cp /home/pi/Desktop/GrovePi/Script/grove.pth /usr/lib/python2.7/dist-packages/grove.pth
