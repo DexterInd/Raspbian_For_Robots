@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Shutdown
+Comment=Shutdown
+Icon=/home/pi/di_update/Raspbian_For_Robots/desktop/DXT_Icon_64x64_Shutdown.png
+Exec=sh -c "zenity --text 'Do you want to shutdown now?' --question && sudo shutdown -h now"
+NoDisplay=true

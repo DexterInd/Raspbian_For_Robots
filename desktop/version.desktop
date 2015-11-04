@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Version
+Comment=Raspbian Version
+Icon=/home/pi/di_update/Raspbian_For_Robots/desktop/DXT_Icon_64x64_Versions.png
+Exec=/usr/bin/leafpad /home/pi/di_update/Raspbian_For_Robots/Version
+NoDisplay=true

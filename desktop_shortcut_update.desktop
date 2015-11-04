@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=lxterminal --command "gksu sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh"
+Icon=/home/pi/di_update/Raspbian_For_Robots/desktop/DXT_Icon_64x64_Update.png
+Terminal=false
+Name=DI Software Update
+Comment= Programming system and content development tool
+Categories=Accessories;

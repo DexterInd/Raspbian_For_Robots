@@ -1,9 +1,16 @@
 #! /bin/bash
+
+# Only time this should be called is when updating from the old 2015.03. 
+# First we destroy any remnants of the previous Raspbian for Robots.
 sudo rm -r /tmp/di_update
-echo "==========Start Upate!============"
-mkdir /tmp/di_update
-wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/fetch.sh -O /tmp/di_update/update.sh
-chmod +x /tmp/di_update/update.sh
-sudo /tmp/di_update/update.sh
+sudo rm -r /home/pi/Desktop/Raspbian_For_Robots/
+
+mkdir /home/pi/di_update
+cd /home/pi/di_update
+git clone https://github.com/DexterInd/Raspbian_For_Robots/
+cd Raspbian_For_Robots
+
+sudo sh update_master.sh
+
 echo "Press Enter to EXIT"
 read

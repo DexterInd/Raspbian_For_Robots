@@ -1,0 +1,9 @@
+#loopback adapter
+auto lo
+iface lo inet loopback
+#wired adapter
+iface eth0 inet dhcp
+#bridge
+auto br0
+iface br0 inet dhcp
+bridge_ports eth0 wlan0

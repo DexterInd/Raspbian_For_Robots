@@ -1,0 +1,31 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+echo "  _____            _                                ";
+echo " |  __ \          | |                               ";
+echo " | |  | | _____  _| |_ ___ _ __                     ";
+echo " | |  | |/ _ \ \/ / __/ _ \ '__|                    ";
+echo " | |__| |  __/>  <| ||  __/ |                       ";
+echo " |_____/ \___/_/\_\\__\___|_| _        _            ";
+echo " |_   _|         | |         | |      (_)           ";
+echo "   | |  _ __   __| |_   _ ___| |_ _ __ _  ___  ___  ";
+echo "   | | | '_ \ / _    | | |   __| __|  | |/ _ \/ __| ";
+echo "  _| |_| | | | (_| | |_| \__ \ |_| |  | |  __/\__ \ ";
+echo " |_____|_| |_|\__,_|\__,_|___/\__|_|  |_|\___||___/ ";
+echo "                                                    ";
+echo "                                                    ";
+echo " "
+
+# First get update the hostname.
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
+
+exit 0
