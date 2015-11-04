@@ -35,32 +35,13 @@ mkdir /home/pi/di_update
 cd /home/pi/di_update
 sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
+cd /home/pi/di_update/Raspbian_For_Robots/
 
 #
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
 # Take this part out when you're done!
-cd /home/pi/di_update/Raspbian_For_Robots/
-git checkout update201507
+# git checkout update201507
 #
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
+
 # Make files executable.
 echo "MAKE FILES EXECUTABLE."
 echo "=============================="
