@@ -23,6 +23,10 @@ sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
 cd /home/pi/di_update/Raspbian_For_Robots/
 
+echo "Install wxpython tools"
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
+sudo apt-get install python-psutil --force-yes
+
 # Took this part out, it was for staging.
 # git checkout update201507
 
