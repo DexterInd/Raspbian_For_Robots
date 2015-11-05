@@ -1,4 +1,7 @@
 #! /bin/bash
+
+# This is a copy of the old fetch.sh script.  John is afraid to throw it away, so we're not throwing it away.
+
 echo "GIT UPDATE"
 echo "----------"
 cd /home/pi/Desktop/GoPiGo
