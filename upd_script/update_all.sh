@@ -251,7 +251,6 @@ echo "  \_____|  \___/  |_| |_| |_| | .__/  |_|  \___|  \__|  \___| ";
 echo "                              | |                            ";
 echo "                              |_|                            ";
 echo "--> Installation Complete."
-echo "--> If this is an update remember to do the following: "
-echo "--> Run BrickPi_Python\Project_Examples\browserStreamingRobot\browser_stream_setup.sh"
-echo "--> Reduce image size."
-echo "--> Midori and web browsers should point to local setup of help files."
+echo "--> "
+echo "--> "
+echo "--> Press the Exit button and the Pi will automatically reboot."

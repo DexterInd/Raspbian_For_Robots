@@ -114,7 +114,6 @@ sudo rm /home/pi/index.html*
 #               We must reboot for folks.
 echo "To finish changes, we will reboot the Pi."
 echo "Pi must reboot for changes and updates to take effect."
-echo "If you need to abort the reboot, press Ctrl+C.  Otherwise, reboot!"
 echo "Rebooting in 5 seconds!"
 sleep 1
 echo "Rebooting in 4 seconds!"
