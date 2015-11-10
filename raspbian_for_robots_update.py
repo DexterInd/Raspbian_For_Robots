@@ -210,6 +210,11 @@ class MainPanel(wx.Panel):
 
 		ran_dialog = False
 		if ((dlg.ShowModal() == wx.ID_OK) and (show_dialog)):
+			if folder == 'GoPiGo':
+				# If we're doing a GoPiGo Firmware update, we NEED to prompt the user, ONE MORE TIME to disconnect the motors.
+				dlg2 = wx.MessageDialog(self, 'DISCONNECT THE MOTORS!  Before firmware update, disconnect the motors from the GoPiGo or you risk damaging the hardware.', 'DISCONNECT MOTORS!', wx.OK|wx.ICON_EXCLAMATION)
+				dlg2.ShowModal()
+				dlg2.Destroy()
 			start_command = "sudo sh "+program
 			send_bash_command_in_background(start_command)
 			print "Start Firmware test!" + str(folder)
