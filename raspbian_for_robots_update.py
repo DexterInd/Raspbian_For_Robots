@@ -235,7 +235,6 @@ class MainPanel(wx.Panel):
 			dlg.ShowModal()
 			dlg.Destroy()
 		
-		
 		write_debug("Programming Started.")	
 		
 	def onClose(self, event):	# Close the entire program.

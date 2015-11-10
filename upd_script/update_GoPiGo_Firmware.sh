@@ -26,6 +26,7 @@ echo "BEFORE PROGRAMMING THE GOPIGO FIRMWARE, DISCONNECT THE MOTORS."
 echo "Please confirm that you've disconnected the motors."
 echo "Have you disconnected the motors before programming the firmware? (y/n)"
 
+'''
 echo " "
 echo "Firmware update will start in 10 seconds."
 echo "10"
@@ -50,6 +51,7 @@ echo "1"
 sleep 1
 echo "0"
 sleep 1
+'''
 
 sudo avrdude -c gpio -p m328p -U lfuse:w:0x7F:m
 sudo avrdude -c gpio -p m328p -U hfuse:w:0xDA:m
