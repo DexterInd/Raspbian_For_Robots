@@ -216,8 +216,9 @@ class MainPanel(wx.Panel):
 				dlg2.ShowModal()
 				dlg2.Destroy()
 			start_command = "sudo sh "+program
-			send_bash_command_in_background(start_command)
+			# send_bash_command_in_background(start_command)
 			print "Start Firmware test!" + str(folder)
+			print send_bash_command(start_command)
 			# send_bash_command(program)
 			ran_dialog = True
 		else:
