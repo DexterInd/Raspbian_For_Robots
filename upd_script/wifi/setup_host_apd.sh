@@ -15,7 +15,7 @@ sudo mv hostapd /usr/sbin/hostapd
 sudo chown root.root /usr/sbin/hostapd
 sudo chmod 755 /usr/sbin/hostapd
 
-sudo cp /etc dnsmasq.conf
+sudo cp dnsmasq.conf /etc
 
 # Follows Dave Conroy's Directions to Bridge the Network
 # http://www.daveconroy.com/turn-your-raspberry-pi-into-a-wifi-hotspot-with-edimax-nano-usb-ew-7811un-rtl8188cus-chipset/

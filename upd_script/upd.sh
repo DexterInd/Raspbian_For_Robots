@@ -12,5 +12,17 @@ cd Raspbian_For_Robots
 
 sudo sh update_master.sh
 
+echo " █████╗ ██╗     ███████╗██████╗ ████████╗";
+echo "██╔══██╗██║     ██╔════╝██╔══██╗╚══██╔══╝";
+echo "███████║██║     █████╗  ██████╔╝   ██║   ";
+echo "██╔══██║██║     ██╔══╝  ██╔══██╗   ██║   ";
+echo "██║  ██║███████╗███████╗██║  ██║   ██║   ";
+echo "╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ";
+echo "                                         ";
+echo "VERY IMPORTANT TO NOTE:  ";
+echo "This will change your hostname from";
+echo "raspberrypi to dex";  
+echo "To logon, use pi@dex.local";
+
 echo "Press Enter to EXIT"
 read
