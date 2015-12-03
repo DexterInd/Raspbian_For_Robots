@@ -38,7 +38,7 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
 sudo rm /home/pi/Desktop/upd_start.desktop
 
-sudo zenity --info --text="ALERT!  This update will change your hostname from raspberrypi to dex.  To logon, use dex.local or pi@dex.local after this update is complete.";
+sudo zenity --info --text="ALERT!  \n This update will change your \n hostname from raspberrypi to dex.  \n To logon, use dex.local or pi@dex.local \n after this update is complete.";
 
 echo " █████╗ ██╗     ███████╗██████╗ ████████╗";
 echo "██╔══██╗██║     ██╔════╝██╔══██╗╚══██╔══╝";
@@ -52,7 +52,7 @@ echo "This will change your hostname from";
 echo "raspberrypi to dex";  
 echo "To logon, use pi@dex.local";
 
-echo "Press Enter to EXIT"
+echo "Press Enter to continue."
 read
 
 # Run the update master program.  
