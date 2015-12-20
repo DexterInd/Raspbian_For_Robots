@@ -51,8 +51,10 @@ a {
   	text-decoration: none;
 }
 .wrapper{
-	width: 350px;
+	max-width: 350px;
     padding:10px; 
+    margin: 0 auto; 
+
 }
 header{
 	margin: 0 auto;
@@ -69,6 +71,11 @@ section{
 	margin:0 auto;
 	text-align: center;
 	}
+	
+	section .bash {
+		padding: 20px 0;
+		}
+
 
 ul {
     list-style-type: circle;
@@ -106,26 +113,33 @@ ul {
 	.gopigo {color:#f74a5a;}
 	.grovepi {color:#43c465;}
 	
+@media only screen and (min-width: 480px) {
 	
-@media only screen and (min-width: 768px) {
+    header,footer, .wrapper{
+	max-width: 480px;
+	}
 	
-    .wrapper {
-        width: 700px; 
-        margin: 0 auto; 
-    }
-    header,footer{
-	max-width: 700px;
-}
 	section .vnc {
 		float: left;
 		width: 48%;
 
 	}
-		section .bash {
+	section .bash {
 		float: right;
 		width: 48%;
-
+		padding: 0;
 	}
+}
+	
+@media only screen and (min-width: 768px) {
+	
+    header,footer, .wrapper{
+	max-width: 700px;
+	}
+
+}
+
+
 
 }
 
