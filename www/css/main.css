@@ -1,84 +1,138 @@
+	@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/open_sans/OpenSans-Light.eot');
+    src: url('../fonts/open_sans/OpenSans-Light.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/open_sans/OpenSans-Light.woff') format('woff'),
+         url('../fonts/open_sans/OpenSans-Light.ttf') format('truetype'),
+         url('../fonts/open_sans/OpenSans-Light.svg#open_sanslight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    }
+    
+    @font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/open_sans/OpenSans-Semibold.eot');
+    src: url('../fonts/open_sans/OpenSans-Semibold.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/open_sans/OpenSans-Semibold.woff') format('woff'),
+         url('../fonts/open_sans/OpenSans-Semibold.ttf') format('truetype'),
+         url('../fonts/open_sans/OpenSans-Semibold.svg#open_sanssemibold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    }
+
+
+body{
+	font-family: "Open Sans";
+	text-align:left;
+}
 h1 {
-	font-family: 'Open Sans';
-	font-size: 23px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 23px;
+	font-size: 2em;
+	font-weight: 600;
+	line-height: 1.5em;
+	background-color: #4593CF;
+	color: #ffffff;
 }
 h3 {
-	font-family: 'Open Sans';
-	font-size: 17px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 23px;
+	font-size: 1.2em;
+	line-height: 1.5em;
+	font-weight: 600;
+	background-color: #4593CF;
+	color: #ffffff;
+	padding-left: 10px;
 }
 p {
-	font-family: 'Open Sans';
-	font-size: 14px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 23px;
+	font-size: 1em;
+	line-height: 1.2em;
+	text-align: left;
 }
-blockquote {
-	font-family: 'Open Sans';
-	font-size: 17px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 23px;
-}
-pre {
-	font-family: 'Open Sans';
-	font-size: 11px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 23px;
-}
+
 a {
-        font-family: 'Open Sans';
-        font-size: 14px;
-        font-style: normal;
-        font-variant: normal;
-        font-weight: 400;
-        line-height: 23px;
-	color: #0000FF;
+  	color: #4593CF;
+  	text-decoration: none;
+}
+.wrapper{
+	width: 350px;
+    padding:10px; 
+}
+header{
+	margin: 0 auto;
+	text-align: center;
+	max-width: 350px;
 }
 
-#nav {
-    width:350px;
-    float:left;
-    padding:10px; 
-}
-#section {
-    width:350px;
-    float:left;
-    padding:10px; 
+footer {
+    padding-top:8px;
+    clear: both;
 }
 
-#footer {
-    float:left;
-    padding:10px; 
-    clear:both;
-}
+section{
+	margin:0 auto;
+	text-align: center;
+	}
 
 ul {
     list-style-type: circle;
-    font-family: 'Open Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 400;
-    line-height: 23px;
+    text-align: left;
  
     display: block;
     margin-top: 1em;
     margin-bottom: 1 em;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 40px;
+    padding-left: 20px;
 }
+	.standard {display: block;}
+	.retina {display: none;}
+	
+	.logo{
+		max-width: 300px;
+		margin: 0 auto;
+	}
+	
+	span.button{
+	font-size: 1em;
+	line-height: 1.5em;
+	font-weight: 600;
+	color: #4593CF;
+	display: block;
+	text-align: center;
+		
+	}
+	a.product {
+		font-weight: 600;
+	}
+	.arduberry {color:#9d19db;}
+	.brickpi {color:#2297b1;}
+	.gopigo {color:#f74a5a;}
+	.grovepi {color:#43c465;}
+	
+	
+@media only screen and (min-width: 768px) {
+	
+    .wrapper {
+        width: 700px; 
+        margin: 0 auto; 
+    }
+    header,footer{
+	max-width: 700px;
+}
+	section .vnc {
+		float: left;
+		width: 48%;
+
+	}
+		section .bash {
+		float: right;
+		width: 48%;
+
+	}
+
+}
+
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+	.standard {display: none;}
+	.retina {display: block;}
+
 }
