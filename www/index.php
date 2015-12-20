@@ -47,13 +47,19 @@
     <img src="img/vnc.svg" onerror="this.src='vnc.png'; this.onerror=null;"style="height:128px;">
     <span class="button">Launch VNC</span>
   </a>
+    <em>Password: <strong>robots1234</strong></em>
 
 </section>
 <section class="bash">
   <a href="https://<?php echo $ethernetIP; ?>:4200">
     <img src="img/bash.svg" onerror="this.src='bash.png'; this.onerror=null;"style="height:128px;">
     <span class="button">Launch Terminal</span>
-</a>
+  </a>
+    <em>
+      Username: <strong>pi</strong>
+      <br/>
+      Password: <strong>raspberry</strong>
+   </em>
 </section>
 
 <footer>
