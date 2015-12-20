@@ -35,4 +35,5 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-Raspian_For_Robots
+Raspbian_For_Robots
+.gitignore
