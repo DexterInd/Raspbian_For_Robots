@@ -33,6 +33,8 @@ sudo apt-get install python-picamera -y
 sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO -y
 
+sudo apt-get -y install avahi-daemon avahi-utils	# Added to help with avahi issues.  2016.01.03
+
 sudo adduser pi i2c
 
 ########################################################################
