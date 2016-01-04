@@ -30,3 +30,10 @@ sudo rm /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.png /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 echo "--> End update the background image on LXE Desktop."
 echo "--> ======================================="
+
+
+echo "--> ======================================="
+echo "--> ======================================="
+echo " Update Raspbian Complete! " 
+echo "--> ======================================="
+echo "--> ======================================="
