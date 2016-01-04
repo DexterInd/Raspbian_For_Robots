@@ -9,7 +9,7 @@
 echo "--> Begin Update."
 echo "--> ======================================="
 sudo dpkg --configure -a
-sudo apt-get update -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get update -y	# Get everything updated.  Don't interact with any configuration menus.
 
 echo "Install Specific Libraries."
 sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
