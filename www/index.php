@@ -58,7 +58,7 @@
     <em>
       Username: <strong>pi</strong>
       <br/>
-      Password: <strong>raspberry</strong>
+      Password: <strong>robots1234</strong>
    </em>
 </section>
 
