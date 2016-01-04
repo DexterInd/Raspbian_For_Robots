@@ -10,7 +10,7 @@ echo "--> Begin Update."
 echo "--> ======================================="
 sudo dpkg --configure -a
 sudo DEBIAN_FRONTEND=noninteractive apt-get update -y	# Get everything updated.  Don't interact with any configuration menus.
-
+							# Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
 echo "Install Specific Libraries."
 sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
 
