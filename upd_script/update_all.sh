@@ -48,10 +48,8 @@ sudo sed -i "/i2c-bcm2708/d" /etc/modules
 sudo sed -i "/i2c-dev/d" /etc/modules
 sudo echo "i2c-bcm2708" >> /etc/modules
 sudo echo "i2c-dev" >> /etc/modules
-
 sudo sed -i "/ipv6/d" /etc/modules
 sudo echo "ipv6" >> /etc/modules
-
 sudo sed -i "/spi-dev/d" /etc/modules
 sudo echo "spi-dev" >> /etc/modules
 
@@ -71,6 +69,13 @@ sudo sed -i "/dtparam=spi=on/d" /boot/config.txt
 sudo echo "dtparam=spi=on" >> /boot/config.txt
 sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
 echo "--> End Kernel Updates."
+
+########################################################################
+##
+# Avahi Updates to Networking Protocols
+sudo rm /etc/avahi/avahi-daemon.conf 														# Remove Avahi Config file.
+sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
+sudo chmod +x /etc/avahi/avahi-daemon.conf 													# Set permissions for avahi config file.
 
 ########################################################################
 ##
