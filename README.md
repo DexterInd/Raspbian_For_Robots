@@ -33,6 +33,10 @@ Place the microSD card in the SD card adapter, and place in your PC or Mac.  Ope
 
 These scripts manage to update the Raspbian for Robots image.  These changes are all executed using the Update button on the LXE Desktop of the Raspberry Pi.  
 
+## Changes 2016-01-05
+* Updated Avahi network settings.
+* Updated IPV6 network settings.
+
 ## License
 All software here is released under the [GNU GL3 license.](http://www.gnu.org/licenses/gpl-3.0.txt)
 
