@@ -53,6 +53,8 @@ sudo echo "ipv6" >> /etc/modules
 sudo sed -i "/spi-dev/d" /etc/modules
 sudo echo "spi-dev" >> /etc/modules
 
+sudo modprobe ipv6
+
 echo "--> Start Update Raspberry Pi Blacklist.conf" 	#blacklist spi-bcm2708 #blacklist i2c-bcm2708
 echo "--> ======================================="
 echo " "
