@@ -53,8 +53,6 @@ sudo echo "ipv6" >> /etc/modules
 sudo sed -i "/spi-dev/d" /etc/modules
 sudo echo "spi-dev" >> /etc/modules
 
-sudo modprobe ipv6
-
 echo "--> Start Update Raspberry Pi Blacklist.conf" 	#blacklist spi-bcm2708 #blacklist i2c-bcm2708
 echo "--> ======================================="
 echo " "
@@ -75,9 +73,14 @@ echo "--> End Kernel Updates."
 ########################################################################
 ##
 # Avahi Updates to Networking Protocols
+# Many settings were copied from Google Coder:
+# https://github.com/googlecreativelab/coder/blob/master/raspbian-addons/etc/avahi/avahi-daemon.conf
+
 sudo rm /etc/avahi/avahi-daemon.conf 														# Remove Avahi Config file.
 sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
 sudo chmod +x /etc/avahi/avahi-daemon.conf 													# Set permissions for avahi config file.
+
+sudo modprobe ipv6
 
 ########################################################################
 ##
