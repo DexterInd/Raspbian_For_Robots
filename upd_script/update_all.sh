@@ -48,6 +48,13 @@ sudo sed -i "/i2c-bcm2708/d" /etc/modules
 sudo sed -i "/i2c-dev/d" /etc/modules
 sudo echo "i2c-bcm2708" >> /etc/modules
 sudo echo "i2c-dev" >> /etc/modules
+
+sudo sed -i "/ipv6/d" /etc/modules
+sudo echo "ipv6" >> /etc/modules
+
+sudo sed -i "/spi-dev/d" /etc/modules
+sudo echo "spi-dev" >> /etc/modules
+
 echo "--> Start Update Raspberry Pi Blacklist.conf" 	#blacklist spi-bcm2708 #blacklist i2c-bcm2708
 echo "--> ======================================="
 echo " "
