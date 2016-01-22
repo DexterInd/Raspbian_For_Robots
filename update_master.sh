@@ -98,7 +98,10 @@ LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
 
 echo "START UPDATE GUI."
 echo "=============================="
-sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+# sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+today=`date '+%Y_%m_%d__%H_%M_%S'`;
+filename="/home/pi/Desktop/Dexter_Software_Update_log_$today.txt" 
+script -c 'sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py 2>&1' -f $filename
 sudo rm /home/pi/index.html*
 
 ###
