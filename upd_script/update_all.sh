@@ -75,6 +75,7 @@ echo "--> End Kernel Updates."
 # Avahi Updates to Networking Protocols
 # Many settings were copied from Google Coder:
 # https://github.com/googlecreativelab/coder/blob/master/raspbian-addons/etc/avahi/avahi-daemon.conf
+# http://manpages.ubuntu.com/manpages/vivid/man5/avahi-daemon.conf.5.html
 
 sudo rm /etc/avahi/avahi-daemon.conf 														# Remove Avahi Config file.
 sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
