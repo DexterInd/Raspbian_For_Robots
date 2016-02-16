@@ -17,7 +17,7 @@ sudo chmod +x install.sh
 sudo ./install.sh
 
 echo "--> Install Scratch dependency ScratchPy."
-cd Desktop/GoPiGo/Software/Scratch
+cd /home/pi/Desktop/GoPiGo/Software/Scratch
 sudo git clone https://github.com/DexterInd/scratchpy.git
 cd scratchpy
 sudo make install
