@@ -1,3 +1,4 @@
 /home/pi/Desktop/GrovePi/Software/C
 /home/pi/Desktop/GrovePi/Firmware
 /home/pi/Desktop/ArduBerry/Projects/Lionel_Train_Control
+/home/pi/Documents
