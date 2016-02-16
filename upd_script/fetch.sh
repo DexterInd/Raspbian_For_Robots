@@ -4,10 +4,14 @@
 # GoPiGo Update
 echo "--> Start GoPiGo Update."
 echo "----------"
-cd /home/pi/Desktop/GoPiGo
-sudo git fetch origin
-git reset --hard
-sudo git merge origin/master
+# cd /home/pi/Desktop/GoPiGo
+# sudo git fetch origin
+# git reset --hard
+# sudo git merge origin/master
+cd /home/pi/Desktop
+sudo rmdir GoPiGo
+sudo git clone https://github.com/DexterInd/GoPiGo.git
+
 cd Setup
 echo "--> UPDATING LIBRARIES"
 echo "------------------"
