@@ -4,10 +4,8 @@
 # GoPiGo Update
 echo "--> Start GoPiGo Update."
 echo "----------"
-# cd /home/pi/Desktop/GoPiGo
-# sudo git fetch origin
-# git reset --hard
-# sudo git merge origin/master
+# Changed the process here: move from git fetch to just delete the directory, and then clone back in.
+# cd /home/pi/Desktop/GoPiGo    # sudo git fetch origin   # git reset --hard  # sudo git merge origin/master
 cd /home/pi/Desktop
 sudo rmdir GoPiGo
 sudo git clone https://github.com/DexterInd/GoPiGo.git
