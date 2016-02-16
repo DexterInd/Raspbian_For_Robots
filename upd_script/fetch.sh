@@ -16,6 +16,12 @@ echo "------------------"
 sudo chmod +x install.sh
 sudo ./install.sh
 
+# Install GoPiGo Line Follower Calibration
+sudo rm /home/pi/Desktop/line_follow.desktop
+sudo cp /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
+sudo chmod +x /home/pi/Desktop/line_follow.desktop
+sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_sensor_gui.py
+
 echo "--> Install Scratch dependency ScratchPy."
 cd /home/pi/Desktop/GoPiGo/Software/Scratch
 sudo git clone https://github.com/DexterInd/scratchpy.git
