@@ -4,11 +4,13 @@
 # GoPiGo Update
 echo "--> Start GoPiGo Update."
 echo "----------"
-# Changed the process here: move from git fetch to just delete the directory, and then clone back in.
-# cd /home/pi/Desktop/GoPiGo    # sudo git fetch origin   # git reset --hard  # sudo git merge origin/master
-cd /home/pi/Desktop
-sudo rm -r GoPiGo
-sudo git clone https://github.com/DexterInd/GoPiGo.git
+# Un Changed the process here: move from git fetch to just delete the directory, and then clone back in.
+cd /home/pi/Desktop/GoPiGo    
+sudo git fetch origin   
+sudo git reset --hard  
+sudo git merge origin/master
+
+# cd /home/pi/Desktop # sudo rm -r GoPiGo # sudo git clone https://github.com/DexterInd/GoPiGo.git
 
 cd Setup
 echo "--> UPDATING LIBRARIES"
