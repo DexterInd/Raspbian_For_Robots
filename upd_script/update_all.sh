@@ -242,6 +242,16 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 echo "--> End installing Samba."
 
+# Install Backup
+echo "--> Start installing Backup."
+echo "--> ======================================="
+echo " "
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/restore.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/file_list.txt
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup_gui.py
+echo "--> End installing Backup."
+
 echo "--> Begin cleanup."
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
