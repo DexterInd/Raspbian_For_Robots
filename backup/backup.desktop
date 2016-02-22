@@ -6,5 +6,4 @@ Icon=/home/pi/di_update/Raspbian_For_Robots/backup/xarchiver-add.png
 GenericName=Backup Files
 Terminal=false
 Type=Application
-Categories=Qt;Network;
-Name=Wifi Setup
+Name=Backup Files
