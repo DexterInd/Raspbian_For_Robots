@@ -78,6 +78,11 @@ sudo rm /home/pi/Desktop/wpa_gui.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/wpa_gui.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/wpa_gui.desktop
 
+# Update the Backup
+sudo rm /home/pi/Desktop/backup.desktop
+sudo cp /home/pi/di_update/Raspbian_For_Robots/backup/backup.desktop /home/pi/Desktop
+sudo chmod +x /home/pi/Desktop/backup.desktop
+
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 # sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
