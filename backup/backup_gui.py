@@ -126,7 +126,7 @@ class MainPanel(wx.Panel):
 	# Restore the Software.
 	def restore(self, event):
 		write_debug("Restore from a backup.")	
-		dlg = wx.MessageDialog(self, 'Restore will start.  Restore from a backup.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+		dlg = wx.MessageDialog(self, 'Restore will start.  This will create a directory on the Desktop with the backup files on the USB device in the Raspberry Pi.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 		
 		ran_dialog = False
 		if dlg.ShowModal() == wx.ID_OK:

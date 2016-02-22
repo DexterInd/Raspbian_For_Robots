@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Comment=Graphical user interface backup
+Exec=lxterminal --title "Backup your files - do not close this window!" --command "gksu /home/pi/di_update/Raspbian_For_Robots/update/run_backup.sh"
+Icon=/home/pi/di_update/Raspbian_For_Robots/backup/xarchiver-add.png
+GenericName=Backup Files
+Terminal=false
+Type=Application
+Categories=Qt;Network;
+Name=Wifi Setup

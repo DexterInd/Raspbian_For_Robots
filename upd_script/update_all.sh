@@ -248,6 +248,9 @@ echo "--> ======================================="
 echo " "
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/restore.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/call_backup.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/call_restore.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/run_backup.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/file_list.txt
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup_gui.py
 echo "--> End installing Backup."
