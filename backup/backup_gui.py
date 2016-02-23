@@ -88,7 +88,7 @@ class MainPanel(wx.Panel):
 		self.SetSizer(hSizer)
 	
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
- 
+  		send_bash_command_in_background("clear")
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
 		"""
