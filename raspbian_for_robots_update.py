@@ -123,6 +123,7 @@ class MainPanel(wx.Panel):
 		"""
 		Add a picture to the background
 		"""
+		send_bash_command_in_background("clear")
 		# yanked from ColourDB.py
 		dc = evt.GetDC()
  
@@ -276,7 +277,6 @@ class Main(wx.App):
 #----------------------------------------------------------------------
 if __name__ == "__main__":
 	send_bash_command_in_background("xhost +")
-	send_bash_command("clear")
 	write_debug(" # Program # started # !")
 	write_state("dex")
 	# reset_file()	#Reset the file every time we turn this program on.
