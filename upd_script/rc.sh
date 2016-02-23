@@ -22,12 +22,16 @@ echo " "
 THISHOST=$(hostname -f)	# Gets current hostname
 echo $THISHOST
 read -r NEW_HOST < /boot/hostnames	# Gets hostname in file
-# line=$(head -n 1 /boot/hostnames)
-# NEW_HOST=$line
+line=$(head -n 1 /boot/hostnames)
+NEW_HOST=$line
 
 echo $NEW_HOST
+# echo $THISHOST
 
-if [ "$FIRSTLINE" != "$THISHOST" ];	# If the hostname isn't the same as the First line of the filename . . .
+# sleep 5m
+
+
+if [ "$NEW_HOST" != "$THISHOST" ];	# If the hostname isn't the same as the First line of the filename . . .
 	then echo "Host is different name.  Rewriting hosts"
 	# Rewrite hosts
 	IP="127.0.1.1       $NEW_HOST"
