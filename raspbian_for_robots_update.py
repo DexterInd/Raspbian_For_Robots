@@ -118,12 +118,13 @@ class MainPanel(wx.Panel):
 	
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
  
+ 		send_bash_command_in_background("clear")
+
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
 		"""
 		Add a picture to the background
 		"""
-		send_bash_command_in_background("clear")
 		# yanked from ColourDB.py
 		dc = evt.GetDC()
  
