@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 # This Script updates the hostname by reading it from "/boot/hostname" 
 echo "  _____            _                                ";
 echo " |  __ \          | |                               ";
@@ -34,7 +34,8 @@ echo $NEW_HOST
 if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the First line of the filename . . .
 
     then echo "Host is different name."
-    if [[ "$NEW_HOST" =~$REGEX ]]; then
+    REGEX="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9]))*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$";
+    if [[ "$NEW_HOST" =~ $REGEX ]]; then
         echo $NEW_HOST > /home/pi/Desktop/hostname.log
         rm /home/pi/Desktop/Invalid_hostname.log
         echo "Rewriting hostname"
