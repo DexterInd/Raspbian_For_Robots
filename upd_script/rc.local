@@ -9,7 +9,7 @@
 # In order to enable or disable this script just change the execution
 # bits.
 #
-# By default this script does nothing.
+# By default this script checks the hostname for changes
 echo "  _____            _                                ";
 echo " |  __ \          | |                               ";
 echo " | |  | | _____  _| |_ ___ _ __                     ";
@@ -26,6 +26,6 @@ echo "                                                    ";
 echo " "
 
 # First get update the hostname.
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
+sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
 
 exit 0
