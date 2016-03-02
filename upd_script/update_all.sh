@@ -132,6 +132,8 @@ echo "--> ======================================="
 echo " "
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_disable_sleep.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_disable_sleep.sh
 
 # Setup Webpage
 echo "--> Setup webpage."

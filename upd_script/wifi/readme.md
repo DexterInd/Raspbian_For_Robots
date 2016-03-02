@@ -10,7 +10,7 @@ This package of drivers should enable AdHoc Access with the EDUP dongle.
 All software here is released under the [GNU GL3 license.](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 
-    Originally written by John Cole and Karan Nayan for Dexter Industries.  This software updates your Raspberry Pi Operating System to work with Dexter Industries Hardware
+    Originally written by John Cole and Karan Nayan for Dexter Industries.  This software updates your Raspberry Pi Operating System to work with Dexter Industries Hardware.
     
     Copyright (C) <2015>  Dexter Industries
 

@@ -39,3 +39,4 @@ sudo service dnsmasq start
 sudo hostapd /etc/hostapd/hostapd.conf
 
 echo "End wifi update."
+

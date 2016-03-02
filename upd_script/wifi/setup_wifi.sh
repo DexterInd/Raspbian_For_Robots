@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # Update the software for Realtek RTL8188CUS 802.11n WLAN Adapter.
 # 1. Removes any hostapd previously installed.
@@ -16,7 +16,7 @@ mkdir /home/pi/wifi
 
 # Install wifi
 echo "Install wifi drivers."
-sudo mv 0001-RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip /home/pi/wifi
+sudo cp 0001-RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip /home/pi/wifi
 cd /home/pi/wifi
 sudo unzip 0001-RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911.zip
 cd RTL8188C_8192C_USB_linux_v4.0.2_9000.20130911
@@ -28,7 +28,3 @@ echo "Compile wifi drivers."
 sudo make
 sudo make install
 
-echo "Done installing wifi drivers!"
-echo "Turning off sleep function for wifi."
-sudo chmod +x wifi_disable_sleep.sh
-sudo sh ./wifi_disable_sleep.sh
