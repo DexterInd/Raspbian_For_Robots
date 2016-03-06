@@ -26,8 +26,8 @@ sudo apt-get install i2c-tools -y
 
 sudo apt-get purge python-rpi.gpio -y
 sudo apt-get purge python3-rpi.gpio -y
-sudo apt-get install python-rpi.gpio
-sudo apt-get install python3-rpi.gpio
+sudo apt-get install python-rpi.gpio -y
+sudo apt-get install python3-rpi.gpio -y
 sudo apt-get install python-psutil -y 		# Used in Scratch GUI
 sudo apt-get install python-picamera -y
 sudo apt-get install python3-picamera -y
