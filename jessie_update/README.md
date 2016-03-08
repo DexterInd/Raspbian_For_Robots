@@ -1,7 +1,5 @@
 # Raspbian Pi For Robots
 
-![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
-
 This directory contains the scripts we used to upgrade Jessie Lite to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
 
 ## Changes 
