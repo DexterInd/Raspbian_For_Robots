@@ -146,6 +146,26 @@ sudo cp -r /home/pi/di_update/Raspbian_For_Robots/www /var/
 sudo chmod +x /var/www/index.php
 sudo chmod +x /var/www/css/main.css
 
+## Now, if we are running Jessie, we need to move everything
+## into a new subdirectory.
+## Get the Debian Version we have installed.
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+echo "Version: $VERSION"
+if [ $VERSION -eq '7' ]; then
+  echo "Version 7 found!  You have Wheezy!"
+elif [ $VERSION -eq '8' ]; then
+  echo "Version 8 found!  You have Jessie!"
+  # If we found Jesse, the proper location of the html files is in
+  # /var/www/html
+  sudo mkdir /var/www/html
+  sudo mv -v /var/www/* /var/www/html/
+  sudo chmod +x /var/www/html/index.php
+  sudo chmod +x /var/www/html/css/main.css  
+fi
+
+echo $VERSION
+
+
 # Setup Shellinabox
 echo "--> Setup Shellinabox."
 echo "--> ======================================="
@@ -224,7 +244,7 @@ if echo "$ANSWER" | grep -iq "^y" ;then
 	sudo chmod +x setup_host_apd.sh
 	sudo ./setup_host_apd.sh
 	cd ..
-fi
+fiw
 '
 
 ########################################################################
