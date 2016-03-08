@@ -26,6 +26,8 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 sudo apt-get dist-upgrade -y
+sudo apt-get install apache2 -y
+sudo apt-get install php5 libapache2-mod-php5 -y
 sudo apt-get install raspberrypi-net-mods -y
 sudo apt-get install wpagui -y
 sudo apt-get install scratch -y
