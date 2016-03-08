@@ -34,6 +34,8 @@ sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO -y
 
 sudo apt-get -y install avahi-daemon avahi-utils	# Added to help with avahi issues.  2016.01.03
+sudo apt-get install apache2 -y
+sudo apt-get install php5 libapache2-mod-php5 -y
 
 sudo adduser pi i2c
 
