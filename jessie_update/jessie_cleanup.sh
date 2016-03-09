@@ -13,8 +13,7 @@ sudo smbpasswd -a pi < smbpasswd.txt
 # these packages are already removed in theory. But in case we choose another starting point, let's make sure they're gone
 sudo apt-get purge -y wolfram-engine
 sudo apt-get purge -y libreoffice*
-sudo apt-get clean
-sudo apt-get autoremove -y
+
 
 # start serious purging
 sudo apt-get purge -y greenfoot claws-mail* cryptsetup-bin
@@ -25,6 +24,9 @@ sudo apt-get purge -y minecraft-pi
 
 # note: removing supercollider will also remove sonic-pi. They seem to be linked
 sudo apt-get purge -y supercollider*
+
+sudo apt-get clean
+sudo apt-get autoremove -y
 
 # take a snapshot of all packages afterwards
 dpkg --get-selections | grep -v deinstall > packages_after.txt
