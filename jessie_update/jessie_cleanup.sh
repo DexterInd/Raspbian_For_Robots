@@ -6,7 +6,7 @@ dpkg --get-selections | grep -v deinstall > packages_before.txt
 sudo apt-get install -y samba samba-common-bin
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/smbpasswd.txt
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/smb.conf
-sudo cp smb.com /etc/samba/smb.conf
+sudo cp smb.conf /etc/samba/smb.conf
 sudo service samba restart
 sudo smbpasswd -a pi < smbpasswd.txt
 
