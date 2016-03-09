@@ -7,3 +7,12 @@ sudo smbpasswd -a pi < smbpasswd.txt
 # sudo nano /etc/samba/smb.conf
 # security = user
 # read only = no
+
+# these packages are already removed in theory. But in case we choose another starting point, let's make sure they're gone
+sudo apt-get purge -y wolfram-engine
+sudo apt-get purge -y libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove -y
+
+# Get current list of packages
+dpkg --get-selections | grep -v deinstall > packages.txt
