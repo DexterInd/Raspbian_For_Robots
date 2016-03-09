@@ -3,7 +3,8 @@
 # samba is needed to gain access to the drive on Windows
 sudo apt-get install -y samba samba-common-bin
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/smbpasswd.txt
-sudo wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/smb.conf
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/smb.conf
+sudo cp smb.com /etc/samba/smb.conf
 sudo service samba restart
 sudo smbpasswd -a pi < smbpasswd.txt
 
