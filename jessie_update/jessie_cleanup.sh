@@ -14,5 +14,10 @@ sudo apt-get purge -y libreoffice*
 sudo apt-get clean
 sudo apt-get autoremove -y
 
-# Get current list of packages
-dpkg --get-selections | grep -v deinstall > packages.txt
+# start serious purging
+sudo apt-get purge -y greenfoot claws-mail* bluej bluez bluez-firmware cryptsetup-bin
+# this following one is questionable, it's not on Lite, so I'm taking it out, but it might be useful
+sudo apt-get purge -y debian-reference-common debian-reference-en  
+
+sudo apt-get purge -y minecraft-pi
+sudo apt-get purge -y supercollider*
