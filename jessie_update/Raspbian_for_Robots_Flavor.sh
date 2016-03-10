@@ -16,17 +16,21 @@ sudo chpasswd < pipasswd
 # set default hostname to dex
 ####################################
 # Re-write /etc/hosts
+echo "Editing hosts file"
 sed 's/raspberrypi/dex/g' </etc/hosts > hosts
 sudo cp hosts /etc/hosts
 rm hosts
 
-sudo rm /etc/hostname
-echo "Deleted hostname.  Create new hostname."
-sudo echo 'dex' >> /etc/hostname
+echo "Create new hostname."
+echo 'dex' > ./hostname
+sudo cp ./hostname /etc/hostname
+rm ./hostname
 echo "New hostname file created."
 
 echo "Commit hostname change."
 sudo /etc/init.d/hostname.sh
+
+echo "Hostname change will be effective after a reboot"
 
 ####################################
 # Installing Samba
