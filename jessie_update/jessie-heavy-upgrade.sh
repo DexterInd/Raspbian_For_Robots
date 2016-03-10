@@ -21,10 +21,11 @@
 # trying to gain as much space as possible
 # change CleoQc to DexterInd when doing PR
 ###################################################
-rm ./jessie_cleanup.sh
+rm ./jessie_cleanup.sh  # just making sure there isn't one yet
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
 chmod +x ./jessie_cleanup.sh
 ./jessie_cleanup.sh
+rm ./jessie_cleanup.sh
 
 ###################################################
 # give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
@@ -34,6 +35,7 @@ rm ./Raspbian_for_Robots_Flavor.sh
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/Raspbian_for_Robots_Flavor.sh
 chmod +x ./Raspbian_for_Robots_Flavor.sh
 ./Raspbian_for_Robots_Flavor.sh
+rm ./Raspbian_for_Robots_Flavor.sh
 
 ###################################################
 ##
@@ -90,7 +92,6 @@ sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh
 ##################################################################
 
 # Changes by Hand:
-# Change Passwords
 # Change VNC Passwords
 # Change background desktop to white.
 # Install TightVNC Server and Set to Run at Boot.  https://learn.adafruit.com/adafruit-raspberry-pi-lesson-7-remote-control-with-vnc/running-vncserver-at-startup
