@@ -17,15 +17,33 @@
 ###################################################
 
 ###################################################
+# remove all extraneous packages from Jessie 
+# trying to gain as much space as possible
+# change CleoQc to DexterInd when doing PR
+###################################################
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
+./jessie_cleanup.sh
+
+###################################################
+# give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
+# Samba will also be installed with password set to robots1234
+###################################################
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/Raspbian_for_Robots_Flavor.sh
+./Raspbian_for_Robos_Flavor.sh
+
+###################################################
 ##
-## Take Jessie nn a Diet to Raspbian
+## Take "Jessie on a Diet" to Raspbian
 ##
 ###################################################
 
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
+# is dist-upgrade necessary ? 
 sudo apt-get dist-upgrade -y
+
+# is apache2 necessary? 
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
 sudo apt-get install raspberrypi-net-mods -y
