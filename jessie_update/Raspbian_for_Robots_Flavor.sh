@@ -37,7 +37,7 @@ echo "Hostname change will be effective after a reboot"
 ####################################
 # samba is needed to gain access to the drive on Windows
 sudo apt-get install -y samba samba-common-bin
-echo $DEFAULT_PWD >> smbpasswd.txt
+echo $DEFAULT_PWD > smbpasswd.txt
 echo $DEFAULT_PWD >> smbpasswd.txt
 
 sudo cp /etc/samba/smb.conf .
@@ -45,3 +45,4 @@ sed '/s/read only = yes/read only = no/g' < smb.conf > smb.conf
 sudo cp smb.conf /etc/samba/smb.conf
 sudo service samba restart
 sudo smbpasswd -a pi < smbpasswd.txt
+rm smbpasswd.txt
