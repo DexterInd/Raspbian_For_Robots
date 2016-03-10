@@ -80,7 +80,10 @@ EOF
 sudo apt-get remove expect -y
 
 # change cursor
-sed 's/grey/grey -cursor_name left_ptr/g' < ./.vnc/xstartup > ./.vnc/xstartup
+sed 's/grey/grey -cursor_name left_ptr/g' < ./.vnc/xstartup > ./.vnc/xstartup2
+cp ./.vnc/xstartup ./.vnc/xstartup_backup
+cp ./.vnc/xstartup2 ./.vnc/xstartup
+chmod +x ./.vnc/xstartup
 
 #install systemd service
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/tightvncserver.service
