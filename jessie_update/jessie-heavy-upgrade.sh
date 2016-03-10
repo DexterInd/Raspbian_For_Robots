@@ -11,8 +11,8 @@
 # sudo chmod +x update_backup.sh
 # sudo ./update_backup.sh
 # cd /home/pi/di_update/Raspbian_For_Robots/jessie_update/
-# sudo chmod +x jessie-lite-upgrade.sh
-# sudo ./jessie-lite-upgrade.sh
+# sudo chmod +x jessie-heavy-upgrade.sh
+# sudo ./jessie-heavy-upgrade.sh
 #
 ###################################################
 
