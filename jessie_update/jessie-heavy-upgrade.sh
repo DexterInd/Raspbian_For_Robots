@@ -30,10 +30,10 @@ chmod +x ./jessie_cleanup.sh
 # give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
 # Samba will also be installed with password set to robots1234
 ###################################################
-rm ./Raspbian_for_Robos_Flavor.sh
+rm ./Raspbian_for_Robots_Flavor.sh
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/Raspbian_for_Robots_Flavor.sh
-chmod +x ./Raspbian_for_Robos_Flavor.sh
-./Raspbian_for_Robos_Flavor.sh
+chmod +x ./Raspbian_for_Robots_Flavor.sh
+./Raspbian_for_Robots_Flavor.sh
 
 ###################################################
 ##
