@@ -22,7 +22,7 @@ rm hosts
 
 sudo rm /etc/hostname
 echo "Deleted hostname.  Create new hostname."
-sudo echo $NEW_HOST >> /etc/hostname
+sudo echo 'dex' >> /etc/hostname
 echo "New hostname file created."
 
 echo "Commit hostname change."
