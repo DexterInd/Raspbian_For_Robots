@@ -1,3 +1,14 @@
+#! /bin/bash
+#
+# Set some details to fit Rasbpian for Robots
+# mainly :
+# set the password for user Pi to robots1234
+# set samba password to robots1234
+# set hostname to dex
+# by Nicole Parrot // Dexter Industries
+#
+###################################################
+
 # This script sets up the environment to fit with Raspbian for Robots, but none of the actual Dexter Industries software
 
 # 1. User Name is Pi, Password is robots1234
