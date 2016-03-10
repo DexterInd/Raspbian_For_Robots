@@ -56,7 +56,7 @@ sudo apt-get install raspberrypi-net-mods -y
 sudo apt-get install wpagui -y
 sudo apt-get install scratch -y
 
-sudo apt-get install avahi-autoipd tightvncserver bc python-imaging python-pexpect python-renderpm python-reportlab python-reportlab-accel python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt bluetooth -y
+sudo apt-get install avahi-autoipd bc python-imaging python-pexpect python-renderpm python-reportlab python-reportlab-accel python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt bluetooth -y
 
 ## Now Custom Modifications for Dexter Industries Raspbian for Robots.  
 sudo apt-get install git -y
