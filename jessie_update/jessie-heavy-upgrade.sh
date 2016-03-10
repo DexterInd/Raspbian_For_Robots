@@ -92,29 +92,8 @@ sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh
 ##################################################################
 
 # Changes by Hand:
-# Change VNC Passwords
 # Change background desktop to white.
-# Install TightVNC Server and Set to Run at Boot.  https://learn.adafruit.com/adafruit-raspberry-pi-lesson-7-remote-control-with-vnc/running-vncserver-at-startup
-# Setup Autoboot:  http://www.penguintutor.com/raspberrypi/tightvnc
-# sudo tightvncserver
-# sudo nano /etc/systemd/system/tightvncserver.service
-## [Unit]
-## Description=TightVNC remote desktop server
-## After=sshd.service
-##  
-## [Service]
-## Type=dbus
-## ExecStart=/usr/bin/tightvncserver :1
-## User=pi
-## Type=forking
-##  
-## [Install]
-## WantedBy=multi-user.target
-##
-# sudo chown root:root /etc/systemd/system/tightvncserver.service
-# sudo chmod 755 /etc/systemd/system/tightvncserver.service
-# sudo systemctl start tightvncserver.service
-# sudo systemctl enable tightvncserver.service
+
 
 
 
