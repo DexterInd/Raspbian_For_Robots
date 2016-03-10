@@ -14,6 +14,7 @@
 # 1. User Name is Pi, Password is robots1234
 # 2. Hostname is dex
 # 3. Installing Samba
+# 4. Installing tighvncserver
 
 DEFAULT_PWD=robots1234
 
@@ -59,3 +60,32 @@ sudo service samba restart
 sudo smbpasswd -a pi < smbpasswd.txt
 rm smbpasswd.txt
 rm smb.conf
+
+####################################
+# installing tightvncserver
+# many many thanks to Russell Davis for all the hints!
+# tightvncserver will only work after a reboot - not done here
+####################################
+sudo apt-get install tightvncserver expect -y
+/usr/bin/expect <<EOF
+spawn "/usr/bin/tightvncserver"
+expect "Password:"
+send "$DEFAULT_PWD\r"
+expect "Verify:"
+send "$DEFAULT_PWD\r"
+expect "(y/n?"
+send "n\r"
+expect eof
+EOF
+sudo apt-get remove expect -y
+
+# change cursor
+sed 's/grey/grey -cursor_name left_ptr/g' < ./.vnc/xstartup > ./.vnc/xstartup
+
+#install systemd service
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/tightvncserver.service
+sudo cp tightvncserver.service /etc/systemd/system/tighvncservice@.service
+sudo systemctl daemon-reload && sudo systemctl enable vncserver@1.service
+
+
+
