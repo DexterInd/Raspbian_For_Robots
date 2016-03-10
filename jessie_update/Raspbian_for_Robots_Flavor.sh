@@ -84,7 +84,7 @@ sed 's/grey/grey -cursor_name left_ptr/g' < ./.vnc/xstartup > ./.vnc/xstartup
 
 #install systemd service
 wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/tightvncserver.service
-sudo cp tightvncserver.service /etc/systemd/system/tighvncservice@.service
+sudo cp tightvncserver.service /etc/systemd/system/vncservice@.service
 sudo systemctl daemon-reload && sudo systemctl enable vncserver@1.service
 
 
