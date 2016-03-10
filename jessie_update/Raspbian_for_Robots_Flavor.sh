@@ -59,7 +59,7 @@ sudo cp smb.conf /etc/samba/smb.conf
 sudo service samba restart
 sudo smbpasswd -a pi < smbpasswd.txt
 rm smbpasswd.txt
-rm smb.conf
+sudo rm ./smb.conf -y
 
 ####################################
 # installing tightvncserver
