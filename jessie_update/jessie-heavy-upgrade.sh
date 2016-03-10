@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# Add LX Desktop And Raspberry Pi to Jessie Lite
+# Add LX Desktop And Raspberry Pi to Jessie On a Diet
 # by John Cole // Dexter Industries
 #
 ###################################################
@@ -18,7 +18,7 @@
 
 ###################################################
 ##
-## Take Jessie Lite to Raspbian
+## Take Jessie nn a Diet to Raspbian
 ##
 ###################################################
 
