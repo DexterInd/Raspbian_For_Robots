@@ -18,6 +18,10 @@ sudo apt-get purge -y minecraft-pi
 # note: removing supercollider will also remove sonic-pi. They seem to be linked
 sudo apt-get purge -y supercollider*
 
+# this line taken from jessie-heavy_upgrade, most are already not on the image, except the last two
+# sudo apt-get remove gnome-mplayer yelp deluge claws-mail iceweasel lxmusic audacious transmission-gtk midori netsurf-gtk dillo -y
+sudo apt-get remove dillo netsurf-gtk -y
+
 sudo apt-get clean
 sudo apt-get autoremove -y
 
