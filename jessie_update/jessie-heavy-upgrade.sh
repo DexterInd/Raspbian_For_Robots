@@ -34,11 +34,6 @@ sudo apt-get install scratch -y
 
 sudo apt-get install avahi-autoipd tightvncserver bc python-imaging python-pexpect python-renderpm python-reportlab python-reportlab-accel python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt bluetooth -y
 
-sudo apt-get remove gnome-mplayer yelp deluge claws-mail iceweasel lxmusic audacious transmission-gtk midori netsurf-gtk dillo -y
-
-sudo apt-get autoremove -y
-sudo apt-get clean -y
-
 ## Now Custom Modifications for Dexter Industries Raspbian for Robots.  
 sudo apt-get install git -y
 sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh /home/pi
