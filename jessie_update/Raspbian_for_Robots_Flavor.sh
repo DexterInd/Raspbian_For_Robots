@@ -22,6 +22,7 @@ DEFAULT_PWD=robots1234
 ####################################
 echo pi:$DEFAULT_PWD > pipasswd
 sudo chpasswd < pipasswd
+rm pipasswd
 
 ####################################
 # set default hostname to dex
@@ -57,3 +58,4 @@ sudo cp smb.conf /etc/samba/smb.conf
 sudo service samba restart
 sudo smbpasswd -a pi < smbpasswd.txt
 rm smbpasswd.txt
+rm smb.conf
