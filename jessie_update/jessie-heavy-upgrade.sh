@@ -61,11 +61,11 @@ sudo apt-get install scratch -y
 
 # breaking this down in four lines for readability
 # tightvncserver moved to Raspbian_For_Robots_Flavor.sh
-sudo apt-get install avahi-autoipd bc python-imaging python-pexpect python-renderpm 
-sudo apt-get install python-reportlab python-reportlab-accel  
+sudo apt-get install avahi-autoipd bc python-imaging python-pexpect python-renderpm -y
+sudo apt-get install python-reportlab python-reportlab-accel  -y
 
 # the following are all installed on Jessie. Leaving here for documentation purposes
-sudo apt-get install python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy 
+sudo apt-get install python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy -y
 sudo apt-get install pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt -y
 sudo apt-get install bluetooth -y
 
