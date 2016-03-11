@@ -49,14 +49,21 @@ sudo apt-get upgrade -y
 # is dist-upgrade necessary ? 
 sudo apt-get dist-upgrade -y
 
-# is apache2 necessary? 
+# apache necessary for noVNC
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
 sudo apt-get install raspberrypi-net-mods -y
 sudo apt-get install wpagui -y
+
+# scratch should already be there
 sudo apt-get install scratch -y
 
-sudo apt-get install avahi-autoipd bc python-imaging python-pexpect python-renderpm python-reportlab python-reportlab-accel python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt bluetooth -y
+# breaking this down in four lines for readability
+# tightvncserver moved to Raspbian_For_Robots_Flavor.sh
+sudo apt-get install avahi-autoipd bc python-imaging python-pexpect python-renderpm 
+sudo apt-get install python-reportlab python-reportlab-accel  
+sudo apt-get install python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy 
+sudo apt-get install pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt bluetooth -y
 
 ## Now Custom Modifications for Dexter Industries Raspbian for Robots.  
 sudo apt-get install git -y
