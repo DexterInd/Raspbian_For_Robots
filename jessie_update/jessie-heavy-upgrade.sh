@@ -47,7 +47,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 # is dist-upgrade necessary ? 
-sudo apt-get dist-upgrade -y
+# sudo apt-get dist-upgrade -y
 
 # apache necessary for noVNC
 sudo apt-get install apache2 -y
@@ -55,21 +55,26 @@ sudo apt-get install php5 libapache2-mod-php5 -y
 sudo apt-get install raspberrypi-net-mods -y
 sudo apt-get install wpagui -y
 
-# scratch should already be there
+# scratch is already there - leaving here for documentation purposes
+# with Jessie we need nuscratch anyway
 sudo apt-get install scratch -y
 
 # breaking this down in four lines for readability
 # tightvncserver moved to Raspbian_For_Robots_Flavor.sh
 sudo apt-get install avahi-autoipd bc python-imaging python-pexpect python-renderpm 
 sudo apt-get install python-reportlab python-reportlab-accel  
+
+# the following are all installed on Jessie. Leaving here for documentation purposes
 sudo apt-get install python-tk python3-tk idle idle-python2.7 idle3 nodejs nodejs-legacy 
-sudo apt-get install pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt bluetooth -y
+sudo apt-get install pypy-setuptools pypy-upstream pypy-upstream-dev pypy-upstream-doc blt -y
+sudo apt-get install bluetooth -y
 
 ## Now Custom Modifications for Dexter Industries Raspbian for Robots.  
-sudo apt-get install git -y
+sudo apt-get install git -y # already on Jessie
 sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh /home/pi
 sudo chmod +x update_backup.sh
 sudo ./update_backup.sh
+rm ./update_backup.sh
 
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/BrickPi.git
@@ -91,6 +96,9 @@ cd /home/pi/Desktop
 
 sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh
 
+
+sudo apt-get clean
+sudo apt-get autoremove -y 
 
 ##################################################################
 ##
