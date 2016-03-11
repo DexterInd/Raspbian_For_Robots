@@ -1,0 +1,11 @@
+[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=pi
+ExecStart=/home/pi/noVNC/utils/launch.sh
+
+[Install]
+WantedBy=multi-user.target
