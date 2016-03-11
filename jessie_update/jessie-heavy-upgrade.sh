@@ -74,7 +74,7 @@ sudo apt-get install git -y # already on Jessie
 sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh /home/pi
 sudo chmod +x update_backup.sh
 sudo ./update_backup.sh
-rm ./update_backup.sh
+rm ./update_backup.sh -y
 
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/BrickPi.git
