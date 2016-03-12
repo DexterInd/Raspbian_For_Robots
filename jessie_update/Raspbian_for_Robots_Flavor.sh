@@ -90,5 +90,20 @@ wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_
 sudo cp tightvncserver.service /etc/systemd/system/vncserver@.service
 sudo systemctl daemon-reload && sudo systemctl enable vncserver@1.service
 
+####################################
+# install noNVC
+# this is not yet according to the Dexter Industries way, 
+# and still being developed and looked at
+# it's being downloaded in the wrong place, for starter
+####################################
 
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/novnc.sh
+chmod +x novnc.sh
+./novnc.sh
 
+#install systemd service
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/novnc.service
+sudo cp novnc.service /etc/systemd/system/novnc.service
+sudo systemctl daemon-reload && sudo systemctl enable novnc@.service
+
+sudo rm novnc.sh
