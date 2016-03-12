@@ -11,6 +11,7 @@ sudo wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/je
 sudo cp novnc.service /etc/systemd/system/novnc.service
 sudo systemctl daemon-reload
 sudo systemctl enable novnc.service
+echo "############################################################"
 # sudo systemctl start novnc.service # not needed
 cd ~/noVNC/utils
 chmod +x launch.sh
