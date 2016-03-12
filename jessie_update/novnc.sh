@@ -7,8 +7,6 @@
 cd /home/pi
 
 git clone git://github.com/kanaka/noVNC
-cd noVNC/utils
-chmod +x launch.sh
 
 cd ~
 sudo wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/novnc.service
@@ -17,4 +15,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable novnc.service
 sudo rm novnc.service
 # sudo systemctl start novnc.service # not needed
+cd ~/noVNC/utils
+chmod +x launch.sh
 ./launch.sh & # must be run in background otherwise the script blocks
