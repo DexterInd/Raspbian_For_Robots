@@ -4,18 +4,28 @@
 # GoPiGo Update
 echo "--> Start GoPiGo Update."
 echo "----------"
-cd /home/pi/Desktop/GoPiGo
-sudo git fetch origin
-git reset --hard
+# Un Changed the process here: move from git fetch to just delete the directory, and then clone back in.
+cd /home/pi/Desktop/GoPiGo    
+sudo git fetch origin   
+sudo git reset --hard  
 sudo git merge origin/master
+
+# cd /home/pi/Desktop # sudo rm -r GoPiGo # sudo git clone https://github.com/DexterInd/GoPiGo.git
+
 cd Setup
 echo "--> UPDATING LIBRARIES"
 echo "------------------"
 sudo chmod +x install.sh
 sudo ./install.sh
 
+# Install GoPiGo Line Follower Calibration
+sudo rm /home/pi/Desktop/line_follow.desktop
+sudo cp /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
+sudo chmod +x /home/pi/Desktop/line_follow.desktop
+sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_sensor_gui.py
+
 echo "--> Install Scratch dependency ScratchPy."
-cd Desktop/GoPiGo/Software/Scratch
+cd /home/pi/Desktop/GoPiGo/Software/Scratch
 sudo git clone https://github.com/DexterInd/scratchpy.git
 cd scratchpy
 sudo make install

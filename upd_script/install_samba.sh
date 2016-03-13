@@ -4,7 +4,7 @@
 # Reference: http://www.raspians.com/Knowledgebase/how-to-nas-with-samba-and-window/
 #
 
-sudo apt-get install samba samba-common-bin -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get install samba samba-common-bin -y
 echo "Modify Samba configuration."
 # Modify samba configuration
 sudo sed -i '102s/.*/security = user/' /etc/samba/smb.conf	# Remove the has from security line.

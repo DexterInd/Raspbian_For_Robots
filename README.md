@@ -2,7 +2,6 @@
 
 ![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
 
-
 This is a customized version of the Raspbian Image for the Raspberry Pi.  It has been updated to help inexperienced users get started quickly with Dexter Industries Robots.
 
 This repository contains the latest and freshest updates to our software!
@@ -20,7 +19,7 @@ We have detailed step by step instructions on how to [install this image onto an
 * noVNC available in the browser.  You can access from http://dex.local
 * Terminal available in the browser.  You can access from http://dex.local
 * Scratch Starter Program - Start Scratch for the different robots in the Dexter Industries Scratch Program.
-* Test and Troublshoot Program - We've added a Test and Troubleshoot program.
+* Test and Troubleshoot Program - We've added a Test and Troubleshoot program.
 * Update Program - We have a dedicated program for updating the software, the operating system, and the firmware of your robot.
 * Samba - Samba is installed.  The login credentials are "pi" and "robots1234".
 
@@ -33,6 +32,10 @@ Place the microSD card in the SD card adapter, and place in your PC or Mac.  Ope
 ## This Repository
 
 These scripts manage to update the Raspbian for Robots image.  These changes are all executed using the Update button on the LXE Desktop of the Raspberry Pi.  
+
+## Changes 2016-01-05
+* Updated Avahi network settings.
+* Updated IPV6 network settings.
 
 ## License
 All software here is released under the [GNU GL3 license.](http://www.gnu.org/licenses/gpl-3.0.txt)

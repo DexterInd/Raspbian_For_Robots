@@ -35,32 +35,13 @@ mkdir /home/pi/di_update
 cd /home/pi/di_update
 sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
+cd /home/pi/di_update/Raspbian_For_Robots/
 
 #
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
 # Take this part out when you're done!
-cd /home/pi/di_update/Raspbian_For_Robots/
-git checkout update201507
+# git checkout update201507
 #
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
+
 # Make files executable.
 echo "MAKE FILES EXECUTABLE."
 echo "=============================="
@@ -97,6 +78,11 @@ sudo rm /home/pi/Desktop/wpa_gui.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/wpa_gui.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/wpa_gui.desktop
 
+# Update the Backup
+sudo rm /home/pi/Desktop/backup.desktop
+sudo cp /home/pi/di_update/Raspbian_For_Robots/backup/backup.desktop /home/pi/Desktop
+sudo chmod +x /home/pi/Desktop/backup.desktop
+
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
 # sudo sh /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
@@ -117,7 +103,10 @@ LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
 
 echo "START UPDATE GUI."
 echo "=============================="
-sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+# sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+today=`date '+%Y_%m_%d__%H_%M_%S'`;
+filename="/home/pi/Desktop/Dexter_Software_Update_log_$today.txt" 
+script -c 'sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py 2>&1' -f $filename
 sudo rm /home/pi/index.html*
 
 ###
@@ -133,7 +122,6 @@ sudo rm /home/pi/index.html*
 #               We must reboot for folks.
 echo "To finish changes, we will reboot the Pi."
 echo "Pi must reboot for changes and updates to take effect."
-echo "If you need to abort the reboot, press Ctrl+C.  Otherwise, reboot!"
 echo "Rebooting in 5 seconds!"
 sleep 1
 echo "Rebooting in 4 seconds!"

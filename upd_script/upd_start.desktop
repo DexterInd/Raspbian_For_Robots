@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=/home/pi/Desktop/Raspbian_For_Robots/upd_script/upd_start.sh
+Icon=/usr/share/icons/gnome/32x32/apps/zen-icon.png
+Terminal=false
+Name=DI Software Update
+Comment= Programming system and content development tool
+Categories=Accessories;

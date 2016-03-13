@@ -1,5 +1,7 @@
 #! /bin/bash
-# Update the host name.
+# INSTALLATION FILE:  This file is called from update_all.sh.  It is not part of the actual updating 
+# of the hostname.  That function is called from rc.sh (which this file installs!)
+
 # We check if the file "hostnames" exists under /boot
 
 if [ ! -f /boot/hostnames ]; then
