@@ -2,6 +2,16 @@
 
 This directory contains the scripts we used to upgrade Jessie Lite to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
 
+# What the files are:
+regimen.sh is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
+
+jessie-heavy-upgrade.sh : run this script to make your Jessie into Raspbian for Robots. It will call all other scripts.
+
+## sub scripts:
+jessie_cleanup.sh : removes extra packages to make room for Raspbian for Robots
+Raspbian_for_Robots_Flavor: changes everythin that is at the OS level to make it into Raspbian for Robots (passwords, VNC, etc)
+
+
 ## Changes 
 * We'll document changes here in the future.
 
