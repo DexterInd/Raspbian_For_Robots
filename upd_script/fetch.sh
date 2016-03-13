@@ -56,6 +56,8 @@ git reset --hard
 sudo git merge origin/master
 
 sudo apt-get install python-setuptools
+# Remove Python Packages
+cd /home/pi/Desktop/BrickPi_Python/
 sudo python /home/pi/Desktop/BrickPi_Python/setup.py install
 
 # BrickPi_Scratch Update
