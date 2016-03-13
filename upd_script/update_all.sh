@@ -184,6 +184,7 @@ cd /usr/local/share/
 echo "--> Clone noVNC."
 sudo git clone git://github.com/DexterInd/noVNC
 cd noVNC
+sudo git pull
 sudo cp vnc_auto.html index.html
 cd /etc/init.d/
 sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
@@ -192,6 +193,13 @@ sudo update-rc.d vncboot defaults
 sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
 sudo chmod 755 vncproxy 
 sudo update-rc.d vncproxy defaults 98
+
+# VNC Start on boot
+# Wheezy and all.  
+sudo update-rc.d vncproxy defaults
+sudo update-rc.d vncproxy enable
+sudo update-rc.d vncboot defaults
+sudo update-rc.d vncboot enable
 
 cd /usr/local/share/noVNC/utils
 sudo ./launch.sh --vnc localhost:5900 &
