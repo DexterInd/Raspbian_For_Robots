@@ -1,12 +1,24 @@
 # Raspbian Pi For Robots
 
-![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
+Much of the directions and the workaround itself, as well as the serial overlay was downloaded from [Brian Dorey's website here.](http://www.briandorey.com/post/Raspberry-Pi-3-UART-Overlay-Workaround)
 
-The serial overlay was downloaded from [Brian Dorey's website here.](http://www.briandorey.com/post/Raspberry-Pi-3-UART-Overlay-Workaround)
+## Device Overlay Workaround
+
+1. Download and install device tree overlay:
+2. Download the boot overlay 
+3. Copy the overlay.  `sudo cp pi3-miniuart-bt-overlay.dtb /boot/overlays`
+4. Add to /boot/config.txt
+```	
+dtoverlay=pi3-miniuart-bt-overlay
+force_turbo=1
+```
+    
+## FOR JESSE:
+	1. Disable the built in bluetooth `sudo systemctl disable hciuart`
 
 ## This Repository
 
-These scripts manage to update the Raspbian for Robots image.  These changes are all executed using the Update button on the LXE Desktop of the Raspberry Pi.  
+These scripts manage to update the Raspbian for Robots image for the Raspberry Pi 3.
 
 ## License
 All software here is released under the [GNU GL3 license.](http://www.gnu.org/licenses/gpl-3.0.txt)
