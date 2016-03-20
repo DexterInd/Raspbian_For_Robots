@@ -5,9 +5,11 @@ Much of the directions and the workaround itself, as well as the serial overlay 
 ## Device Overlay Workaround
 
 1. Download and install device tree overlay:
-2. Download the boot overlay 
-3. Copy the overlay.  `sudo cp pi3-miniuart-bt-overlay.dtb /boot/overlays`
-4. Add to /boot/config.txt
+2. Download the boot overlay.  
+```sudo wget https://github.com/DexterInd/Raspbian_For_Robots/raw/master/pi3/pi3-miniuart-bt-overlay.dtb```
+3. Copy the overlay.  
+```sudo cp pi3-miniuart-bt-overlay.dtb /boot/overlays```
+4. Add the following lines to `/boot/config.txt`:
 ```	
 dtoverlay=pi3-miniuart-bt-overlay
 force_turbo=1
