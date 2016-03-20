@@ -1,0 +1,11 @@
+Device Overlay Workaround
+http://www.briandorey.com/post/Raspberry-Pi-3-UART-Overlay-Workaround
+Download and install device tree overlay:
+	Download the boot overlay 
+	sudo cp pi3-miniuart-bt-overlay.dtb /boot/overlays
+	sudo nano /boot/config.txt
+		dtoverlay=pi3-miniuart-bt-overlay
+		force_turbo=1
+	##### FOR JESSE:
+	Disable the built in bluetooth
+		sudo systemctl disable hciuart
