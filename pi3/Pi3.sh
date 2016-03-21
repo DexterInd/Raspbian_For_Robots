@@ -4,6 +4,8 @@
 # These changes were developed by the awesome Brian Dorey.  
 # http://www.briandorey.com/post/Raspberry-Pi-3-UART-Overlay-Workaround
 # This script was developed by the awesome Dexter Industries.
+#
+# Note this is called from upd_script/update_all.sh 
 
 sudo apt-get update
 sudo apt-get dist-upgrade
