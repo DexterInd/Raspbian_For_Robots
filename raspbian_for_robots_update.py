@@ -241,8 +241,16 @@ class MainPanel(wx.Panel):
 		
 	def onClose(self, event):	# Close the entire program.
 		write_debug("Close Pressed.")
-		dlg = wx.MessageDialog(self, 'The Pi will now restart.  Please save all open files before pressing OK.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
-		dlg.ShowModal()
+		# dlg = wx.MessageDialog(self, 'The Pi will now restart.  Please save all open files before pressing OK.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
+		# dlg.ShowModal()
+		# dlg.Destroy()
+		dlg = wx.MessageDialog(self, 'You must reboot for changes to take effect.  Reboot now?', 'Reboot', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+		if dlg.ShowModal() == wx.ID_OK:
+			# Reboot
+			send_bash_command('sudo reboot')
+		else: 
+			# Do nothing.
+			print "No reboot."
 		dlg.Destroy()
 		"""
 		"""
