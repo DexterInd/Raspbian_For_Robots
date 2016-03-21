@@ -14,6 +14,13 @@ sudo apt-get upgrade -y
 echo "--> End Upgrade."
 echo "--> ======================================="
 
+echo "--> Firmware Upgrade."
+echo "--> ======================================="
+sudo apt-get dist-upgrade -y
+sudo rpi-update -y
+echo "--> End Firmware Upgrade."
+echo "--> ======================================="
+
 echo "--> Begin Cleanup."
 echo "--> ======================================="
 sudo apt-get clean		# Remove any unused packages.
