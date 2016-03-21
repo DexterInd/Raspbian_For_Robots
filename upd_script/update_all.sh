@@ -300,6 +300,11 @@ rm version.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/version.desktop
 
+echo "--> Update for RPi3."
+# Run the update script for updating overlays for Rpi3.
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
+
 echo "--> ======================================="
 echo "--> ======================================="
 echo "  _    _               _           _                         ";
