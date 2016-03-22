@@ -120,18 +120,18 @@ sudo rm /home/pi/index.html*
 ##############################################################################################################
 # 4.    Reboot the Pi.
 #               We must reboot for folks.
-echo "To finish changes, we will reboot the Pi."
+echo "To finish any changes, we need to reboot the Pi."
 echo "Pi must reboot for changes and updates to take effect."
-echo "Rebooting in 5 seconds!"
-sleep 1
-echo "Rebooting in 4 seconds!"
-sleep 1
-echo "Rebooting in 3 seconds!"
-sleep 1
-echo "Rebooting in 2 seconds!"
-sleep 1
-echo "Rebooting in 1 seconds!"
-sleep 1
-echo "Rebooting now!  Your Pi wake up with a freshly updated Raspberry Pi!"
-sleep 1
-sudo reboot
+# echo "Rebooting in 5 seconds!"
+# sleep 1
+# echo "Rebooting in 4 seconds!"
+# sleep 1
+# echo "Rebooting in 3 seconds!"
+# sleep 1
+# echo "Rebooting in 2 seconds!"
+# sleep 1
+# echo "Rebooting in 1 seconds!"
+# sleep 1
+# echo "Rebooting now!  Your Pi wake up with a freshly updated Raspberry Pi!"
+# sleep 1
+# sudo reboot
