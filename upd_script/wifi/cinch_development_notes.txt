@@ -1,7 +1,7 @@
 THIS METHOD WORKS FOR MAKING IT WORK.  IF YOU CONNECT TO THE AP AND TYPE IN 10.10.10.10 it should work.
-1).  Adhoc is wifi, password is "123456789"
+1).  Adhoc is "dex", no password.
 2).  Connect and should get an IP address.
-3).  Type in 10.10.10.10 in browser.  Should be good to go.  May need to static address into 10.10.10.10:8001
+3).  Type in 10.10.10.10 in browser.  May need to static address into 10.10.10.10:8001
 4).  Do NOT connect to Ethernet or you'll have a problem with IP address on noVNC.
 
 
