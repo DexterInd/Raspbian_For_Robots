@@ -6,6 +6,15 @@ THIS METHOD WORKS FOR MAKING IT WORK.  IF YOU CONNECT TO THE AP AND TYPE IN 10.1
 
 
 Following:  https://docs.google.com/document/u/0/d/16hJS7fnPyKUwbvR33_nMku_b6XcYaBJXVpeCIMoJzcQ/pub
+############################################################################################################################################################
+#
+# https://docs.google.com/document/u/0/d/16hJS7fnPyKUwbvR33_nMku_b6XcYaBJXVpeCIMoJzcQ/pub
+# http://blog.sip2serve.com/post/48420162196/howto-setup-rtl8188cus-on-rpi-as-an-access-point
+# http://www.jenssegers.be/43/Realtek-RTL8188-based-access-point-on-Raspberry-Pi
+# http://lcdev.dk/2012/11/18/raspberry-pi-tutorial-connect-to-wifi-or-create-an-encrypted-dhcp-enabled-ad-hoc-network-as-fallback/
+# http://www.daveconroy.com/turn-your-raspberry-pi-into-a-wifi-hotspot-with-edimax-nano-usb-ew-7811un-rtl8188cus-chipset/
+
+
 Starting with 2016.03.28 Image
 
 sudo apt-get install isc-dhcp-server
