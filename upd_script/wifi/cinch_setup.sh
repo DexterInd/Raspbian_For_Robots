@@ -1,10 +1,12 @@
 #! /bin/bash
 
+# To run this: sudo sh cinch_setup.sh
+
 # THIS METHOD WORKS FOR MAKING IT WORK.  IF YOU CONNECT TO THE AP AND TYPE IN 10.10.10.10 it should work.
-#1).  Adhoc is wifi, password is "123456789"
-#2).  Connect and should get an IP address.
-#3).  Type in 10.10.10.10 in browser.  Should be good to go.  May need to static address into 10.10.10.10:8001
-#4).  Do NOT connect to Ethernet or you'll have a problem with IP address on noVNC.
+# 1).  Adhoc is wifi, open.  SSID is "dex"
+# 2).  Connect and should get an IP address.
+# 3).  Type in 10.10.10.10 in browser.  May need to static address into 10.10.10.10:8001, if ethernet is connected.
+# 4).  Do NOT connect to Ethernet or you'll have a problem with IP address on noVNC.
 
 sudo apt-get install isc-dhcp-server
 cd ~
@@ -16,25 +18,25 @@ sudo service hostapd restart
 
 # Replace /etc/dhcp/dhcpd.conf 
 	sudo rm /etc/dhcp/dhcpd.conf
-	sudo cp ~/di_update/Raspbian_For_Robots/upd_script/wifi/dhcpd.conf /etc/dhcp/
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/dhcpd.conf /etc/dhcp/
 
 # Replace /etc/default/isc-dhcp-server
 	sudo rm /etc/default/isc-dhcp-server
-	sudo cp ~/di_update/Raspbian_For_Robots/upd_script/wifi/isc-dhcp-server /etc/default/
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/isc-dhcp-server /etc/default/
 
 sudo ifdown wlan0
 
 # Copy Interfaces /etc/network/interfaces
 	sudo rm /etc/network/interfaces
-	sudo cp ~/di_update/Raspbian_For_Robots/upd_script/wifi/interfaces /etc/network/
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/interfaces /etc/network/
 
 # Copy Hostapd /etc/hostapd/hostapd.conf
 	sudo rm /etc/hostapd/hostapd.conf
-	sudo cp ~/di_update/Raspbian_For_Robots/upd_script/wifi/hostapd.conf /etc/hostapd/
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/hostapd.conf /etc/hostapd/
 
 # Copy NAT /etc/sysctl.conf
 	sudo rm /etc/sysctl.conf
-	sudo cp ~/di_update/Raspbian_For_Robots/upd_script/wifi/sysctl.conf /etc/
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/sysctl.conf /etc/
 
 # Setup IP Forward
 	sudo sysctl -p
@@ -66,7 +68,7 @@ sudo ifdown wlan0
 
 # Copy rc.local
 	sudo rm /etc/rc.local
-	sudo cp ~/di_update/Raspbian_For_Robots/upd_script/wifi/rc.local /etc/
+	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/rc.local /etc/
 # Change rc.local permissions
 	sudo chmod +x /etc/rc.local
 		
