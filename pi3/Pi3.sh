@@ -7,9 +7,9 @@
 #
 # Note this is called from upd_script/update_all.sh 
 
-sudo apt-get update
-sudo apt-get dist-upgrade
-sudo rpi-update
+sudo apt-get update -y
+sudo apt-get dist-upgrade -y
+sudo rpi-update -y
 
 cd /home/pi/
 sudo wget https://github.com/DexterInd/Raspbian_For_Robots/raw/master/pi3/pi3-miniuart-bt-overlay.dtb
