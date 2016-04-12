@@ -3,7 +3,7 @@
 #Save files in /tmp so that they are deleted on reboot
 mkdir -p /tmp/bkp
 
-fname=file_list.txt
+fname=/home/pi/di_update/Raspbian_For_Robots/backup/file_list.txt
 bkp_path=/tmp/bkp
 mount_path=/mnt/bkp_drive
 
