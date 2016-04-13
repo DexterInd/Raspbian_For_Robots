@@ -175,10 +175,9 @@ sudo apt-get install shellinabox -y
 # disable requirement for SSL for shellinaboxa 
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
-cp /etc/init.d/shellinabox /home/pi/.
-sudo sed -i /SHELLINABOX_ARGS=/d /home/pi/shellinabox
-sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /home/pi/shellinabox
-sudo cp /home/pi/shellinabox /etc/init.d/shellinabox
+sudo sed -i '/SHELLINABOX_ARGS=/d' /etc/init.d/shellinabox
+sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
+
 
 # Setup noVNC
 echo "--> Setup screen."
