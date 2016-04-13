@@ -22,6 +22,10 @@ sudo apt-get purge -y supercollider*
 # sudo apt-get remove gnome-mplayer yelp deluge claws-mail iceweasel lxmusic audacious transmission-gtk midori netsurf-gtk dillo -y
 sudo apt-get remove dillo netsurf-gtk -y
 
+# bring jessie up to date
+sudo apt-get update
+sudo apt-get upgrade -y
+
 sudo apt-get clean
 sudo apt-get autoremove -y
 
