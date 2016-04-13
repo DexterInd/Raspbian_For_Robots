@@ -172,6 +172,14 @@ echo "--> ======================================="
 echo " "
 sudo apt-get install shellinabox -y
 
+# disable requirement for SSL for shellinaboxa 
+# adding after line 41, which is approximately where similar arguments are found.
+# it could really be anywhere in the file - NP
+cp /etc/init.d/shellinabox /home/pi/.
+sudo sed -i /SHELLINABOX_ARGS=/d /home/pi/shellinabox
+sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /home/pi/shellinabox
+sudo cp /home/pi/shellinabox /etc/init.d/shellinabox
+
 # Setup noVNC
 echo "--> Setup screen."
 echo "--> ======================================="
@@ -186,20 +194,44 @@ sudo git clone git://github.com/DexterInd/noVNC
 cd noVNC
 sudo git pull
 sudo cp vnc_auto.html index.html
-cd /etc/init.d/
-sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
-sudo chmod 755 vncboot
-sudo update-rc.d vncboot defaults
-sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
-sudo chmod 755 vncproxy 
-sudo update-rc.d vncproxy defaults 98
+
 
 # VNC Start on boot
-# Wheezy and all.  
-sudo update-rc.d vncproxy defaults
-sudo update-rc.d vncproxy enable
-sudo update-rc.d vncboot defaults
-sudo update-rc.d vncboot enable
+# reading VERSION again, in case lines get moved, or deleted above.
+# better safe
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+echo "Version: $VERSION"
+# setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
+# Wheezy 
+if [ $VERSION -eq '7' ]; then
+  echo "Version 7 found!  You have Wheezy!"
+  cd /etc/init.d/
+  sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
+  sudo chmod 755 vncboot
+  sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
+  sudo chmod 755 vncproxy 
+  # why default 98? I can't find what it's supposed to do - NP
+  sudo update-rc.d vncproxy defaults 98
+  sudo update-rc.d vncproxy defaults
+  sudo update-rc.d vncproxy enable
+  sudo update-rc.d vncboot defaults
+  sudo update-rc.d vncboot enable
+
+#jessie
+elif [ $VERSION -eq '8' ]; then
+  echo "Version 8 found!  You have Jessie!"
+  #install those, but currently novnc dies after a couple of mintes.
+  #launch novnc from .bashrc as a workaround
+  #sudo systemctl daemon-reload
+  #sudo systemctl enable novnc.service
+  #sudo systemctl start novnc.service
+  # delete the call if it's already there
+  sudo sed -i '/launch.sh/d' /home/pi/.bashrc
+  # add call to end of file
+  sudo sed -i '$ a /usr/local/share/noVNC/utils/launch.sh --vnc localhost:5901 --listen 8001 &' /home/pi/.bash_profile
+  sudo systemctl disable novnc.service
+fi
+
 
 cd /usr/local/share/noVNC/utils
 sudo ./launch.sh --vnc localhost:5900 &
@@ -292,6 +324,11 @@ sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
 echo "--> End cleanup."
 
+echo "--> Update for RPi3."
+# Run the update script for updating overlays for Rpi3.
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
+
 echo "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
 cd /home/pi/Desktop
@@ -299,11 +336,6 @@ rm Version
 rm version.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/version.desktop
-
-echo "--> Update for RPi3."
-# Run the update script for updating overlays for Rpi3.
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
 
 echo "--> ======================================="
 echo "--> ======================================="
