@@ -21,16 +21,40 @@ DEFAULT_PWD=robots1234
 ####################################
 # Changing Pi password to robots1234
 ####################################
-echo pi:$DEFAULT_PWD > pipasswd
-sudo chpasswd < pipasswd
-rm pipasswd
+echo pi:$DEFAULT_PWD | sudo chpasswd 
+
+####################################
+# Installing Samba
+####################################
+
+sudo apt-get install -y samba samba-common
+sudo cp /etc/samba/smb.conf .
+sudo chown pi:pi smb.conf
+sudo sed -i 's/read only = yes/read only = no/g' smb.conf
+
+# the security = user line is needed if we want to password protect the SD card
+sudo echo 'security = user' >> smb.conf
+
+sudo chown root:root smb.conf
+sudo cp smb.conf /etc/samba/smb.conf
+sudo systemctl restart smbd.service
+
+# smbpasswd won't take a redirection of the type 
+# echo $1\r$1| smbpassd -a pi
+# so we do it the long way
+echo $DEFAULT_PWD > smbpasswd.txt
+echo $DEFAULT_PWD >> smbpasswd.txt
+sudo smbpasswd -a pi < smbpasswd.txt
+sudo rm smbpasswd.txt # sudo not needed, it's there to be consistent and look pretty
+sudo rm smb.conf
+
 
 ####################################
 # set default hostname to dex
 ####################################
 # Re-write /etc/hosts
 echo "Editing hosts file"
-sed 's/raspberrypi/dex/g' </etc/hosts > hosts
+sudo sed 's/raspberrypi/dex/g' </etc/hosts > hosts
 sudo cp hosts /etc/hosts
 rm hosts
 
@@ -45,50 +69,16 @@ sudo /etc/init.d/hostname.sh
 
 echo "Hostname change will be effective after a reboot"
 
-####################################
-# Installing Samba
-####################################
-# samba is needed to gain access to the drive on Windows
-sudo apt-get install -y samba samba-common-bin
-echo $DEFAULT_PWD > smbpasswd.txt
-echo $DEFAULT_PWD >> smbpasswd.txt
-
-sudo cp /etc/samba/smb.conf .
-sed '/s/read only = yes/read only = no/g' < smb.conf > smb.conf
-sudo cp smb.conf /etc/samba/smb.conf
-sudo service samba restart
-sudo smbpasswd -a pi < smbpasswd.txt
-rm smbpasswd.txt
-sudo rm ./smb.conf
 
 ####################################
 # installing tightvncserver
 # many many thanks to Russell Davis for all the hints!
 # tightvncserver will only work after a reboot - not done here
 ####################################
-sudo apt-get install tightvncserver expect -y
-/usr/bin/expect <<EOF
-spawn "/usr/bin/tightvncserver"
-expect "Password:"
-send "$DEFAULT_PWD\r"
-expect "Verify:"
-send "$DEFAULT_PWD\r"
-expect "(y/n?"
-send "n\r"
-expect eof
-EOF
-sudo apt-get remove expect -y
-
-# change cursor
-sed 's/grey/grey -cursor_name left_ptr/g' < ./.vnc/xstartup > ./.vnc/xstartup2
-cp ./.vnc/xstartup ./.vnc/xstartup_backup
-cp ./.vnc/xstartup2 ./.vnc/xstartup
-chmod +x ./.vnc/xstartup
-
-#install systemd service
-wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/tightvncserver.service
-sudo cp tightvncserver.service /etc/systemd/system/vncserver@.service
-sudo systemctl daemon-reload && sudo systemctl enable vncserver@1.service
+sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/tightvncserver.sh
+sudo chmod +x tightvncserver.sh
+./tightvncserver.sh $DEFAULT_PWD
+sudo rm tightvncserver.sh
 
 ####################################
 # install noNVC
@@ -97,13 +87,7 @@ sudo systemctl daemon-reload && sudo systemctl enable vncserver@1.service
 # it's being downloaded in the wrong place, for starter
 ####################################
 
-wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/novnc.sh
+wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.sh
 chmod +x novnc.sh
 ./novnc.sh
-
-#install systemd service
-wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/novnc.service
-sudo cp novnc.service /etc/systemd/system/novnc.service
-sudo systemctl daemon-reload && sudo systemctl enable novnc@.service
-
 sudo rm novnc.sh
