@@ -1,7 +1,7 @@
 [Unit]
 Description=Remote desktop service (noVNC)
-Requires=vncserver@.service
-After=vncserver@.service
+Requires=vncserver@1.service
+After=vncserver@1.service
 
 
 [Service]
