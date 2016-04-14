@@ -22,20 +22,11 @@
 # change CleoQc to DexterInd when doing PR
 ###################################################
 rm ./jessie_cleanup.sh  # just making sure there isn't one yet
-wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
+wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
 chmod +x ./jessie_cleanup.sh
 ./jessie_cleanup.sh
 rm ./jessie_cleanup.sh
 
-###################################################
-# give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
-# Samba will also be installed with password set to robots1234
-###################################################
-rm ./Raspbian_for_Robots_Flavor.sh
-wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/Raspbian_for_Robots_Flavor.sh
-chmod +x ./Raspbian_for_Robots_Flavor.sh
-./Raspbian_for_Robots_Flavor.sh
-rm ./Raspbian_for_Robots_Flavor.sh
 
 ###################################################
 ##
@@ -50,6 +41,10 @@ sudo apt-get upgrade -y
 # sudo apt-get dist-upgrade -y
 
 # apache necessary for noVNC
+sudo apt-get -y install avahi-daemon avahi-utils
+sudo rm /etc/avahi/avahi-daemon.conf 														# Remove Avahi Config file.
+sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
+sudo chmod +x /etc/avahi/avahi-daemon.conf 
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
 sudo apt-get install raspberrypi-net-mods -y
@@ -75,6 +70,16 @@ sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master
 sudo chmod +x update_backup.sh
 sudo ./update_backup.sh
 rm ./update_backup.sh -y
+
+###################################################
+# give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
+# Samba will also be installed with password set to robots1234
+###################################################
+rm ./Raspbian_for_Robots_Flavor.sh
+wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/Raspbian_for_Robots_Flavor.sh
+chmod +x ./Raspbian_for_Robots_Flavor.sh
+./Raspbian_for_Robots_Flavor.sh
+rm ./Raspbian_for_Robots_Flavor.sh
 
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/BrickPi.git

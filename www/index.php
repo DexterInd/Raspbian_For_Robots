@@ -56,7 +56,7 @@
 
 </section>
 <section class="bash">
-  <a href="https://<?php echo $ethernetIP; ?>:4200">
+  <a href="http://<?php echo $ethernetIP; ?>:4200">
     <img src="img/bash.svg" onerror="this.src='img/bash.png'; this.onerror=null;"style="height:128px;">
     <span class="button">Launch Terminal</span>
   </a>
