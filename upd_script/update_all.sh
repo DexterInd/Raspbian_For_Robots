@@ -230,7 +230,7 @@ elif [ $VERSION -eq '8' ]; then
     echo "removing local copy of novnc.service"
   fi
 
-  sudo wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/novnc.service
+  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
   sudo mv novnc.service /etc/systemd/system/novnc.service
   sudo systemctl daemon-reload
   sudo systemctl enable novnc.service
