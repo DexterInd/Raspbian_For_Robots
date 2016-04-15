@@ -7,10 +7,7 @@
 #
 # To Setup and Run:
 # cd /home/pi/
-# sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh
-# sudo chmod +x update_backup.sh
-# sudo ./update_backup.sh
-# cd /home/pi/di_update/Raspbian_For_Robots/jessie_update/
+# sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie-heavy-upgrade.sh
 # sudo chmod +x jessie-heavy-upgrade.sh
 # sudo ./jessie-heavy-upgrade.sh
 #
@@ -22,7 +19,7 @@
 # change CleoQc to DexterInd when doing PR
 ###################################################
 rm ./jessie_cleanup.sh  # just making sure there isn't one yet
-wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
+wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
 chmod +x ./jessie_cleanup.sh
 ./jessie_cleanup.sh
 rm ./jessie_cleanup.sh
