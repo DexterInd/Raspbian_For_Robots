@@ -19,7 +19,7 @@
 # change CleoQc to DexterInd when doing PR
 ###################################################
 rm ./jessie_cleanup.sh  # just making sure there isn't one yet
-wget https://raw.githubusercontent.com/CleoQc/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
+wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie_cleanup.sh
 chmod +x ./jessie_cleanup.sh
 ./jessie_cleanup.sh
 rm ./jessie_cleanup.sh
