@@ -215,25 +215,28 @@ if [ $VERSION -eq '7' ]; then
   sudo update-rc.d vncproxy enable
   sudo update-rc.d vncboot defaults
   sudo update-rc.d vncboot enable
+  cd /usr/local/share/noVNC/utils
+  sudo ./launch.sh --vnc localhost:5900 &
 
 #jessie
 elif [ $VERSION -eq '8' ]; then
   echo "Version 8 found!  You have Jessie!"
-  #install those, but currently novnc dies after a couple of mintes.
-  #launch novnc from .bashrc as a workaround
-  #sudo systemctl daemon-reload
-  #sudo systemctl enable novnc.service
-  #sudo systemctl start novnc.service
-  # delete the call if it's already there
-  sudo sed -i '/launch.sh/d' /home/pi/.bashrc
-  # add call to end of file
-  sudo sed -i '$ a /usr/local/share/noVNC/utils/launch.sh --vnc localhost:5901 --listen 8001 &' /home/pi/.bash_profile
-  sudo systemctl disable novnc.service
+  pushd /home/pi
+
+  # if we have a local copy of novnc.service, get rid of it before downloading a new one
+  if [ -e /home/pi/novnc.service ]
+  then
+    sudo rm novnc.service
+    echo "removing local copy of novnc.service"
+  fi
+
+  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
+  sudo mv novnc.service /etc/systemd/system/novnc.service
+  sudo systemctl daemon-reload
+  sudo systemctl enable novnc.service
+  sudo systemctl start novnc.service
+  popd
 fi
-
-
-cd /usr/local/share/noVNC/utils
-sudo ./launch.sh --vnc localhost:5900 &
 
 # Change permissions so you can execute from the desktop
 ####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html

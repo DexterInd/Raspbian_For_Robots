@@ -1,13 +1,14 @@
 [Unit]
-Description=Remote desktop service (VNC)
-After=syslog.target network.target
+Description=Remote desktop service (noVNC)
+Requires=vncserver@1.service
+After=vncserver@1.service
+
 
 [Service]
-Type=forking
+Type=simple
 User=pi
 WorkingDirectory=/home/pi
-PIDFile=/home/pi/.vnc/novnc.pid
-ExecStart=/usr/local/share/noVNC/utils/launch.sh --vnc localhost:5901 --listen 8001 &
+ExecStart=/usr/local/share/noVNC/utils/launch.sh --vnc localhost:5901 --listen 8001
 
 [Install]
 WantedBy=multi-user.target
