@@ -16,9 +16,9 @@ sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# 
 sudo apt-get remove python-wxgtk3.0 -y
 
 echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes -y			# Install wx for python for windows / GUI programs.
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
-sudo apt-get install python-psutil --force-yes -y
+sudo apt-get install python-psutil --force-yes
 sudo apt-get remove python-wxgtk3.0 -y
 echo "Python-PSUtil"
 
@@ -332,6 +332,10 @@ echo "--> Update for RPi3."
 # Run the update script for updating overlays for Rpi3.
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
+
+# remove wx version 3.0 - which gets pulled in by various other libraries
+# it creates graphical issues in our Python GUI
+sudo apt-get remove python-wxgtk3.0 -y
 
 echo "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
