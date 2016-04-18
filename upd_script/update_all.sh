@@ -345,6 +345,16 @@ rm version.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/version.desktop
 
+
+# edition version file to reflect which Rasbpian flavour
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+echo "Version: $VERSION"
+if [ $VERSION -eq '8' ]; then
+  echo "Modifying Version file to reflect Jessie distro"
+  sudo sed -i 's/Wheezy/Jessie/g' /home/pi/di_update/Raspbian_For_Robots/Version
+fi
+
+
 echo "--> ======================================="
 echo "--> ======================================="
 echo "  _    _               _           _                         ";
