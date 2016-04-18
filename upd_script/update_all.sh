@@ -16,14 +16,10 @@ sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# 
 sudo apt-get remove python-wxgtk3.0 -y
 
 echo "Purged wxpython tools"
-echo "1***************************************************"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes -y			# Install wx for python for windows / GUI programs.
-echo "2***************************************************"
 echo "Installed wxpython tools"
 sudo apt-get install python-psutil --force-yes -y
-echo "3***************************************************"
 sudo apt-get remove python-wxgtk3.0 -y
-echo "4***************************************************"
 echo "Python-PSUtil"
 
 sudo apt-get install python3-serial -y
