@@ -91,6 +91,10 @@ sudo chmod +x /home/pi/Desktop/backup.desktop
 # 3.    Execute the file update_all.sh
 # Make sure we keep a log file.
 
+# ensure we have wx version 2.8 and not version 3.0
+sudo apt-get install python-wxgtk2.8 -y
+sudo apt-get purge python-wxgtk3.0 -y
+
 # Run update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
 LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
