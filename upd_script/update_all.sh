@@ -16,9 +16,9 @@ sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# 
 sudo apt-get remove python-wxgtk3.0 -y
 
 echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes -y			# Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
-sudo apt-get install python-psutil --force-yes
+sudo apt-get install python-psutil --force-yes -y
 sudo apt-get remove python-wxgtk3.0 -y
 echo "Python-PSUtil"
 
@@ -35,7 +35,7 @@ sudo apt-get install python-picamera -y
 sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO -y
 
-sudo apt-get -y install avahi-daemon avahi-utils	# Added to help with avahi issues.  2016.01.03
+sudo apt-get install avahi-daemon avahi-utils -y	# Added to help with avahi issues.  2016.01.03
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
 
@@ -185,7 +185,7 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 echo "--> Setup screen."
 echo "--> ======================================="
 echo " "
-sudo apt-get install screen
+sudo apt-get install screen -y
 echo "--> Setup noVNC"
 echo "--> ======================================="
 echo " "
