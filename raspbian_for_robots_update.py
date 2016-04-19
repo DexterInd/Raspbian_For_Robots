@@ -229,7 +229,7 @@ class MainPanel(wx.Panel):
 		
 		# Depending on what the user chose, we either cancel or complete.  
 		if ran_dialog:
-			dlg = wx.MessageDialog(self, 'Firmware update will begin.', 'Begin', wx.OK|wx.ICON_INFORMATION)
+			dlg = wx.MessageDialog(self, 'Firmware update is done!', 'Begin', wx.OK|wx.ICON_INFORMATION)
 			dlg.ShowModal()
 			dlg.Destroy()
 		else:
