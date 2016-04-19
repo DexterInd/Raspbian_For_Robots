@@ -13,11 +13,13 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get update -y	# Get everything updated. 
 							# Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
 echo "Install Specific Libraries."
 sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
+sudo apt-get remove python-wxgtk3.0 -y
 
 echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes			# Install wx for python for windows / GUI programs.
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes -y			# Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
-sudo apt-get install python-psutil --force-yes
+sudo apt-get install python-psutil --force-yes -y
+sudo apt-get remove python-wxgtk3.0 -y
 echo "Python-PSUtil"
 
 sudo apt-get install python3-serial -y
@@ -33,7 +35,7 @@ sudo apt-get install python-picamera -y
 sudo apt-get install python3-picamera -y
 sudo pip install -U RPi.GPIO -y
 
-sudo apt-get -y install avahi-daemon avahi-utils	# Added to help with avahi issues.  2016.01.03
+sudo apt-get install avahi-daemon avahi-utils -y	# Added to help with avahi issues.  2016.01.03
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
 
@@ -183,7 +185,7 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 echo "--> Setup screen."
 echo "--> ======================================="
 echo " "
-sudo apt-get install screen
+sudo apt-get install screen -y
 echo "--> Setup noVNC"
 echo "--> ======================================="
 echo " "
@@ -331,6 +333,10 @@ echo "--> Update for RPi3."
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
 
+# remove wx version 3.0 - which gets pulled in by various other libraries
+# it creates graphical issues in our Python GUI
+sudo apt-get remove python-wxgtk3.0 -y
+
 echo "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
 cd /home/pi/Desktop
@@ -338,6 +344,16 @@ rm Version
 rm version.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/version.desktop
+
+
+# edition version file to reflect which Rasbpian flavour
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+echo "Version: $VERSION"
+if [ $VERSION -eq '8' ]; then
+  echo "Modifying Version file to reflect Jessie distro"
+  sudo sed -i 's/Wheezy/Jessie/g' /home/pi/di_update/Raspbian_For_Robots/Version
+fi
+
 
 echo "--> ======================================="
 echo "--> ======================================="

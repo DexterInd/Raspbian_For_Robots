@@ -7,10 +7,7 @@
 #
 # To Setup and Run:
 # cd /home/pi/
-# sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh
-# sudo chmod +x update_backup.sh
-# sudo ./update_backup.sh
-# cd /home/pi/di_update/Raspbian_For_Robots/jessie_update/
+# sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie-heavy-upgrade.sh
 # sudo chmod +x jessie-heavy-upgrade.sh
 # sudo ./jessie-heavy-upgrade.sh
 #
