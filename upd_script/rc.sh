@@ -28,7 +28,6 @@ then
 fi
 
 HOSTNAME_IN="/boot/hostname"
-HOSTNAME_OUT="/etc/hostname"
 
 echo "Reading from $HOSTNAME_IN"
 THISHOST=$(hostname -f) # Gets current hostname
