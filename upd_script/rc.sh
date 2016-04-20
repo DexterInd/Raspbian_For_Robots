@@ -17,19 +17,31 @@ echo " "
 
 # First get the hostname.
 
-# Now run the code in rc.local that updates the hostname.  
+# Now run the code in rc.local that updates the hostname. 
 
+# if we have a file called hostnames in /boot -> rename it to /boot/hostname
+# then default to /boot/hostname for the rest of the script
+
+if [ -f /boot/hostnames ]
+then
+  sudo mv /boot/hostnames /boot/hostname  
+fi
+
+HOSTNAME_IN="/boot/hostname"
+
+if [[ ! -f $HOSTNAME_IN ]] ; then
+  echo "no hostname change requested"
+  exit
+fi
+
+echo "Reading from $HOSTNAME_IN"
 THISHOST=$(hostname -f) # Gets current hostname
-echo $THISHOST
-read -r NEW_HOST < /boot/hostnames  # Gets hostname in file
-line=$(head -n 1 /boot/hostnames)
+echo "Current hostname: $THISHOST"
+read -r NEW_HOST < $HOSTNAME_IN # Gets hostname in file
+line=$(head -n 1 $HOSTNAME_IN)
 NEW_HOST=$line
 
-echo $NEW_HOST
-# echo $THISHOST
-
-# sleep 5m
-
+echo "New hostname: $NEW_HOST"
 
 if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the First line of the filename . . .
 
@@ -56,13 +68,13 @@ if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the Firs
 
         echo "Delete hostname."
 
-        sudo rm /etc/hostname
-        echo "Deleted hostname.  Create new hostname."
-        sudo echo $NEW_HOST >> /etc/hostname
+        sudo echo $NEW_HOST > /etc/hostname
         echo "New hostname file created."
         
         echo "Commit hostname change."
         sudo /etc/init.d/hostname.sh
+
+        sudo rm $HOSTNAME_IN
     
         # sudo reboot
     else 
