@@ -29,6 +29,11 @@ fi
 
 HOSTNAME_IN="/boot/hostname"
 
+if [[ ! -f $HOSTNAME_IN ]] ; then
+  echo "no hostname change requested"
+  exit
+fi
+
 echo "Reading from $HOSTNAME_IN"
 THISHOST=$(hostname -f) # Gets current hostname
 echo "Current hostname: $THISHOST"
