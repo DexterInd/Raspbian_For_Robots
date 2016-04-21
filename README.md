@@ -2,7 +2,12 @@
 
 ![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
 
-This is a customized version of the Raspbian Image for the Raspberry Pi.  It has been updated to help inexperienced users get started quickly with Dexter Industries Robots.
+This is a customized version of the Raspbian Image for the Raspberry Pi.  It has been updated to help users get started quickly with Dexter Industries Robots.
+
+## About
+* See [more about Raspbian for Robots software here.](http://www.dexterindustries.com/raspberry-pi-robot-software/)
+* See [another information page about Raspbian for Robots here.](http://www.dexterindustries.com/raspbian-for-robots/)
+* See a troubleshooting [guide for Raspbian for Robots Here.](http://www.dexterindustries.com/raspbian-for-robots-support/)
 
 This repository contains the latest and freshest updates to our software!
 
