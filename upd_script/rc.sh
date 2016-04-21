@@ -15,6 +15,18 @@ echo "                                                    ";
 echo "                                                    ";
 echo " "
 
+THISHOST=$(hostname -f) # Gets current hostname
+echo "Current hostname: $THISHOST"
+
+
+# CINCH: if hostapd exists, ensure that the SSID matches the hostname
+if [[ -f /etc/hostapd/hostapd.conf ]] ; then
+    if ! grep -Rq "$THISHOST" /etc/hostapd/hostapd.conf
+    then
+        sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
+    fi
+fi
+
 # First get the hostname.
 
 # Now run the code in rc.local that updates the hostname. 
@@ -35,8 +47,6 @@ if [[ ! -f $HOSTNAME_IN ]] ; then
 fi
 
 echo "Reading from $HOSTNAME_IN"
-THISHOST=$(hostname -f) # Gets current hostname
-echo "Current hostname: $THISHOST"
 read -r NEW_HOST < $HOSTNAME_IN # Gets hostname in file
 line=$(head -n 1 $HOSTNAME_IN)
 NEW_HOST=$line
