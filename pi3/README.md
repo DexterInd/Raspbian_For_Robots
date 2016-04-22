@@ -15,8 +15,10 @@ dtoverlay=pi3-miniuart-bt-overlay
 force_turbo=1
 ```
     
-## FOR JESSE:
-	1. Disable the built in bluetooth `sudo systemctl disable hciuart`
+## FOR JESSIE:
+    Move the bluetooth to use minuart using `dtoverlay=pi3-miniuart-bt` 
+    Older directions:
+        1. Disable the built in bluetooth `sudo systemctl disable hciuart`
 
 ## This Repository
 
