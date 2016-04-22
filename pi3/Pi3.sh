@@ -7,9 +7,9 @@
 #
 # Note this is called from upd_script/update_all.sh 
 
-# sudo apt-get update -y
-# sudo apt-get dist-upgrade -y
-# sudo rpi-update -y
+sudo apt-get update -y
+sudo apt-get dist-upgrade -y
+sudo rpi-update -y
 
 cd /home/pi/
 
