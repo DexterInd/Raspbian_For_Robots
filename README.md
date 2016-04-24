@@ -42,6 +42,11 @@ These scripts manage to update the Raspbian for Robots image.  These changes are
 * Updated Avahi network settings.
 * Updated IPV6 network settings.
 
+
+## Testing
+On each publication, we run [these tests](https://github.com/DexterInd/Utilities/blob/master/Raspbian_For_Robots_Testing/README.md) on a burned image to test it.
+
+
 ## License
 All software here is released under the [GNU GL3 license.](http://www.gnu.org/licenses/gpl-3.0.txt)
 
