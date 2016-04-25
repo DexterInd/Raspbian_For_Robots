@@ -323,11 +323,6 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/file_list.txt
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup_gui.py
 echo "--> End installing Backup."
 
-echo "--> Begin cleanup."
-sudo apt-get clean -y		# Remove any unused packages.
-sudo apt-get autoremove -y 	# Remove unused packages.
-echo "--> End cleanup."
-
 echo "--> Update for RPi3."
 # Run the update script for updating overlays for Rpi3.
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
@@ -336,6 +331,11 @@ sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
 # remove wx version 3.0 - which gets pulled in by various other libraries
 # it creates graphical issues in our Python GUI
 sudo apt-get remove python-wxgtk3.0 -y
+
+echo "--> Begin cleanup."
+sudo apt-get clean -y		# Remove any unused packages.
+sudo apt-get autoremove -y 	# Remove unused packages.
+echo "--> End cleanup."
 
 echo "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
