@@ -24,7 +24,7 @@ echo "--> ======================================="
 echo "--> Begin Cleanup."
 echo "--> ======================================="
 sudo apt-get clean		# Remove any unused packages.
-sudo apt-get autoremove # Remove unused packages.
+sudo apt-get autoremove -y # Remove unused packages.
 echo "--> End Cleanup."
 echo "--> ======================================="
 
