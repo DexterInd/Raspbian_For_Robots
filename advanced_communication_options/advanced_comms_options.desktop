@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Advanced Communication Options
+Comment=Line Follower Calibration
+Icon=/usr/share/icons/gnome/256x256/status/gnome-netstatus-tx.png
+Exec=lxterminal  --title "Advanced Communication Options - Do not close this window!" --command "gksu python /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_communication_options.py"
+NoDisplay=true

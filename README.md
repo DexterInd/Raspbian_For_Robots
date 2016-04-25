@@ -2,7 +2,12 @@
 
 ![Dex Logo](dexter_industries_logo.jpg "Dexter Industries Logo.")
 
-This is a customized version of the Raspbian Image for the Raspberry Pi.  It has been updated to help inexperienced users get started quickly with Dexter Industries Robots.
+This is a customized version of the Raspbian Image for the Raspberry Pi.  It has been updated to help users get started quickly with Dexter Industries Robots.
+
+## About
+* See [more about Raspbian for Robots software here.](http://www.dexterindustries.com/raspberry-pi-robot-software/)
+* See [another information page about Raspbian for Robots here.](http://www.dexterindustries.com/raspbian-for-robots/)
+* See a troubleshooting [guide for Raspbian for Robots Here.](http://www.dexterindustries.com/raspbian-for-robots-support/)
 
 This repository contains the latest and freshest updates to our software!
 
@@ -36,6 +41,11 @@ These scripts manage to update the Raspbian for Robots image.  These changes are
 ## Changes 2016-01-05
 * Updated Avahi network settings.
 * Updated IPV6 network settings.
+
+
+## Testing
+On each publication, we run [these tests](https://github.com/DexterInd/Utilities/blob/master/Raspbian_For_Robots_Testing/README.md) on a burned image to test it.
+
 
 ## License
 All software here is released under the [GNU GL3 license.](http://www.gnu.org/licenses/gpl-3.0.txt)
