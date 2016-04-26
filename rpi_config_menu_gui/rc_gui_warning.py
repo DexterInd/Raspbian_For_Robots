@@ -12,7 +12,7 @@ class pi_config_app(wx.Frame):
         self.parent = parent
         self.initialize()
         # Exit
-        exit_button = wx.Button(self, label="Exit", pos=(225,200))
+        exit_button = wx.Button(self, label="Exit", pos=(100,200))
         exit_button.Bind(wx.EVT_BUTTON, self.onClose)
         
         robot = "/home/pi/Desktop/GoBox/Troubleshooting_GUI/dex.png"
@@ -37,7 +37,7 @@ class pi_config_app(wx.Frame):
 
     def initialize(self):
         sizer = wx.GridBagSizer()
-        ok_button = wx.Button(self,-1,label="OK", pos=(100,200))
+        ok_button = wx.Button(self,-1,label="OK", pos=(225,200))
         sizer.Add(ok_button, (0,1))
         self.Bind(wx.EVT_BUTTON, self.ok_button_OnClick, ok_button)
         
