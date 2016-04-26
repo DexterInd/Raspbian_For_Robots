@@ -8,8 +8,11 @@
 # Note this is called from upd_script/update_all.sh 
 
 sudo apt-get update -y
-sudo apt-get dist-upgrade -y
-sudo rpi-update -y
+sudo apt-get dist-upgrade -y    # apt-get dist-upgrade is only useful if you change the distribution, for example from wheezy to jessie.
+# Commenting out the rpi-update.  
+# Note:  https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=137546
+# rpi-update is for experimentation only ... or if you like to take risks.
+# sudo rpi-update -y
 
 cd /home/pi/
 
