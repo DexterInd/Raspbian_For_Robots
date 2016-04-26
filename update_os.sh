@@ -20,7 +20,7 @@ echo "--> ======================================="
 # Note:  https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=137546
 # rpi-update is for experimentation only ... or if you like to take risks.
 # apt-get dist-upgrade is only useful if you change the distribution, for example from wheezy to jessie.
-# sudo apt-get dist-upgrade -y
+sudo apt-get dist-upgrade -y
 # sudo rpi-update -y
 echo "--> End Firmware Upgrade."
 echo "--> ======================================="
