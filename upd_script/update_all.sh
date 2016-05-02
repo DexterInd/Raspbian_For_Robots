@@ -262,6 +262,12 @@ echo "--> ======================================="
 echo " "
 
 ########################################################################
+# ensure the Scratch examples are reachable via Scratch GUI
+# this is done by using soft links
+########################################################################
+bash upd_scratch_softlinks.sh
+
+########################################################################
 ## Install Wifi Adhoc
 ## Sometimes we may not want to do this.  To make it easy, 
 ## Put it inside an if statement
