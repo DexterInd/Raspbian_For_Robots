@@ -265,7 +265,7 @@ echo " "
 # ensure the Scratch examples are reachable via Scratch GUI
 # this is done by using soft links
 ########################################################################
-bash upd_scratch_softlinks.sh
+bash /home/pi/di_update/Raspbian_For_Robots/upd_script/upd_scratch_softlinks.sh
 
 ########################################################################
 ## Install Wifi Adhoc
