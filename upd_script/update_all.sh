@@ -72,6 +72,11 @@ sudo sed -i "/dtparam=i2c_arm=on/d" /boot/config.txt
 sudo sed -i "/dtparam=spi=on/d" /boot/config.txt
 sudo echo "dtparam=spi=on" >> /boot/config.txt
 sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
+
+# This is really imprtant for the BrickPi!
+sudo sed -i "/init_uart_clock=32000000/d" /boot/config.txt
+sudo echo "init_uart_clock=32000000" >> /boot/config.txt
+
 echo "--> End Kernel Updates."
 
 ########################################################################
