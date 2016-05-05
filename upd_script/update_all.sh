@@ -77,6 +77,13 @@ sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
 sudo sed -i "/init_uart_clock=32000000/d" /boot/config.txt
 sudo echo "init_uart_clock=32000000" >> /boot/config.txt
 
+# Disable serial over UART
+sudo sed -i 's/console=ttyAMA0,115200//' /boot/cmdline.txt
+sudo sed -i 's/console=serial00,115200//' /boot/cmdline.txt
+sudo sed -i 's/kgbdoc=ttyAMA0,115200//' /boot/cmdline.txt
+sudo systemctl stop serial-getty@ttyAMA0.service
+sudo systemctl disable serial-getty@ttyAMA0.service
+
 echo "--> End Kernel Updates."
 
 ########################################################################
