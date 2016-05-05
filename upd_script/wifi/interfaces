@@ -1,3 +1,6 @@
+# This file was create by the Dexter Industries cinch setup script
+# Do not change unless you really know what you are doing
+
 auto lo
 iface lo inet loopback
 
@@ -13,4 +16,4 @@ iface wlan0 inet static
 address 10.10.10.10
 netmask 255.255.255.0
 
-up iptables-restore < /etc/iptables.ipv4.nat
+up iptables-restore < /etc/iptables.ipv4.cinch.nat
