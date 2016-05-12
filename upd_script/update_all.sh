@@ -33,6 +33,8 @@ sudo apt-get install python3-rpi.gpio -y
 sudo apt-get install python-psutil -y 		# Used in Scratch GUI
 sudo apt-get install python-picamera -y
 sudo apt-get install python3-picamera -y
+sudo apt-get install python3-smbus
+sudo apt-get install python-smbus
 sudo pip install -U RPi.GPIO -y
 
 sudo apt-get install avahi-daemon avahi-utils -y	# Added to help with avahi issues.  2016.01.03
