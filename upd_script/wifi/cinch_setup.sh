@@ -32,6 +32,8 @@ sudo ifdown wlan0
 
 # Copy Hostapd /etc/hostapd/hostapd.conf
 	sudo rm /etc/hostapd/hostapd.conf
+	THISHOST=$(hostname -f) # Gets current hostname
+	sed -i 's/ssid=dex/ssid='$THISHOST'/g' /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/hostapd.conf
 	sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/hostapd.conf /etc/hostapd/
 
 # Copy NAT /etc/sysctl.conf

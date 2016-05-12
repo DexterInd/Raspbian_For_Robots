@@ -135,6 +135,12 @@ sudo chmod +x /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
 sudo sh /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
 cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop
 
+# in Jessie, add a warning before user can reach the Raspberry Pi Configuration Menu Item
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+if [ $VERSION -eq '8' ]; then
+  sudo cp /home/pi/di_update/Raspbian_For_Robots/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
+fi
+
 # Install GoBox Troubleshooting Software
 sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
