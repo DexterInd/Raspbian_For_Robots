@@ -274,20 +274,12 @@ echo "--> !"
 echo "--> ======================================="
 echo " "
 
-<<<<<<< HEAD
-=======
 ########################################################################
 # ensure the Scratch examples are reachable via Scratch GUI
 # this is done by using soft links
 ########################################################################
 bash /home/pi/di_update/Raspbian_For_Robots/upd_script/upd_scratch_softlinks.sh
 
-########################################################################
-## Install Wifi Adhoc
-## Sometimes we may not want to do this.  To make it easy, 
-## Put it inside an if statement
-
->>>>>>> origin/master
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
 
