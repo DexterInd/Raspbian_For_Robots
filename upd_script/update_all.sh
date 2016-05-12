@@ -261,35 +261,8 @@ echo "--> !"
 echo "--> ======================================="
 echo " "
 
-########################################################################
-## Install Wifi Adhoc
-## Sometimes we may not want to do this.  To make it easy, 
-## Put it inside an if statement
-
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
-:'
-
-echo -n "Install Wifi Adhoc? " -r
-read ANSWER
-if echo "$ANSWER" | grep -iq "^y" ;then
-	# Update Wifi Drivers
-	echo "--> Update Wifi Drivers"
-	echo "--> ======================================="
-	cd wifi
-	sudo chmod +x setup_wifi.sh
-	sudo ./setup_wifi.sh
-	cd ..
-
-	# Install Adhoc
-	echo "--> Install Adhoc setup."
-	echo "--> ======================================="
-	cd wifi
-	sudo chmod +x setup_host_apd.sh
-	sudo ./setup_host_apd.sh
-	cd ..
-fiw
-'
 
 ########################################################################
 ## Last bit of house cleaning.
