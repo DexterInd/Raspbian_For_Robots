@@ -62,6 +62,10 @@ iptables -t nat -A PREROUTING -i wlan0 --protocol tcp --match tcp --destination-
 # Save IP Tables
 iptables-save > /etc/iptables.ipv4.cinch.nat
 
+# Set the Cinch flag in /home/pi/cinch file
+# This creates a file "cinch" in the home directory.
+echo "1" > /home/pi/cinch
+
 # Restart IP Tables
 /etc/init.d/networking restart
 
