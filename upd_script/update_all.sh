@@ -328,9 +328,11 @@ sudo apt-get remove python-wxgtk3.0 -y
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
 if [ ! -f /home/pi/cinch ]; then
+    echo "No Cinch Found."
+else
     echo "Found cinch, running Cinch install."
-	cd /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi
-	sudo ./cinch_setup.sh
+    cd /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi
+    sudo ./cinch_setup.sh
 fi
 
 echo "--> Begin cleanup."
