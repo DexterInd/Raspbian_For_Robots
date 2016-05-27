@@ -13,7 +13,7 @@ Following:  https://docs.google.com/document/u/0/d/16hJS7fnPyKUwbvR33_nMku_b6XcY
 # http://www.jenssegers.be/43/Realtek-RTL8188-based-access-point-on-Raspberry-Pi
 # http://lcdev.dk/2012/11/18/raspberry-pi-tutorial-connect-to-wifi-or-create-an-encrypted-dhcp-enabled-ad-hoc-network-as-fallback/
 # http://www.daveconroy.com/turn-your-raspberry-pi-into-a-wifi-hotspot-with-edimax-nano-usb-ew-7811un-rtl8188cus-chipset/
-
+# https://nims11.wordpress.com/2013/05/22/using-hostapd-with-dnsmasq-to-create-virtual-wifi-access-point-in-linux/
 
 Starting with 2016.03.28 Image
 
