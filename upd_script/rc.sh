@@ -18,17 +18,6 @@ echo " "
 THISHOST=$(hostname -f) # Gets current hostname
 echo "Current hostname: $THISHOST"
 
-
-# CINCH: if hostapd exists, ensure that the SSID matches the hostname
-if [[ -f /etc/hostapd/hostapd.conf ]] ; then
-    if ! grep -Rq "$THISHOST" /etc/hostapd/hostapd.conf
-    then
-        sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
-    fi
-fi
-
-# First get the hostname.
-
 # Now run the code in rc.local that updates the hostname. 
 
 # if we have a file called hostnames in /boot -> rename it to /boot/hostname
@@ -85,7 +74,14 @@ if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the Firs
         sudo /etc/init.d/hostname.sh
 
         sudo rm $HOSTNAME_IN
-    
+
+        # CINCH: if hostapd exists, ensure that the SSID matches the hostname
+        if [[ -f /etc/hostapd/hostapd.conf ]] ; then
+            if ! grep -Rq "$THISHOST" /etc/hostapd/hostapd.conf
+            then
+                sudo sed -i '/^ssid=/s/ssid=.*/ssid='$NEW_HOST'/g' /etc/hostapd/hostapd.conf
+            fi
+        fi    
         # sudo reboot
     else 
 
