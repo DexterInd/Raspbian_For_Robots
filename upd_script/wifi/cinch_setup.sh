@@ -29,7 +29,7 @@ make install
 ifdown wlan0
 
 # Copy modprobe /etc/modprobe.d/cinch-blacklist.conf
-cp $SCRIPTDIR/modprobe.conf etc/modprobe.d/cinch-blacklist.conf
+cp $SCRIPTDIR/modprobe.conf /etc/modprobe.d/cinch-blacklist.conf
 
 # Copy Interfaces /etc/network/interfaces
 if [ -f /etc/network/interfaces ]; then
