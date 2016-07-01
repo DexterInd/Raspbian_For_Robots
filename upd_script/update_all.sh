@@ -6,6 +6,18 @@
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
 
+
+# set quiet mode so the user isn't told to reboot before the very end
+touch /home/pi/quiet_mode
+# setting quiet mode
+if [ -f /home/pi/quiet_mode ]
+then
+	quiet_mode=1
+else
+	quiet_mode=0
+fi
+
+
 echo "--> Begin Update."
 echo "--> ======================================="
 sudo dpkg --configure -a
@@ -357,6 +369,7 @@ if [ $VERSION -eq '8' ]; then
   sudo sed -i 's/Wheezy/Jessie/g' /home/pi/di_update/Raspbian_For_Robots/Version
 fi
 
+rm /home/pi/quiet_mode
 
 echo "--> ======================================="
 echo "--> ======================================="
