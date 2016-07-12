@@ -1,6 +1,14 @@
 #! /bin/bash
 # This script updates the the code repos on Raspbian for Robots.
 
+# verify quiet mode
+if [ -f /home/pi/quiet_mode ]
+then
+	quiet_mode=1
+else
+	quiet_mode=0
+fi
+
 # GoPiGo Update
 echo "--> Start GoPiGo Update."
 echo "----------"
@@ -18,6 +26,8 @@ echo "------------------"
 sudo chmod +x install.sh
 sudo ./install.sh
 
+
+echo "--> Installing Line Follower Calibration"
 # Install GoPiGo Line Follower Calibration
 sudo rm /home/pi/Desktop/line_follow.desktop
 sudo cp /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
