@@ -1,6 +1,5 @@
 [Unit]
 Description=SpyvsSpi
-After=multi-user.target
 
 [Service]
 Type=idle
