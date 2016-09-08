@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /home/pi/SpyvsSpy_Startup.py > /home/pi/myscript.log 2>&1
+ExecStart=/usr/bin/python /home/pi/SpyvsSpy_Startup.py
 
 [Install]
 WantedBy=multi-user.target
