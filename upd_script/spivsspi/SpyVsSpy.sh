@@ -13,6 +13,6 @@ sudo cp spyvsspi.service /etc/systemd/system/spyvsspi.service
 sudo chown root:root /etc/systemd/system/spyvsspi.service
 
 echo "############################################################"
-#sudo systemctl daemon-reload
-#sudo systemctl enable spyvsspi.service
+sudo systemctl daemon-reload
+sudo systemctl enable spyvsspi.service
 echo "############################################################"
