@@ -1,0 +1,9 @@
+[Unit]
+Description=SpyvsSpi
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/SpyvsSpy_Startup.py
+
+[Install]
+WantedBy=multi-user.target
