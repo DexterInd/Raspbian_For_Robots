@@ -49,6 +49,7 @@ sudo pip install -U RPi.GPIO
 echo "geany and piclone"
 # new tools from the foundation
 sudo apt-get install geany piclone -y
+sudo sed -i '/^Exec/ c Exec=sudo geany %F/' /usr/share/raspi-ui-overrides/applications/geany.desktop
 
 
 sudo adduser pi i2c
