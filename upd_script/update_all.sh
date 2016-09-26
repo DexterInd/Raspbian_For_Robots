@@ -42,7 +42,7 @@ sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
 # sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
 sudo apt-get install python-picamera python3-picamera -y
 sudo apt-get install python-smbus python3-smbus -y
-sudo pip install -U RPi.GPIO -y
+sudo pip install -U RPi.GPIO
 
 
 
