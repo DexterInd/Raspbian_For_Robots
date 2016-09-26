@@ -48,7 +48,7 @@ echo " "
 echo " "
 echo "Check for internet connectivity..."
 echo "=================================="
-wget -q --tries=2 --timeout=100 http://google.com
+wget -q --tries=2 --timeout=100 --output-document=/dev/null http://raspberrypi.org
 if [ $? -eq 0 ];then
 	echo "Connected"
 else
