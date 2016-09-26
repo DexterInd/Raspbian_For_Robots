@@ -34,23 +34,22 @@ sudo apt-get install python-psutil --force-yes -y
 sudo apt-get remove python-wxgtk3.0 -y
 echo "Python-PSUtil"
 
-sudo apt-get install python3-serial -y
-sudo apt-get install python-serial -y
+sudo apt-get install python3-serial python-serial -y
 sudo apt-get install i2c-tools -y
 
-sudo apt-get purge python-rpi.gpio -y
-sudo apt-get purge python3-rpi.gpio -y
-sudo apt-get install python-rpi.gpio -y
-sudo apt-get install python3-rpi.gpio -y
-sudo apt-get install python-psutil -y 		# Used in Scratch GUI
-sudo apt-get install python-picamera -y
-sudo apt-get install python3-picamera -y
+sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
+# sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
+sudo apt-get install python-picamera python3-picamera -y
 sudo apt-get install python-smbus python3-smbus -y
 sudo pip install -U RPi.GPIO -y
 
-sudo apt-get install avahi-daemon avahi-utils -y	# Added to help with avahi issues.  2016.01.03
-sudo apt-get install apache2 -y
-sudo apt-get install php5 libapache2-mod-php5 -y
+
+
+echo "geany and piclone"
+# new tools from the foundation
+sudo apt-get install geany piclone -y
+
 
 sudo adduser pi i2c
 
@@ -160,8 +159,10 @@ sudo apt-get install raspberrypi-net-mods -y	# Updates wifi configuration.  Does
 echo "--> Install Apache. and PHP"
 echo "--> ======================================="
 echo " "
-sudo apt-get install apache2 -y
-sudo apt-get install php5 libapache2-mod-php5 -y
+
+sudo apt-get install avahi-daemon avahi-utils -y  # Added to help with avahi issues.  2016.01.03
+sudo apt-get install apache2 php5 libapache2-mod-php5 -y
+
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_disable_sleep.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_disable_sleep.sh
 
