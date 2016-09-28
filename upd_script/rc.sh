@@ -48,7 +48,11 @@ if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the Firs
     REGEX="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9]))*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$";
     if [[ "$NEW_HOST" =~ $REGEX ]]; then
         echo $NEW_HOST > /home/pi/Desktop/hostname.log
-        rm /home/pi/Desktop/Invalid_hostname.log
+		if [ -f /home/pi/Desktop/Invalid_hostname.log ] #Remove the Invalid hostname.log, if one exists
+		then
+			rm /home/pi/Desktop/Invalid_hostname.log 
+		fi
+        
         echo "Rewriting hostname"
 
         # Rewrite hosts
