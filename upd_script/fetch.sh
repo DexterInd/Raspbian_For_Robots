@@ -9,6 +9,33 @@ else
 	quiet_mode=0
 fi
 
+robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
+if [ -f $robots_2_update]  # if the file exists, read it and adjust according to its content
+then
+	gopigo=0
+	brickpi=0
+	grovepi=0
+	arduberry=0
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+	    echo "Text read from file: $line"
+	    if [ $line == "GoPiGo" ] ; then
+	       gopigo=1
+	    elif [ $line == "BrickPi" ] ; then
+	       brickpi=1
+	    elif [ $line == "GrovePi" ] ; then
+	       grovepi=1
+	    elif [ $line == "Arduberry" ] ; then
+	       arduberry=1
+	    fi
+	done < $robots_2_update 
+else # if the file doesn't exist, update everything
+	gopigo=1
+	brickpi=1
+	grovepi=1
+	arduberry=1
+fi
+
+
 # GoPiGo Update
 echo "--> Start GoPiGo Update."
 echo "----------"
