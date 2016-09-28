@@ -9,6 +9,10 @@ import threading
 import psutil
 import signal
 
+robots = {}
+robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry"]
+
+
 #	This program runs various update programs for Raspbian for Robots, from Dexter Industries.
 #	See more about Dexter Industries at http://www.dexterindustries.com
 '''
@@ -26,6 +30,8 @@ import signal
 # http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/
 # ComboBoxes!  		http://wiki.wxpython.org/AnotherTutorial#wx.ComboBox
 
+
+
 # Writes debug to file "error_log"
 def write_debug(in_string):
 	# In in time logging.
@@ -36,11 +42,14 @@ def write_debug(in_string):
 	error_file.close()
 
 def write_state(in_string):
-	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
-	if(' ' in in_string): 
-		in_string = "dex"
-	error_file.write(in_string)
-	error_file.close()
+	try:
+		error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
+		if(' ' in in_string): 
+			in_string = "dex"
+		error_file.write(in_string)
+		error_file.close()
+	except:
+		pass
 
 def read_state():
 	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'r')		# File: selected state
@@ -48,6 +57,17 @@ def read_state():
 	in_string = error_file.read()
 	error_file.close()
 	return in_string
+
+def write_robots_to_update():
+	try:
+		robots_2_update_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update','w')
+		for robot in robots:
+			if robots[robot].GetValue():
+				robots_2_update_file.write(robot+'\n')
+		robots_2_update_file.close()
+	except:
+		pass
+
 	
 def send_bash_command(bashCommand):
 	# print bashCommand
@@ -68,6 +88,7 @@ class MainPanel(wx.Panel):
 	""""""
 	#----------------------------------------------------------------------
 	def __init__(self, parent):
+		global robots
 		"""Constructor"""
 		wx.Panel.__init__(self, parent=parent)
 		self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
@@ -86,26 +107,36 @@ class MainPanel(wx.Panel):
 		update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
 		
 		# Update DI Software
-		update_software = wx.Button(self, label="Update Dexter Software", pos=(25, 100))
-		update_software.Bind(wx.EVT_BUTTON, self.update_software)			
-		
-		# Update Firmware
-		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(25,150))
-		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
+		update_software = wx.Button(self, label="Update Dexter Software", pos=(25, 90))
+		update_software.Bind(wx.EVT_BUTTON, self.update_software)		
+
+
+		for i in range(len(robots_names)):
+			posx=25+(110-15)*(i/2)   # result is either 25 or 110
+			posy=120+(145-120)*(i%2) # result is either 120 or 145
+			robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
+			robots[robots_names[i]].SetValue(True)
+			robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
+	
 
 		# Exit
-		exit_button = wx.Button(self, label="Exit", pos=(25,250))
+		exit_button = wx.Button(self, label="Exit", pos=(300,250))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
 	
-		# End Standard Buttons		
+	
+
 		#-------------------------------------------------------------------
+		# Update Firmware
+		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(25,200))
+		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
+
 		# Drop Boxes
 
 		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
 
 		# Select Platform.
 		
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 200), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 240), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 		
 		# Drop Boxes
@@ -155,6 +186,14 @@ class MainPanel(wx.Panel):
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
 		png = wx.Image(robot, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
 		wx.StaticBitmap(self, -1, png, (200, 0), (png.GetWidth(), png.GetHeight()))
+
+	# keep track of which robots to update
+	def which_robot(self,event):
+		print("which_robot called")
+		for i in range(len(robots)):
+			print robots_names[i], robots[robots_names[i]].GetValue()
+		write_robots_to_update()
+
 
 	# Update the Operating System.
 	def update_raspbian(self, event):
