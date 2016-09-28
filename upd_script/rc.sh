@@ -81,10 +81,7 @@ if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the Firs
 
         # CINCH: if hostapd exists, ensure that the SSID matches the hostname
         if [[ -f /etc/hostapd/hostapd.conf ]] ; then
-            if ! grep -Rq "$THISHOST" /etc/hostapd/hostapd.conf
-            then
-                sudo sed -i '/^ssid=/s/ssid=.*/ssid='$NEW_HOST'/g' /etc/hostapd/hostapd.conf
-            fi
+			sudo sed -i '/^ssid=/s/ssid=.*/ssid='$NEW_HOST'/g' /etc/hostapd/hostapd.conf
         fi    
         # sudo reboot
     else 
