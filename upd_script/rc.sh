@@ -27,6 +27,10 @@ if [ -f /boot/hostnames ]
 then
   sudo mv /boot/hostnames /boot/hostname  
 fi
+# To change the Wifi access point name if hostname is changed using GUI
+if [[ -f /etc/hostapd/hostapd.conf ]] ; then
+  sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
+fi
 
 HOSTNAME_IN="/boot/hostname"
 
