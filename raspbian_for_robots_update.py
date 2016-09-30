@@ -102,42 +102,45 @@ class MainPanel(wx.Panel):
 		#-------------------------------------------------------------------
 		# Standard Buttons
 
-		# Upate Raspbian
-		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(25,50))
+		# Update Raspbian
+		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(20,40))
 		update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
 		
-		# Update DI Software
-		update_software = wx.Button(self, label="Update Dexter Software", pos=(25, 90))
-		update_software.Bind(wx.EVT_BUTTON, self.update_software)		
-
-
+		wx.StaticText(self,-1,"Update Dexter Software for:",(20,85))
 		for i in range(len(robots_names)):
-			posx=25+(110-15)*(i/2)   # result is either 25 or 110
-			posy=120+(145-120)*(i%2) # result is either 120 or 145
+			posx=35+(110-35)*(i/2)   # result is either 25 or 110
+			posy=103+(123-103)*(i%2) # result is either 90 or 115
+			#print(posx,posy)
 			robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
 			robots[robots_names[i]].SetValue(True)
 			robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
-	
+		# Update DI Software
+		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,145))
+		update_software.Bind(wx.EVT_BUTTON, self.update_software)	
+
 
 		# Exit
 		exit_button = wx.Button(self, label="Exit", pos=(300,250))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
-	
+
 	
 
 		#-------------------------------------------------------------------
 		# Update Firmware
-		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(25,200))
-		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
 
+		wx.StaticText(self,-1,"Update Firmware for:",(20,186))
 		# Drop Boxes
-
 		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
 
 		# Select Platform.
-		
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 240), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, " ", pos=(35, 207), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
+
+		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(35,242))
+		update_firmware.SetBackgroundColour('WHITE')
+		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
+		update_firmware.Bind(wx.EVT_ENTER_WINDOW, self.OnEnter)
+		update_firmware.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeave)	
 		
 		# Drop Boxes
 		#-------------------------------------------------------------------
@@ -149,7 +152,7 @@ class MainPanel(wx.Panel):
 	
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
  
- 		send_bash_command_in_background("clear")
+		send_bash_command_in_background("clear")
 
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
@@ -295,6 +298,18 @@ class MainPanel(wx.Panel):
 		"""
 		"""
 		self.frame.Close()
+
+	def OnEnter(self, e):
+		
+		btn = e.GetEventObject()        
+		btn.SetBackgroundColour('GREY79')
+		btn.Refresh()
+
+	def OnLeave(self, e):
+		
+		btn = e.GetEventObject()
+		btn.SetBackgroundColour('WHITE')
+		btn.Refresh()
   
 ########################################################################
 class MainFrame(wx.Frame):
@@ -314,14 +329,14 @@ class MainFrame(wx.Frame):
  
 ########################################################################
 class Main(wx.App):
-    """"""
+	""""""
  
-    #----------------------------------------------------------------------
-    def __init__(self, redirect=False, filename=None):
-        """Constructor"""
-        wx.App.__init__(self, redirect, filename)
-        dlg = MainFrame()
-        dlg.Show()
+	#----------------------------------------------------------------------
+	def __init__(self, redirect=False, filename=None):
+		"""Constructor"""
+		wx.App.__init__(self, redirect, filename)
+		dlg = MainFrame()
+		dlg.Show()
  
 #----------------------------------------------------------------------
 if __name__ == "__main__":
