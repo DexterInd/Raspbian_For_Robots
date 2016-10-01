@@ -18,13 +18,13 @@ then
 	arduberry_update=0
 	while IFS='' read -r line || [[ -n "$line" ]]; do
 	    echo "Text read from file: $line"
-	    if [ $line="GoPiGo" ] ; then
+	    if [ "$line" == "GoPiGo" ] ; then
 	       gopigo_update=1
-	    elif [ $line="BrickPi" ] ; then
+	    elif [ "$line" == "BrickPi" ] ; then
 	       brickpi_update=1
-	    elif [ $line="GrovePi" ] ; then
+	    elif [ "$line" == "GrovePi" ] ; then
 	       grovepi_update=1
-	    elif [ $line="Arduberry" ] ; then
+	    elif [ "$line" == "Arduberry" ] ; then
 	       arduberry_update=1
 	    fi
 	done < $robots_2_update 
