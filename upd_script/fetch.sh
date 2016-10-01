@@ -16,7 +16,8 @@ then
 	brickpi_update=0
 	grovepi_update=0
 	arduberry_update=0
-	while IFS='' read -r line || [[ -n "$line" ]]; do
+	while read -r line 
+        do
 	    echo "Text read from file: $line"
 	    if [ "$line" == "GoPiGo" ] ; then
 	       gopigo_update=1
