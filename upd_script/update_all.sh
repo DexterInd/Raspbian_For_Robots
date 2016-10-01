@@ -127,7 +127,8 @@ sudo rm /home/pi/Desktop/python-games.desktop 		# Not sure how this Icon got her
 echo "--> Begin Update Dexter Industries Software Packages."
 echo "--> ======================================="
 echo " "
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
+# sh will not work here. Bash is required
+sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
 
 
 # Enable LRC Infrared Control on Pi.
