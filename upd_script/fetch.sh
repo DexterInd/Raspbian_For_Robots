@@ -18,13 +18,13 @@ then
 	arduberry_update=0
 	while IFS='' read -r line || [[ -n "$line" ]]; do
 	    echo "Text read from file: $line"
-	    if [ $line == "GoPiGo" ] ; then
+	    if [ $line = "GoPiGo" ] ; then
 	       gopigo_update=1
-	    elif [ $line == "BrickPi" ] ; then
+	    elif [ $line = "BrickPi" ] ; then
 	       brickpi_update=1
-	    elif [ $line == "GrovePi" ] ; then
+	    elif [ $line = "GrovePi" ] ; then
 	       grovepi_update=1
-	    elif [ $line == "Arduberry" ] ; then
+	    elif [ $line = "Arduberry" ] ; then
 	       arduberry_update=1
 	    fi
 	done < $robots_2_update 
@@ -214,7 +214,7 @@ sudo sh /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start
 # Install All Python Scripts
 
 #########################################
-if [ $brickpi_update == 1 ] ; then
+if [ $brickpi_update=1 ] ; then
 	# BrickPi Python Installation
 	cd /home/pi/Desktop/BrickPi_Python/
 	sudo python setup.py install --record files.txt
@@ -229,7 +229,7 @@ fi # end second brickpi conditional test
 
 ##########################################
 #GoPiGo Python Installation
-if [ $gopigo_update == 1 ] ; then
+if [ $gopigo_update=1 ] ; then
 	echo "Installing GoPiGo Libraries from Fetch"
 	cd /home/pi/Desktop/GoPiGo/Software/Python/
 	sudo python setup.py install --record files.txt
@@ -245,7 +245,7 @@ fi # end second gopigo conditional test
 
 #########################################
 #  GrovePi
-if [ $grovepi_update == 1 ] ; then
+if [ $grovepi_update=1 ] ; then
 	cd /home/pi/Desktop/GrovePi/Software/Python/
 	sudo python setup.py install --record files.txt
 	sudo cat files.txt | xargs sudo rm -rf
