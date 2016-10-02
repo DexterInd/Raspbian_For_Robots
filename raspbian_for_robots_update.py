@@ -106,16 +106,16 @@ class MainPanel(wx.Panel):
 		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(20,40))
 		update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
 		
-		wx.StaticText(self,-1,"Update Dexter Software for:",(20,85))
+		wx.StaticBox(self,-1,"Update Dexter Software for:",(20,78),size=(190,100))
 		for i in range(len(robots_names)):
 			posx=35+(110-35)*(i/2)   # result is either 25 or 110
-			posy=103+(123-103)*(i%2) # result is either 90 or 115
+			posy=100+(120-100)*(i%2) # result is either 90 or 115
 			#print(posx,posy)
 			robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
 			robots[robots_names[i]].SetValue(True)
 			robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
 		# Update DI Software
-		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,145))
+		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,142),size=(165,30))
 		update_software.Bind(wx.EVT_BUTTON, self.update_software)	
 
 
@@ -128,7 +128,7 @@ class MainPanel(wx.Panel):
 		#-------------------------------------------------------------------
 		# Update Firmware
 
-		wx.StaticText(self,-1,"Update Firmware for:",(20,186))
+		wx.StaticBox(self,-1,"Update Firmware for:",(20,186),size=(190,100))
 		# Drop Boxes
 		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
 
@@ -137,10 +137,9 @@ class MainPanel(wx.Panel):
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 
 		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(35,242))
-		update_firmware.SetBackgroundColour('WHITE')
+		#print(update_firmware.GetSize())
 		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
-		update_firmware.Bind(wx.EVT_ENTER_WINDOW, self.OnEnter)
-		update_firmware.Bind(wx.EVT_LEAVE_WINDOW, self.OnLeave)	
+
 		
 		# Drop Boxes
 		#-------------------------------------------------------------------
@@ -173,7 +172,7 @@ class MainPanel(wx.Panel):
 		# Add a second picture.
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
 		bmp = wx.Bitmap(robot)	# Draw the photograph.
-		dc.DrawBitmap(bmp, 200, 0)	
+		dc.DrawBitmap(bmp, 200, 20)	
 		
 	# RobotDrop
 	# This is the function called whenever the drop down box is called.
@@ -299,17 +298,6 @@ class MainPanel(wx.Panel):
 		"""
 		self.frame.Close()
 
-	def OnEnter(self, e):
-		
-		btn = e.GetEventObject()        
-		btn.SetBackgroundColour('GREY79')
-		btn.Refresh()
-
-	def OnLeave(self, e):
-		
-		btn = e.GetEventObject()
-		btn.SetBackgroundColour('WHITE')
-		btn.Refresh()
   
 ########################################################################
 class MainFrame(wx.Frame):
