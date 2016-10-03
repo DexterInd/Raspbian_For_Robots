@@ -102,20 +102,22 @@ class MainPanel(wx.Panel):
 		#-------------------------------------------------------------------
 		# Standard Buttons
 
+# removing option to do a Raspbian Update------------------------------------------------
 		# Update Raspbian
-		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(20,40))
-		update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
+		#update_raspbian = wx.Button(self, label="Update Raspbian", pos=(20,40))
+		#update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
+# ---------------------------------------------------------------------------------------
 		
-		wx.StaticBox(self,-1,"Update Dexter Software for:",(20,78),size=(190,100))
+		yoffset = -40
+		wx.StaticBox(self,-1,"Update Dexter Software for:",(20,78+yoffset),size=(190,110))
 		for i in range(len(robots_names)):
 			posx=35+(110-35)*(i/2)   # result is either 25 or 110
-			posy=100+(120-100)*(i%2) # result is either 90 or 115
-			#print(posx,posy)
+			posy=100+yoffset+(120-100)*(i%2) # result is either 90 or 115
 			robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
 			robots[robots_names[i]].SetValue(True)
 			robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
 		# Update DI Software
-		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,142),size=(165,30))
+		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,142+yoffset),size=(165,30))
 		update_software.Bind(wx.EVT_BUTTON, self.update_software)	
 
 
@@ -128,15 +130,16 @@ class MainPanel(wx.Panel):
 		#-------------------------------------------------------------------
 		# Update Firmware
 
-		wx.StaticBox(self,-1,"Update Firmware for:",(20,186),size=(190,100))
+		yoffset = -30
+		wx.StaticBox(self,-1,"Update Firmware for:",(20,186+yoffset),size=(190,100))
 		# Drop Boxes
 		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
 
 		# Select Platform.
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(35, 207), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, " ", pos=(35, 207+yoffset), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 
-		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(35,242))
+		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(35,242+yoffset))
 		#print(update_firmware.GetSize())
 		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
 
@@ -221,7 +224,7 @@ class MainPanel(wx.Panel):
 		
 		ran_dialog = False
 		if dlg.ShowModal() == wx.ID_OK:
-			start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
+			start_command = "sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
 			send_bash_command_in_background(start_command)
 			print "Start software update!"
 			ran_dialog = True
