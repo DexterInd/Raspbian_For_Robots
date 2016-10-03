@@ -30,7 +30,8 @@ robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry"]
 # http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/
 # ComboBoxes!  		http://wiki.wxpython.org/AnotherTutorial#wx.ComboBox
 
-
+image_xpos = 200
+image_ypos = 20
 
 # Writes debug to file "error_log"
 def write_debug(in_string):
@@ -58,15 +59,16 @@ def read_state():
 	error_file.close()
 	return in_string
 
-def write_robots_to_update():
-	try:
-		robots_2_update_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update','w')
-		for robot in robots:
-			if robots[robot].GetValue():
-				robots_2_update_file.write(robot+'\n')
-		robots_2_update_file.close()
-	except:
-		pass
+# This code is to allow customers to choose which robot they want to upgrade
+# def write_robots_to_update():
+# 	try:
+# 		robots_2_update_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update','w')
+# 		for robot in robots:
+# 			if robots[robot].GetValue():
+# 				robots_2_update_file.write(robot+'\n')
+# 		robots_2_update_file.close()
+# 	except:
+# 		pass
 
 	
 def send_bash_command(bashCommand):
@@ -89,6 +91,7 @@ class MainPanel(wx.Panel):
 	#----------------------------------------------------------------------
 	def __init__(self, parent):
 		global robots
+		global update_firmware_static
 		"""Constructor"""
 		wx.Panel.__init__(self, parent=parent)
 		self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
@@ -97,7 +100,7 @@ class MainPanel(wx.Panel):
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		hSizer = wx.BoxSizer(wx.HORIZONTAL)
  
-		wx.StaticText(self, -1, "Raspbian For Robots Update", (25, 5))					# (Minus 50, minus 0)
+		#wx.StaticText(self, -1, "Raspbian For Robots Update", (25, 5))					# (Minus 50, minus 0)
  
 		#-------------------------------------------------------------------
 		# Standard Buttons
@@ -108,21 +111,26 @@ class MainPanel(wx.Panel):
 		#update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
 # ---------------------------------------------------------------------------------------
 		
-		yoffset = -40
-		wx.StaticBox(self,-1,"Update Dexter Software for:",(20,78+yoffset),size=(190,110))
-		for i in range(len(robots_names)):
-			posx=35+(110-35)*(i/2)   # result is either 25 or 110
-			posy=100+yoffset+(120-100)*(i%2) # result is either 90 or 115
-			robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
-			robots[robots_names[i]].SetValue(True)
-			robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
+		yoffset = -80
+		
+		# remove checkboxes
+		# wx.StaticBox(self,-1,"Update Dexter Software for:",(20,78+yoffset),size=(190,110))
+		# for i in range(len(robots_names)):
+		# 	posx=35+(110-35)*(i/2)   # result is either 25 or 110
+		# 	posy=100+yoffset+(120-100)*(i%2) # result is either 90 or 115
+		# 	robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
+		# 	robots[robots_names[i]].SetValue(True)
+		# 	robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
+
 		# Update DI Software
 		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,142+yoffset),size=(165,30))
 		update_software.Bind(wx.EVT_BUTTON, self.update_software)	
+		button_size=update_software.GetSize()
+		print button_size
 
 
 		# Exit
-		exit_button = wx.Button(self, label="Exit", pos=(300,250))
+		exit_button = wx.Button(self, label="Exit", pos=(275,250))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
 
 	
@@ -130,18 +138,29 @@ class MainPanel(wx.Panel):
 		#-------------------------------------------------------------------
 		# Update Firmware
 
-		yoffset = -30
-		wx.StaticBox(self,-1,"Update Firmware for:",(20,186+yoffset),size=(190,100))
+		yoffset = -70
+		#firmware_box = wx.StaticBox(self,-1,"Update Robot:",(20,186+yoffset),size=(190,100))
+		#firmware_box.Hide()
+		#firmware_box.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
+		#firmware_box.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
 		# Drop Boxes
-		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
+		controls = ['Choose your robot', 'GoPiGo', 'GrovePi']	# Options for drop down.
 
 		# Select Platform.
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(35, 207+yoffset), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, "Choose your Robot", pos=(35, 207+yoffset), size=(button_size.GetWidth(), -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
+		#robotDrop.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
+		#robotDrop.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
 
-		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(35,242+yoffset))
+		update_firmware = wx.Button(self, label="Update Robot", pos=(35,242+yoffset),size=(button_size.GetWidth(),-1))
 		#print(update_firmware.GetSize())
 		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
+		update_firmware.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
+		update_firmware.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
+
+		update_firmware_static = wx.StaticText(self,-1,"Use this to update the robot firmware.\nThis only needs to be done occasionally! \nIf you have questions, \nplease ask on our forums!",(35,282+yoffset))
+		update_firmware_static.Hide()
+
 
 		
 		# Drop Boxes
@@ -154,7 +173,7 @@ class MainPanel(wx.Panel):
 	
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
  
-		send_bash_command_in_background("clear")
+		#send_bash_command_in_background("clear")
 
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
@@ -175,7 +194,7 @@ class MainPanel(wx.Panel):
 		# Add a second picture.
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
 		bmp = wx.Bitmap(robot)	# Draw the photograph.
-		dc.DrawBitmap(bmp, 200, 20)	
+		dc.DrawBitmap(bmp, image_xpos, image_ypos)	
 		
 	# RobotDrop
 	# This is the function called whenever the drop down box is called.
@@ -190,7 +209,7 @@ class MainPanel(wx.Panel):
 		# Update Picture
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
 		png = wx.Image(robot, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-		wx.StaticBitmap(self, -1, png, (200, 0), (png.GetWidth(), png.GetHeight()))
+		wx.StaticBitmap(self, -1, png, (image_xpos, image_ypos), (png.GetWidth(), png.GetHeight()))
 
 	# keep track of which robots to update
 	def which_robot(self,event):
@@ -283,7 +302,17 @@ class MainPanel(wx.Panel):
 			dlg.Destroy()
 		
 		write_debug("Programming Started.")	
-		
+
+	def hovertxt_on(self,event):
+		print("HOVERING")
+		update_firmware_static.Show()
+		event.Skip()
+
+	def hovertxt_off(self,event):
+		print("HOVERING")
+		update_firmware_static.Hide()
+		event.Skip()
+    
 	def onClose(self, event):	# Close the entire program.
 		write_debug("Close Pressed.")
 		# dlg = wx.MessageDialog(self, 'The Pi will now restart.  Please save all open files before pressing OK.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
@@ -313,7 +342,7 @@ class MainFrame(wx.Frame):
 
 		wx.Icon('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/favicon.ico', wx.BITMAP_TYPE_ICO)
 		wx.Log.SetVerbose(False)
-		wx.Frame.__init__(self, None, title="Update Raspbian for Robots", size=(400,300))		# Set the frame size
+		wx.Frame.__init__(self, None, title="Dexter Industries Update", size=(400,300))		# Set the frame size
 
 		panel = MainPanel(self)        
 		self.Center()
