@@ -130,11 +130,8 @@ sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/
 echo "--> Install DexterEd Software"
 sudo rm -r /home/pi/Desktop/DexterEd
 
-pushd
-
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
-
 
 # Install GoBox Software
 echo "--> Install GoBox Software"
@@ -145,7 +142,10 @@ sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
 sudo sh /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
 
 sudo chmod +x /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
-sudo bash /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
+sudo sh /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
+sudo rm -r /home/pi/Desktop/build
+sudo rm -r /home/pi/Desktop/dist
+sudo rm -r /home/pi/Desktop/ir_receiver_check.egg-info
 
 cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop
 
