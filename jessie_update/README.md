@@ -12,7 +12,7 @@ From the home directory run `sudo wget https://raw.githubusercontent.com/DexterI
 From the home directory run `sudo sh jessie-heavy-upgrade.sh`
 
 ## Manual Changes
-A few manual changes need to be made:
+A few manual changes need to be made if you are starting from a fresh version of Raspbian:
 - VNC Password must be set manually.
 
 # What the files are:
