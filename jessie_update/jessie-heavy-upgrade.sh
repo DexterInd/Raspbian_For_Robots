@@ -71,6 +71,7 @@ rm ./update_backup.sh -y
 ###################################################
 # give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
 # Samba will also be installed with password set to robots1234
+# Tightvncserver, noVNC, and Shellinabox get installed at this stage
 ###################################################
 rm ./Raspbian_for_Robots_Flavor.sh
 wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/Raspbian_for_Robots_Flavor.sh
