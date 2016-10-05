@@ -17,6 +17,8 @@ This directory contains the scripts we used to upgrade Jessie to Raspbian for Ro
 
 + Run update_master.sh `sudo sh /home/pi/di_update/update_master.sh`
 
++ Run VNC Server manually and enter in default passwords.  `vncserver :1`
+
 + From the Desktop, run the DI Update.
 
 ## Manual Changes
