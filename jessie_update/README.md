@@ -11,6 +11,10 @@ This directory contains the scripts we used to upgrade Jessie to Raspbian for Ro
 
 +From the home directory run `sudo sh jessie-heavy-upgrade.sh`
 
++From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh`
+
++From the home directory run `sudo sh update_backup.sh`
+
 +Run update_master.sh `sudo sh /home/pi/di_update/update_master.sh`
 
 +From the Desktop, run the DI Update.
