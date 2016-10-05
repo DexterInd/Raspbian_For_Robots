@@ -304,12 +304,12 @@ class MainPanel(wx.Panel):
 		write_debug("Programming Started.")	
 
 	def hovertxt_on(self,event):
-		print("HOVERING")
+		#print("HOVERING")
 		update_firmware_static.Show()
 		event.Skip()
 
 	def hovertxt_off(self,event):
-		print("HOVERING")
+		#print("HOVERING")
 		update_firmware_static.Hide()
 		event.Skip()
     
