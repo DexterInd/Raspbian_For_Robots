@@ -216,7 +216,7 @@ class MainPanel(wx.Panel):
 		#print("which_robot called")
 		#for i in range(len(robots)):
 		#	print robots_names[i], robots[robots_names[i]].GetValue()
-		write_robots_to_update()
+		# write_robots_to_update()  # Taking out for now.  This would update the robots to update file.
 
 
 	# Update the Operating System.
@@ -238,7 +238,7 @@ class MainPanel(wx.Panel):
 	# Update the Software.
 	def update_software(self, event):
 		write_debug("Update Dexter Software")	
-		write_robots_to_update()
+		# write_robots_to_update() # Taking out for now.  This would update the write_robots_to_update file.
 		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 		
 		ran_dialog = False
