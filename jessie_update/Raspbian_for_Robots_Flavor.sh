@@ -9,6 +9,8 @@
 #
 ###################################################
 
+echo "********** FLAVOR ***********"
+
 # This script sets up the environment to fit with Raspbian for Robots, but none of the actual Dexter Industries software
 
 # 1. User Name is Pi, Password is robots1234
@@ -26,7 +28,7 @@ echo pi:$DEFAULT_PWD | sudo chpasswd
 ####################################
 # Installing Samba
 ####################################
-
+echo "********** SAMBA ***********"
 sudo apt-get install -y samba samba-common
 sudo cp /etc/samba/smb.conf .
 sudo chown pi:pi smb.conf
@@ -75,9 +77,10 @@ echo "Hostname change will be effective after a reboot"
 # many many thanks to Russell Davis for all the hints!
 # tightvncserver will only work after a reboot - not done here
 ####################################
+echo "********** TIGHTVNCSERVER ***********"
 sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/tightvncserver.sh
-sudo chmod +x tightvncserver.sh
-./tightvncserver.sh $DEFAULT_PWD
+#sudo chmod +x tightvncserver.sh
+sudo bash ./tightvncserver.sh $DEFAULT_PWD
 sudo rm tightvncserver.sh
 
 ####################################
@@ -86,8 +89,8 @@ sudo rm tightvncserver.sh
 # and still being developed and looked at
 # it's being downloaded in the wrong place, for starter
 ####################################
-
+echo "********** NOVNC ***********"
 wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.sh
-chmod +x novnc.sh
-./novnc.sh
+#chmod +x novnc.sh
+sudo bash ./novnc.sh
 sudo rm novnc.sh

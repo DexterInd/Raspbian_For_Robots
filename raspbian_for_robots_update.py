@@ -9,6 +9,10 @@ import threading
 import psutil
 import signal
 
+robots = {}
+robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry"]
+
+
 #	This program runs various update programs for Raspbian for Robots, from Dexter Industries.
 #	See more about Dexter Industries at http://www.dexterindustries.com
 '''
@@ -26,6 +30,9 @@ import signal
 # http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/
 # ComboBoxes!  		http://wiki.wxpython.org/AnotherTutorial#wx.ComboBox
 
+image_xpos = 200
+image_ypos = 20
+
 # Writes debug to file "error_log"
 def write_debug(in_string):
 	# In in time logging.
@@ -36,11 +43,14 @@ def write_debug(in_string):
 	error_file.close()
 
 def write_state(in_string):
-	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
-	if(' ' in in_string): 
-		in_string = "dex"
-	error_file.write(in_string)
-	error_file.close()
+	try:
+		error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
+		if(' ' in in_string): 
+			in_string = "dex"
+		error_file.write(in_string)
+		error_file.close()
+	except:
+		pass
 
 def read_state():
 	error_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'r')		# File: selected state
@@ -48,6 +58,18 @@ def read_state():
 	in_string = error_file.read()
 	error_file.close()
 	return in_string
+
+# This code is to allow customers to choose which robot they want to upgrade
+# def write_robots_to_update():
+# 	try:
+# 		robots_2_update_file = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update','w')
+# 		for robot in robots:
+# 			if robots[robot].GetValue():
+# 				robots_2_update_file.write(robot+'\n')
+# 		robots_2_update_file.close()
+# 	except:
+# 		pass
+
 	
 def send_bash_command(bashCommand):
 	# print bashCommand
@@ -68,6 +90,8 @@ class MainPanel(wx.Panel):
 	""""""
 	#----------------------------------------------------------------------
 	def __init__(self, parent):
+		global robots
+		global update_firmware_static
 		"""Constructor"""
 		wx.Panel.__init__(self, parent=parent)
 		self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
@@ -76,37 +100,68 @@ class MainPanel(wx.Panel):
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		hSizer = wx.BoxSizer(wx.HORIZONTAL)
  
-		wx.StaticText(self, -1, "Raspbian For Robots Update", (25, 5))					# (Minus 50, minus 0)
+		#wx.StaticText(self, -1, "Raspbian For Robots Update", (25, 5))					# (Minus 50, minus 0)
  
 		#-------------------------------------------------------------------
 		# Standard Buttons
 
-		# Upate Raspbian
-		update_raspbian = wx.Button(self, label="Update Raspbian", pos=(25,50))
-		update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
+# removing option to do a Raspbian Update------------------------------------------------
+		# Update Raspbian
+		#update_raspbian = wx.Button(self, label="Update Raspbian", pos=(20,40))
+		#update_raspbian.Bind(wx.EVT_BUTTON, self.update_raspbian)
+# ---------------------------------------------------------------------------------------
 		
+		yoffset = -80
+		
+		# remove checkboxes
+		# wx.StaticBox(self,-1,"Update Dexter Software for:",(20,78+yoffset),size=(190,110))
+		# for i in range(len(robots_names)):
+		# 	posx=35+(110-35)*(i/2)   # result is either 25 or 110
+		# 	posy=100+yoffset+(120-100)*(i%2) # result is either 90 or 115
+		# 	robots[robots_names[i]]=wx.CheckBox(self,label=robots_names[i], pos=(posx,posy))
+		# 	robots[robots_names[i]].SetValue(True)
+		# 	robots[robots_names[i]].Bind(wx.EVT_CHECKBOX,self.which_robot)
+
 		# Update DI Software
-		update_software = wx.Button(self, label="Update Dexter Software", pos=(25, 100))
-		update_software.Bind(wx.EVT_BUTTON, self.update_software)			
-		
-		# Update Firmware
-		update_firmware = wx.Button(self, label="Update Hardware Firmware", pos=(25,150))
-		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
+		update_software = wx.Button(self, label="Update Dexter Software", pos=(35,142+yoffset),size=(165,30))
+		update_software.Bind(wx.EVT_BUTTON, self.update_software)	
+		button_size=update_software.GetSize()
+		print button_size
+
 
 		# Exit
-		exit_button = wx.Button(self, label="Exit", pos=(25,250))
+		exit_button = wx.Button(self, label="Exit", pos=(275,250))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
-	
-		# End Standard Buttons		
-		#-------------------------------------------------------------------
-		# Drop Boxes
 
-		controls = [' ', 'GoPiGo', 'GrovePi']	# Options for drop down.
+	
+
+		#-------------------------------------------------------------------
+		# Update Firmware
+
+		yoffset = -70
+		#firmware_box = wx.StaticBox(self,-1,"Update Robot:",(20,186+yoffset),size=(190,100))
+		#firmware_box.Hide()
+		#firmware_box.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
+		#firmware_box.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
+		# Drop Boxes
+		controls = ['Choose your robot', 'GoPiGo', 'GrovePi']	# Options for drop down.
 
 		# Select Platform.
-		
-		robotDrop = wx.ComboBox(self, -1, " ", pos=(25, 200), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, "Choose your Robot", pos=(35, 207+yoffset), size=(button_size.GetWidth(), -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
+		#robotDrop.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
+		#robotDrop.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
+
+		update_firmware = wx.Button(self, label="Update Robot", pos=(35,242+yoffset),size=(button_size.GetWidth(),-1))
+		#print(update_firmware.GetSize())
+		update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
+		update_firmware.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
+		update_firmware.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
+
+		update_firmware_static = wx.StaticText(self,-1,"Use this to update the robot firmware.\nThis only needs to be done occasionally! \nIf you have questions, \nplease ask on our forums!",(35,282+yoffset))
+		update_firmware_static.Hide()
+
+
 		
 		# Drop Boxes
 		#-------------------------------------------------------------------
@@ -118,7 +173,7 @@ class MainPanel(wx.Panel):
 	
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
  
- 		send_bash_command_in_background("clear")
+		#send_bash_command_in_background("clear")
 
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
@@ -139,7 +194,7 @@ class MainPanel(wx.Panel):
 		# Add a second picture.
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
 		bmp = wx.Bitmap(robot)	# Draw the photograph.
-		dc.DrawBitmap(bmp, 200, 0)	
+		dc.DrawBitmap(bmp, image_xpos, image_ypos)	
 		
 	# RobotDrop
 	# This is the function called whenever the drop down box is called.
@@ -154,7 +209,15 @@ class MainPanel(wx.Panel):
 		# Update Picture
 		robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
 		png = wx.Image(robot, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-		wx.StaticBitmap(self, -1, png, (200, 0), (png.GetWidth(), png.GetHeight()))
+		wx.StaticBitmap(self, -1, png, (image_xpos, image_ypos), (png.GetWidth(), png.GetHeight()))
+
+	# keep track of which robots to update
+	# def which_robot(self,event):
+		#print("which_robot called")
+		#for i in range(len(robots)):
+		#	print robots_names[i], robots[robots_names[i]].GetValue()
+		# write_robots_to_update()  # Taking out for now.  This would update the robots to update file.
+
 
 	# Update the Operating System.
 	def update_raspbian(self, event):
@@ -175,11 +238,12 @@ class MainPanel(wx.Panel):
 	# Update the Software.
 	def update_software(self, event):
 		write_debug("Update Dexter Software")	
+		# write_robots_to_update() # Taking out for now.  This would update the write_robots_to_update file.
 		dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 		
 		ran_dialog = False
 		if dlg.ShowModal() == wx.ID_OK:
-			start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
+			start_command = "sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
 			send_bash_command_in_background(start_command)
 			print "Start software update!"
 			ran_dialog = True
@@ -238,7 +302,17 @@ class MainPanel(wx.Panel):
 			dlg.Destroy()
 		
 		write_debug("Programming Started.")	
-		
+
+	def hovertxt_on(self,event):
+		print("HOVERING")
+		update_firmware_static.Show()
+		event.Skip()
+
+	def hovertxt_off(self,event):
+		print("HOVERING")
+		update_firmware_static.Hide()
+		event.Skip()
+    
 	def onClose(self, event):	# Close the entire program.
 		write_debug("Close Pressed.")
 		# dlg = wx.MessageDialog(self, 'The Pi will now restart.  Please save all open files before pressing OK.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
@@ -255,6 +329,7 @@ class MainPanel(wx.Panel):
 		"""
 		"""
 		self.frame.Close()
+
   
 ########################################################################
 class MainFrame(wx.Frame):
@@ -267,21 +342,21 @@ class MainFrame(wx.Frame):
 
 		wx.Icon('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/favicon.ico', wx.BITMAP_TYPE_ICO)
 		wx.Log.SetVerbose(False)
-		wx.Frame.__init__(self, None, title="Update Raspbian for Robots", size=(400,300))		# Set the frame size
+		wx.Frame.__init__(self, None, title="Dexter Industries Update", size=(400,300))		# Set the frame size
 
 		panel = MainPanel(self)        
 		self.Center()
  
 ########################################################################
 class Main(wx.App):
-    """"""
+	""""""
  
-    #----------------------------------------------------------------------
-    def __init__(self, redirect=False, filename=None):
-        """Constructor"""
-        wx.App.__init__(self, redirect, filename)
-        dlg = MainFrame()
-        dlg.Show()
+	#----------------------------------------------------------------------
+	def __init__(self, redirect=False, filename=None):
+		"""Constructor"""
+		wx.App.__init__(self, redirect, filename)
+		dlg = MainFrame()
+		dlg.Show()
  
 #----------------------------------------------------------------------
 if __name__ == "__main__":
