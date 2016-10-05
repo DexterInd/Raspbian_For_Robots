@@ -16,9 +16,9 @@ A few manual changes need to be made:
 - VNC Password must be set manually.
 
 # What the files are:
-**regimen.sh** is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
++ **regimen.sh** is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
 
-**jessie-heavy-upgrade.sh** is used to make your Jessie into Raspbian for Robots. It will call all other scripts.
++ **jessie-heavy-upgrade.sh** is used to make your Jessie into Raspbian for Robots. It will call all other scripts.
 
 ## sub scripts:
 jessie_cleanup.sh : removes extra packages to make room for Raspbian for Robots
