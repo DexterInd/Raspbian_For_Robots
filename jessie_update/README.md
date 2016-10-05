@@ -1,6 +1,12 @@
 # Raspbian Pi For Robots
 
-This directory contains the scripts we used to upgrade Jessie Lite to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
+This directory contains the scripts we used to upgrade Jessie to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
+
+# To Begin
+From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/regimen.sh`
+From the home directory run `sudo sh regimen.sh`
+From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie-heavy-upgrade.sh`
+From the home directory run `sudo sh jessie-heavy-upgrade.sh`
 
 # What the files are:
 regimen.sh is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
