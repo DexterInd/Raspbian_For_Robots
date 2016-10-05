@@ -48,6 +48,7 @@ def replace_in_file(filename,replace_from,replace_to):
 	f.close()
 		
 def disable_ir_setting():
+	send_command("sudo rm /etc/monit/conf.d/gobox_ir_receiver_monit.conf")
 	if check_ir_setting()==True:
 		if debug:
 			print "Disabling IR"
@@ -61,8 +62,9 @@ def disable_ir_setting():
 			print "IR already disabled"
 
 def enable_ir_setting():
+	send_command("sudo cp /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/gobox_ir_receiver_monit.conf /etc/monit/conf.d")
 	if 'lirc_dev' in open('/etc/modules').read():
-		if debug:
+		if debug: 
 			print "lirc_dev already in /etc/modules"
 	else:
 		if debug:
