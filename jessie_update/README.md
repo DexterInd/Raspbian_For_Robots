@@ -3,17 +3,23 @@
 This directory contains the scripts we used to upgrade Jessie to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
 
 # To Begin
-From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/regimen.sh`
++From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/regimen.sh`
 
-From the home directory run `sudo sh regimen.sh`
++From the home directory run `sudo sh regimen.sh`
 
-From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie-heavy-upgrade.sh`
++From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie-heavy-upgrade.sh`
 
-From the home directory run `sudo sh jessie-heavy-upgrade.sh`
++From the home directory run `sudo sh jessie-heavy-upgrade.sh`
+
++Run update_master.sh `sudo sh /home/pi/di_update/update_master.sh`
+
++From the Desktop, run the DI Update.
 
 ## Manual Changes
 A few manual changes need to be made if you are starting from a fresh version of Raspbian:
 - VNC Password must be set manually.
+- Manual boot is required.
+- You MAY need to reconfigure /etc/hosts
 
 # What the files are:
 + **regimen.sh** is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
