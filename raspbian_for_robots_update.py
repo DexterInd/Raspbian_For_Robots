@@ -212,7 +212,7 @@ class MainPanel(wx.Panel):
 		wx.StaticBitmap(self, -1, png, (image_xpos, image_ypos), (png.GetWidth(), png.GetHeight()))
 
 	# keep track of which robots to update
-	def which_robot(self,event):
+	# def which_robot(self,event):
 		#print("which_robot called")
 		#for i in range(len(robots)):
 		#	print robots_names[i], robots[robots_names[i]].GetValue()
