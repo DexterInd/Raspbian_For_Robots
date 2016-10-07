@@ -149,7 +149,7 @@ if [ $arduberry_update == 1 ] ; then
 	sudo git merge origin/master
 
 	sudo chmod +x /home/pi/Desktop/ArduBerry/script/install.sh
-	sudo sh /home/pi/Desktop/ArduBerry/script/install.sh
+	sudo bash /home/pi/Desktop/ArduBerry/script/install.sh
 else
 	echo "--> Arduberry **NOT** Updated."
 	echo "----------"
