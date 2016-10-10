@@ -15,7 +15,7 @@ This directory contains the scripts we used to upgrade Jessie to Raspbian for Ro
 
 + From the home directory run `sudo sh update_backup.sh`
 
-+ Run update_master.sh `sudo sh /home/pi/di_update/update_master.sh`
++ Run update_master.sh `sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh`
 
 + Run tightvncserver once and set the passwords.  `tightvncserver`
 
