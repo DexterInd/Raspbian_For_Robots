@@ -1,11 +1,36 @@
 # Raspbian Pi For Robots
 
-This directory contains the scripts we used to upgrade Jessie Lite to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
+This directory contains the scripts we used to upgrade Jessie to Raspbian for Robots.  This is simply here for development purposes and so that it might be found to be useful to others.
+
+# To Begin
++ From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/regimen.sh`
+
++ From the home directory run `sudo sh regimen.sh`
+
++ From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/jessie-heavy-upgrade.sh`
+
++ From the home directory run `sudo sh jessie-heavy-upgrade.sh`
+
++ From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/update_backup.sh`
+
++ From the home directory run `sudo sh update_backup.sh`
+
++ Run update_master.sh `sudo sh /home/pi/di_update/update_master.sh`
+
++ Run VNC Server manually and enter in default passwords.  `vncserver :1`
+
++ From the Desktop, run the DI Update.
+
+## Manual Changes
+A few manual changes need to be made if you are starting from a fresh version of Raspbian:
+- VNC Password must be set manually.
+- Manual boot is required.
+- You MAY need to reconfigure /etc/hosts
 
 # What the files are:
-regimen.sh is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
++ **regimen.sh** is used to remove some packages from a full Jessie so it can fit on 4 Gig. Some repartitioning must be done manually.
 
-jessie-heavy-upgrade.sh : run this script to make your Jessie into Raspbian for Robots. It will call all other scripts.
++ **jessie-heavy-upgrade.sh** is used to make your Jessie into Raspbian for Robots. It will call all other scripts.
 
 ## sub scripts:
 jessie_cleanup.sh : removes extra packages to make room for Raspbian for Robots
