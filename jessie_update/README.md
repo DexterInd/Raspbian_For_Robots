@@ -17,6 +17,8 @@ This directory contains the scripts we used to upgrade Jessie to Raspbian for Ro
 
 + Run update_master.sh `sudo sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh`
 
++ Install tightvncserver manually.  `sudo apt-get install tightvncserver`
+
 + Run tightvncserver once and set the passwords.  `tightvncserver`
 
 + From the home directory run `sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/tightvncserver.sh`
