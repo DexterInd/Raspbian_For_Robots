@@ -2,7 +2,9 @@
 import os
 from time import sleep		# Allows us to call the sleep function to slow down our loop
 import RPi.GPIO as GPIO		# Allows us to call our GPIO pins and names it just GPIO
-   
+
+sleep(30)
+
 GPIO.setmode(GPIO.BCM)		# Set's GPIO pins to BCM GPIO numbering
 INPUT_PIN_0 = 9				# GPI09
 INPUT_PIN_1 = 11			# GPIO11
