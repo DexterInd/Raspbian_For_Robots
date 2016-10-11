@@ -319,6 +319,10 @@ sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 echo "--> End installing Samba."
 
+# Install Spy vs sPi Startup.
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+
 # Install Backup
 echo "--> Start installing Backup."
 echo "--> ======================================="
