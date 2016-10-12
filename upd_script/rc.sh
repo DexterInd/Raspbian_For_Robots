@@ -18,6 +18,11 @@ echo " "
 THISHOST=$(hostname -f) # Gets current hostname
 echo "Current hostname: $THISHOST"
 
+# To change the Wifi access point name if hostname is changed using GUI
+if [[ -f /etc/hostapd/hostapd.conf ]] ; then
+  sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
+fi
+
 # Now run the code in rc.local that updates the hostname. 
 
 # if we have a file called hostnames in /boot -> rename it to /boot/hostname
@@ -27,6 +32,7 @@ if [ -f /boot/hostnames ]
 then
   sudo mv /boot/hostnames /boot/hostname  
 fi
+
 
 HOSTNAME_IN="/boot/hostname"
 
