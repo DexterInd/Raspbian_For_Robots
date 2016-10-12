@@ -18,6 +18,8 @@ echo " "
 THISHOST=$(hostname -f) # Gets current hostname
 echo "Current hostname: $THISHOST"
 
+# Cinch Hostname change.  Check for hostapd, if it's present, we are running Cinch.
+# If we have Cinch, change the value of the WPA name to the value of hostname.
 # To change the Wifi access point name if hostname is changed using GUI
 if [[ -f /etc/hostapd/hostapd.conf ]] ; then
   sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
