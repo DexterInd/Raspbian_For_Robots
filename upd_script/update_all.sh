@@ -43,7 +43,7 @@ sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
 sudo apt-get install python-picamera python3-picamera -y
 sudo apt-get install python-smbus python3-smbus -y
 sudo pip install -U RPi.GPIO
-sudo pip install future # for Python 2/3 compatibility
+sudo pip install -U future # for Python 2/3 compatibility
 
 
 
