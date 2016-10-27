@@ -38,10 +38,11 @@ sudo apt-get install python3-serial python-serial -y
 sudo apt-get install i2c-tools -y
 
 sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
-sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
+# merge all thre install lines into one, as each call to apt-get install 
+# takes a while to build the dependency tree
+# Oct 27th 2016: add fix for DirtyCow security issue
+sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel
 # sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
-sudo apt-get install python-picamera python3-picamera -y
-sudo apt-get install python-smbus python3-smbus -y
 sudo pip install -U RPi.GPIO
 
 
