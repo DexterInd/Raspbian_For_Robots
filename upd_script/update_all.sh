@@ -44,6 +44,7 @@ sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel
 # sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
 sudo pip install -U RPi.GPIO
+sudo pip install -U future # for Python 2/3 compatibility
 
 
 
