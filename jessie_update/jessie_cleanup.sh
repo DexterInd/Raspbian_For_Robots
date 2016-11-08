@@ -13,7 +13,8 @@ sudo apt-get purge -y greenfoot claws-mail* cryptsetup-bin
 # this following one is questionable, it's not on Lite, so I'm taking it out, but it might be useful
 sudo apt-get purge -y debian-reference-common debian-reference-en  
 
-sudo apt-get purge -y minecraft-pi
+# We no longer remove minecraft which means we now require an 8Gig card for upcoming images
+#sudo apt-get purge -y minecraft-pi
 
 # note: removing supercollider will also remove sonic-pi. They seem to be linked
 sudo apt-get purge -y supercollider*
