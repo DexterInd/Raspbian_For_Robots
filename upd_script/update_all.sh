@@ -48,7 +48,7 @@ sudo pip install -U future # for Python 2/3 compatibility
 
 echo "geany, espeak and piclone"
 # new tools from the foundation
-sudo apt-get install geany espeak  piclone-y
+sudo apt-get install geany espeak  piclone -y
 sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
 
 
