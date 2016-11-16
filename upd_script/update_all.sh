@@ -28,14 +28,12 @@ sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# 
 sudo apt-get remove python-wxgtk3.0 -y
 
 echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --force-yes -y			# Install wx for python for windows / GUI programs.
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y			# Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
-sudo apt-get install python-psutil --force-yes -y
 sudo apt-get remove python-wxgtk3.0 -y
 echo "Python-PSUtil"
 
-sudo apt-get install python3-serial python-serial -y
-sudo apt-get install i2c-tools -y
+sudo apt-get install python3-serial python-serial i2c-tools -y
 
 sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 # merge all thre install lines into one, as each call to apt-get install 
@@ -48,9 +46,9 @@ sudo pip install -U future # for Python 2/3 compatibility
 
 
 
-echo "geany and piclone"
+echo "geany, espeak and piclone"
 # new tools from the foundation
-sudo apt-get install geany piclone -y
+sudo apt-get install geany espeak  piclone -y
 sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
 
 
