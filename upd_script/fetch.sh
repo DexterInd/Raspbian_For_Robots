@@ -16,6 +16,7 @@ then
 	brickpi_update=0
 	grovepi_update=0
 	arduberry_update=0
+	pivotpi=0
 	while read -r line 
         do
 	    echo "Text read from file: $line"
@@ -27,6 +28,8 @@ then
 	       grovepi_update=1
 	    elif [ "$line" == "Arduberry" ] ; then
 	       arduberry_update=1
+	    elif [ "$line" == "PivotPi" ] ; then
+	       pivotpi_update=1
 	    fi
 	done < $robots_2_update 
 else # if the file doesn't exist, update everything
@@ -34,12 +37,12 @@ else # if the file doesn't exist, update everything
 	brickpi_update=1
 	grovepi_update=1
 	arduberry_update=1
+	pivotpi_update=1
 fi
-echo $gopigo_update
-echo $brickpi_update
-echo $grovepi_update
-echo $arduberry_update
 
+###############################################
+# GOPIGO
+###############################################
 
 if [ $gopigo_update == 1 ] ; then
 	# GoPiGo Update
@@ -84,6 +87,10 @@ else
 	echo "--> GoPiGo **NOT** Updated."
 	echo "----------"
 fi  # end conditional statement on GOPIGO UPDATE
+
+###############################################
+# BRICKPI
+###############################################
 
 if [ $brickpi_update == 1 ] ; then
 
@@ -156,6 +163,11 @@ else
 fi 
 # end conditional statement on ARDUBERRY UPDATE
 
+###############################################
+# GROVEPI
+###############################################
+
+
 if [ $grovepi_update == 1 ] ; then
 
 	# GrovePi Update
@@ -181,6 +193,40 @@ else
 	echo "--> GrovePi **NOT** Updated."
 	echo "----------"
 fi # end conditional statement on GrovePi update
+
+###############################################
+# PIVOTPI
+###############################################
+
+
+if [ $pivotpi_update == 1 ] ; then
+	
+	pushd /home/pi
+
+	# if Dexter folder doesn't exist, then create it
+	if [ ! -d "Dexter" ]; then
+		mkdir "Dexter"
+	fi
+	cd /home/pi/Dexter
+	
+	# if pivotpi folder doesn't exit then clone repo
+	if [ ! -d "PivotPi" ]; then
+		sudo git clone https://github.com/DexterInd/PivotPi.git
+	fi
+
+	cd /home/pi/Dexter/PivotPi	
+	sudo git fetch origin   
+	sudo git reset --hard  
+	sudo git merge origin/master
+	cd /home/pi/Dexter/PivotPi/Install
+
+	sudo bash /home/pi/Dexter/PivotPi/Install/install.sh
+	
+	popd
+else
+	echo "--> PivotPi **NOT** Updated"
+	echo "----------"
+fi
 
 # Install DexterEd Software
 echo "--> Install DexterEd Software"
@@ -215,6 +261,8 @@ fi
 sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo sh /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+
+
 
 #########################################
 # Install All Python Scripts
