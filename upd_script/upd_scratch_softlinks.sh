@@ -6,7 +6,9 @@
 #######################################################
 
 # BrickPi link
-[ ! -d /usr/share/scratch/Projects/BrickPi ]  && sudo ln -s /home/pi/Desktop/BrickPi/Examples /usr/share/scratch/Projects/BrickPi
+
+[ ! "$(readlink /usr/share/scratch/Project/BrickPi)" -ef "/home/pi/Desktop/BrickPi_Scratch/Examples" ] && sudo rm -r /usr/share/scratch/Projects/BrickPi
+[ ! -d /usr/share/scratch/Projects/BrickPi ]  && sudo ln -s /home/pi/Desktop/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi
 
 # GoPiGo link
 [ ! -d /usr/share/scratch/Projects/GoPiGo ]  && sudo ln -s /home/pi/Desktop/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo
