@@ -17,4 +17,7 @@
 # GrovePi Link
 [ ! -d /usr/share/scratch/Projects/GrovePi ]  && sudo ln -s /home/pi/Desktop/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi
 
+# PivotPi Link
+[ ! -d /usr/share/scratch/Projects/PivotPi ]  && sudo ln -s /home/pi/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi
+
 
