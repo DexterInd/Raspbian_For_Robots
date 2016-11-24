@@ -6,7 +6,8 @@
 #######################################################
 
 # BrickPi link
-
+# there was a non-functional link for a while. Detect is the softlink is valid. 
+# If not get rid of it and redo it
 [ ! "$(readlink /usr/share/scratch/Project/BrickPi)" -ef "/home/pi/Desktop/BrickPi_Scratch/Examples" ] && sudo rm -r /usr/share/scratch/Projects/BrickPi
 [ ! -d /usr/share/scratch/Projects/BrickPi ]  && sudo ln -s /home/pi/Desktop/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi
 
