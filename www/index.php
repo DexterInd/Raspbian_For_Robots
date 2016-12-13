@@ -75,6 +75,7 @@
     <li>See more about the <a href="http://www.dexterindustries.com/brickpi-tutorials-documentation/?raspbian_for_robots" target="_blank" class="product brickpi">BrickPi.</a></li>
 		<li>See more about the <a href="http://www.dexterindustries.com/gopigo-tutorials-documentation/?raspbian_for_robots" target="_blank" class="product gopigo">GoPiGo.</a></li>
 		<li>See more about the <a href="http://www.dexterindustries.com/grovepi-tutorials-documentation/?raspbian_for_robots" target="_blank" class="product grovepi">GrovePi.</a></li>
+		<li>See more about the <a href="http://www.dexterindustries.com/pivotpi-tutorials-documentation/" target="_blank" class="product pivotpi">PivotPi</a></li>
 
     <li>Ask a question on our <a href="http://www.dexterindustries.com/forum?raspbian_for_robots" target="_blank" class="product">forums.</a></li>
 	</ul>
