@@ -73,6 +73,8 @@ echo $WIRINGVERSIONDEC >> tmpversion    # Store to temp file
 VERSION=$(sed 's/\.//g' tmpversion)     # Remove decimals
 rm tmpversion                           # Remove the temp file
 
+
+echo "VERSION is $VERSION"
 if [ $VERSION -eq '232' ]; then
 
 	echo "FOUND WiringPi Version 2.32 No installation needed."
@@ -84,10 +86,10 @@ else
 		# Will enter here if $DIRECTORY exists, even if it contains spaces
 		echo "Dexter Directory Found!"
 	else
-		mkdir /home/pi/Dexter
+		mkdir $DIRECTORY
 	fi
 	# Install wiringPi
-	cd /home/pi/Dexter 	# Change directories to Dexter
+	cd $DIRECTORY 	# Change directories to Dexter
 	git clone https://github.com/DexterInd/wiringPi/  # Clone directories to Dexter.
 	cd wiringPi
 	./build

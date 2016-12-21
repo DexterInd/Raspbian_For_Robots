@@ -46,13 +46,13 @@ sudo chmod +x $HOME/Desktop/Scratch_Start.desktop							# Desktop shortcut permi
 
 
 # # Make run_scratch_gui executable.
-# sudo chmod +x $SCRATCH_PATH/Scratch_Start.sh
+sudo chmod +x $SCRATCH_PATH/Scratch_Start.sh
 # # Make scratch start example read only.
-# sudo chmod ugo+r $SCRATCH_PATH/new.sb	# user, group, etc are just read only
+sudo chmod ugo+r $SCRATCH_PATH/new.sb	# user, group, etc are just read only
 # # Make select_state, error_log, nohup.out readable and writable
-# sudo chmod 666 $SCRATCH_PATH/selected_state
-# sudo chmod 666 $SCRATCH_PATH/error_log
-# sudo chmod 666 $HOME/nohup.out
+sudo chmod 666 $SCRATCH_PATH/selected_state
+sudo chmod 666 $SCRATCH_PATH/error_log
+sudo chmod 666 $HOME/nohup.out
 
 # Install Scratch Example Shortcuts for the Products
 # This will create symbolic links to the various example scripts.  https://blog.bartbania.com/raspberry_pi/create-symbolic-links-in-linux/
