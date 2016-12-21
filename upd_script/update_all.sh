@@ -320,8 +320,11 @@ sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
 echo "--> End installing Samba."
 
 # Install Spy vs sPi Startup.
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+# sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+
+# Remove Spy vs Spi 
+sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpi_remove.sh
 
 # Install Backup
 echo "--> Start installing Backup."
