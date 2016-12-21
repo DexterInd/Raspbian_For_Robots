@@ -59,7 +59,7 @@ fi
 echo " "
 echo "Installing Dependencies"
 echo "======================="
-sudo apt-get install python-pip git libi2c-dev python-serial python-rpi.gpio i2c-tools python-smbus arduino minicom python-dev
+sudo apt-get install python-pip git libi2c-dev python-serial python-rpi.gpio i2c-tools python-smbus arduino minicom python-dev -y
 sudo pip install -U RPi.GPIO
 echo "Dependencies installed"
 
