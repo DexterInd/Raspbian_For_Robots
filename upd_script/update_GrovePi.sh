@@ -68,14 +68,13 @@ echo "Dependencies installed"
 version=`gpio -v`       # Gets the version of wiringPi installed
 set -- $version         # Parses the version to get the number
 WIRINGVERSIONDEC=$3     # Gets the third word parsed out of the first line of gpio -v returned.
-                                        # Should be 2.32
+                                        # Should be 2.36
 echo $WIRINGVERSIONDEC >> tmpversion    # Store to temp file
 VERSION=$(sed 's/\.//g' tmpversion)     # Remove decimals
 rm tmpversion                           # Remove the temp file
 
-
 echo "VERSION is $VERSION"
-if [ $VERSION -eq '232' ]; then
+if [ $VERSION -eq '236' ]; then
 
 	echo "FOUND WiringPi Version 2.32 No installation needed."
 else
