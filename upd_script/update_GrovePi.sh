@@ -92,7 +92,8 @@ else
 	cd $DIRECTORY 	# Change directories to Dexter
 	git clone https://github.com/DexterInd/wiringPi/  # Clone directories to Dexter.
 	cd wiringPi
-	./build
+	sudo chmod +x ./build
+	sudo ./build
 	echo "wiringPi Installed"
 fi
 # End check if WiringPi installed
