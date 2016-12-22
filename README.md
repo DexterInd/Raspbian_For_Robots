@@ -69,7 +69,7 @@ On each publication, we run [these tests](https://github.com/DexterInd/Utilities
 
 
 ## License
-The code here is Licensed under  The MIT License (MIT) . Please review the  LICENSE.md file or here [https://github.com/DexterInd/Raspbian_For_Robots/blob/master/LICENSE.md] for more information
+The code here is Licensed under  The MIT License (MIT) . Please review the  LICENSE.md file or [here](https://github.com/DexterInd/Raspbian_For_Robots/blob/master/LICENSE.md) for more information
 Copyright (C) 2016 Dexter Industries
 
     
