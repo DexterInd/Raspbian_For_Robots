@@ -17,6 +17,15 @@ else
 	quiet_mode=0
 fi
 
+HOME=/home/pi
+DIUPDATE=di_update
+RASPBIAN=Raspbian_For_Robots
+RASPBIAN_PATH=$HOME/$DIUPDATE/$RASPBIAN
+DESKTOP=Desktop
+DESKTOP_PATH=$HOME/$DESKTOP
+DEXTER=Dexter
+SCRATCH=Scratch_GUI
+SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
 
 echo "--> Begin Update."
 echo "--> ======================================="
@@ -112,7 +121,7 @@ echo "--> End Kernel Updates."
 # http://manpages.ubuntu.com/manpages/vivid/man5/avahi-daemon.conf.5.html
 
 sudo rm /etc/avahi/avahi-daemon.conf 														# Remove Avahi Config file.
-sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
+sudo cp $RASPBIAN_PATH/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
 sudo chmod +x /etc/avahi/avahi-daemon.conf 													# Set permissions for avahi config file.
 
 sudo modprobe ipv6
@@ -123,8 +132,8 @@ sudo modprobe ipv6
 echo "--> Desktop cleanup."
 echo "--> ======================================="
 echo " "
-sudo rm /home/pi/Desktop/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
-sudo rm /home/pi/Desktop/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
+sudo rm $DESKTOP_PATH/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
+sudo rm $DESKTOP_PATH/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
 
 
 # Call fetch.sh - This updates the Github Repositories, installs necessary dependencies.
@@ -132,16 +141,18 @@ echo "--> Begin Update Dexter Industries Software Packages."
 echo "--> ======================================="
 echo " "
 # sh will not work here. Bash is required
-sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/fetch.sh
+sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 
+# Install Scratch GUI
+sudo bash $SCRATCH_PATH/install_scratch_start.sh
 
 # Enable LRC Infrared Control on Pi.
 echo "--> Enable LRC Infrared Control on Pi."
 echo "--> ======================================="
 echo " "
-sudo sh /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
-sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
-sudo bash /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+sudo sh $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
+sudo chmod +x $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+sudo bash $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
 
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/
@@ -149,7 +160,7 @@ echo "--> Update the background image on LXE Desktop."
 echo "--> ======================================="
 echo " "
 sudo rm /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
-sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.png /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
+sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 
 
 ########################################################################
@@ -170,15 +181,15 @@ echo " "
 sudo apt-get install avahi-daemon avahi-utils -y  # Added to help with avahi issues.  2016.01.03
 sudo apt-get install apache2 php5 libapache2-mod-php5 -y
 
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_disable_sleep.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_disable_sleep.sh
+sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
+sudo sh $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
 # Setup Webpage
-echo "--> Setup webpage."
+echo "--> Set up webpage."
 echo "--> ======================================="
 echo " "
 sudo rm -r /var/www
-sudo cp -r /home/pi/di_update/Raspbian_For_Robots/www /var/
+sudo cp -r $RASPBIAN_PATH/www /var/
 sudo chmod +x /var/www/index.php
 sudo chmod +x /var/www/css/main.css
 
@@ -203,7 +214,7 @@ echo $VERSION
 
 
 # Setup Shellinabox
-echo "--> Setup Shellinabox."
+echo "--> Set up Shellinabox."
 echo "--> ======================================="
 echo " "
 sudo apt-get install shellinabox -y
@@ -216,11 +227,11 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
-echo "--> Setup screen."
+echo "--> Set up screen."
 echo "--> ======================================="
 echo " "
 sudo apt-get install screen -y
-echo "--> Setup noVNC"
+echo "--> Set up noVNC"
 echo "--> ======================================="
 echo " "
 cd /usr/local/share/
@@ -299,7 +310,7 @@ echo " "
 # ensure the Scratch examples are reachable via Scratch GUI
 # this is done by using soft links
 ########################################################################
-bash /home/pi/di_update/Raspbian_For_Robots/upd_script/upd_scratch_softlinks.sh
+bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
@@ -308,19 +319,19 @@ sleep 10
 ## Last bit of house cleaning.
 
 # Setup Hostname Changer
-echo "--> Setup Hostname Changer."
+echo "--> Set up Hostname Changer."
 echo "--> ======================================="
 echo " "
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
+sudo chmod +x $RASPBIAN_PATH/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
+sudo sh $RASPBIAN_PATH/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
 echo "--> End hostname change setup."
 
 # Install Samba
 echo "--> Start installing Samba."
 echo "--> ======================================="
 echo " "
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/install_samba.sh
+sudo chmod +x $RASPBIAN_PATH/upd_script/install_samba.sh
+sudo sh $RASPBIAN_PATH/upd_script/install_samba.sh
 echo "--> End installing Samba."
 
 # Install Spy vs sPi Startup.
@@ -328,25 +339,25 @@ echo "--> End installing Samba."
 # sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
 
 # Remove Spy vs Spi 
-sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpi_remove.sh
+sudo bash $RASPBIAN_PATH/upd_script/spivsspi/SpyVsSpi_remove.sh
 
 # Install Backup
 echo "--> Start installing Backup."
 echo "--> ======================================="
 echo " "
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/restore.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/call_backup.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/call_restore.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/run_backup.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/file_list.txt
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/backup/backup_gui.py
+sudo chmod +x $RASPBIAN_PATH/backup/backup.sh
+sudo chmod +x $RASPBIAN_PATH/backup/restore.sh
+sudo chmod +x $RASPBIAN_PATH/backup/call_backup.sh
+sudo chmod +x $RASPBIAN_PATH/backup/call_restore.sh
+sudo chmod +x $RASPBIAN_PATH/backup/run_backup.sh
+sudo chmod +x $RASPBIAN_PATH/backup/file_list.txt
+sudo chmod +x $RASPBIAN_PATH/backup/backup_gui.py
 echo "--> End installing Backup."
 
 echo "--> Update for RPi3."
 # Run the update script for updating overlays for Rpi3.
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
-sudo sh /home/pi/di_update/Raspbian_For_Robots/pi3/Pi3.sh
+sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
+sudo sh $RASPBIAN_PATH/pi3/Pi3.sh
 
 # remove wx version 3.0 - which gets pulled in by various other libraries
 # it creates graphical issues in our Python GUI
@@ -358,7 +369,7 @@ if [ ! -f /home/pi/cinch ]; then
     echo "No Cinch Found."
 else
     echo "Found cinch, running Cinch install."
-    cd /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi
+    cd $RASPBIAN_PATH/upd_script/wifi
     sudo ./cinch_setup.sh
 fi
 
@@ -369,11 +380,11 @@ echo "--> End cleanup."
 
 echo "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
-cd /home/pi/Desktop
+cd $DESKTOP_PATH
 rm Version
 rm version.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/version.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/version.desktop
+sudo cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH
+sudo chmod +x $DESKTOP_PATH/version.desktop
 
 
 # edition version file to reflect which Rasbpian flavour
@@ -381,7 +392,7 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 echo "Version: $VERSION"
 if [ $VERSION -eq '8' ]; then
   echo "Modifying Version file to reflect Jessie distro"
-  sudo sed -i 's/Wheezy/Jessie/g' /home/pi/di_update/Raspbian_For_Robots/Version
+  sudo sed -i 's/Wheezy/Jessie/g' $RASPBIAN_PATH/Version
 fi
 
 rm /home/pi/quiet_mode
