@@ -6,8 +6,8 @@ from smbus import SMBus
 import serial
 
 bus = SMBus(1)
-
 detected_robot = "None"
+
 
 def find_pivotpi():
     '''
@@ -19,11 +19,10 @@ def find_pivotpi():
     pivotpi_found = False
     try:
         import pivotpi
-        possible_addresses = [  0x40,
-                                0x41,
-                                0x42,
-                                0x43
-                            ]
+        possible_addresses = [0x40,
+                              0x41,
+                              0x42,
+                              0x43]
         for add in possible_addresses:
             try:
                 # print("Testing {}".format(add))
@@ -31,10 +30,15 @@ def find_pivotpi():
                 pivotpi_found = True
             except:
                 # print ("Not found at {}".format(add))
+                p = pivotpi.PivotPi(add)
+                pivotpi_found = True
+            except:
+                print ("Not found at {}".format(add))
                 pass
     except:
         pass
     return pivotpi_found
+
 
 def find_gopigo():
     '''
@@ -45,12 +49,13 @@ def find_gopigo():
     gopigo_address = 0x08
     gopigo_found = False
     try:
-        test_gopigo = bus.read_byte(gopigo_address) 
+        test_gopigo = bus.read_byte(gopigo_address)
         print ("Found GoPiGo")
         gopigo_found = True
     except:
         pass
     return gopigo_found
+
 
 def find_grovepi():
     '''
@@ -59,16 +64,21 @@ def find_grovepi():
     returns True or False
     '''
     print("Looking for GrovePi")
-    grovepi_address = [0x04,0x03,0x05,0x06,0x07]
+    grovepi_address = [0x04,
+                       0x03,
+                       0x05,
+                       0x06,
+                       0x07]
     grovepi_found = False
     for add in grovepi_address:
         try:
-            test_grovepi = bus.read_byte(add)   
+            test_grovepi = bus.read_byte(add)
             print ("Found GrovePi at {}".format(add))
             grovepi_found = True
         except:
             pass
     return grovepi_found
+
 
 def find_brickpi():
     '''
@@ -86,16 +96,20 @@ def find_brickpi():
 
     return brickpi_found
 
+
 def find_brickpi3():
     '''
     TODO: detect BrickPi3
     '''
     return False
 
+
 def find_arduberry():
     '''
     TODO: detect arduberry
     '''
+    return False
+
 
 def add_robot(in_robot):
     '''
@@ -105,12 +119,13 @@ def add_robot(in_robot):
     global detected_robot
 
     if detected_robot != "None":
-        detected_robot +="_"
+        detected_robot += "_"
     else:
         # get rid of the None as we do have something to add
         detected_robot = ""
 
     detected_robot += in_robot
+
 
 def autodetect():
     '''
@@ -128,7 +143,6 @@ def autodetect():
     BrickPi3_PivotPi
     Arduberry
     '''
-
 
     if find_gopigo():
         add_robot("GoPiGo")
@@ -150,6 +164,7 @@ def autodetect():
 
     print ("Detected {}".format(detected_robot))
     return detected_robot
+
 
 if __name__ == '__main__':
     detected_robot = autodetect()
