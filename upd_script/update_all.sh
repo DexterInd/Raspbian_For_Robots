@@ -53,8 +53,6 @@ sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3
 sudo pip install -U RPi.GPIO
 sudo pip install -U future # for Python 2/3 compatibility
 
-
-
 echo "geany, espeak and piclone"
 # new tools from the foundation
 if [ $VERSION -eq '7' ]; then
@@ -64,8 +62,13 @@ else
 	sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
 fi
 
-
 sudo adduser pi i2c
+
+########################################################################
+# Installing libraries
+echo "Installing some useful libraries"
+sudo bash $RASPBIAN_PATH/lib/install.sh
+
 
 ########################################################################
 ## Kernel Updates
