@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=xhost +
+Exec=lxterminal --command "gksu sh /home/pi/Desktop/GoBox/LIRC_GUI/ir_start.sh"
+Icon=/home/pi/Desktop/GoBox/LIRC_GUI/LIRC_Setup.png
+Terminal=false
+Name=IR Receiver Setup
+Comment= Setup the IR Receiver to work on the GoPiGo and GrovePi
+Categories=Application;Education;Development;
+MimeType=application/x-scratch-project
