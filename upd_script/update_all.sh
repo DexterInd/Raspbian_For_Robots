@@ -27,20 +27,65 @@ DEXTER=Dexter
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
 
-echo "--> Begin Update."
-echo "--> ======================================="
+feedback() {
+  # first parameter is text to be displayed
+  echo -e "$(tput setaf 3)$1$(tput sgr0)"
+}
+
+delete_line_from_file() {
+  # first parameter is the string to be matched 
+  # the lines that contain that string will get deleted
+  # second parameter is the filename
+  if [ -f $2 ]
+  then
+    sudo sed -i "/$1/d" $2
+    feedback "deleted $1 from $2"
+  fi
+}
+
+insert_before_line_in_file()
+{
+  # first argument is the line that needs to be inserted DO NOT USE PATHS WITH / in them
+  # second argument is a partial match of the line we need to find to insert before
+  # third arument is filename
+
+  feedback "Inserting $1 before $2 in $3"
+  if [ -f $3 ]
+  then
+    feedback "sudo sed -i '/$2/i $1' $3"
+    sudo sed -i "/$2/i $1" $3
+  fi
+
+}
+add_line_to_end_of_file() {
+  # first parameter is what to add
+  # second parameter is filename
+  if [ -f $2 ]
+  then
+    echo $1 >> $2
+    feedback "added $1 in $2"
+  fi 
+}
+
+install_copypaste() {
+  # put "autocutsel -fork" before the last line in .vnc/xstartup
+  insert_before_line_in_file "autocutsel -fork" Xsession /home/pi/.vnc/xstartup
+}
+
+feedback "--> Begin Update."
+feedback "--> ======================================="
 sudo dpkg --configure -a
 sudo DEBIAN_FRONTEND=noninteractive apt-get update -y	# Get everything updated.  Don't interact with any configuration menus.
 							# Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
-echo "Install Specific Libraries."
+feedback "Install Specific Libraries."
 sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
 sudo apt-get remove python-wxgtk3.0 -y
 
-echo "Purged wxpython tools"
+feedback "Purged wxpython tools"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y			# Install wx for python for windows / GUI programs.
-echo "Installed wxpython tools"
+feedback "Installed wxpython tools"
 sudo apt-get remove python-wxgtk3.0 -y
-echo "Python-PSUtil"
+feedback "Python-PSUtil"
 
 sudo apt-get install python3-serial python-serial i2c-tools -y
 
@@ -53,12 +98,17 @@ sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3
 sudo pip install -U RPi.GPIO
 sudo pip install -U future # for Python 2/3 compatibility
 
-echo "geany, espeak and piclone"
-# new tools from the foundation
+feedback "Installing geany, espeak autocutsel, and piclone"
+# geany wasn't always installed by default on Wheezy or Jessie
+# autocutsel used for sharing the copy/paste clipboard between VNC and host computer
+# espeak used to read text out loud
+# piclone used to make copies of the SD card
+# new tools from the Foundation
+
 if [ $VERSION -eq '7' ]; then
-    sudo apt-get install geany espeak -y
+    sudo apt-get install geany espeak autocutsel -y
 else
-	sudo apt-get install geany espeak  piclone -y
+	sudo apt-get install geany espeak  piclone autocutsel -y
 	sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
 fi
 
@@ -66,17 +116,17 @@ sudo adduser pi i2c
 
 ########################################################################
 # Installing libraries
-echo "Installing some useful libraries"
+feedback "Installing some useful libraries"
 sudo bash $RASPBIAN_PATH/lib/install.sh
 
 
 ########################################################################
 ## Kernel Updates
 # Enable I2c and SPI.  
-echo "--> Begin Kernel Updates."
-echo "--> Start Update /etc/modules."
-echo "--> ======================================="
-echo " "
+feedback "--> Begin Kernel Updates."
+feedback "--> Start Update /etc/modules."
+feedback "--> ======================================="
+feedback " "
 sudo sed -i "/i2c-bcm2708/d" /etc/modules
 sudo sed -i "/i2c-dev/d" /etc/modules
 sudo echo "i2c-bcm2708" >> /etc/modules
@@ -86,17 +136,17 @@ sudo echo "ipv6" >> /etc/modules
 sudo sed -i "/spi-dev/d" /etc/modules
 sudo echo "spi-dev" >> /etc/modules
 
-echo "--> Start Update Raspberry Pi Blacklist.conf" 	#blacklist spi-bcm2708 #blacklist i2c-bcm2708
-echo "--> ======================================="
-echo " "
+feedback "--> Start Update Raspberry Pi Blacklist.conf" 	#blacklist spi-bcm2708 #blacklist i2c-bcm2708
+feedback "--> ======================================="
+feedback " "
 sudo sed -i "/blacklist spi-bcm2708/d" /etc/modprobe.d/raspi-blacklist.conf
 sudo sed -i "/blacklist i2c-bcm2708/d" /etc/modprobe.d/raspi-blacklist.conf
 sudo echo "##blacklist spi-bcm2708" >> /etc/modprobe.d/raspi-blacklist.conf
 sudo echo "##blacklist i2c-bcm2708" >> /etc/modprobe.d/raspi-blacklist.conf
 # For Raspberry Pi 3.18 kernel and up.
-echo "--> Update Config.txt file"   #dtparam=i2c_arm=on  #dtparam=spi=on
-echo "--> ======================================="
-echo " "
+feedback "--> Update Config.txt file"   #dtparam=i2c_arm=on  #dtparam=spi=on
+feedback "--> ======================================="
+feedback " "
 sudo sed -i "/dtparam=i2c_arm=on/d" /boot/config.txt
 sudo sed -i "/dtparam=spi=on/d" /boot/config.txt
 sudo echo "dtparam=spi=on" >> /boot/config.txt
@@ -114,7 +164,7 @@ sudo sed -i 's/kgbdoc=ttyAMA0,115200//' /boot/cmdline.txt
 sudo systemctl stop serial-getty@ttyAMA0.service
 sudo systemctl disable serial-getty@ttyAMA0.service
 
-echo "--> End Kernel Updates."
+feedback "--> End Kernel Updates."
 
 ########################################################################
 ##
@@ -132,17 +182,17 @@ sudo modprobe ipv6
 ########################################################################
 ##
 # Cleanup the Desktop
-echo "--> Desktop cleanup."
-echo "--> ======================================="
-echo " "
+feedback "--> Desktop cleanup."
+feedback "--> ======================================="
+feedback " "
 sudo rm $DESKTOP_PATH/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
 sudo rm $DESKTOP_PATH/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
 
 
 # Call fetch.sh - This updates the Github Repositories, installs necessary dependencies.
-echo "--> Begin Update Dexter Industries Software Packages."
-echo "--> ======================================="
-echo " "
+feedback "--> Begin Update Dexter Industries Software Packages."
+feedback "--> ======================================="
+feedback " "
 # sh will not work here. Bash is required
 sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 
@@ -150,18 +200,18 @@ sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 sudo bash $SCRATCH_PATH/install_scratch_start.sh
 
 # Enable LRC Infrared Control on Pi.
-echo "--> Enable LRC Infrared Control on Pi."
-echo "--> ======================================="
-echo " "
+feedback "--> Enable LRC Infrared Control on Pi."
+feedback "--> ======================================="
+feedback " "
 sudo sh $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
 sudo chmod +x $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
 sudo bash $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
 
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/
-echo "--> Update the background image on LXE Desktop."
-echo "--> ======================================="
-echo " "
+feedback "--> Update the background image on LXE Desktop."
+feedback "--> ======================================="
+feedback " "
 sudo rm /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
 
@@ -171,15 +221,15 @@ sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork
 ## these changes.  They should be offered ala-cart.
 
 # Update Wifi Interface
-echo "--> Update wifi interface."
-echo "--> ======================================="
-echo " "
+feedback "--> Update wifi interface."
+feedback "--> ======================================="
+feedback " "
 sudo apt-get install raspberrypi-net-mods -y	# Updates wifi configuration.  Does it wipe out network information?
 
 # Setup Apache
-echo "--> Install Apache. and PHP"
-echo "--> ======================================="
-echo " "
+feedback "--> Install Apache. and PHP"
+feedback "--> ======================================="
+feedback " "
 
 sudo apt-get install avahi-daemon avahi-utils -y  # Added to help with avahi issues.  2016.01.03
 sudo apt-get install apache2 php5 libapache2-mod-php5 -y
@@ -188,9 +238,9 @@ sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 sudo sh $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
 # Setup Webpage
-echo "--> Set up webpage."
-echo "--> ======================================="
-echo " "
+feedback "--> Set up webpage."
+feedback "--> ======================================="
+feedback " "
 sudo rm -r /var/www
 sudo cp -r $RASPBIAN_PATH/www /var/
 sudo chmod +x /var/www/index.php
@@ -200,11 +250,11 @@ sudo chmod +x /var/www/css/main.css
 ## into a new subdirectory.
 ## Get the Debian Version we have installed.
 VERSION=$(sed 's/\..*//' /etc/debian_version)
-echo "Version: $VERSION"
+# echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
-  echo "Version 7 found!  You have Wheezy!"
+  feedback "Version 7 found!  You have Wheezy!"
 elif [ $VERSION -eq '8' ]; then
-  echo "Version 8 found!  You have Jessie!"
+  feedback "Version 8 found!  You have Jessie!"
   # If we found Jesse, the proper location of the html files is in
   # /var/www/html
   sudo mkdir /var/www/html
@@ -213,13 +263,13 @@ elif [ $VERSION -eq '8' ]; then
   sudo chmod +x /var/www/html/css/main.css  
 fi
 
-echo $VERSION
+# echo $VERSION
 
 
 # Setup Shellinabox
-echo "--> Set up Shellinabox."
-echo "--> ======================================="
-echo " "
+feedback "--> Set up Shellinabox."
+feedback "--> ======================================="
+feedback " "
 sudo apt-get install shellinabox -y
 
 # disable requirement for SSL for shellinaboxa 
@@ -230,15 +280,15 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
-echo "--> Set up screen."
-echo "--> ======================================="
-echo " "
+feedback "--> Set up screen."
+feedback "--> ======================================="
+feedback " "
 sudo apt-get install screen -y
-echo "--> Set up noVNC"
-echo "--> ======================================="
-echo " "
+feedback "--> Set up noVNC"
+feedback "--> ======================================="
+feedback " "
 cd /usr/local/share/
-echo "--> Clone noVNC."
+feedback "--> Clone noVNC."
 sudo git clone git://github.com/DexterInd/noVNC
 cd noVNC
 sudo git pull
@@ -249,11 +299,11 @@ sudo cp vnc_auto.html index.html
 # reading VERSION again, in case lines get moved, or deleted above.
 # better safe
 VERSION=$(sed 's/\..*//' /etc/debian_version)
-echo "Version: $VERSION"
+# echo "Version: $VERSION"
 # setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
 # Wheezy 
 if [ $VERSION -eq '7' ]; then
-  echo "Version 7 found!  You have Wheezy!"
+  feedback "Version 7 found!  You have Wheezy!"
   cd /etc/init.d/
   sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
   sudo chmod 755 vncboot
@@ -270,14 +320,14 @@ if [ $VERSION -eq '7' ]; then
 
 #jessie
 elif [ $VERSION -eq '8' ]; then
-  echo "Version 8 found!  You have Jessie!"
+  feedback "Version 8 found!  You have Jessie!"
   pushd /home/pi
 
   # if we have a local copy of novnc.service, get rid of it before downloading a new one
   if [ -e /home/pi/novnc.service ]
   then
     sudo rm novnc.service
-    echo "removing local copy of novnc.service"
+    feedback "removing local copy of novnc.service"
   fi
 
   sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
@@ -292,7 +342,7 @@ fi
 ####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html
 ####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
 
-echo "Change bash permissions for desktop."
+feedback "Change bash permissions for desktop."
 if grep -Fxq "xhost +" /home/pi/.bashrc
 then
 	#Found it, do nothing!
@@ -301,13 +351,13 @@ else
 	sudo echo "xhost +" >> /home/pi/.bashrc
 fi
 
-echo "--> Finished setting up noVNC"
-echo "--> ======================================="
-echo "--> !"
-echo "--> !"
-echo "--> !"
-echo "--> ======================================="
-echo " "
+feedback "--> Finished setting up noVNC"
+feedback "--> ======================================="
+feedback "--> !"
+feedback "--> !"
+feedback "--> !"
+feedback "--> ======================================="
+feedback " "
 
 ########################################################################
 # ensure the Scratch examples are reachable via Scratch GUI
@@ -322,20 +372,24 @@ sleep 10
 ## Last bit of house cleaning.
 
 # Setup Hostname Changer
-echo "--> Set up Hostname Changer."
-echo "--> ======================================="
-echo " "
+feedback "--> Set up Hostname Changer."
+feedback "--> ======================================="
+feedback " "
 sudo chmod +x $RASPBIAN_PATH/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
 sudo sh $RASPBIAN_PATH/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
-echo "--> End hostname change setup."
+feedback "--> End hostname change setup."
 
 # Install Samba
-echo "--> Start installing Samba."
-echo "--> ======================================="
-echo " "
+feedback "--> Start installing Samba."
+feedback "--> ======================================="
+feedback " "
 sudo chmod +x $RASPBIAN_PATH/upd_script/install_samba.sh
 sudo sh $RASPBIAN_PATH/upd_script/install_samba.sh
-echo "--> End installing Samba."
+feedback "--> End installing Samba."
+
+# install the copy/paste functionality in vnc
+# assumes that apt-get install autocutsel is done near the top
+install_copypaste
 
 # Install Spy vs sPi Startup.
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
@@ -345,9 +399,9 @@ echo "--> End installing Samba."
 sudo bash $RASPBIAN_PATH/upd_script/spivsspi/SpyVsSpi_remove.sh
 
 # Install Backup
-echo "--> Start installing Backup."
-echo "--> ======================================="
-echo " "
+feedback "--> Start installing Backup."
+feedback "--> ======================================="
+feedback " "
 sudo chmod +x $RASPBIAN_PATH/backup/backup.sh
 sudo chmod +x $RASPBIAN_PATH/backup/restore.sh
 sudo chmod +x $RASPBIAN_PATH/backup/call_backup.sh
@@ -355,9 +409,9 @@ sudo chmod +x $RASPBIAN_PATH/backup/call_restore.sh
 sudo chmod +x $RASPBIAN_PATH/backup/run_backup.sh
 sudo chmod +x $RASPBIAN_PATH/backup/file_list.txt
 sudo chmod +x $RASPBIAN_PATH/backup/backup_gui.py
-echo "--> End installing Backup."
+feedback "--> End installing Backup."
 
-echo "--> Update for RPi3."
+feedback "--> Update for RPi3."
 # Run the update script for updating overlays for Rpi3.
 sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
 sudo sh $RASPBIAN_PATH/pi3/Pi3.sh
@@ -376,12 +430,12 @@ else
     sudo ./cinch_setup.sh
 fi
 
-echo "--> Begin cleanup."
+feedback "--> Begin cleanup."
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
-echo "--> End cleanup."
+efeedbackcho "--> End cleanup."
 
-echo "--> Update version on Desktop."
+feedback "--> Update version on Desktop."
 #Finally, if everything installed correctly, update the version on the Desktop!
 cd $DESKTOP_PATH
 rm Version
@@ -392,30 +446,30 @@ sudo chmod +x $DESKTOP_PATH/version.desktop
 
 # edition version file to reflect which Rasbpian flavour
 VERSION=$(sed 's/\..*//' /etc/debian_version)
-echo "Version: $VERSION"
+# echo "Version: $VERSION"
 if [ $VERSION -eq '8' ]; then
-  echo "Modifying Version file to reflect Jessie distro"
+  feedback "Modifying Version file to reflect Jessie distro"
   sudo sed -i 's/Wheezy/Jessie/g' $RASPBIAN_PATH/Version
 fi
 
 rm /home/pi/quiet_mode
 
-echo "--> ======================================="
-echo "--> ======================================="
-echo "  _    _               _           _                         ";
-echo " | |  | |             | |         | |                        ";
-echo " | |  | |  _ __     __| |   __ _  | |_    ___                ";
-echo " | |  | | | '_ \   / _\ |  / _\ | | __|  / _ \               ";
-echo " | |__| | | |_) | | (_| | | (_| | | |_  |  __/               ";
-echo "  \____/  | .__/   \__,_|  \__,_|  \__|_ \___|    _          ";
-echo "  / ____| | |                         | |        | |         ";
-echo " | |      |_|__    _ __ ___    _ __   | |   ___  | |_    ___ ";
-echo " | |       / _ \  |  _ \  _ \ |  _ \  | |  / _ \ | __|  / _ \ ";
-echo " | |____  | (_) | | | | | | | | |_) | | | |  __/ | |_  |  __/ ";
-echo "  \_____|  \___/  |_| |_| |_| | .__/  |_|  \___|  \__|  \___| ";
-echo "                              | |                            ";
-echo "                              |_|                            ";
-echo "--> Installation Complete."
-echo "--> "
-echo "--> "
-echo "--> Press the Exit button and the Pi will automatically reboot."
+feedback "--> ======================================="
+feedback "--> ======================================="
+feedback "  _    _               _           _                         ";
+feedback " | |  | |             | |         | |                        ";
+feedback " | |  | |  _ __     __| |   __ _  | |_    ___                ";
+feedback " | |  | | | '_ \   / _\ |  / _\ | | __|  / _ \               ";
+feedback " | |__| | | |_) | | (_| | | (_| | | |_  |  __/               ";
+feedback "  \____/  | .__/   \__,_|  \__,_|  \__|_ \___|    _          ";
+feedback "  / ____| | |                         | |        | |         ";
+feedback " | |      |_|__    _ __ ___    _ __   | |   ___  | |_    ___ ";
+feedback " | |       / _ \  |  _ \  _ \ |  _ \  | |  / _ \ | __|  / _ \ ";
+feedback " | |____  | (_) | | | | | | | | |_) | | | |  __/ | |_  |  __/ ";
+feedback "  \_____|  \___/  |_| |_| |_| | .__/  |_|  \___|  \__|  \___| ";
+feedback "                              | |                            ";
+feedback "                              |_|                            ";
+feedback "--> Installation Complete."
+feedback "--> "
+feedback "--> "
+feedback "--> Press the Exit button and the Pi will automatically reboot."
