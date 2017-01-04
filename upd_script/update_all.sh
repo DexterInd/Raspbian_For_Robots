@@ -29,6 +29,10 @@ SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
 
 feedback() {
   # first parameter is text to be displayed
+  # this sets the text color to a pinkish color for visibility
+  # the last tput resets colors to default
+  # one could also set background color with setb instead of setaf
+  #http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x405.html
   echo -e "$(tput setaf 3)$1$(tput sgr0)"
 }
 
