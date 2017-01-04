@@ -4,6 +4,8 @@ from __future__ import division
 import time     # import the time library for the sleep function
 from smbus import SMBus
 import serial
+from BrickPi import *
+import brickpi3
 
 bus = SMBus(1)
 detected_robot = "None"
@@ -15,7 +17,6 @@ def find_pivotpi():
     Checks all four possible addresses
     Returns True or False
     '''
-    print("Looking for PivotPi")
     pivotpi_found = False
     try:
         import pivotpi
@@ -25,15 +26,10 @@ def find_pivotpi():
                               0x43]
         for add in possible_addresses:
             try:
-                # print("Testing {}".format(add))
                 p = pivotpi.PivotPi(add)
+                print ("Found PivotPi at 0x{:X}".format(add))
                 pivotpi_found = True
             except:
-                # print ("Not found at {}".format(add))
-                p = pivotpi.PivotPi(add)
-                pivotpi_found = True
-            except:
-                print ("Not found at {}".format(add))
                 pass
     except:
         pass
@@ -45,16 +41,13 @@ def find_gopigo():
     boolean function that detects the presence of a GoPiGo
     returns True or False
     '''
-    print("Looking for GoPiGo")
     gopigo_address = 0x08
-    gopigo_found = False
     try:
         test_gopigo = bus.read_byte(gopigo_address)
         print ("Found GoPiGo")
-        gopigo_found = True
+        return True
     except:
-        pass
-    return gopigo_found
+        return False
 
 
 def find_grovepi():
@@ -63,7 +56,6 @@ def find_grovepi():
     ONLY HANDLES DEFAULT GrovePi ADDRESS
     returns True or False
     '''
-    print("Looking for GrovePi")
     grovepi_address = [0x04,
                        0x03,
                        0x05,
@@ -73,7 +65,7 @@ def find_grovepi():
     for add in grovepi_address:
         try:
             test_grovepi = bus.read_byte(add)
-            print ("Found GrovePi at {}".format(add))
+            print ("Found GrovePi at 0x{:X}".format(add))
             grovepi_found = True
         except:
             pass
@@ -82,33 +74,29 @@ def find_grovepi():
 
 def find_brickpi():
     '''
-    TODO: not a valid method of detecting a BrickPi
+    boolean function that detects the presence of a BrickPi+
+    returns True or False
     '''
-    print("Looking for BrickPi")
-    brickpi_found = False
-    # ser = serial.Serial()
-    # ser.port='/dev/ttyAMA0'
-    # ser.baudrate=500000
-    # ser.open()
-    # if ser.isOpen():
-    #     print("Found BrickPi or BrickPi+")
-    #     brickpi_found = True
-
-    return brickpi_found
+    BrickPiSetup()
+    #if BrickPiSetupSensors() == 0: # really slow
+    if BrickPiUpdateValues() == 0:
+        print ("Found BrickPi")
+        return True
+    else:
+        return False
 
 
 def find_brickpi3():
     '''
-    TODO: detect BrickPi3
+    boolean function that detects the presence of a BrickPi3
+    returns True or False
     '''
-    return False
-
-
-def find_arduberry():
-    '''
-    TODO: detect arduberry
-    '''
-    return False
+    try:
+        BP3 = brickpi3.BrickPi3()
+        print ("Found BrickPi3")
+        return True
+    except:
+        return False
 
 
 def add_robot(in_robot):
@@ -141,26 +129,27 @@ def autodetect():
     BrickPi
     BrickPi3
     BrickPi3_PivotPi
-    Arduberry
     '''
-
+    
+    print("Looking for GoPiGo")
     if find_gopigo():
         add_robot("GoPiGo")
-
+    
+    print("Looking for GrovePi")
     if find_grovepi():
         add_robot("GrovePi")
-
+    
+    print("Looking for PivotPi")
     if find_pivotpi():
         add_robot("PivotPi")
-
+    
+    print("Looking for BrickPi")
     if find_brickpi():
         add_robot("BrickPi")
-
+    
+    print("Looking for BrickPi3")
     if find_brickpi3():
         add_robot("BrickPi3")
-
-    if find_arduberry():
-        add_robot("Arduberry")
 
     print ("Detected {}".format(detected_robot))
     return detected_robot
