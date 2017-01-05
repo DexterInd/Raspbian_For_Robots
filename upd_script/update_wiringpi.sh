@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./functions_library.sh
+source /home/pi/di_update/Raspbian_For_Robots/upd_script/functions_library.sh
 
 # Check if WiringPi Installed and has the latest version.  If it does, skip the step.
 # Gets the version of wiringPi installed
@@ -19,7 +19,7 @@ echo $WIRINGVERSIONDEC >> tmpversion
 VERSION=$(sed 's/\.//g' tmpversion)     
 
 # Remove the temp file
-rm tmpversion                           
+delete_file tmpversion                           
 
 feedback "wiringPi VERSION is $VERSION"
 if [ $VERSION -eq '236' ]; then
@@ -29,16 +29,13 @@ else
 	feedback "Did NOT find WiringPi Version 2.36"
 	# Check if the Dexter directory exists.
 	DIRECTORY='/home/pi/Dexter'
-	if [ -d "$DIRECTORY" ]; then
-		# Will enter here if $DIRECTORY exists, even if it contains spaces
-		echo "Dexter Directory Found!"
-	else
-		mkdir $DIRECTORY
-	fi
-	# Install wiringPi
+	create_folder "$DIRECTORY"
+	create_folder "$DIRECTORY"/lib
 
 	# Change directories to Dexter
-	cd $DIRECTORY/lib 	
+	cd $DIRECTORY/lib 
+	delete_folder wiringPi	
+	# Install wiringPi
 	git clone https://github.com/DexterInd/wiringPi/  # Clone directories to Dexter.
 	cd wiringPi
 	sudo chmod +x ./build
