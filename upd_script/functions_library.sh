@@ -71,7 +71,6 @@ add_line_to_end_of_file() {
   if [ -f $2 ]
   then
     echo $1 >> $2
-    feedback "added $1 in $2"
   fi 
 }
 
