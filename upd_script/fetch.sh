@@ -1,6 +1,32 @@
 #! /bin/bash
 # This script updates the the code repos on Raspbian for Robots.
 
+DEXTER=Dexter
+DEXTER_PATH=$HOME/$DEXTER
+
+########################################################################
+## Staging Code.
+## Change this code to operate out of a particular branch of code.
+
+## Uncomment this and add a branch name to work from a particular branch.
+BRANCH=update201612
+
+# Function checks out branch if BRANCH is defined.
+change_branch() {
+	if [ -z ${BRANCH+x} ]; then 
+		echo "Working from main branch."; 
+	else 
+		echo "Working from $BRANCH branch";
+		sudo git checkout $BRANCH
+	fi
+}
+
+########################################################################
+## IMPORT FUNCTIONS LIBRARY
+## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
+## Importing the source will not work if you run "sudo sh update_all.sh"
+source ./functions_library.sh
+
 # verify quiet mode
 if [ -f /home/pi/quiet_mode ]
 then
@@ -47,16 +73,25 @@ fi
 if [ $gopigo_update == 1 ] ; then
 	# GoPiGo Update
 	echo "--> Start GoPiGo Update."
-	echo "----------"
-	# Un Changed the process here: move from git fetch to just delete the directory, and then clone back in.
-	cd /home/pi/Desktop/GoPiGo    
-	sudo git fetch origin   
-	sudo git reset --hard  
-	sudo git merge origin/master
+	echo "##############################"
+	# Changed file Location to ~/Dexter
+	sudo rm -r /home/pi/Desktop/GoPiGo		# Delete the old location
+	# Check for a GoPiGo directory.  If it doesn't exist, create it.
+	GOPIGO_DIR=/home/pi/Dexter/GoPiGo
+	if [ -d "$GOPIGO_DIR" ]; then
+		echo "GoPiGo Directory Exists"
+		cd /home/pi/Dexter/GoPiGo	# Go to directory
+		sudo git fetch origin   	# Hard reset the git files
+		sudo git reset --hard  
+		sudo git merge origin/master
+	else
+		cd /home/pi/Dexter/
+		git clone https://github.com/DexterInd/GoPiGo
+		cd /home/pi/Dexter/GoPiGo
+		change_branch	# change to a branch we're working on.
+	fi
 
-	# cd /home/pi/Desktop # sudo rm -r GoPiGo # sudo git clone https://github.com/DexterInd/GoPiGo.git
-
-	cd Setup
+	cd /home/pi/Dexter/GoPiGo/Setup
 	echo "--> UPDATING LIBRARIES"
 	echo "------------------"
 	sudo chmod +x install.sh
@@ -66,22 +101,23 @@ if [ $gopigo_update == 1 ] ; then
 	echo "--> Installing Line Follower Calibration"
 	# Install GoPiGo Line Follower Calibration
 	sudo rm /home/pi/Desktop/line_follow.desktop
-	sudo cp /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
+	sudo cp /home/pi/Dexter/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
 	sudo chmod +x /home/pi/Desktop/line_follow.desktop
-	sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Python/line_follower/line_sensor_gui.py
+	sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Python/line_follower/line_sensor_gui.py
 
 	echo "--> Install Scratch dependency ScratchPy."
-	cd /home/pi/Desktop/GoPiGo/Software/Scratch
+	cd /home/pi/Dexter/GoPiGo/Software/Scratch
 	sudo git clone https://github.com/DexterInd/scratchpy.git
 	cd scratchpy
+	change_branch	# change to a branch we're working on.
 	sudo make install
 
 	#GoPiGo Scratch Permissions
 	#echo "--> Install Scratch Shortcuts and Permissions."
 	#sudo rm /home/pi/Desktop/GoPiGo_Scratch_Start.desktop  					# Delete old icons off desktop
 	#sudo cp /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.desktop /home/pi/Desktop	# Move icons to desktop
-	sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh					# Change script permissions
-	sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh					# Change script permissions
+	sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh					# Change script permissions
+	sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh					# Change script permissions
 	sudo chmod -R 777 /usr/share/scratch/Projects/
 else
 	echo "--> GoPiGo **NOT** Updated."
@@ -94,35 +130,70 @@ fi  # end conditional statement on GOPIGO UPDATE
 
 if [ $brickpi_update == 1 ] ; then
 
-	# BrickPi Update
+	# BrickPi+ Update
+	# BrickPi+ is the Master Directory, and the BrickPi_X directories will go in under it.
 	echo "--> Start BrickPi Update."
-	echo "----------"
-	cd /home/pi/Desktop/BrickPi
-	sudo git fetch origin
-	git reset --hard
-	sudo git merge origin/master
+	echo "##############################"
+	sudo rm -r /home/pi/Desktop/BrickPi		# Delete the old location
+	# Check for a BrickPi directory under "Dexter" folder.  If it doesn't exist, create it.
+	BRICKPI_DIR=/home/pi/Dexter/BrickPi+
+	if [ -d "$BRICKPI_DIR" ]; then
+		echo "BrickPi Directory Exists"
+		cd /home/pi/Dexter/BrickPi+/BrickPi	# Go to directory
+		sudo git fetch origin   	# Hard reset the git files
+		sudo git reset --hard  
+		sudo git merge origin/master
+		change_branch		
+	else
+		sudo mkdir /home/pi/Dexter/BrickPi+
+		cd /home/pi/Dexter/BrickPi+
+		git clone https://github.com/DexterInd/BrickPi
+		cd /home/pi/Dexter/BrickPi+/BrickPi
+		change_branch	# change to a branch we're working on, if we've defined the branch above.
+	fi
 
 	# BrickPi_Python Update
 	echo "--> Start BrickPi_Python Update."
 	echo "----------"
-	cd /home/pi/Desktop/BrickPi_Python
-	sudo git fetch origin
-	git reset --hard
-	sudo git merge origin/master
+	sudo rm -r /home/pi/Desktop/BrickPi_Python		# Delete the old location
+	
+	# Check for a BrickPi_Python directory under "BrickPi+" folder.  If it doesn't exist, create it.
+	#BRICKPI_PYTHON_DIR=/home/pi/Dexter/BrickPi+/BrickPi_Python
+	#if [ -d "$BRICKPI_PYTHON_DIR" ]; then
+	#	echo "BrickPi Python Directory Exists"
+	#	cd /home/pi/Dexter/BrickPi+/BrickPi_Python	# Go to directory
+	#	sudo git fetch origin   	# Hard reset the git files
+	#	sudo git reset --hard  
+	#	sudo git merge origin/master
+	#else
+	#	cd /home/pi/Dexter/BrickPi+
+	#	git clone https://github.com/DexterInd/BrickPi_Python
+	#fi
 
-	sudo apt-get install python-setuptools
+	# Moved this to the update_all --> sudo apt-get install python-setuptools
 	# Remove Python Packages
-	cd /home/pi/Desktop/BrickPi_Python/
-	sudo python /home/pi/Desktop/BrickPi_Python/setup.py install
+	cd /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Python/
+	sudo python /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Python/setup.py install
 
 	# BrickPi_Scratch Update
 	echo "--> Start BrickPi_Scratch Update."
 	echo "----------"
-	cd /home/pi/Desktop/BrickPi_Scratch
-	sudo git fetch origin
-	git reset --hard
-	sudo git merge origin/master
+	sudo rm -r /home/pi/Desktop/BrickPi_Scratch		# Delete the old location
 
+	# Check for a BrickPi_Scratch directory under "BrickPi+" folder.  If it doesn't exist, create it.
+	#BRICKPI_DIR=/home/pi/Dexter/BrickPi+/BrickPi_Scratch
+	#if [ -d "$BRICKPI_DIR" ]; then
+	#	echo "BrickPi Scratch Directory Exists"
+	#	cd /home/pi/Dexter/BrickPi+/BrickPi_Scratch	# Go to directory
+	#	sudo git fetch origin   	# Hard reset the git files
+	#	sudo git reset --hard  
+	#	sudo git merge origin/master
+	#else
+	#	cd /home/pi/Dexter/BrickPi+
+	#	git clone https://github.com/DexterInd/BrickPi_Scratch
+	#fi
+
+	cd /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Scratch
 	sudo rm -r scratchpy
 	git clone https://github.com/DexterInd/scratchpy
 	cd scratchpy
@@ -136,10 +207,20 @@ if [ $brickpi_update == 1 ] ; then
 	# BrickPi_C Update
 	echo "--> Start BrickPi_C Update."
 	echo "----------"
-	cd /home/pi/Desktop/BrickPi_C
-	sudo git fetch origin
-	git reset --hard
-	sudo git merge origin/master
+	sudo rm -r /home/pi/Desktop/BrickPi_C		# Delete the old location
+
+	# Check for a BrickPi_C directory under "BrickPi+" folder.  If it doesn't exist, create it.
+	#BRICKPI_DIR=/home/pi/Dexter/BrickPi+/BrickPi_C
+	#if [ -d "$BRICKPI_DIR" ]; then
+	#	echo "BrickPi C Directory Exists"
+	#	cd /home/pi/Dexter/BrickPi+/BrickPi_C	# Go to directory
+	#	sudo git fetch origin   	# Hard reset the git files
+	#	sudo git reset --hard  
+	#	sudo git merge origin/master
+	#else
+	#	cd /home/pi/Dexter/BrickPi+
+	#	git clone https://github.com/DexterInd/BrickPi_C
+	#fi
 else
 	echo "--> BrickPi **NOT** Updated."
 	echo "----------"
@@ -150,13 +231,24 @@ if [ $arduberry_update == 1 ] ; then
 	# Arduberry Update
 	echo "--> Start Arduberry Update."
 	echo "----------"
-	cd /home/pi/Desktop/ArduBerry
-	sudo git fetch origin
-	git reset --hard
-	sudo git merge origin/master
 
-	sudo chmod +x /home/pi/Desktop/ArduBerry/script/install.sh
-	sudo bash /home/pi/Desktop/ArduBerry/script/install.sh
+	sudo rm -r /home/pi/Desktop/ArduBerry		# Delete the old location
+
+	# Check for a Arduberry directory under "Dexter" folder.  If it doesn't exist, create it.
+	ARDUBERRY_DIR=/home/pi/Dexter/ArduBerry
+	if [ -d "$ARDUBERRY_DIR" ]; then
+		echo "Arduberry Directory Exists"
+		cd $ARDUBERRY_DIR	# Go to directory
+		sudo git fetch origin   	# Hard reset the git files
+		sudo git reset --hard  
+		sudo git merge origin/master
+	else
+		cd /home/pi/Dexter/
+		git clone https://github.com/DexterInd/ArduBerry
+	fi
+
+	sudo chmod +x $ARDUBERRY_DIR/script/install.sh
+	sudo bash $ARDUBERRY_DIR/script/install.sh
 else
 	echo "--> Arduberry **NOT** Updated."
 	echo "----------"
@@ -167,18 +259,32 @@ fi
 # GROVEPI
 ###############################################
 
-
 if [ $grovepi_update == 1 ] ; then
 
 	# GrovePi Update
 	echo "--> Start GrovePi Update."
 	echo "----------"
-	cd /home/pi/Desktop/GrovePi
-	sudo git fetch origin
-	git reset --hard
-	sudo git merge origin/master
+	
+	sudo rm -r /home/pi/Desktop/GrovePi		# Delete the old location
+
+	# Check for a GrovePi directory under "Dexter" folder.  If it doesn't exist, create it.
+	GROVEPI_DIR=/home/pi/Dexter/GrovePi
+	if [ -d "$GROVEPI_DIR" ]; then
+		echo "GrovePi Directory Exists"
+		cd $GROVEPI_DIR				# Go to directory
+		sudo git fetch origin   	# Hard reset the git files
+		sudo git reset --hard  
+		sudo git merge origin/master
+	else
+		cd /home/pi/Dexter/
+		git clone https://github.com/DexterInd/GrovePi
+	fi
+	change_branch
+	
 	echo "--> Start GrovePi update install."
 	echo "----------"
+	cd /home/pi/di_update/Raspbian_For_Robots/		# Going to change the Raspbian for Robots git branch.
+	change_branch									# Change branch to the one we're working on
 	cd /home/pi/di_update/Raspbian_For_Robots/upd_script
 	sudo chmod +x update_GrovePi.sh
 	sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi.sh
@@ -186,8 +292,8 @@ if [ $grovepi_update == 1 ] ; then
 	# GrovePi Scratch Setup
 	# sudo rm /home/pi/Desktop/GrovePi_Scratch_Start.desktop  					# Delete old icons off desktop
 	# sudo cp /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.desktop /home/pi/Desktop	# Move icons to desktop
-	sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePiScratch_debug.sh						# Change script permissions
-	sudo chmod +x /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.sh					# Change script permissions
+	sudo chmod +x /home/pi/Dexter/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePiScratch_debug.sh						# Change script permissions
+	sudo chmod +x /home/pi/Dexter/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.sh					# Change script permissions
 	
 else
 	echo "--> GrovePi **NOT** Updated."
@@ -262,15 +368,13 @@ sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo sh /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 
-
-
 #########################################
 # Install All Python Scripts
 
 #########################################
 if [ $brickpi_update=1 ] ; then
 	# BrickPi Python Installation
-	cd /home/pi/Desktop/BrickPi_Python/
+	cd /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Python/
 	sudo python setup.py install --record files.txt
 
 	# This will cause all the installed files to be printed to that directory.
@@ -285,7 +389,7 @@ fi # end second brickpi conditional test
 #GoPiGo Python Installation
 if [ $gopigo_update=1 ] ; then
 	echo "Installing GoPiGo Libraries from Fetch"
-	cd /home/pi/Desktop/GoPiGo/Software/Python/
+	cd /home/pi/Dexter/GoPiGo/Software/Python/
 	sudo python setup.py install --record files.txt
 	sudo cat files.txt | xargs sudo rm -rf
 	sudo rm files.txt
@@ -300,7 +404,7 @@ fi # end second gopigo conditional test
 #########################################
 #  GrovePi
 if [ $grovepi_update=1 ] ; then
-	cd /home/pi/Desktop/GrovePi/Software/Python/
+	cd /home/pi/Dexter/GrovePi/Software/Python/
 	sudo python setup.py install --record files.txt
 	sudo cat files.txt | xargs sudo rm -rf
 	sudo rm files.txt

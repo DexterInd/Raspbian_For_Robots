@@ -163,4 +163,4 @@ sudo ./setup.sh
 echo " "
 echo "Making libraries global . . ."
 echo "============================="
-sudo cp /home/pi/Desktop/GrovePi/Script/grove.pth /usr/lib/python2.7/dist-packages/grove.pth
+sudo cp /home/pi/Dexter/GrovePi/Script/grove.pth /usr/lib/python2.7/dist-packages/grove.pth

@@ -6,6 +6,7 @@
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
 
+
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
@@ -90,7 +91,7 @@ sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 # merge all the install lines into one, as each call to apt-get install 
 # takes a while to build the dependency tree
 # Oct 27th 2016: add fix for DirtyCow security issue
-sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel
+sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel python-setuptools
 # sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
 sudo pip install -U RPi.GPIO
 sudo pip install -U future # for Python 2/3 compatibility
