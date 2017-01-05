@@ -128,6 +128,17 @@ delete_file (){
   fi
 }
 
+wget_file() {
+  echo $1
+  # extract the filename from the provided path
+  target_file=${1##*/}
+  echo $target_file
+  delete_file $target_file
+  wget $1
+
+
+}
+
 #########################################################################
 #
 #  FOLDER HANDLING - detection, deletion
@@ -139,6 +150,7 @@ create_folder(){
     mkdir $1
   fi
 }
+
 folder_exists(){
   # Only one argument: the folder to look for
   # returns 0 on SUCCESS
