@@ -19,6 +19,15 @@ quiet_mode() {
   fi
 }
 
+set_quiet_mode(){
+  touch /home/pi/quiet_mode
+}
+
+unset_quiet_mode(){
+  delete_file /home/pi/quiet_mode
+}
+
+
 feedback() {
   # first parameter is text to be displayed
   # this sets the text color to a yellow color for visibility
