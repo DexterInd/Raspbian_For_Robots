@@ -260,7 +260,7 @@ sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork
 ## these changes.  They should be offered a-la-carte.
 
 sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
-sudo sh $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
+sudo bash $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
 # Set up Webpage
 feedback "--> Set up webpage."
@@ -396,7 +396,7 @@ feedback "--> Start installing Samba."
 feedback "--> ======================================="
 feedback " "
 sudo chmod +x $RASPBIAN_PATH/upd_script/install_samba.sh
-sudo sh $RASPBIAN_PATH/upd_script/install_samba.sh
+sudo bash $RASPBIAN_PATH/upd_script/install_samba.sh
 feedback "--> End installing Samba."
 
 # install the copy/paste functionality in vnc
@@ -405,7 +405,7 @@ install_copypaste
 
 # Install Spy vs sPi Startup.
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
-# sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+# sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
 
 # Remove Spy vs Spi 
 sudo bash $RASPBIAN_PATH/upd_script/spivsspi/SpyVsSpi_remove.sh
@@ -426,7 +426,7 @@ feedback "--> End installing Backup."
 feedback "--> Update for RPi3."
 # Run the update script for updating overlays for Rpi3.
 sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
-sudo sh $RASPBIAN_PATH/pi3/Pi3.sh
+sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 
 feedback "-->installing Geany"
 geany_setup
