@@ -1,19 +1,26 @@
 #!/bin/bash -e
 # This Script updates the hostname by reading it from "/boot/hostname" 
-echo "  _____            _                                ";
-echo " |  __ \          | |                               ";
-echo " | |  | | _____  _| |_ ___ _ __                     ";
-echo " | |  | |/ _ \ \/ / __/ _ \ '__|                    ";
-echo " | |__| |  __/>  <| ||  __/ |                       ";
-echo " |_____/ \___/_/\_\\__\___|_| _        _            ";
-echo " |_   _|         | |         | |      (_)           ";
-echo "   | |  _ __   __| |_   _ ___| |_ _ __ _  ___  ___  ";
-echo "   | | | '_ \ / _    | | |   __| __|  | |/ _ \/ __| ";
-echo "  _| |_| | | | (_| | |_| \__ \ |_| |  | |  __/\__ \ ";
-echo " |_____|_| |_|\__,_|\__,_|___/\__|_|  |_|\___||___/ ";
-echo "                                                    ";
-echo "                                                    ";
-echo " "
+
+source ./functions_library.sh
+
+
+if ! quiet_mode
+then
+    echo "  _____            _                                ";
+    echo " |  __ \          | |                               ";
+    echo " | |  | | _____  _| |_ ___ _ __                     ";
+    echo " | |  | |/ _ \ \/ / __/ _ \ '__|                    ";
+    echo " | |__| |  __/>  <| ||  __/ |                       ";
+    echo " |_____/ \___/_/\_\\__\___|_| _        _            ";
+    echo " |_   _|         | |         | |      (_)           ";
+    echo "   | |  _ __   __| |_   _ ___| |_ _ __ _  ___  ___  ";
+    echo "   | | | '_ \ / _    | | |   __| __|  | |/ _ \/ __| ";
+    echo "  _| |_| | | | (_| | |_| \__ \ |_| |  | |  __/\__ \ ";
+    echo " |_____|_| |_|\__,_|\__,_|___/\__|_|  |_|\___||___/ ";
+    echo "                                                    ";
+    echo "                                                    ";
+    echo " "
+fi
 
 THISHOST=$(hostname -f) # Gets current hostname
 echo "Current hostname: $THISHOST"
