@@ -272,7 +272,7 @@ if [ $grovepi_update == 1 ] ; then
     change_branch                                   # Change branch to the one we're working on
     cd /home/pi/di_update/Raspbian_For_Robots/upd_script
     sudo chmod +x update_GrovePi.sh
-    sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi.sh
+    sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi.sh
 
     # GrovePi Scratch Setup
     # sudo rm /home/pi/Desktop/GrovePi_Scratch_Start.desktop                    # Delete old icons off desktop
@@ -332,11 +332,11 @@ sudo rm -r /home/pi/Desktop/GoBox
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/GoBox.git
 # sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
-# sudo sh /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
+# sudo bash /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
 delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
 
 # sudo chmod +x /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
-# sudo sh /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
+# sudo bash /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
 # sudo rm -r /home/pi/Desktop/build
 # sudo rm -r /home/pi/Desktop/dist
 # sudo rm -r /home/pi/Desktop/ir_receiver_check.egg-info
@@ -353,7 +353,7 @@ fi
 # Install GoBox Troubleshooting Software
 sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
-sudo sh /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 
 #########################################
 # Install All Python Scripts
