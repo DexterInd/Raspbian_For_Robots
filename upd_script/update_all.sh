@@ -14,26 +14,19 @@
 source ./functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
-touch /home/pi/quiet_mode
-# setting quiet mode
-if [ -f /home/pi/quiet_mode ]
-then
-	quiet_mode=1
-else
-	quiet_mode=0
-fi
+set_quiet_mode
 
-HOME=/home/pi
+PIHOME=/home/pi
 DIUPDATE=di_update
 RASPBIAN=Raspbian_For_Robots
-RASPBIAN_PATH=$HOME/$DIUPDATE/$RASPBIAN
+RASPBIAN_PATH=$PIHOME/$DIUPDATE/$RASPBIAN
 DESKTOP=Desktop
-DESKTOP_PATH=$HOME/$DESKTOP
+DESKTOP_PATH=$PIHOME/$DESKTOP
 DEXTER=Dexter
 SCRATCH=Scratch_GUI
-SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
+SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
 
-DEXTER_PATH=$HOME/$DEXTER
+DEXTER_PATH=$PIHOME/$DEXTER
 
 ########################################################################
 # HELPER FUNCTIONS
@@ -72,7 +65,7 @@ install_copypaste() {
   if file_does_not_exists $xstartup
   then
     touch $xstartup
-    add_line_to_end_of_file "xrdb $HOME/.Xresources" $xstartup
+    add_line_to_end_of_file "xrdb $PIHOME/.Xresources" $xstartup
     add_line_to_end_of_file "xsetroot -solid grey -cursor_name left_ptr" $xstartup
     add_line_to_end_of_file "/etc/X11/Xsession" $xstartup
   fi
@@ -89,36 +82,44 @@ install_packages() {
   sudo DEBIAN_FRONTEND=noninteractive apt-get update -y # Get everything updated.  Don't interact with any configuration menus.
                 # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
   feedback "Install Specific Libraries."
-  sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.  
-  sudo apt-get remove python-wxgtk3.0 -y
 
-  feedback "Purged wxpython tools"
-  sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
-  feedback "Installed wxpython tools"
-  sudo apt-get remove python-wxgtk3.0 -y
-  feedback "Python-PSUtil"
-
-  sudo apt-get install python3-serial python-serial i2c-tools -y
-
-  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
   # merge all the install lines into one, as each call to apt-get install 
   # takes a while to build the dependency tree
-  # Oct 27th 2016: add fix for DirtyCow security issue
-  sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel python-setuptools
+
+
+  # geany wasn't always installed by default on Wheezy or Jessie
+  # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
+  # espeak used to read text out loud
+  # Oct 27th 2016: add raspberrypi-kernel for DirtyCow security issue
+  # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
+  sudo apt-get install -y python3-serial python-serial i2c-tools  \
+                          avahi-daemon avahi-utils \
+                          apache2 php5 libapache2-mod-php5 \
+                          python-rpi.gpio python3-rpi.gpio \
+                          python-picamera python3-picamera \
+                          python-smbus python3-smbus \
+                          raspberrypi-kernel python-setuptools \
+                          geany espeak autocutsel \
+                          raspberrypi-net-mods \
+                          shellinabox screen
+
+  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+
+ 
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
-  feedback "Installing geany, espeak autocutsel, and piclone"
+
   # geany wasn't always installed by default on Wheezy or Jessie
   # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
   # espeak used to read text out loud
   # piclone used to make copies of the SD card
   # new tools from the Foundation
 
-  if [ $VERSION -eq '7' ]; then
-      sudo apt-get install geany espeak autocutsel -y
-  else
-    sudo apt-get install geany espeak  piclone autocutsel -y
+  # only available on Jessie
+  # piclone used to make copies of the SD card; 
+  if [ ! $VERSION -eq '7' ]; then
+    sudo apt-get install piclone -y
     sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
   fi
 }
@@ -134,14 +135,12 @@ feedback "--> Begin Update."
 feedback "--> ======================================="
 install_packages
 
-
 sudo adduser pi i2c
 
 ########################################################################
 # Installing libraries
 feedback "Installing some useful libraries"
 sudo bash $RASPBIAN_PATH/lib/install.sh
-
 
 ########################################################################
 ## Kernel Updates
@@ -218,6 +217,8 @@ feedback "--> ======================================="
 feedback " "
 # sh will not work here. Bash is required
 sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
+# fetch will remove quiet_mode so set it back
+set_quiet_mode
 
 feedback "--> Install Scratch"
 feedback "--> ======================================="
@@ -244,26 +245,12 @@ sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork
 
 ########################################################################
 ## These Changes to the image are all optional.  Some users may not want
-## these changes.  They should be offered ala-cart.
-
-# Update Wifi Interface
-feedback "--> Update wifi interface."
-feedback "--> ======================================="
-feedback " "
-sudo apt-get install raspberrypi-net-mods -y	# Updates wifi configuration.  Does it wipe out network information?
-
-# Setup Apache
-feedback "--> Install Apache. and PHP"
-feedback "--> ======================================="
-feedback " "
-
-sudo apt-get install avahi-daemon avahi-utils -y  # Added to help with avahi issues.  2016.01.03
-sudo apt-get install apache2 php5 libapache2-mod-php5 -y
+## these changes.  They should be offered a-la-carte.
 
 sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 sudo sh $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
-# Setup Webpage
+# Set up Webpage
 feedback "--> Set up webpage."
 feedback "--> ======================================="
 feedback " "
@@ -292,12 +279,6 @@ fi
 # echo $VERSION
 
 
-# Setup Shellinabox
-feedback "--> Set up Shellinabox."
-feedback "--> ======================================="
-feedback " "
-sudo apt-get install shellinabox -y
-
 # disable requirement for SSL for shellinaboxa 
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
@@ -306,10 +287,6 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
-feedback "--> Set up screen."
-feedback "--> ======================================="
-feedback " "
-sudo apt-get install screen -y
 feedback "--> Set up noVNC"
 feedback "--> ======================================="
 feedback " "
@@ -442,9 +419,7 @@ feedback "--> Update for RPi3."
 sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
 sudo sh $RASPBIAN_PATH/pi3/Pi3.sh
 
-# remove wx version 3.0 - which gets pulled in by various other libraries
-# it creates graphical issues in our Python GUI
-sudo apt-get remove python-wxgtk3.0 -y
+
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
@@ -457,9 +432,17 @@ else
 fi
 
 feedback "--> Begin cleanup."
+# remove wx version 3.0 - which gets pulled in by various other libraries
+# it creates graphical issues in our Python GUI
+# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.  
+# echo "Purged wxpython tools"
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
+echo "Installed wxpython tools"
+sudo apt-get remove python-wxgtk3.0 -y
+echo "Python-PSUtil"
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
-efeedbackcho "--> End cleanup."
+feedback "--> End cleanup."
 
 ########################################################################
 ## Update Version
@@ -488,13 +471,13 @@ fi
 # Add Cinch Stamp in Version File
 # Check for file /home/pi/cinch, if it is, make a note in Version.
 if [ ! -f /home/pi/cinch ]; then
-    feedback "No Cinch Found."
+    echo "No Cinch Found."
 else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
 
-rm /home/pi/quiet_mode
+unset_quiet_mode
 
 feedback "--> ======================================="
 feedback "--> ======================================="
