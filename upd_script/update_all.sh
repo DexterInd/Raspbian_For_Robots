@@ -26,8 +26,13 @@ DESKTOP_PATH=$HOME/$DESKTOP
 DEXTER=Dexter
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
+DEXTER_PATH=$HOME/$DEXTER
 
-source ./functions_lib.sh
+########################################################################
+## IMPORT FUNCTIONS LIBRARY
+## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
+## Importing the source will not work if you run "sudo sh update_all.sh"
+source ./functions_library.sh
 
 install_copypaste() {
   # put "autocutsel -fork" before the last line in .vnc/xstartup
@@ -69,7 +74,7 @@ feedback "Python-PSUtil"
 sudo apt-get install python3-serial python-serial i2c-tools -y
 
 sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
-# merge all thre install lines into one, as each call to apt-get install 
+# merge all the install lines into one, as each call to apt-get install 
 # takes a while to build the dependency tree
 # Oct 27th 2016: add fix for DirtyCow security issue
 sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel
