@@ -147,7 +147,7 @@ wget_file() {
   target_file=${1##*/}
   echo $target_file
   delete_file $target_file
-  wget $1
+  wget $1 --no-check-certificate
 
 
 }
