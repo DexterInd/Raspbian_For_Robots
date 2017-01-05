@@ -32,13 +32,25 @@ DESKTOP_PATH=$HOME/$DESKTOP
 DEXTER=Dexter
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
+
 DEXTER_PATH=$HOME/$DEXTER
 
+########################################################################
+# HELPER FUNCTIONS
+########################################################################
+
+handle_version() {
 ########################################################################
 ## Mark the start time in the Version File of the update.  
 # Check if file 'Version' exists in ~/Dexter.  If it does, move on.  If it doesn't, copy it in.
 # Note we don't want to overwrite the file if it's there since we're going to be running updates and documenting when the updates were done.
-if [  ! -f $DEXTER_PATH/Version ]; then
+
+# force clock update
+# Pis that have been offline for long won't have the right date and time
+sudo ntpd -q -g
+
+if file_exists $DEXTER_PATH/Version 
+then
    sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
    feedback "Version file not found, copying to ~/Dexter"
 else
@@ -47,8 +59,10 @@ fi
 
 echo "#############"  >>  $DEXTER_PATH/Version
 echo "Start: `date`"  >>  $DEXTER_PATH/Version
+}
 
 install_copypaste() {
+########################################################################
   # put "autocutsel -fork" before the last line in .vnc/xstartup
   xstartup_file='xstartup'
   vnc_dir='/home/pi/.vnc'
@@ -70,45 +84,56 @@ install_copypaste() {
   fi
 }
 
+install_packages() {
+  sudo dpkg --configure -a
+  sudo DEBIAN_FRONTEND=noninteractive apt-get update -y # Get everything updated.  Don't interact with any configuration menus.
+                # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
+  feedback "Install Specific Libraries."
+  sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.  
+  sudo apt-get remove python-wxgtk3.0 -y
+
+  feedback "Purged wxpython tools"
+  sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
+  feedback "Installed wxpython tools"
+  sudo apt-get remove python-wxgtk3.0 -y
+  feedback "Python-PSUtil"
+
+  sudo apt-get install python3-serial python-serial i2c-tools -y
+
+  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+  # merge all the install lines into one, as each call to apt-get install 
+  # takes a while to build the dependency tree
+  # Oct 27th 2016: add fix for DirtyCow security issue
+  sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel python-setuptools
+  # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
+  sudo pip install -U RPi.GPIO
+  sudo pip install -U future # for Python 2/3 compatibility
+  feedback "Installing geany, espeak autocutsel, and piclone"
+  # geany wasn't always installed by default on Wheezy or Jessie
+  # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
+  # espeak used to read text out loud
+  # piclone used to make copies of the SD card
+  # new tools from the Foundation
+
+  if [ $VERSION -eq '7' ]; then
+      sudo apt-get install geany espeak autocutsel -y
+  else
+    sudo apt-get install geany espeak  piclone autocutsel -y
+    sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
+  fi
+}
+
+
+#####################################################################
+# main script
+#####################################################################
+handle_version
+
+
 feedback "--> Begin Update."
 feedback "--> ======================================="
-sudo dpkg --configure -a
-sudo DEBIAN_FRONTEND=noninteractive apt-get update -y	# Get everything updated.  Don't interact with any configuration menus.
-							# Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
-feedback "Install Specific Libraries."
-sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
-sudo apt-get remove python-wxgtk3.0 -y
+install_packages
 
-feedback "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y			# Install wx for python for windows / GUI programs.
-feedback "Installed wxpython tools"
-sudo apt-get remove python-wxgtk3.0 -y
-feedback "Python-PSUtil"
-
-sudo apt-get install python3-serial python-serial i2c-tools -y
-
-sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
-# merge all the install lines into one, as each call to apt-get install 
-# takes a while to build the dependency tree
-# Oct 27th 2016: add fix for DirtyCow security issue
-sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel python-setuptools
-# sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
-sudo pip install -U RPi.GPIO
-sudo pip install -U future # for Python 2/3 compatibility
-
-feedback "Installing geany, espeak autocutsel, and piclone"
-# geany wasn't always installed by default on Wheezy or Jessie
-# autocutsel used for sharing the copy/paste clipboard between VNC and host computer
-# espeak used to read text out loud
-# piclone used to make copies of the SD card
-# new tools from the Foundation
-
-if [ $VERSION -eq '7' ]; then
-    sudo apt-get install geany espeak autocutsel -y
-else
-	sudo apt-get install geany espeak  piclone autocutsel -y
-	sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
-fi
 
 sudo adduser pi i2c
 
@@ -194,8 +219,11 @@ feedback " "
 # sh will not work here. Bash is required
 sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 
+feedback "--> Install Scratch"
+feedback "--> ======================================="
+feedback " "
 # Install Scratch GUI
-sudo bash $SCRATCH_PATH/install_scratch_start.sh
+sudo bash ../Scratch_GUI/install_scratch_start.sh
 
 # Enable LRC Infrared Control on Pi.
 feedback "--> Enable LRC Infrared Control on Pi."
@@ -351,10 +379,10 @@ fi
 
 feedback "--> Finished setting up noVNC"
 feedback "--> ======================================="
-feedback "--> !"
-feedback "--> !"
-feedback "--> !"
-feedback "--> ======================================="
+# feedback "--> !"
+# feedback "--> !"
+# feedback "--> !"
+# feedback "--> ======================================="
 feedback " "
 
 ########################################################################
@@ -374,7 +402,7 @@ feedback "--> Set up Hostname Changer."
 feedback "--> ======================================="
 feedback " "
 sudo chmod +x $RASPBIAN_PATH/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
-sudo sh $RASPBIAN_PATH/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
+sudo bash $RASPBIAN_PATH/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
 feedback "--> End hostname change setup."
 
 # Install Samba
