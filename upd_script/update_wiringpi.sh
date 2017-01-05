@@ -1,9 +1,5 @@
 #!/bin/bash
-
-feedback() {
-  # first parameter is text to be displayed
-  echo -e "$(tput setaf 3)$1$(tput sgr0)"
-}
+source ./functions_library.sh
 
 # Check if WiringPi Installed and has the latest version.  If it does, skip the step.
 # Gets the version of wiringPi installed
