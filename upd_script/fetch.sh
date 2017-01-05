@@ -1,11 +1,13 @@
 #! /bin/bash
 # This script updates the the code repos on Raspbian for Robots.
-source /home/pi/di_update/Raspbian_For_Robots/functions_library.sh
+source /home/pi/di_update/Raspbian_For_Robots/upd_script/functions_library.sh
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
+
+set_quiet_mode
 
 ########################################################################
 ## Staging Code.
@@ -155,7 +157,7 @@ if [ $brickpi_update == 1 ] ; then
     # BrickPi+ is the Master Directory, and the BrickPi_X directories will go in under it.
     feedback "--> Start BrickPi Update."
     feedback "##############################"
-    sudo rm -r /home/pi/Desktop/BrickPi     # Delete the old location
+    delete_folder /home/pi/Desktop/BrickPi     # Delete the old location
     # Check for a BrickPi directory under "Dexter" folder.  If it doesn't exist, create it.
     BRICKPI_DIR=$DEXTER_PATH/BrickPi+
     if [ -d "$BRICKPI_DIR" ]; then
@@ -397,3 +399,5 @@ if [ $grovepi_update=1 ] ; then
 fi
 
 echo "--> Done updating Dexter Industries Github repos!"
+
+unset_quiet_mode
