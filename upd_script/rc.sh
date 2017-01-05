@@ -1,7 +1,7 @@
 #!/bin/bash -e
 # This Script updates the hostname by reading it from "/boot/hostname" 
 
-source ./functions_library.sh
+source /home/pi/di_update/Raspbian_For_Robots/upd_script/functions_library.sh
 
 
 if ! quiet_mode
