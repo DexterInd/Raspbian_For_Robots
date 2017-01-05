@@ -6,27 +6,31 @@
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
 
+PIHOME=/home/pi
+
+DIUPDATE=di_update
+RASPBIAN=Raspbian_For_Robots
+RASPBIAN_PATH=$PIHOME/$DIUPDATE/$RASPBIAN
+
+DESKTOP=Desktop
+DESKTOP_PATH=$PIHOME/$DESKTOP
+
+DEXTER=Dexter
+DEXTER_PATH=$PIHOME/$DEXTER
+
+SCRATCH=Scratch_GUI
+SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
+
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-source ./functions_library.sh
+source $RASPBIAN_PATH/upd_script/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
 set_quiet_mode
-
-PIHOME=/home/pi
-DIUPDATE=di_update
-RASPBIAN=Raspbian_For_Robots
-RASPBIAN_PATH=$PIHOME/$DIUPDATE/$RASPBIAN
-DESKTOP=Desktop
-DESKTOP_PATH=$PIHOME/$DESKTOP
-DEXTER=Dexter
-SCRATCH=Scratch_GUI
-SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
-
-DEXTER_PATH=$PIHOME/$DEXTER
 
 ########################################################################
 # HELPER FUNCTIONS
@@ -118,12 +122,20 @@ install_packages() {
 
   # only available on Jessie
   # piclone used to make copies of the SD card; 
-  if [ ! $VERSION -eq '7' ]; then
+  if [ ! $VERSION -eq '7' ] 
+  then
     sudo apt-get install piclone -y
-    sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
   fi
 }
 
+geany_setup(){
+  # this needs to be changed
+  # sed -i '/EX_CM_00=/c\EX_CM_00=sudo python "%d/%f"' /home/pi/.config/geany/filedefs/filetypes.python
+  # sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
+  # also need to undo this change:
+  # sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
+  echo ""
+}
 
 #####################################################################
 # main script
@@ -207,8 +219,8 @@ sudo modprobe ipv6
 feedback "--> Desktop cleanup."
 feedback "--> ======================================="
 feedback " "
-sudo rm $DESKTOP_PATH/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
-sudo rm $DESKTOP_PATH/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
+delete_file $DESKTOP_PATH/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
+delete_file $DESKTOP_PATH/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
 
 
 # Call fetch.sh - This updates the Github Repositories, installs necessary dependencies.
@@ -216,7 +228,7 @@ feedback "--> Begin Update Dexter Industries Software Packages."
 feedback "--> ======================================="
 feedback " "
 # sh will not work here. Bash is required
-sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
+#sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 # fetch will remove quiet_mode so set it back
 set_quiet_mode
 
@@ -230,9 +242,9 @@ sudo bash ../Scratch_GUI/install_scratch_start.sh
 feedback "--> Enable LRC Infrared Control on Pi."
 feedback "--> ======================================="
 feedback " "
-sudo sh $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
-sudo chmod +x $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
-sudo bash $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
+sudo chmod +x $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
 
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/
@@ -262,7 +274,7 @@ sudo chmod +x /var/www/css/main.css
 ## Now, if we are running Jessie, we need to move everything
 ## into a new subdirectory.
 ## Get the Debian Version we have installed.
-VERSION=$(sed 's/\..*//' /etc/debian_version)
+
 # echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
   feedback "Version 7 found!  You have Wheezy!"
@@ -275,9 +287,6 @@ elif [ $VERSION -eq '8' ]; then
   sudo chmod +x /var/www/html/index.php
   sudo chmod +x /var/www/html/css/main.css  
 fi
-
-# echo $VERSION
-
 
 # disable requirement for SSL for shellinaboxa 
 # adding after line 41, which is approximately where similar arguments are found.
@@ -366,7 +375,7 @@ feedback " "
 # ensure the Scratch examples are reachable via Scratch GUI
 # this is done by using soft links
 ########################################################################
-bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
+sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
@@ -419,14 +428,15 @@ feedback "--> Update for RPi3."
 sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
 sudo sh $RASPBIAN_PATH/pi3/Pi3.sh
 
-
+feedback "-->installing Geany"
+geany_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
 if [ ! -f /home/pi/cinch ]; then
     echo "No Cinch Found."
 else
-    echo "Found cinch, running Cinch install."
+    feedback "Found cinch, running Cinch install."
     cd $RASPBIAN_PATH/upd_script/wifi
     sudo ./cinch_setup.sh
 fi
