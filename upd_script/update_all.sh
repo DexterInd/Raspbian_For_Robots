@@ -27,7 +27,7 @@ DEXTER=Dexter
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
 
-source ./functions_lib.sh
+source ./functions_libraries.sh
 
 install_copypaste() {
   # put "autocutsel -fork" before the last line in .vnc/xstartup
