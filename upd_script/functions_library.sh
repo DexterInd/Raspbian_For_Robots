@@ -28,6 +28,11 @@ feedback() {
   echo -e "$(tput setaf 3)$1$(tput sgr0)"
 }
 
+#########################################################################
+#
+#  FILE EDITION
+#
+#########################################################################
 delete_line_from_file() {
   # first parameter is the string to be matched 
   # the lines that contain that string will get deleted
@@ -51,6 +56,15 @@ insert_before_line_in_file() {
     sudo sed -i "/$2/i $1" $3
   fi
 }
+add_line_to_end_of_file() {
+  # first parameter is what to add
+  # second parameter is filename
+  if [ -f $2 ]
+  then
+    echo $1 >> $2
+    feedback "added $1 in $2"
+  fi 
+}
 
 find_in_file() {
   # first argument is what to look for
@@ -64,6 +78,11 @@ find_in_file() {
   fi
 }
 
+#########################################################################
+#
+#  FILE HANDLING - detection, deletion
+#
+#########################################################################
 file_exists() {
   # Only one argument: the file to look for
   # returns 0 on SUCCESS
@@ -74,6 +93,16 @@ file_exists() {
   else
     return 1
   fi
+}
+
+file_exists_in_folder(){
+  # can only be run using bash, not sh
+  # first argument: file to look for
+  # second argument: folder path
+  pushd $2
+  status = file_exists
+  popd
+  return status
 }
 
 file_does_not_exists(){
@@ -91,22 +120,40 @@ file_does_not_exists(){
   fi
 }
 
-file_exists_in_folder(){
-  # can only be run using bash, not sh
-  # first argument: file to look for
-  # second argument: folder path
-  pushd $2
-  status = file_exists
-  popd
-  return status
+delete_file (){
+  # One parameter only: the file to delete
+  if file_exists $1
+  then
+    sudo rm $1
+  fi
 }
 
-add_line_to_end_of_file() {
-  # first parameter is what to add
-  # second parameter is filename
-  if [ -f $2 ]
+#########################################################################
+#
+#  FOLDER HANDLING - detection, deletion
+#
+#########################################################################
+create_folder(){
+  if ! folder_exists
   then
-    echo $1 >> $2
-    feedback "added $1 in $2"
-  fi 
+    mkdir $1
+  fi
+}
+folder_exists(){
+  # Only one argument: the folder to look for
+  # returns 0 on SUCCESS
+  # returns 1 on FAIL
+  if [ -d $1 ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+delete_folder(){
+  if folder_exists $1
+  then
+    sudo rm -r $1
+  fi
 }
