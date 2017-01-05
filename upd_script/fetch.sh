@@ -1,9 +1,11 @@
 #! /bin/bash
 # This script updates the the code repos on Raspbian for Robots.
-source ./functions_library.sh
+source /home/pi/di_update/Raspbian_For_Robots/functions_library.sh
 
+# Can't use $HOME here as this is being run as sudo and $home defaults to root
+PIHOME=/home/pi
 DEXTER=Dexter
-DEXTER_PATH=$HOME/$DEXTER
+DEXTER_PATH=$PIHOME/$DEXTER
 
 ########################################################################
 ## Staging Code.
@@ -18,23 +20,20 @@ change_branch() {
         echo "Working from main branch."; 
     else 
         echo "Working from $BRANCH branch";
-        sudo git checkout -b $BRANCH
+        # sudo git checkout -b $BRANCH
+        # the -b creates a branch if it doesn't exist
+        # this leads to a fatal error msg being displayed to the user
+        # is there any case where we can to create the branch here???
+        # https://github.com/tldr-pages/tldr/blob/master/pages/common/git-checkout.md
+        sudo git checkout $BRANCH
     fi
 }
 
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
-## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
+## Note if you're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-source ./functions_library.sh
-
-# verify quiet mode
-if [ -f /home/pi/quiet_mode ]
-then
-    quiet_mode=1
-else
-    quiet_mode=0
-fi
+source /home/pi/di_update/Raspbian_For_Robots/upd_script/functions_library.sh
 
 robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
 if [ -f $robots_2_update ]  # if the file exists, read it and adjust according to its content
@@ -73,8 +72,8 @@ fi
 
 if [ $gopigo_update == 1 ] ; then
     # GoPiGo Update
-    echo "--> Start GoPiGo Update."
-    echo "##############################"
+    feedback "--> Start GoPiGo Update."
+    feedback "##############################"
     # Changed file Location to ~/Dexter
     delete_folder /home/pi/Desktop/GoPiGo       # Delete the old location
 
@@ -94,23 +93,23 @@ if [ $gopigo_update == 1 ] ; then
     fi
 
     cd $DEXTER_PATH/GoPiGo/Setup
-    echo "--> UPDATING LIBRARIES"
-    echo "------------------"
+    feedback "--> UPDATING LIBRARIES"
+    feedback "------------------"
     sudo bash ./install.sh
 
 
-    echo "--> Installing Line Follower Calibration"
+    feedback "--> Installing Line Follower Calibration"
     # Install GoPiGo Line Follower Calibration
     delete_file /home/pi/Desktop/line_follow.desktop
     sudo cp /home/pi/Dexter/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
     sudo chmod +x /home/pi/Desktop/line_follow.desktop
     sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Python/line_follower/line_sensor_gui.py
 
-    echo "--> Install Scratch dependency ScratchPy."
-    cd /home/pi/Dexter/GoPiGo/Software/Scratch
-    sudo git clone https://github.com/DexterInd/scratchpy.git
-    cd scratchpy
-    sudo make install
+    # feedback "--> Install Scratch dependency ScratchPy."
+    # cd /home/pi/Dexter/GoPiGo/Software/Scratch
+    # sudo git clone https://github.com/DexterInd/scratchpy.git
+    # cd scratchpy
+    # sudo make install
 
     #GoPiGo Scratch Permissions
     #echo "--> Install Scratch Shortcuts and Permissions."
@@ -131,8 +130,8 @@ fi  # end conditional statement on GOPIGO UPDATE
 if [ $brickpi_update == 1 ] ; then
 
     # BrickPi3 Update
-    echo "--> Start BrickPi3 Update."
-    echo "##############################"
+    feedback "--> Start BrickPi3 Update."
+    feedback "##############################"
     # Check for a BrickPi directory under "Dexter" folder.  If it doesn't exist, create it.
     BRICKPI3_DIR=$DEXTER_PATH/BrickPi3
     if folder_exists "$BRICKPI3_DIR" ; then
@@ -154,8 +153,8 @@ if [ $brickpi_update == 1 ] ; then
 
     # BrickPi+ Update
     # BrickPi+ is the Master Directory, and the BrickPi_X directories will go in under it.
-    echo "--> Start BrickPi Update."
-    echo "##############################"
+    feedback "--> Start BrickPi Update."
+    feedback "##############################"
     sudo rm -r /home/pi/Desktop/BrickPi     # Delete the old location
     # Check for a BrickPi directory under "Dexter" folder.  If it doesn't exist, create it.
     BRICKPI_DIR=$DEXTER_PATH/BrickPi+
@@ -213,8 +212,8 @@ fi # end conditional statement on BRICKPI UPDATE
 if [ $arduberry_update == 1 ] ; then
 
     # Arduberry Update
-    echo "--> Start Arduberry Update."
-    echo "----------"
+    feedback "--> Start Arduberry Update."
+    feedback "----------"
 
     sudo rm -r /home/pi/Desktop/ArduBerry       # Delete the old location
 
@@ -246,8 +245,8 @@ fi
 if [ $grovepi_update == 1 ] ; then
 
     # GrovePi Update
-    echo "--> Start GrovePi Update."
-    echo "----------"
+    feedback "--> Start GrovePi Update."
+    feedback "----------"
     
     sudo rm -r /home/pi/Desktop/GrovePi     # Delete the old location
 
@@ -265,8 +264,8 @@ if [ $grovepi_update == 1 ] ; then
     fi
     change_branch
     
-    echo "--> Start GrovePi update install."
-    echo "----------"
+    feedback "--> Start GrovePi update install."
+    feedback "----------"
     cd /home/pi/di_update/Raspbian_For_Robots/      # Going to change the Raspbian for Robots git branch.
     change_branch                                   # Change branch to the one we're working on
     cd /home/pi/di_update/Raspbian_For_Robots/upd_script
@@ -319,25 +318,27 @@ else
 fi
 
 # Install DexterEd Software
-echo "--> Install DexterEd Software"
+feedback "--> Install DexterEd Software"
 sudo rm -r /home/pi/Desktop/DexterEd
 
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
 
 # Install GoBox Software
-echo "--> Install GoBox Software"
+feedback "--> Install GoBox Software"
 sudo rm -r /home/pi/Desktop/GoBox
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/GoBox.git
-sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
-sudo sh /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
+# sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
+# sudo sh /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
+delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
 
-sudo chmod +x /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
-sudo sh /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
-sudo rm -r /home/pi/Desktop/build
-sudo rm -r /home/pi/Desktop/dist
-sudo rm -r /home/pi/Desktop/ir_receiver_check.egg-info
+# sudo chmod +x /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
+# sudo sh /home/pi/Desktop/GoBox/LIRC_GUI/install_ir_start.sh
+# sudo rm -r /home/pi/Desktop/build
+# sudo rm -r /home/pi/Desktop/dist
+# sudo rm -r /home/pi/Desktop/ir_receiver_check.egg-info
+delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
 
 cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop
 
