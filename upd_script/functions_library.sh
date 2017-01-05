@@ -1,6 +1,27 @@
+##############################################################
+##############################################################
+# 
+# A SERIES OF HELPER FUNCTIONS TO HELP OUT IN 
+# HANDLING SCRIPTS THAT ARE GROWING IN COMPLEXITY
+#
+##############################################################
+##############################################################
+
+quiet_mode() {
+  # verify quiet mode
+  # returns 0 if quiet mode is enabled
+  # returns 1 otherwise
+  if [ -f /home/pi/quiet_mode ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
 feedback() {
   # first parameter is text to be displayed
-  # this sets the text color to a pinkish color for visibility
+  # this sets the text color to a yellow color for visibility
   # the last tput resets colors to default
   # one could also set background color with setb instead of setaf
   #http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x405.html
