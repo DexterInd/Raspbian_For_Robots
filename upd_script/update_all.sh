@@ -6,6 +6,11 @@
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
 
+########################################################################
+## IMPORT FUNCTIONS LIBRARY
+## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
+## Importing the source will not work if you run "sudo sh update_all.sh"
+source ./functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
 touch /home/pi/quiet_mode
@@ -29,10 +34,18 @@ SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
 DEXTER_PATH=$HOME/$DEXTER
 
 ########################################################################
-## IMPORT FUNCTIONS LIBRARY
-## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
-## Importing the source will not work if you run "sudo sh update_all.sh"
-source ./functions_library.sh
+## Mark the start time in the Version File of the update.  
+# Check if file 'Version' exists in ~/Dexter.  If it does, move on.  If it doesn't, copy it in.
+# Note we don't want to overwrite the file if it's there since we're going to be running updates and documenting when the updates were done.
+if [  ! -f $DEXTER_PATH/Version ]; then
+   sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
+   feedback "Version file not found, copying to ~/Dexter"
+else
+   feedback "Version file found, doing nothing!"
+fi
+
+echo "#############"  >>  $DEXTER_PATH/Version
+echo "Start: `date`"  >>  $DEXTER_PATH/Version
 
 install_copypaste() {
   # put "autocutsel -fork" before the last line in .vnc/xstartup
@@ -419,12 +432,19 @@ sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
 efeedbackcho "--> End cleanup."
 
+########################################################################
+## Update Version
 feedback "--> Update version on Desktop."
-#Finally, if everything installed correctly, update the version on the Desktop!
+#Finally, if everything installed correctly, update information in Version!
+
+########################################################################
+## Mark the start time in the Version File of the update.  
+echo "End: `date`"  >>  $RASPBIAN_PATH/Version
+
 cd $DESKTOP_PATH
-rm Version
-rm version.desktop
-sudo cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH
+rm Version			# Delete the older versions.
+rm version.desktop	# Delete the older version. 
+sudo cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH	# Copy the shortcut to the desktop
 sudo chmod +x $DESKTOP_PATH/version.desktop
 
 
@@ -433,7 +453,16 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 # echo "Version: $VERSION"
 if [ $VERSION -eq '8' ]; then
   feedback "Modifying Version file to reflect Jessie distro"
-  sudo sed -i 's/Wheezy/Jessie/g' $RASPBIAN_PATH/Version
+  sudo sed -i 's/Wheezy/Jessie/g' $DEXTER_PATH/Version
+fi
+
+# Add Cinch Stamp in Version File
+# Check for file /home/pi/cinch, if it is, make a note in Version.
+if [ ! -f /home/pi/cinch ]; then
+    feedback "No Cinch Found."
+else
+    feedback "Found cinch, noting in Version File."
+    echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
 
 rm /home/pi/quiet_mode
