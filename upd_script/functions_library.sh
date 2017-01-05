@@ -129,6 +129,10 @@ delete_file (){
 }
 
 wget_file() {
+  # One parameter: the URL of the file to wget
+  # this will look if ther's already a file of the same name
+  # if there's one, it will delete it before wgetting the new one
+  # this is to avoid creating multiple files with .1, .2, .3 extensions
   echo $1
   # extract the filename from the provided path
   target_file=${1##*/}
