@@ -4,30 +4,32 @@
 # Dev Notes:
 # Helpful Link on Bin Paths:  http://www.cyberciti.biz/faq/how-do-i-find-the-path-to-a-command-file/
 
+source ../upd_script/functions_library.sh
+
 HOME=/home/pi
 DEXTER=Dexter
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
 
 if [ ! -d $HOME/$DEXTER ] ; then
-	echo "Creating $HOME/$DEXTER"
+	feedback "Creating $HOME/$DEXTER"
 	mkdir $HOME/$DEXTER
 fi
 if [ ! -d $HOME/$DEXTER/$SCRATCH ] ; then
-	echo "Creating $HOME/$DEXTER/$SCRATCH"
+	feedback "Creating $HOME/$DEXTER/$SCRATCH"
 	mkdir $HOME/$DEXTER/$SCRATCH
 fi
 
-echo "Installing Scratch Environment"
+feedback "Installing Scratch Environment"
 cp $HOME/di_update/Raspbian_For_Robots/$SCRATCH/* $SCRATCH_PATH
 
 if [ -d $HOME/Desktop/GoBox/Scratch_GUI ] ; then
-	echo "Removing $HOME/Desktop/GoBox/Scratch_GUI"
+	feedback "Removing $HOME/Desktop/GoBox/Scratch_GUI"
 	sudo rm -r $HOME/Desktop/GoBox/Scratch_GUI
 fi
 
 # Copy shortcut to desktop.
-echo "Installing Scratch on the desktop"
+feedback "Installing Scratch on the desktop"
 cp $SCRATCH_PATH/Scratch_Start.desktop $HOME/Desktop
 # Make shortcut executable
 sudo chmod +x $HOME/Desktop/Scratch_Start.desktop							# Desktop shortcut permissions.
@@ -63,13 +65,13 @@ sudo chmod 666 $HOME/nohup.out
 # Add the soft links that allows users to reach the Dexter Ind Scratch examples from within the Scratch interface
 
 # BrickPi link
-[ ! -d /usr/share/scratch/Projects/BrickPi ]  && sudo ln -s $HOME/Desktop/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi
+[ ! -d /usr/share/scratch/Projects/BrickPi ]  && sudo ln -s $HOME/Dexter/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi
 
 # GoPiGo link
-[ ! -d /usr/share/scratch/Projects/GoPiGo ]  && sudo ln -s $HOME/Desktop/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo
+[ ! -d /usr/share/scratch/Projects/GoPiGo ]  && sudo ln -s $HOME/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo
 
 # GrovePi Link
-[ ! -d /usr/share/scratch/Projects/GrovePi ]  && sudo ln -s $HOME/Desktop/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi
+[ ! -d /usr/share/scratch/Projects/GrovePi ]  && sudo ln -s $HOME/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi
 
 # PivotPi Link
 [ ! -d /usr/share/scratch/Projects/PivotPi ]  && sudo ln -s $HOME/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi
