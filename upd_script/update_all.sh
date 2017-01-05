@@ -439,7 +439,7 @@ feedback "--> Update version on Desktop."
 
 ########################################################################
 ## Mark the start time in the Version File of the update.  
-echo "End: `date`"  >>  $RASPBIAN_PATH/Version
+echo "End: `date`"  >>  $DEXTER_PATH/Version
 
 cd $DESKTOP_PATH
 rm Version			# Delete the older versions.
