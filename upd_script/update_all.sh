@@ -228,7 +228,7 @@ feedback "--> Begin Update Dexter Industries Software Packages."
 feedback "--> ======================================="
 feedback " "
 # sh will not work here. Bash is required
-#sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
+sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 # fetch will remove quiet_mode so set it back
 set_quiet_mode
 
