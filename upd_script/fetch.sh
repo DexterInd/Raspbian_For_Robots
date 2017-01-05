@@ -17,7 +17,7 @@ change_branch() {
 		echo "Working from main branch."; 
 	else 
 		echo "Working from $BRANCH branch";
-		sudo git checkout $BRANCH
+		sudo git checkout -b $BRANCH
 	fi
 }
 
@@ -109,7 +109,6 @@ if [ $gopigo_update == 1 ] ; then
 	cd /home/pi/Dexter/GoPiGo/Software/Scratch
 	sudo git clone https://github.com/DexterInd/scratchpy.git
 	cd scratchpy
-	change_branch	# change to a branch we're working on.
 	sudo make install
 
 	#GoPiGo Scratch Permissions
@@ -129,6 +128,28 @@ fi  # end conditional statement on GOPIGO UPDATE
 ###############################################
 
 if [ $brickpi_update == 1 ] ; then
+
+	# BrickPi3 Update
+	echo "--> Start BrickPi3 Update."
+	echo "##############################"
+	# Check for a BrickPi directory under "Dexter" folder.  If it doesn't exist, create it.
+	BRICKPI3_DIR=/home/pi/Dexter/BrickPi3
+	if [ -d "$BRICKPI3_DIR" ]; then
+		echo "BrickPi3 Directory Exists"
+		cd /home/pi/Dexter/BrickPi3 	# Go to directory
+		sudo git fetch origin   	# Hard reset the git files
+		sudo git reset --hard  
+		sudo git merge origin/master
+		change_branch
+	else
+		cd /home/pi/Dexter/
+		git clone https://github.com/DexterInd/BrickPi3
+		cd BrickPi3
+		change_branch	# change to a branch we're working on, if we've defined the branch above.
+	fi
+	sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
+	sudo bash /home/pi/Dexter/BrickPi3/Install/install.sh
+
 
 	# BrickPi+ Update
 	# BrickPi+ is the Master Directory, and the BrickPi_X directories will go in under it.
@@ -157,19 +178,6 @@ if [ $brickpi_update == 1 ] ; then
 	echo "----------"
 	sudo rm -r /home/pi/Desktop/BrickPi_Python		# Delete the old location
 	
-	# Check for a BrickPi_Python directory under "BrickPi+" folder.  If it doesn't exist, create it.
-	#BRICKPI_PYTHON_DIR=/home/pi/Dexter/BrickPi+/BrickPi_Python
-	#if [ -d "$BRICKPI_PYTHON_DIR" ]; then
-	#	echo "BrickPi Python Directory Exists"
-	#	cd /home/pi/Dexter/BrickPi+/BrickPi_Python	# Go to directory
-	#	sudo git fetch origin   	# Hard reset the git files
-	#	sudo git reset --hard  
-	#	sudo git merge origin/master
-	#else
-	#	cd /home/pi/Dexter/BrickPi+
-	#	git clone https://github.com/DexterInd/BrickPi_Python
-	#fi
-
 	# Moved this to the update_all --> sudo apt-get install python-setuptools
 	# Remove Python Packages
 	cd /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Python/
@@ -179,19 +187,6 @@ if [ $brickpi_update == 1 ] ; then
 	echo "--> Start BrickPi_Scratch Update."
 	echo "----------"
 	sudo rm -r /home/pi/Desktop/BrickPi_Scratch		# Delete the old location
-
-	# Check for a BrickPi_Scratch directory under "BrickPi+" folder.  If it doesn't exist, create it.
-	#BRICKPI_DIR=/home/pi/Dexter/BrickPi+/BrickPi_Scratch
-	#if [ -d "$BRICKPI_DIR" ]; then
-	#	echo "BrickPi Scratch Directory Exists"
-	#	cd /home/pi/Dexter/BrickPi+/BrickPi_Scratch	# Go to directory
-	#	sudo git fetch origin   	# Hard reset the git files
-	#	sudo git reset --hard  
-	#	sudo git merge origin/master
-	#else
-	#	cd /home/pi/Dexter/BrickPi+
-	#	git clone https://github.com/DexterInd/BrickPi_Scratch
-	#fi
 
 	cd /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Scratch
 	sudo rm -r scratchpy
@@ -209,18 +204,6 @@ if [ $brickpi_update == 1 ] ; then
 	echo "----------"
 	sudo rm -r /home/pi/Desktop/BrickPi_C		# Delete the old location
 
-	# Check for a BrickPi_C directory under "BrickPi+" folder.  If it doesn't exist, create it.
-	#BRICKPI_DIR=/home/pi/Dexter/BrickPi+/BrickPi_C
-	#if [ -d "$BRICKPI_DIR" ]; then
-	#	echo "BrickPi C Directory Exists"
-	#	cd /home/pi/Dexter/BrickPi+/BrickPi_C	# Go to directory
-	#	sudo git fetch origin   	# Hard reset the git files
-	#	sudo git reset --hard  
-	#	sudo git merge origin/master
-	#else
-	#	cd /home/pi/Dexter/BrickPi+
-	#	git clone https://github.com/DexterInd/BrickPi_C
-	#fi
 else
 	echo "--> BrickPi **NOT** Updated."
 	echo "----------"
