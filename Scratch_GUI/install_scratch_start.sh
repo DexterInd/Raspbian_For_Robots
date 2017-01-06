@@ -8,9 +8,9 @@
 PIHOME=/home/pi
 DEXTER=Dexter
 SCRATCH=Scratch_GUI
-SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
+SCRATCH_PATH=$PIHOME/$DEXTER/lib/$DEXTER/$SCRATCH
 
-source ../upd_script/functions_library.sh
+source $PIHOME/$DEXTER/lib/script_tools/functions_library.sh
 
 if [ ! -d $PIHOME/$DEXTER ] ; then
 	feedback "Creating $PIHOME/$DEXTER"
