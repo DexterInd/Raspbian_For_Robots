@@ -274,7 +274,7 @@ class MainPanel(wx.Panel):
 		write_debug("Programming Started.")	
 		
 		# Start Scratch
-		start_command = "sh {0}scratch_direct {0}new.sb".format(SCRATCH_PATH)
+		start_command = "bash {0}scratch_direct {0}new.sb".format(SCRATCH_PATH)
 		send_bash_command_in_background(start_command)
 		'''
 		dlg = wx.MessageDialog(self, 'Starting Scratch Programming!', 'Update', wx.OK|wx.ICON_INFORMATION)
