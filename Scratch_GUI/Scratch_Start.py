@@ -261,20 +261,20 @@ class MainPanel(wx.Panel):
 
 		folder = read_state()
 		if folder.find('BrickPi') >= 0:
-			program = "/home/pi/Desktop/BrickPi_Scratch/BrickPiScratch.py"
+			program = "/home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Scratch/BrickPiScratch.py"
 		elif folder.find('GoPiGo') >= 0:
-			program = "/home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGoScratch.py"
+			program = "/home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGoScratch.py"
 		elif folder.find('PivotPi') >= 0:
 			program = "/home/pi/Dexter/PivotPi/Software/Scratch/PivotPiScratch.py"
 		else:
-			program = "/home/pi/Desktop/GrovePi/Software/Scratch/GrovePiScratch.py"
+			program = "/home/pi/GrovePi/GrovePi/Software/Scratch/GrovePiScratch.py"
 		start_command = "sudo python "+program
 		send_bash_command_in_background(start_command)
 		
 		write_debug("Programming Started.")	
 		
 		# Start Scratch
-		start_command = "sh {0}scratch_direct {0}new.sb".format(SCRATCH_PATH)
+		start_command = "bash {0}scratch_direct {0}new.sb".format(SCRATCH_PATH)
 		send_bash_command_in_background(start_command)
 		'''
 		dlg = wx.MessageDialog(self, 'Starting Scratch Programming!', 'Update', wx.OK|wx.ICON_INFORMATION)

@@ -6,39 +6,48 @@
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
 
+PIHOME=/home/pi
+
+DIUPDATE=di_update
+RASPBIAN=Raspbian_For_Robots
+RASPBIAN_PATH=$PIHOME/$DIUPDATE/$RASPBIAN
+
+DESKTOP=Desktop
+DESKTOP_PATH=$PIHOME/$DESKTOP
+
+DEXTER=Dexter
+DEXTER_PATH=$PIHOME/$DEXTER
+
+SCRATCH=Scratch_GUI
+SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
+
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-source ./functions_library.sh
+source $RASPBIAN_PATH/upd_script/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
-touch /home/pi/quiet_mode
-# setting quiet mode
-if [ -f /home/pi/quiet_mode ]
-then
-	quiet_mode=1
-else
-	quiet_mode=0
-fi
+set_quiet_mode
 
-HOME=/home/pi
-DIUPDATE=di_update
-RASPBIAN=Raspbian_For_Robots
-RASPBIAN_PATH=$HOME/$DIUPDATE/$RASPBIAN
-DESKTOP=Desktop
-DESKTOP_PATH=$HOME/$DESKTOP
-DEXTER=Dexter
-SCRATCH=Scratch_GUI
-SCRATCH_PATH=$HOME/$DEXTER/$SCRATCH
-DEXTER_PATH=$HOME/$DEXTER
+########################################################################
+# HELPER FUNCTIONS
+########################################################################
 
+handle_version() {
 ########################################################################
 ## Mark the start time in the Version File of the update.  
 # Check if file 'Version' exists in ~/Dexter.  If it does, move on.  If it doesn't, copy it in.
 # Note we don't want to overwrite the file if it's there since we're going to be running updates and documenting when the updates were done.
-if [  ! -f $DEXTER_PATH/Version ]; then
+
+# force clock update
+# Pis that have been offline for long won't have the right date and time
+sudo ntpd -q -g
+
+if file_exists $DEXTER_PATH/Version 
+then
    sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
    feedback "Version file not found, copying to ~/Dexter"
 else
@@ -47,8 +56,10 @@ fi
 
 echo "#############"  >>  $DEXTER_PATH/Version
 echo "Start: `date`"  >>  $DEXTER_PATH/Version
+}
 
 install_copypaste() {
+########################################################################
   # put "autocutsel -fork" before the last line in .vnc/xstartup
   xstartup_file='xstartup'
   vnc_dir='/home/pi/.vnc'
@@ -58,7 +69,7 @@ install_copypaste() {
   if file_does_not_exists $xstartup
   then
     touch $xstartup
-    add_line_to_end_of_file "xrdb $HOME/.Xresources" $xstartup
+    add_line_to_end_of_file "xrdb $PIHOME/.Xresources" $xstartup
     add_line_to_end_of_file "xsetroot -solid grey -cursor_name left_ptr" $xstartup
     add_line_to_end_of_file "/etc/X11/Xsession" $xstartup
   fi
@@ -70,45 +81,71 @@ install_copypaste() {
   fi
 }
 
+install_packages() {
+  sudo dpkg --configure -a
+  sudo DEBIAN_FRONTEND=noninteractive apt-get update -y # Get everything updated.  Don't interact with any configuration menus.
+                # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
+  feedback "Install Specific Libraries."
+
+  # merge all the install lines into one, as each call to apt-get install 
+  # takes a while to build the dependency tree
+
+
+  # geany wasn't always installed by default on Wheezy or Jessie
+  # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
+  # espeak used to read text out loud
+  # Oct 27th 2016: add raspberrypi-kernel for DirtyCow security issue
+  # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
+  sudo apt-get install -y python3-serial python-serial i2c-tools  \
+                          avahi-daemon avahi-utils \
+                          apache2 php5 libapache2-mod-php5 \
+                          python-rpi.gpio python3-rpi.gpio \
+                          python-picamera python3-picamera \
+                          python-smbus python3-smbus \
+                          raspberrypi-kernel python-setuptools \
+                          geany espeak autocutsel \
+                          raspberrypi-net-mods \
+                          shellinabox screen
+
+  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+
+ 
+  # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
+  sudo pip install -U RPi.GPIO
+  sudo pip install -U future # for Python 2/3 compatibility
+
+  # geany wasn't always installed by default on Wheezy or Jessie
+  # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
+  # espeak used to read text out loud
+  # piclone used to make copies of the SD card
+  # new tools from the Foundation
+
+  # only available on Jessie
+  # piclone used to make copies of the SD card; 
+  if [ ! $VERSION -eq '7' ] 
+  then
+    sudo apt-get install piclone -y
+  fi
+}
+
+geany_setup(){
+  # this needs to be changed
+  # sed -i '/EX_CM_00=/c\EX_CM_00=sudo python "%d/%f"' /home/pi/.config/geany/filedefs/filetypes.python
+  # sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
+  # also need to undo this change:
+  # sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
+  echo ""
+}
+
+#####################################################################
+# main script
+#####################################################################
+handle_version
+
+
 feedback "--> Begin Update."
 feedback "--> ======================================="
-sudo dpkg --configure -a
-sudo DEBIAN_FRONTEND=noninteractive apt-get update -y	# Get everything updated.  Don't interact with any configuration menus.
-							# Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
-feedback "Install Specific Libraries."
-sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y	  			# Removed, this can sometimes cause hangups.  
-sudo apt-get remove python-wxgtk3.0 -y
-
-feedback "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y			# Install wx for python for windows / GUI programs.
-feedback "Installed wxpython tools"
-sudo apt-get remove python-wxgtk3.0 -y
-feedback "Python-PSUtil"
-
-sudo apt-get install python3-serial python-serial i2c-tools -y
-
-sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
-# merge all the install lines into one, as each call to apt-get install 
-# takes a while to build the dependency tree
-# Oct 27th 2016: add fix for DirtyCow security issue
-sudo apt-get install -y python-rpi.gpio python3-rpi.gpio python-picamera python3-picamera python-smbus python3-smbus raspberrypi-kernel python-setuptools
-# sudo apt-get install python-psutil -y 		# Used in Scratch GUI, installed a few lines up
-sudo pip install -U RPi.GPIO
-sudo pip install -U future # for Python 2/3 compatibility
-
-feedback "Installing geany, espeak autocutsel, and piclone"
-# geany wasn't always installed by default on Wheezy or Jessie
-# autocutsel used for sharing the copy/paste clipboard between VNC and host computer
-# espeak used to read text out loud
-# piclone used to make copies of the SD card
-# new tools from the Foundation
-
-if [ $VERSION -eq '7' ]; then
-    sudo apt-get install geany espeak autocutsel -y
-else
-	sudo apt-get install geany espeak  piclone autocutsel -y
-	sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
-fi
+install_packages
 
 sudo adduser pi i2c
 
@@ -116,7 +153,6 @@ sudo adduser pi i2c
 # Installing libraries
 feedback "Installing some useful libraries"
 sudo bash $RASPBIAN_PATH/lib/install.sh
-
 
 ########################################################################
 ## Kernel Updates
@@ -183,8 +219,8 @@ sudo modprobe ipv6
 feedback "--> Desktop cleanup."
 feedback "--> ======================================="
 feedback " "
-sudo rm $DESKTOP_PATH/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
-sudo rm $DESKTOP_PATH/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
+delete_file $DESKTOP_PATH/ocr_resources.desktop 		# Not sure how this Icon got here, but let's take it out.
+delete_file $DESKTOP_PATH/python-games.desktop 		# Not sure how this Icon got here, but let's take it out.
 
 
 # Call fetch.sh - This updates the Github Repositories, installs necessary dependencies.
@@ -193,17 +229,22 @@ feedback "--> ======================================="
 feedback " "
 # sh will not work here. Bash is required
 sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
+# fetch will remove quiet_mode so set it back
+set_quiet_mode
 
+feedback "--> Install Scratch"
+feedback "--> ======================================="
+feedback " "
 # Install Scratch GUI
-sudo bash $SCRATCH_PATH/install_scratch_start.sh
+sudo bash ../Scratch_GUI/install_scratch_start.sh
 
 # Enable LRC Infrared Control on Pi.
 feedback "--> Enable LRC Infrared Control on Pi."
 feedback "--> ======================================="
 feedback " "
-sudo sh $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
-sudo chmod +x $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
-sudo bash $DESKTOP_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
+sudo chmod +x $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
 
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/
@@ -216,26 +257,12 @@ sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork
 
 ########################################################################
 ## These Changes to the image are all optional.  Some users may not want
-## these changes.  They should be offered ala-cart.
-
-# Update Wifi Interface
-feedback "--> Update wifi interface."
-feedback "--> ======================================="
-feedback " "
-sudo apt-get install raspberrypi-net-mods -y	# Updates wifi configuration.  Does it wipe out network information?
-
-# Setup Apache
-feedback "--> Install Apache. and PHP"
-feedback "--> ======================================="
-feedback " "
-
-sudo apt-get install avahi-daemon avahi-utils -y  # Added to help with avahi issues.  2016.01.03
-sudo apt-get install apache2 php5 libapache2-mod-php5 -y
+## these changes.  They should be offered a-la-carte.
 
 sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
-sudo sh $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
+sudo bash $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
-# Setup Webpage
+# Set up Webpage
 feedback "--> Set up webpage."
 feedback "--> ======================================="
 feedback " "
@@ -247,7 +274,7 @@ sudo chmod +x /var/www/css/main.css
 ## Now, if we are running Jessie, we need to move everything
 ## into a new subdirectory.
 ## Get the Debian Version we have installed.
-VERSION=$(sed 's/\..*//' /etc/debian_version)
+
 # echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
   feedback "Version 7 found!  You have Wheezy!"
@@ -261,15 +288,6 @@ elif [ $VERSION -eq '8' ]; then
   sudo chmod +x /var/www/html/css/main.css  
 fi
 
-# echo $VERSION
-
-
-# Setup Shellinabox
-feedback "--> Set up Shellinabox."
-feedback "--> ======================================="
-feedback " "
-sudo apt-get install shellinabox -y
-
 # disable requirement for SSL for shellinaboxa 
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
@@ -278,10 +296,6 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
-feedback "--> Set up screen."
-feedback "--> ======================================="
-feedback " "
-sudo apt-get install screen -y
 feedback "--> Set up noVNC"
 feedback "--> ======================================="
 feedback " "
@@ -351,17 +365,17 @@ fi
 
 feedback "--> Finished setting up noVNC"
 feedback "--> ======================================="
-feedback "--> !"
-feedback "--> !"
-feedback "--> !"
-feedback "--> ======================================="
+# feedback "--> !"
+# feedback "--> !"
+# feedback "--> !"
+# feedback "--> ======================================="
 feedback " "
 
 ########################################################################
 # ensure the Scratch examples are reachable via Scratch GUI
 # this is done by using soft links
 ########################################################################
-bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
+sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
@@ -374,7 +388,7 @@ feedback "--> Set up Hostname Changer."
 feedback "--> ======================================="
 feedback " "
 sudo chmod +x $RASPBIAN_PATH/upd_script/update_host_name.sh		# 1 - Run update_host_name.sh
-sudo sh $RASPBIAN_PATH/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
+sudo bash $RASPBIAN_PATH/upd_script/update_host_name.sh			# 2 - Add change to rc.local to new rc.local that checks for hostname on bootup.
 feedback "--> End hostname change setup."
 
 # Install Samba
@@ -382,7 +396,7 @@ feedback "--> Start installing Samba."
 feedback "--> ======================================="
 feedback " "
 sudo chmod +x $RASPBIAN_PATH/upd_script/install_samba.sh
-sudo sh $RASPBIAN_PATH/upd_script/install_samba.sh
+sudo bash $RASPBIAN_PATH/upd_script/install_samba.sh
 feedback "--> End installing Samba."
 
 # install the copy/paste functionality in vnc
@@ -391,7 +405,7 @@ install_copypaste
 
 # Install Spy vs sPi Startup.
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
-# sudo sh /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
+# sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
 
 # Remove Spy vs Spi 
 sudo bash $RASPBIAN_PATH/upd_script/spivsspi/SpyVsSpi_remove.sh
@@ -412,26 +426,33 @@ feedback "--> End installing Backup."
 feedback "--> Update for RPi3."
 # Run the update script for updating overlays for Rpi3.
 sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
-sudo sh $RASPBIAN_PATH/pi3/Pi3.sh
+sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 
-# remove wx version 3.0 - which gets pulled in by various other libraries
-# it creates graphical issues in our Python GUI
-sudo apt-get remove python-wxgtk3.0 -y
+feedback "-->installing Geany"
+geany_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
 if [ ! -f /home/pi/cinch ]; then
     echo "No Cinch Found."
 else
-    echo "Found cinch, running Cinch install."
+    feedback "Found cinch, running Cinch install."
     cd $RASPBIAN_PATH/upd_script/wifi
     sudo ./cinch_setup.sh
 fi
 
 feedback "--> Begin cleanup."
+# remove wx version 3.0 - which gets pulled in by various other libraries
+# it creates graphical issues in our Python GUI
+# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.  
+# echo "Purged wxpython tools"
+sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
+echo "Installed wxpython tools"
+sudo apt-get remove python-wxgtk3.0 -y
+echo "Python-PSUtil"
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
-efeedbackcho "--> End cleanup."
+feedback "--> End cleanup."
 
 ########################################################################
 ## Update Version
@@ -460,13 +481,13 @@ fi
 # Add Cinch Stamp in Version File
 # Check for file /home/pi/cinch, if it is, make a note in Version.
 if [ ! -f /home/pi/cinch ]; then
-    feedback "No Cinch Found."
+    echo "No Cinch Found."
 else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
 
-rm /home/pi/quiet_mode
+unset_quiet_mode
 
 feedback "--> ======================================="
 feedback "--> ======================================="

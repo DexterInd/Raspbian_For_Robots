@@ -27,22 +27,22 @@ then
 	echo " "
 fi
 
-HOME="/home/pi"
+PIHOME="/home/pi"
 DEXTER="Dexter"
-if [ ! -d $HOME/$DEXTER ] ; then
-	echo "Creating $HOME/$DEXTER"
-	mkdir $HOME/$DEXTER
+if [ ! -d $PIHOME/$DEXTER ] ; then
+	echo "Creating $PIHOME/$DEXTER"
+	mkdir $PIHOME/$DEXTER
 fi
-if [ ! -d $HOME/$DEXTER/lib ] ; then
-	echo "Creating $HOME/$DEXTER/lib"
-	mkdir $HOME/$DEXTER/lib
+if [ ! -d $PIHOME/$DEXTER/lib ] ; then
+	echo "Creating $PIHOME/$DEXTER/lib"
+	mkdir $PIHOME/$DEXTER/lib
 fi
-if [ -d $HOME/$DEXTER/lib ] ; then
-	"Copying libraries into $HOME/$DEXTER/lib"
-	sudo cp -r $HOME/di_update/Raspbian_For_Robots/lib/* $HOME/$DEXTER/lib
+if [ -d $PIHOME/$DEXTER/lib ] ; then
+	"Copying libraries into $PIHOME/$DEXTER/lib"
+	sudo cp -r $PIHOME/di_update/Raspbian_For_Robots/lib/* $PIHOME/$DEXTER/lib
 fi
 
-pushd $HOME/$DEXTER/lib
+pushd $PIHOME/$DEXTER/lib
 
 cd Adafruit
 sudo python setup.py install
