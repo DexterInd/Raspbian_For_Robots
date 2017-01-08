@@ -183,12 +183,12 @@ if [ $brickpi_update == 1 ] ; then
     # BrickPi_Python Update
     echo "--> Start BrickPi_Python Update."
     echo "----------"
-    sudo rm -r /home/pi/Desktop/BrickPi_Python      # Delete the old location
+    delete_folder /home/pi/Desktop/BrickPi_Python      # Delete the old location
     
     # Moved this to the update_all --> sudo apt-get install python-setuptools
     # Remove Python Packages
-    cd $DEXTER_PATH/BrickPi+/BrickPi/Software/BrickPi_Python/
-    sudo python $DEXTER_PATH/BrickPi+/BrickPi/Software/BrickPi_Python/setup.py install
+    cd $DEXTER_PATH/BrickPi+/Software/BrickPi_Python/
+    sudo python $DEXTER_PATH/BrickPi+/Software/BrickPi_Python/setup.py install
 
     # BrickPi_Scratch Update
     # echo "--> Start BrickPi_Scratch Update."
@@ -209,7 +209,7 @@ if [ $brickpi_update == 1 ] ; then
     # BrickPi_C Update
     echo "--> Start BrickPi_C Update."
     echo "----------"
-    sudo rm -r /home/pi/Desktop/BrickPi_C       # Delete the old location
+    delete_folder /home/pi/Desktop/BrickPi_C       # Delete the old location
 
 else
     echo "--> BrickPi **NOT** Updated."
@@ -222,7 +222,7 @@ if [ $arduberry_update == 1 ] ; then
     feedback "--> Start Arduberry Update."
     feedback "----------"
 
-    sudo rm -r /home/pi/Desktop/ArduBerry       # Delete the old location
+    delete_folder /home/pi/Desktop/ArduBerry       # Delete the old location
 
     # Check for a Arduberry directory under "Dexter" folder.  If it doesn't exist, create it.
     ARDUBERRY_DIR=$DEXTER_PATH/ArduBerry
@@ -255,7 +255,7 @@ if [ $grovepi_update == 1 ] ; then
     feedback "--> Start GrovePi Update."
     feedback "----------"
     
-    sudo rm -r /home/pi/Desktop/GrovePi     # Delete the old location
+    delete_folder /home/pi/Desktop/GrovePi     # Delete the old location
 
     # Check for a GrovePi directory under "Dexter" folder.  If it doesn't exist, create it.
     GROVEPI_DIR=$DEXTER_PATH/GrovePi
@@ -270,7 +270,8 @@ if [ $grovepi_update == 1 ] ; then
         git clone https://github.com/DexterInd/GrovePi
     fi
     change_branch
-    
+    sudo ln -s -f $DEXTER_PATH/GrovePi /home/pi/Desktop/GrovePi
+
     feedback "--> Start GrovePi update install."
     feedback "----------"
     cd /home/pi/di_update/Raspbian_For_Robots/      # Going to change the Raspbian for Robots git branch.
@@ -290,6 +291,7 @@ else
     echo "----------"
 fi # end conditional statement on GrovePi update
 
+
 ###############################################
 # PIVOTPI
 ###############################################
@@ -297,23 +299,22 @@ fi # end conditional statement on GrovePi update
 
 if [ $pivotpi_update == 1 ] ; then
     
-    pushd /home/pi
+    pushd /home/pi > /dev/null
 
     # if Dexter folder doesn't exist, then create it
-    if [ ! -d "Dexter" ]; then
-        mkdir "Dexter"
-    fi
-    cd /home/pi/Dexter
+    create_folder $DEXTER
+    cd $DEXTER_PATH
     
     # if pivotpi folder doesn't exit then clone repo
     if [ ! -d "PivotPi" ]; then
         sudo git clone https://github.com/DexterInd/PivotPi.git
+    else
+        cd $DEXTER_PATH/PivotPi  
+        sudo git fetch origin   
+        sudo git reset --hard  
+        sudo git merge origin/master
     fi
 
-    cd $DEXTER_PATH/PivotPi  
-    sudo git fetch origin   
-    sudo git reset --hard  
-    sudo git merge origin/master
     cd $DEXTER_PATH/PivotPi/Install
 
     sudo bash $DEXTER_PATH/PivotPi/Install/install.sh
@@ -326,14 +327,14 @@ fi
 
 # Install DexterEd Software
 feedback "--> Install DexterEd Software"
-sudo rm -r /home/pi/Desktop/DexterEd
+delete_folder /home/pi/Desktop/DexterEd
 
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
 
 # Install GoBox Software
 feedback "--> Install GoBox Software"
-sudo rm -r /home/pi/Desktop/GoBox
+delete_folder /home/pi/Desktop/GoBox
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/GoBox.git
 # sudo chmod +x /home/pi/Desktop/GoBox/Scratch_GUI/install_scratch_start.sh
@@ -356,7 +357,7 @@ if [ $VERSION -eq '8' ]; then
 fi
 
 # Install GoBox Troubleshooting Software
-sudo rm /home/pi/Desktop/Troubleshooting_Start.desktop
+delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 
