@@ -6,26 +6,26 @@
 
 
 PIHOME=/home/pi
+RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
 DEXTER=Dexter
+LIB=lib
 SCRATCH=Scratch_GUI
-SCRATCH_PATH=$PIHOME/$DEXTER/lib/$DEXTER/$SCRATCH
+SCRATCH_PATH=$PIHOME/$DEXTER/$LIB/$DEXTER/$SCRATCH
 
-source $PIHOME/$DEXTER/lib/script_tools/functions_library.sh
+curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
+source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
-if [ ! -d $PIHOME/$DEXTER ] ; then
-	feedback "Creating $PIHOME/$DEXTER"
-	mkdir $PIHOME/$DEXTER
-fi
-if [ ! -d $PIHOME/$DEXTER/$SCRATCH ] ; then
-	feedback "Creating $PIHOME/$DEXTER/$SCRATCH"
-	mkdir $PIHOME/$DEXTER/$SCRATCH
-fi
+create_folder $PIHOME/$DEXTER
+create_folder $PIHOME/$DEXTER/$LIB
+create_folder $PIHOME/$DEXTER/$LIB/$DEXTER
+create_folder $PIHOME/$DEXTER/$LIB/$DEXTER/$SCRATCH
+
+pushd $SCRATCH_PATH > /dev/null
 
 feedback "Installing Scratch Environment"
-cp $PIHOME/di_update/Raspbian_For_Robots/$SCRATCH/* $SCRATCH_PATH
+cp $RASPBIAN/$SCRATCH/* $SCRATCH_PATH
 
 if [ -d $PIHOME/Desktop/GoBox/Scratch_GUI ] ; then
-	feedback "Removing $PIHOME/Desktop/GoBox/Scratch_GUI"
 	sudo rm -r $PIHOME/Desktop/GoBox/Scratch_GUI
 fi
 
@@ -65,17 +65,21 @@ sudo chmod 666 $PIHOME/nohup.out
 
 # Add the soft links that allows users to reach the Dexter Ind Scratch examples from within the Scratch interface
 
-# BrickPi link
-[ ! -d /usr/share/scratch/Projects/BrickPi ]  && sudo ln -s $PIHOME/Dexter/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi
+# BrickPi+ link
+delete_folder /usr/share/scratch/Projects/BrickPi
+sudo ln -s -f "$PIHOME/Dexter/BrickPi+/Software/BrickPi_Scratch/Examples" "/usr/share/scratch/Projects/BrickPi+" > /dev/null
+
+# BrickPi3 link
+sudo ln -s -f $PIHOME/Dexter/BrickPi3/Software/Scratch/Examples /usr/share/scratch/Projects/BrickPi3  > /dev/null
 
 # GoPiGo link
-[ ! -d /usr/share/scratch/Projects/GoPiGo ]  && sudo ln -s $PIHOME/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo
+sudo ln -s -f $PIHOME/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo  > /dev/null
 
 # GrovePi Link
-[ ! -d /usr/share/scratch/Projects/GrovePi ]  && sudo ln -s $PIHOME/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi
+sudo ln -s -f $PIHOME/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi  > /dev/null
 
 # PivotPi Link
-[ ! -d /usr/share/scratch/Projects/PivotPi ]  && sudo ln -s $PIHOME/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi
+sudo ln -s -f $PIHOME/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi  > /dev/null
 
 
 # Remove Scratch Shortcuts if they're there.
@@ -97,3 +101,5 @@ sudo chmod +x /usr/bin/scratch
 # set permissions
 # sudo chmod +x $PIHOME/$DEXTER/Scratch_GUI/scratch_launch
 sudo chmod +x $SCRATCH_PATH/scratch_direct
+
+popd > /dev/null

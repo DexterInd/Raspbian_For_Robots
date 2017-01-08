@@ -1,11 +1,13 @@
 #! /bin/bash
-# This script updates the the code repos on Raspbian for Robots.
-source /home/pi/di_update/Raspbian_For_Robots/upd_script/functions_library.sh
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
+RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
+
+# This script updates the the code repos on Raspbian for Robots.
+source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
 set_quiet_mode
 
@@ -170,7 +172,7 @@ if [ $brickpi_update == 1 ] ; then
     else
         sudo mkdir $DEXTER_PATH/BrickPi+
         cd $DEXTER_PATH/BrickPi+
-        git clone https://github.com/DexterInd/BrickPi
+        git clone https://github.com/DexterInd/BrickPi .
         cd $DEXTER_PATH/BrickPi+/BrickPi
         change_branch   # change to a branch we're working on, if we've defined the branch above.
     fi

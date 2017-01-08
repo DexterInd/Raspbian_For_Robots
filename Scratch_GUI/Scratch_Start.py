@@ -19,8 +19,9 @@ from gopigo import *
 HOME="/home/pi"
 DEXTER="Dexter"
 SCRATCH="Scratch_GUI"
-SCRATCH_PATH = HOME+"/"+DEXTER+"/"+SCRATCH+"/"
-
+s = "/";
+seq = (HOME, DEXTER,"lib",DEXTER,SCRATCH) # This is sequence of strings.
+SCRATCH_PATH = s.join( seq )+"/"
 
 # Writes debug to file "error_log"
 def write_debug(in_string):

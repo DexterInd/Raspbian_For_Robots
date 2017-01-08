@@ -374,8 +374,9 @@ feedback " "
 ########################################################################
 # ensure the Scratch examples are reachable via Scratch GUI
 # this is done by using soft links
+# this is now done in Scratch_GUI/install_scratch_start.sh
 ########################################################################
-sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
+#sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
 sleep 10
@@ -430,6 +431,9 @@ sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 
 feedback "-->installing Geany"
 geany_setup
+
+feedback "--> robot detection"
+sudo cp $RASPBIAN_PATH/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
