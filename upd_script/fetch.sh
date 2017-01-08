@@ -95,6 +95,7 @@ if [ $gopigo_update == 1 ] ; then
         cd $DEXTER_PATH/GoPiGo
         change_branch   # change to a branch we're working on.
     fi
+    sudo ln -s -f $DEXTER_PATH/GoPiGo /home/pi/Desktop/GoPiGo
 
     cd $DEXTER_PATH/GoPiGo/Setup
     feedback "--> UPDATING LIBRARIES"
@@ -119,9 +120,9 @@ if [ $gopigo_update == 1 ] ; then
     #echo "--> Install Scratch Shortcuts and Permissions."
     #sudo rm /home/pi/Desktop/GoPiGo_Scratch_Start.desktop                      # Delete old icons off desktop
     #sudo cp /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.desktop /home/pi/Desktop  # Move icons to desktop
-    sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh                 # Change script permissions
-    sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh                    # Change script permissions
-    sudo chmod -R 777 /usr/share/scratch/Projects/
+    # sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh                 # Change script permissions
+    # sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh                    # Change script permissions
+    # sudo chmod -R 777 /usr/share/scratch/Projects/
 else
     echo "--> GoPiGo **NOT** Updated."
     echo "----------"
@@ -151,6 +152,7 @@ if [ $brickpi_update == 1 ] ; then
         cd BrickPi3
         change_branch   # change to a branch we're working on, if we've defined the branch above.
     fi
+    sudo ln -s -f $DEXTER_PATH/BrickPi3 /home/pi/Desktop/BrickPi3
 #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
     sudo bash /home/pi/Dexter/BrickPi3/Install/install.sh
 
@@ -164,19 +166,19 @@ if [ $brickpi_update == 1 ] ; then
     BRICKPI_DIR=$DEXTER_PATH/BrickPi+
     if [ -d "$BRICKPI_DIR" ]; then
         echo "BrickPi Directory Exists"
-        cd $DEXTER_PATH/BrickPi+/BrickPi # Go to directory
+        cd $DEXTER_PATH/BrickPi+ # Go to directory
         sudo git fetch origin       # Hard reset the git files
         sudo git reset --hard  
         sudo git merge origin/master
         change_branch       
     else
-        sudo mkdir $DEXTER_PATH/BrickPi+
-        cd $DEXTER_PATH/BrickPi+
+        cd $DEXTER_PATH
         # the dot at the end is important to avoid a BrickPi+/BrickPi folder structure
-        git clone https://github.com/DexterInd/BrickPi .
-        cd $DEXTER_PATH/BrickPi+/BrickPi
+        git clone https://github.com/DexterInd/BrickPi BrickPi+
+        cd $DEXTER_PATH/BrickPi+
         change_branch   # change to a branch we're working on, if we've defined the branch above.
     fi
+    sudo ln -s -f $DEXTER_PATH/BrickPi+ /home/pi/Desktop/BrickPi+
 
     # BrickPi_Python Update
     echo "--> Start BrickPi_Python Update."
@@ -189,20 +191,20 @@ if [ $brickpi_update == 1 ] ; then
     sudo python $DEXTER_PATH/BrickPi+/BrickPi/Software/BrickPi_Python/setup.py install
 
     # BrickPi_Scratch Update
-    echo "--> Start BrickPi_Scratch Update."
-    echo "----------"
-    sudo rm -r /home/pi/Desktop/BrickPi_Scratch     # Delete the old location
+    # echo "--> Start BrickPi_Scratch Update."
+    # echo "----------"
+    # sudo rm -r /home/pi/Desktop/BrickPi_Scratch     # Delete the old location
 
-    cd $DEXTER_PATH/BrickPi+/BrickPi/Software/BrickPi_Scratch
-    sudo rm -r scratchpy
-    git clone https://github.com/DexterInd/scratchpy
-    cd scratchpy
-    sudo make install
+    # cd $DEXTER_PATH/BrickPi+/Software/BrickPi_Scratch
+    # sudo rm -r scratchpy
+    # git clone https://github.com/DexterInd/scratchpy
+    # cd scratchpy
+    # sudo make install
 
-    cd ..
-    cd BrickPi_Scratch_Scripts
-    sudo chmod +x BrickPi_Scratch_Start.sh
-    sudo chmod +x BrickPiScratch_debug.sh
+    # cd ..
+    # cd BrickPi_Scratch_Scripts
+    # sudo chmod +x BrickPi_Scratch_Start.sh
+    # sudo chmod +x BrickPiScratch_debug.sh
 
     # BrickPi_C Update
     echo "--> Start BrickPi_C Update."
@@ -280,8 +282,8 @@ if [ $grovepi_update == 1 ] ; then
     # GrovePi Scratch Setup
     # sudo rm /home/pi/Desktop/GrovePi_Scratch_Start.desktop                    # Delete old icons off desktop
     # sudo cp /home/pi/Desktop/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.desktop /home/pi/Desktop  # Move icons to desktop
-    sudo chmod +x /home/pi/Dexter/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePiScratch_debug.sh                      # Change script permissions
-    sudo chmod +x /home/pi/Dexter/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.sh                 # Change script permissions
+    # sudo chmod +x /home/pi/Dexter/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePiScratch_debug.sh                      # Change script permissions
+    # sudo chmod +x /home/pi/Dexter/GrovePi/Software/Scratch/GrovePi_Scratch_Scripts/GrovePi_Scratch_Start.sh                 # Change script permissions
     
 else
     echo "--> GrovePi **NOT** Updated."
