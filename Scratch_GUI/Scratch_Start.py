@@ -268,7 +268,7 @@ class MainPanel(wx.Panel):
 		elif folder.find('PivotPi') >= 0:
 			program = "/home/pi/Dexter/PivotPi/Software/Scratch/PivotPiScratch.py"
 		else:
-			program = "/home/pi/GrovePi/GrovePi/Software/Scratch/GrovePiScratch.py"
+			program = "/home/pi/Dexter/GrovePi/Software/Scratch/GrovePiScratch.py"
 		start_command = "sudo python "+program
 		send_bash_command_in_background(start_command)
 		
@@ -356,7 +356,7 @@ class MainPanel(wx.Panel):
 			ran_dialog = False
 			if dlg.ShowModal() == wx.ID_OK:
 				print "Run Hardware Test!"
-				program = "sudo python /home/pi/Desktop/BrickPi_Python/Sensor_Examples/Brick_Hardware_Test.py"
+				program = "sudo python /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/Sensor_Examples/Brick_Hardware_Test.py"
 				send_bash_command_in_background(program)
 				ran_dialog = True
 			else:
@@ -379,7 +379,7 @@ class MainPanel(wx.Panel):
 			ran_dialog = False
 			if dlg.ShowModal() == wx.ID_OK:
 				print "Begin Running GoPiGo Test!"
-				program = "sudo python /home/pi/Desktop/GoPiGo/Software/Python/hardware_test_2.py"
+				program = "sudo python /home/pi/Dexter/GoPiGo/Software/Python/hardware_test_2.py"
 				send_bash_command_in_background(program)
 				ran_dialog = True
 			else:
@@ -402,7 +402,7 @@ class MainPanel(wx.Panel):
 			ran_dialog = False
 			if dlg.ShowModal() == wx.ID_OK:
 				print "Run GrovePi Test!"
-				program = "sudo python /home/pi/Desktop/GrovePi/Software/Python/GrovePi_Hardware_Test.py"
+				program = "sudo python /home/pi/Dexter/GrovePi/Software/Python/GrovePi_Hardware_Test.py"
 				send_bash_command_in_background(program)
 				ran_dialog = True
 			else:
