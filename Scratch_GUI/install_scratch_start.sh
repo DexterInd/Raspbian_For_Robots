@@ -9,8 +9,10 @@ PIHOME=/home/pi
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
 DEXTER=Dexter
 LIB=lib
+LIB_PATH=$PIHOME/$DEXTER/$LIB
+DEXTERLIB_PATH=$LIB_PATH/$DEXTER
 SCRATCH=Scratch_GUI
-SCRATCH_PATH=$PIHOME/$DEXTER/$LIB/$DEXTER/$SCRATCH
+SCRATCH_PATH=$DEXTERLIB_PATH/$SCRATCH
 
 curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
@@ -28,6 +30,13 @@ cp $RASPBIAN/$SCRATCH/* $SCRATCH_PATH
 if [ -d $PIHOME/Desktop/GoBox/Scratch_GUI ] ; then
 	sudo rm -r $PIHOME/Desktop/GoBox/Scratch_GUI
 fi
+
+pushd $LIB_PATH > /dev/null
+delete_folder scratchpy
+git clone --quiet https://github.com/DexterInd/scratchpy
+cd scratchpy
+sudo make install > /dev/null
+popd > /dev/null
 
 # Copy shortcut to desktop.
 feedback "Installing Scratch on the desktop"
