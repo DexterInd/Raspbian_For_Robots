@@ -172,6 +172,7 @@ if [ $brickpi_update == 1 ] ; then
     else
         sudo mkdir $DEXTER_PATH/BrickPi+
         cd $DEXTER_PATH/BrickPi+
+        # the dot at the end is important to avoid a BrickPi+/BrickPi folder structure
         git clone https://github.com/DexterInd/BrickPi .
         cd $DEXTER_PATH/BrickPi+/BrickPi
         change_branch   # change to a branch we're working on, if we've defined the branch above.
