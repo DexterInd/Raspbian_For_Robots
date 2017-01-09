@@ -128,26 +128,62 @@ install_packages() {
 }
 
 geany_setup(){
-  # this needs to be changed
-  # sed -i '/EX_CM_00=/c\EX_CM_00=sudo python "%d/%f"' /home/pi/.config/geany/filedefs/filetypes.python
-  # sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
-  # also need to undo this change:
-  # sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
-  echo ""
-  create_folder ~/.config
-  create_folder ~/.config/geany
-  create_folder ~/.config/geany/filedefs
+  # note: the create_folder checks if the directory already exists
+  create_folder $PIHOME/.config
+  create_folder $PIHOME/.config/geany
+  create_folder $PIHOME/.config/geany/filedefs
   create_folder $DEXTER_PATH/tmp
-  if file_exists /home/pi/.config/geany/filedefs/filetypes.python
-  then
-    sed -i '/EX_CM_00=/c\EX_CM_00=sudo python "%d/%f"' /home/pi/.config/geany/filedefs/filetypes.python
-    sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
-  else
-    echo "EX_CM_00=sudo python \"%d/%f\"" > /home/pi/.config/geany/filedefs/filetypes.python
-    echo "EX_WD_00=/home/pi/Dexter/tmp" >> /home/pi/.config/geany/filedefs/filetypes.python
-  fi
-  replace_this_with_that_in_file "^Exect=sudo geany %f" "^Exect=geany %f" "/usr/share/raspi-ui-overrides/applications/geany.desktop"
+  sudo chmod 777 $DEXTER_PATH/tmp
 
+  # ensure the file exists by bringing over the defaults if needed
+  if ! file_exists $GEANY_PYTHON 
+  then
+    sudo cp /usr/share/geany/filetypes.python $GEANY_PYTHON
+  fi
+
+  #determine if user has set Geany to Python3
+  PYTHON_VER="python"
+
+  if find_in_file "run_cmd=python3" $GEANY_PYTHON
+  then
+    PYTHON_VER="python3"
+  else
+    # check the default file too, in case the user edited the wrong one
+    if find_in_file "run_cmd=python3" /usr/share/geany/filetypes.python
+    then
+      PYTHON_VER="python3"
+    fi
+  fi
+
+  # start replacing
+  if ! find_in_file "build-menu" $GEANY_PYTHON
+  then
+    add_line_to_end_of_file "" $GEANY_PYTHON
+    add_line_to_end_of_file "[build-menu]" $GEANY_PYTHON
+  fi
+
+  if ! find_in_file "EX_00_LB=_Execute" $GEANY_PYTHON
+  then
+    add_line_to_end_of_file "EX_00_LB=_Execute" $GEANY_PYTHON
+  fi
+
+  # delete this line completely to ensure that the python version is kept in sync
+  # with what's in run_cmd
+  delete_line_from_file "EX_00_CM=" "$GEANY_PYTHON" 
+  add_line_to_end_of_file "EX_00_CM=sudo $PYTHON_VER \"%d/%f\"" "$GEANY_PYTHON"
+
+  # replace_in_file already checks for existence first
+  if ! replace_first_this_with_that_in_file "EX_00_WD=" "EX_00_WD=/home/pi/Dexter/tmp" "$GEANY_PYTHON"
+  then
+      add_line_to_end_of_file "EX_00_WD=/home/pi/Dexter/tmp" "/home/pi/.config/geany/filedefs/filetypes.python"
+  fi
+
+  # remove sudo from the run line; 
+  # it was put there for a few months but is no longer necessary
+  # the existence of the first parameter is done within replace_first_this_with_that
+  replace_first_this_with_that_in_file "Exec=sudo " "Exec=" "/usr/share/raspi-ui-overrides/applications/geany.desktop"
+
+  feedback "Done with Geany setup"  
 }
 
 #####################################################################
