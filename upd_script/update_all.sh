@@ -144,7 +144,7 @@ geany_setup(){
     sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
   else
     echo "EX_CM_00=sudo python \"%d/%f\"" > /home/pi/.config/geany/filedefs/filetypes.python
-    echo "/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp" >> /home/pi/.config/geany/filedefs/filetypes.python
+    echo "EX_WD_00=/home/pi/Dexter/tmp" >> /home/pi/.config/geany/filedefs/filetypes.python
   fi
   replace_this_with_that_in_file "^Exect=sudo geany %f" "^Exect=geany %f" "/usr/share/raspi-ui-overrides/applications/geany.desktop"
 
