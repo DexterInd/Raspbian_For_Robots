@@ -130,7 +130,8 @@ def autodetect():
     BrickPi3
     BrickPi3_PivotPi
     '''
-    
+    global detected_robot
+    detected_robot = "None"
     print("Looking for GoPiGo")
     if find_gopigo():
         add_robot("GoPiGo")

@@ -186,6 +186,16 @@ geany_setup(){
   feedback "Done with Geany setup"  
 }
 
+autodetect_setup() {
+  # copying the file where rc.local can get it and where it's visible
+  sudo cp $RASPBIAN_PATH/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
+  sudo python autodetect_setup install
+  sudo rm -r build
+  sudo rm -r dist
+  sudo rm -r Dexter_AutoDetection.egg-info/
+}
+
+
 #####################################################################
 # main script
 #####################################################################
@@ -482,7 +492,7 @@ feedback "-->installing Geany"
 geany_setup
 
 feedback "--> robot detection"
-sudo cp $RASPBIAN_PATH/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
+autodetect_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.

@@ -10,6 +10,7 @@ import psutil
 import signal
 import urllib2
 from gopigo import *
+from auto_detect_robot import *
 
 # References
 # http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/
@@ -36,6 +37,8 @@ def write_debug(in_string):
 		print " "
 
 def write_state(in_string):
+	if in_string == "BrickPi+" or in_string == "BrickPi3":
+		in_string = "BrickPi"
 	error_file = open(SCRATCH_PATH+'selected_state', 'w')		# File: selected state
 	error_file.write(in_string)
 	error_file.close()
@@ -49,7 +52,7 @@ def read_state():
 		return in_string
 	else:
 		return 'GoPiGo'
-	
+
 def send_bash_command(bashCommand):
 	# print bashCommand
 	write_debug(bashCommand)
@@ -178,7 +181,7 @@ class MainPanel(wx.Panel):
 			robotDrop = wx.ComboBox(self, -1, "GoPiGo", pos=(25, 225), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 		
-		wx.StaticText(self, -1, "Select a Robot:", (25, 205))					# (Minus 50, minus 0)
+		# wx.StaticText(self, -1, "Select a Robot:", (25, 205))					# (Minus 50, minus 0)
 		
 		# wx.StaticText(self, -1, "Caution: Do not close the LXTerminal window running \nin the background right now.", (25, 520))
 		wx.StaticText(self, -1, "Caution: Do not close the Scratch Controller window \nrunning in the background right now.", (25, 520))
@@ -192,8 +195,8 @@ class MainPanel(wx.Panel):
 		self.SetSizer(hSizer)
 	
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
- 		send_bash_command_in_background("clear")	# This clears out the GTK Error Messages and warnings.
- 		
+		send_bash_command_in_background("clear")	# This clears out the GTK Error Messages and warnings.
+		
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
 		"""
@@ -215,7 +218,10 @@ class MainPanel(wx.Panel):
 		if read_state() == 'Just Scratch, no Robot.':
 			print "Selected Just Scratch no Robot."
 		else:
-			robot = SCRATCH_PATH+read_state()+".png"
+			robot = read_state()
+			if robot == "BrickPi3" or robot == "BrickPi+":
+				robot = "BrickPi"
+			robot = SCRATCH_PATH+robot+".png"
 			bmp = wx.Bitmap(robot)	# Draw the photograph.
 			dc.DrawBitmap(bmp, 200, 200)	
 
@@ -260,12 +266,15 @@ class MainPanel(wx.Panel):
 
 		kill_all_open_processes()
 
-		folder = read_state()
-		if folder.find('BrickPi') >= 0:
-			program = "/home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Scratch/BrickPiScratch.py"
-		elif folder.find('GoPiGo') >= 0:
+		user_selection = read_state()
+		if user_selection.find('BrickPi') >= 0:
+			if autodetect().find("BrickPi3"):
+				program = "/home/pi/Dexter/BrickPi3/Software/Scratch/BrickPi3Scratch.py"
+			else: #BrickPi+, Kickstarter and Advanced, 
+				program = "/home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/BrickPiScratch.py"
+		elif user_selection.find('GoPiGo') >= 0:
 			program = "/home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGoScratch.py"
-		elif folder.find('PivotPi') >= 0:
+		elif user_selection.find('PivotPi') >= 0:
 			program = "/home/pi/Dexter/PivotPi/Software/Scratch/PivotPiScratch.py"
 		else:
 			program = "/home/pi/Dexter/GrovePi/Software/Scratch/GrovePiScratch.py"
@@ -312,8 +321,8 @@ class MainPanel(wx.Panel):
 			send_bash_command("sudo rm /home/pi/Desktop/Scratch_Start.desktop")  					# Delete old icons off desktop
 			send_bash_command("sudo cp {}Scratch_Start.desktop /home/pi/Desktop".format(SCRATCH_PATH))	# Move icons to desktop
 			send_bash_command("sudo chmod +x /home/pi/Desktop/Scratch_Start.desktop")
-			send_bash_command("sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh")					# Change script permissions
-			send_bash_command("sudo chmod +x /home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh")					# Change script permissions
+			send_bash_command("sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGoScratch_debug.sh")					# Change script permissions
+			send_bash_command("sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGo_Scratch_Scripts/GoPiGo_Scratch_Start.sh")					# Change script permissions
 			send_bash_command("sudo chmod +x {}click_scratch.py".format(SCRATCH_PATH))
 			send_bash_command("sudo chmod +x {}scratch".format(SCRATCH_PATH))
 			send_bash_command("sudo chmod ugo+r {}new.sb".format(SCRATCH_PATH))
@@ -333,14 +342,19 @@ class MainPanel(wx.Panel):
 			dlg.Destroy()
 
 	def examples(self, event):
-		write_debug("Examples Pressed.")	
-		folder = read_state()
+		write_debug("Examples Pressed.")
+		# autodetect robots and pick the first one	
+		folder = autodetect().split("_")[0]
 		if(folder == "GoPiGo"):
-			directory = "nohup pcmanfm /home/pi/Desktop/GoPiGo/Software/Scratch/Examples/"
+			directory = "nohup pcmanfm /home/pi/Dexter/GoPiGo/Software/Scratch/Examples/"
 		if(folder == "GrovePi"):
-                        directory = "nohup pcmanfm /home/pi/Desktop/GrovePi/Software/Scratch/Grove_Examples/"
-		if(folder == "BrickPi"):
-			directory = "nohup pcmanfm /home/pi/Desktop/BrickPi_Scratch/Examples/"
+			directory = "nohup pcmanfm /home/pi/Dexter/GrovePi/Software/Scratch/Grove_Examples/"
+		if(folder == "BrickPi+"):
+			directory = "nohup pcmanfm /home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/Examples/"
+		if(folder == "BrickPi3"):
+			directory = "nohup pcmanfm /home/pi/Dexter/BrickPi3/Software/Scratch/Examples/"
+		if(folder == "PivotPi"):
+			directory = "nohup pcmanfm /home/pi/Dexter/PivotPi/Software/Scratch/Examples/"
 
 		send_bash_command_in_background(directory)
 		print "Opened up file manager!"
@@ -451,18 +465,19 @@ class MainFrame(wx.Frame):
  
 ########################################################################
 class Main(wx.App):
-    """"""
+	""""""
  
-    #----------------------------------------------------------------------
-    def __init__(self, redirect=False, filename=None):
-        """Constructor"""
-        wx.App.__init__(self, redirect, filename)
-        dlg = MainFrame()
-        dlg.Show()
+	#----------------------------------------------------------------------
+	def __init__(self, redirect=False, filename=None):
+		"""Constructor"""
+		wx.App.__init__(self, redirect, filename)
+		dlg = MainFrame()
+		dlg.Show()
  
 #----------------------------------------------------------------------
 if __name__ == "__main__":
 	write_debug(" # Program # started # !")
+	write_state(autodetect())
 	#write_state("GoPiGo")
 	kill_all_open_processes()
 	# reset_file()	#Reset the file every time we turn this program on.
