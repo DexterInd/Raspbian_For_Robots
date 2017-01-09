@@ -17,6 +17,10 @@ DESKTOP_PATH=$PIHOME/$DESKTOP
 
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
+DEXTER_LIB=lib
+DEXTER_LIB_PATH=$DEXTER_PATH/$DEXTER_LIB
+DEXTER_SCRIPT_TOOLS=script_tools
+DEXTER_SCRIPT_TOOLS_PATH=$DEXTER_LIB_PATH/$DEXTER_SCRIPT_TOOLS
 
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
@@ -27,7 +31,7 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-source $RASPBIAN_PATH/upd_script/functions_library.sh
+source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
 set_quiet_mode
@@ -114,11 +118,6 @@ install_packages() {
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
-  # geany wasn't always installed by default on Wheezy or Jessie
-  # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
-  # espeak used to read text out loud
-  # piclone used to make copies of the SD card
-  # new tools from the Foundation
 
   # only available on Jessie
   # piclone used to make copies of the SD card; 
@@ -135,6 +134,20 @@ geany_setup(){
   # also need to undo this change:
   # sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
   echo ""
+  create_folder ~/.config
+  create_folder ~/.config/geany
+  create_folder ~/.config/geany/filedefs
+  create_folder $DEXTER_PATH/tmp
+  if file_exists /home/pi/.config/geany/filedefs/filetypes.python
+  then
+    sed -i '/EX_CM_00=/c\EX_CM_00=sudo python "%d/%f"' /home/pi/.config/geany/filedefs/filetypes.python
+    sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
+  else
+    echo "EX_CM_00=sudo python \"%d/%f\"" > /home/pi/.config/geany/filedefs/filetypes.python
+    echo "/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp" >> /home/pi/.config/geany/filedefs/filetypes.python
+  fi
+  replace_this_with_that_in_file "^Exect=sudo geany %f" "^Exect=geany %f" "/usr/share/raspi-ui-overrides/applications/geany.desktop"
+
 }
 
 #####################################################################
