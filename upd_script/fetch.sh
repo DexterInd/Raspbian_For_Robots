@@ -102,13 +102,7 @@ if [ $gopigo_update == 1 ] ; then
     feedback "------------------"
     sudo bash ./install.sh
 
-
-    feedback "--> Installing Line Follower Calibration"
-    # Install GoPiGo Line Follower Calibration
-    delete_file /home/pi/Desktop/line_follow.desktop
-    sudo cp /home/pi/Dexter/GoPiGo/Software/Python/line_follower/line_follow.desktop /home/pi/Desktop/
-    sudo chmod +x /home/pi/Desktop/line_follow.desktop
-    sudo chmod +x /home/pi/Dexter/GoPiGo/Software/Python/line_follower/line_sensor_gui.py
+    # line follower installation moved to GoPiGo install
 
     # feedback "--> Install Scratch dependency ScratchPy."
     # cd /home/pi/Dexter/GoPiGo/Software/Scratch
