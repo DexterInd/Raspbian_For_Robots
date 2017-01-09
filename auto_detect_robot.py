@@ -132,25 +132,28 @@ def autodetect():
     '''
     global detected_robot
     detected_robot = "None"
+
+# the order in which these are tested is important
+# as it will determine the priority in Scratch    
     print("Looking for GoPiGo")
     if find_gopigo():
         add_robot("GoPiGo")
     
-    print("Looking for GrovePi")
-    if find_grovepi():
-        add_robot("GrovePi")
-    
-    print("Looking for PivotPi")
-    if find_pivotpi():
-        add_robot("PivotPi")
-    
+    print("Looking for BrickPi3")
+    if find_brickpi3():
+        add_robot("BrickPi3")
+
     print("Looking for BrickPi")
     if find_brickpi():
         add_robot("BrickPi")
     
-    print("Looking for BrickPi3")
-    if find_brickpi3():
-        add_robot("BrickPi3")
+    print("Looking for GrovePi")
+    if find_grovepi():
+        add_robot("GrovePi")
+
+    print("Looking for PivotPi")
+    if find_pivotpi():
+        add_robot("PivotPi")
 
     print ("Detected {}".format(detected_robot))
     return detected_robot
