@@ -1,7 +1,7 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
 # This script will be changed OFTEN! 
-
+curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
@@ -19,7 +19,7 @@ DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
 DEXTER_LIB=lib
 DEXTER_LIB_PATH=$DEXTER_PATH/$DEXTER_LIB
-DEXTER_SCRIPT_TOOLS=script_tools
+DEXTER_SCRIPT_TOOLS=$DEXTER/script_tools
 DEXTER_SCRIPT_TOOLS_PATH=$DEXTER_LIB_PATH/$DEXTER_SCRIPT_TOOLS
 
 SCRATCH=Scratch_GUI
@@ -31,6 +31,7 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
+
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
