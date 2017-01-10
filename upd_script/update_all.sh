@@ -128,6 +128,7 @@ install_packages() {
 }
 
 geany_setup(){
+  GEANY_PYTHON=/home/pi/.config/geany/filedefs/filetypes.python
   # note: the create_folder checks if the directory already exists
   create_folder $PIHOME/.config
   create_folder $PIHOME/.config/geany
