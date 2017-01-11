@@ -365,17 +365,30 @@ class MainPanel(wx.Panel):
 		write_debug("Demo robot.")
 		folder = read_state()
 		if folder.find('BrickPi') >= 0:
-			# Run BrickPi Test.
-			dlg = wx.MessageDialog(self, 'Ok, start BrickPi Test. Make sure the BrickPi is powered by batteries, a motor is connected, and a touch sensor is connected to Port 1.  You shold see the LEDs blink and the motors move when the touch sensor is pressed.  Then press Ok. ', 'Test BrickPi!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
-			ran_dialog = False
-			if dlg.ShowModal() == wx.ID_OK:
-				print "Run Hardware Test!"
-				program = "sudo python /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/Sensor_Examples/Brick_Hardware_Test.py"
-				send_bash_command_in_background(program)
-				ran_dialog = True
+			if autodetect().find("BrickPi+"):
+				# Run BrickPi+ Test.
+				dlg = wx.MessageDialog(self, 'Ok, start BrickPi+ Test. Make sure the BrickPi+ is powered by batteries, a motor is connected, and a touch sensor is connected to Port 1.  You should see the LEDs blink and the motors move when the touch sensor is pressed.  Then press Ok. ', 'Test BrickPi+!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+				ran_dialog = False
+				if dlg.ShowModal() == wx.ID_OK:
+					print "Run Hardware Test!"
+					program = "sudo python /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/Sensor_Examples/Brick_Hardware_Test.py"
+					send_bash_command_in_background(program)
+					ran_dialog = True
+				else:
+					print "Canceled!"
+				dlg.Destroy()
 			else:
-				print "Canceled!"
-			dlg.Destroy()
+			# Run BrickPi3 Test.
+				dlg = wx.MessageDialog(self, 'Ok, start BrickPi3 Test. Make sure the BrickPi3 is powered by batteries, a motor is connected, and a touch sensor is connected to Port 1.  You should see the LEDs blink and the motors move when the touch sensor is pressed.  Then press Ok. ', 'Test BrickPi3!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+				ran_dialog = False
+				if dlg.ShowModal() == wx.ID_OK:
+					print "Run Hardware Test!"
+					program = "sudo python /home/pi/Dexter/BrickPi3/Software/Python/Sensor_Examples/Brick_Hardware_Test.py"
+					send_bash_command_in_background(program)
+					ran_dialog = True
+				else:
+					print "Canceled!"
+				dlg.Destroy()
 			
 			# Depending on what the user chose, we either cancel or complete.  
 			if ran_dialog:
@@ -410,7 +423,7 @@ class MainPanel(wx.Panel):
 				dlg.ShowModal()
 				dlg.Destroy()
 				
-		else:
+		elif folder.find('GrovePi') >= 0
 			# Run GrovePi Test.
 			dlg = wx.MessageDialog(self, 'Ok, start GrovePi Test. Attach buzzer to D8 and a button to A0.  Press the button and the buzzer should sound.  Press Ok to start. ', 'Test GrovePi!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 			ran_dialog = False

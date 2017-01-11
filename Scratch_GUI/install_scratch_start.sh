@@ -40,7 +40,7 @@ popd > /dev/null
 
 # Copy shortcut to desktop.
 feedback "Installing Scratch on the desktop"
-cp $SCRATCH_PATH/Scratch_Start.desktop $PIHOME/Desktop
+sudo cp -f $SCRATCH_PATH/Scratch_Start.desktop $PIHOME/Desktop
 # Make shortcut executable
 sudo chmod +x $PIHOME/Desktop/Scratch_Start.desktop							# Desktop shortcut permissions.
 

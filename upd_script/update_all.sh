@@ -297,7 +297,14 @@ feedback "--> Install Scratch"
 feedback "--> ======================================="
 feedback " "
 # Install Scratch GUI
-sudo bash ../Scratch_GUI/install_scratch_start.sh
+sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
+
+feedback "--> Install Troubleshooting"
+feedback "--> ======================================="
+feedback " "
+sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_trouvleshooting_start.sh
+
+
 
 # Enable LRC Infrared Control on Pi.
 feedback "--> Enable LRC Infrared Control on Pi."

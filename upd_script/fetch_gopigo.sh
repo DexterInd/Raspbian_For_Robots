@@ -2,6 +2,7 @@ PIHOME=/home/pi
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
+curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 
 # needs to be sourced from here when we call this as a standalone
 source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
