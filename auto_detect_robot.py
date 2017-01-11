@@ -5,7 +5,10 @@ import time     # import the time library for the sleep function
 from smbus import SMBus
 import serial
 from BrickPi import *
-import brickpi3
+try:
+	import brickpi3
+except:
+	pass
 
 bus = SMBus(1)
 detected_robot = "None"
@@ -27,7 +30,6 @@ def find_pivotpi():
         for add in possible_addresses:
             try:
                 p = pivotpi.PivotPi(add)
-                print ("Found PivotPi at 0x{:X}".format(add))
                 pivotpi_found = True
             except:
                 pass
@@ -44,7 +46,6 @@ def find_gopigo():
     gopigo_address = 0x08
     try:
         test_gopigo = bus.read_byte(gopigo_address)
-        print ("Found GoPiGo")
         return True
     except:
         return False
@@ -65,7 +66,6 @@ def find_grovepi():
     for add in grovepi_address:
         try:
             test_grovepi = bus.read_byte(add)
-            print ("Found GrovePi at 0x{:X}".format(add))
             grovepi_found = True
         except:
             pass
@@ -80,7 +80,6 @@ def find_brickpi():
     BrickPiSetup()
     #if BrickPiSetupSensors() == 0: # really slow
     if BrickPiUpdateValues() == 0:
-        print ("Found BrickPi")
         return True
     else:
         return False
@@ -93,7 +92,6 @@ def find_brickpi3():
     '''
     try:
         BP3 = brickpi3.BrickPi3()
-        print ("Found BrickPi3")
         return True
     except:
         return False
@@ -135,23 +133,18 @@ def autodetect():
 
 # the order in which these are tested is important
 # as it will determine the priority in Scratch    
-    print("Looking for GoPiGo")
     if find_gopigo():
         add_robot("GoPiGo")
     
-    print("Looking for BrickPi3")
     if find_brickpi3():
         add_robot("BrickPi3")
 
-    print("Looking for BrickPi")
     if find_brickpi():
         add_robot("BrickPi")
     
-    print("Looking for GrovePi")
     if find_grovepi():
         add_robot("GrovePi")
 
-    print("Looking for PivotPi")
     if find_pivotpi():
         add_robot("PivotPi")
 

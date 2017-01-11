@@ -56,7 +56,6 @@ class MainPanel(wx.Panel):
 			type=wx.BITMAP_TYPE_PNG)	# Draw the photograph.
 		bitmap=wx.StaticBitmap(self,bitmap=bmp)
 		bmpW,bmpH = bitmap.GetSize()
-		print(bmpW,bmpH)
 		icon_sizer.AddSpacer((50,bmpH))
 		icon_sizer.Add(bitmap,1)
 		icon_sizer.AddSpacer((50,bmpH))
@@ -256,7 +255,7 @@ class MainFrame(wx.Frame):
 		"""Constructor"""
 		# wx.ComboBox
 
-		wx.Icon('/home/pi/Desktop/GoBox/Troubleshooting_GUI/favicon.ico', wx.BITMAP_TYPE_ICO)
+		wx.Icon('/home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/favicon.ico', wx.BITMAP_TYPE_ICO)
 		wx.Log.SetVerbose(False)
 
 		# Set the frame arguments
@@ -269,14 +268,16 @@ class MainFrame(wx.Frame):
 		self.Center()
 		
 ########################################################################
-class Main(wx.App):
+#class Main(wx.App):
     #----------------------------------------------------------------------
-    def __init__(self, redirect=False, filename=None):
-        """Constructor"""
-        wx.App.__init__(self, redirect, filename)
-        dlg = MainFrame()
-        dlg.Show()
+#    def __init__(self, redirect=False, filename=None):
+#        """Constructor"""
+#       wx.App.__init__(self, redirect, filename)
+#        dlg = MainFrame()
+#        dlg.Show()
 		
 if __name__ == "__main__":
-	app = Main()
+	app = wx.App(False)
+	frame = MainFrame()
+	frame.Show(True)
 	app.MainLoop()
