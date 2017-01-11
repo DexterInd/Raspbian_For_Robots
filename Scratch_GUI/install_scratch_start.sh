@@ -25,7 +25,7 @@ create_folder $PIHOME/$DEXTER/$LIB/$DEXTER/$SCRATCH
 pushd $SCRATCH_PATH > /dev/null
 
 feedback "Installing Scratch Environment"
-cp $RASPBIAN/$SCRATCH/* $SCRATCH_PATH
+cp -f $RASPBIAN/$SCRATCH/* $SCRATCH_PATH
 
 if [ -d $PIHOME/Desktop/GoBox/Scratch_GUI ] ; then
 	sudo rm -r $PIHOME/Desktop/GoBox/Scratch_GUI
