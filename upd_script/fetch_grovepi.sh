@@ -29,6 +29,6 @@ sudo ln -s -f $DEXTER_PATH/GrovePi /home/pi/Desktop/GrovePi
 
 feedback "--> Start GrovePi update install."
 feedback "----------"
-cd /home/pi/di_update/Raspbian_For_Robots/upd_script
-sudo chmod +x update_GrovePi.sh
-sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi.sh
+cd $PIHOME/Desktop/GrovePi/Script
+sudo chmod +x install.sh
+sudo ./install.sh
