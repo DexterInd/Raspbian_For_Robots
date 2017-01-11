@@ -42,9 +42,6 @@ class MainPanel(wx.Panel):
 		self.frame = parent
 		
 		needed_robots=autodetect() 
-		needed_robots = "GoPiGo"
-		print needed_robots.find("GrovePi")
-		print (needed_robots)
 		vSizer = wx.BoxSizer(wx.VERTICAL)
 				
 		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False, 
