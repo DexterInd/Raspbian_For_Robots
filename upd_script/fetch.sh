@@ -93,12 +93,12 @@ if [ $arduberry_update == 1 ] ; then
 
     # Arduberry Update
     feedback "--> Start Arduberry Update."
-    feedback "----------"
+    feedback "---------------------------"
 
     source $RASPBIAN/upd_script/fetch_arduberry.sh
 else
     echo "--> Arduberry **NOT** Updated."
-    echo "----------"
+    echo "------------------------------"
 fi 
 # end conditional statement on ARDUBERRY UPDATE
 
@@ -110,21 +110,21 @@ if [ $grovepi_update == 1 ] ; then
 
     # GrovePi Update
     feedback "--> Start GrovePi Update."
-    feedback "----------"
+    feedback "-------------------------"
     source $RASPBIAN/upd_script/fetch_grovepi.sh
     
 else
     echo "--> GrovePi **NOT** Updated."
-    echo "----------"
+    echo "----------------------------"
 fi # end conditional statement on GrovePi update
 
 
 ###############################################
 # PIVOTPI
 ###############################################
-
-
 if [ $pivotpi_update == 1 ] ; then
+    feedback "--> Start PivotPi Update."
+    feedback "-------------------------"
     
     pushd /home/pi > /dev/null
 
@@ -136,7 +136,7 @@ if [ $pivotpi_update == 1 ] ; then
     popd > /dev/null
 else
     echo "--> PivotPi **NOT** Updated"
-    echo "----------"
+    echo "---------------------------"
 fi
 
 # Install DexterEd Software

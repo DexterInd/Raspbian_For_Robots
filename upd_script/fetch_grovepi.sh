@@ -5,6 +5,7 @@ PIHOME=/home/pi
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
+BRANCH=update201612
 curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 
 # needs to be sourced from here when we call this as a standalone
@@ -25,10 +26,12 @@ else
     git clone https://github.com/DexterInd/GrovePi
 fi
 change_branch $BRANCH
+feedback "Putting link on desktop"
 sudo ln -s -f $DEXTER_PATH/GrovePi /home/pi/Desktop/GrovePi
 
 feedback "--> Start GrovePi update install."
-feedback "----------"
-cd $PIHOME/Desktop/GrovePi/Script
+feedback "---------------------------------"
+pushd $PIHOME/$DEXTER/GrovePi/Script > /dev/null
 sudo chmod +x install.sh
 sudo ./install.sh
+popd > /dev/null
