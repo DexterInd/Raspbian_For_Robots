@@ -64,8 +64,8 @@ if [ $gopigo_update == 1 ] ; then
     feedback "##############################"
     source $RASPBIAN/upd_script/fetch_gopigo.sh
 else
-    echo "--> GoPiGo **NOT** Updated."
-    echo "----------"
+    feedback "--> GoPiGo **NOT** Updated."
+    feedback "---------------------------"
 fi  # end conditional statement on GOPIGO UPDATE
 
 ###############################################
@@ -85,8 +85,8 @@ if [ $brickpi_update == 1 ] ; then
     source $RASPBIAN/upd_script/fetch_brickpi+.sh
 
 else
-    echo "--> BrickPi **NOT** Updated."
-    echo "----------"
+    feedback "--> BrickPi **NOT** Updated."
+    feedback "----------------------------"
 fi # end conditional statement on BRICKPI UPDATE
 
 if [ $arduberry_update == 1 ] ; then
@@ -97,8 +97,8 @@ if [ $arduberry_update == 1 ] ; then
 
     source $RASPBIAN/upd_script/fetch_arduberry.sh
 else
-    echo "--> Arduberry **NOT** Updated."
-    echo "------------------------------"
+    feedback "--> Arduberry **NOT** Updated."
+    feedback "------------------------------"
 fi 
 # end conditional statement on ARDUBERRY UPDATE
 
@@ -114,8 +114,8 @@ if [ $grovepi_update == 1 ] ; then
     source $RASPBIAN/upd_script/fetch_grovepi.sh
     
 else
-    echo "--> GrovePi **NOT** Updated."
-    echo "----------------------------"
+    feedback "--> GrovePi **NOT** Updated."
+    feedback "----------------------------"
 fi # end conditional statement on GrovePi update
 
 
@@ -141,13 +141,15 @@ fi
 
 # Install DexterEd Software
 feedback "--> Install DexterEd Software"
+feedback "-----------------------------"
 delete_folder /home/pi/Desktop/DexterEd
 
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/DexterEd.git
 
 # Install GoBox Software
-feedback "--> Install GoBox Software"
+feedback "--> Install GoBox"
+feedback "-----------------"
 delete_folder /home/pi/Desktop/GoBox
 cd /home/pi/Desktop
 sudo git clone https://github.com/DexterInd/GoBox.git
