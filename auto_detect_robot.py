@@ -148,12 +148,15 @@ def autodetect():
     if find_pivotpi():
         add_robot("PivotPi")
 
-    print ("Detected {}".format(detected_robot))
     return detected_robot
 
 
 if __name__ == '__main__':
     detected_robot = autodetect()
-    with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
-        outfile.write(detected_robot)
-        outfile.write('\n')
+    print ("Detected {}".format(detected_robot))
+    try:
+        with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
+            outfile.write(detected_robot)
+            outfile.write('\n')
+    except:
+        print("Couldn't write to ~/Dexter/detected_robot.txt") 
