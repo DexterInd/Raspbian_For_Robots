@@ -1,7 +1,7 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
 # This script will be changed OFTEN! 
-
+curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
@@ -17,6 +17,10 @@ DESKTOP_PATH=$PIHOME/$DESKTOP
 
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
+DEXTER_LIB=lib
+DEXTER_LIB_PATH=$DEXTER_PATH/$DEXTER_LIB
+DEXTER_SCRIPT_TOOLS=$DEXTER/script_tools
+DEXTER_SCRIPT_TOOLS_PATH=$DEXTER_LIB_PATH/$DEXTER_SCRIPT_TOOLS
 
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
@@ -27,7 +31,8 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-source $RASPBIAN_PATH/upd_script/functions_library.sh
+
+source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
 set_quiet_mode
@@ -114,11 +119,6 @@ install_packages() {
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
-  # geany wasn't always installed by default on Wheezy or Jessie
-  # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
-  # espeak used to read text out loud
-  # piclone used to make copies of the SD card
-  # new tools from the Foundation
 
   # only available on Jessie
   # piclone used to make copies of the SD card; 
@@ -129,13 +129,74 @@ install_packages() {
 }
 
 geany_setup(){
-  # this needs to be changed
-  # sed -i '/EX_CM_00=/c\EX_CM_00=sudo python "%d/%f"' /home/pi/.config/geany/filedefs/filetypes.python
-  # sed -i '/EX_WD_00=/c\EX_WD_00=/home/pi/Dexter/tmp' /home/pi/.config/geany/filedefs/filetypes.python
-  # also need to undo this change:
-  # sudo sed -i '/^Exec/ c Exec=sudo geany %F' /usr/share/raspi-ui-overrides/applications/geany.desktop
-  echo ""
+  GEANY_PYTHON=/home/pi/.config/geany/filedefs/filetypes.python
+  # note: the create_folder checks if the directory already exists
+  create_folder $PIHOME/.config
+  create_folder $PIHOME/.config/geany
+  create_folder $PIHOME/.config/geany/filedefs
+  create_folder $DEXTER_PATH/tmp
+  sudo chmod 777 $DEXTER_PATH/tmp
+
+  # ensure the file exists by bringing over the defaults if needed
+  if ! file_exists $GEANY_PYTHON 
+  then
+    sudo cp /usr/share/geany/filetypes.python $GEANY_PYTHON
+  fi
+
+  #determine if user has set Geany to Python3
+  PYTHON_VER="python"
+
+  if find_in_file "run_cmd=python3" $GEANY_PYTHON
+  then
+    PYTHON_VER="python3"
+  else
+    # check the default file too, in case the user edited the wrong one
+    if find_in_file "run_cmd=python3" /usr/share/geany/filetypes.python
+    then
+      PYTHON_VER="python3"
+    fi
+  fi
+
+  # start replacing
+  if ! find_in_file "build-menu" $GEANY_PYTHON
+  then
+    add_line_to_end_of_file "" $GEANY_PYTHON
+    add_line_to_end_of_file "[build-menu]" $GEANY_PYTHON
+  fi
+
+  if ! find_in_file "EX_00_LB=_Execute" $GEANY_PYTHON
+  then
+    add_line_to_end_of_file "EX_00_LB=_Execute" $GEANY_PYTHON
+  fi
+
+  # delete this line completely to ensure that the python version is kept in sync
+  # with what's in run_cmd
+  delete_line_from_file "EX_00_CM=" "$GEANY_PYTHON" 
+  add_line_to_end_of_file "EX_00_CM=sudo $PYTHON_VER \"%d/%f\"" "$GEANY_PYTHON"
+
+  # replace_in_file already checks for existence first
+  if ! replace_first_this_with_that_in_file "EX_00_WD=" "EX_00_WD=/home/pi/Dexter/tmp" "$GEANY_PYTHON"
+  then
+      add_line_to_end_of_file "EX_00_WD=/home/pi/Dexter/tmp" "/home/pi/.config/geany/filedefs/filetypes.python"
+  fi
+
+  # remove sudo from the run line; 
+  # it was put there for a few months but is no longer necessary
+  # the existence of the first parameter is done within replace_first_this_with_that
+  replace_first_this_with_that_in_file "Exec=sudo " "Exec=" "/usr/share/raspi-ui-overrides/applications/geany.desktop"
+
+  feedback "Done with Geany setup"  
 }
+
+autodetect_setup() {
+  # copying the file where rc.local can get it and where it's visible
+  sudo cp $RASPBIAN_PATH/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
+  sudo python autodetect_setup install
+  sudo rm -r build
+  sudo rm -r dist
+  sudo rm -r Dexter_AutoDetection.egg-info/
+}
+
 
 #####################################################################
 # main script
@@ -236,7 +297,14 @@ feedback "--> Install Scratch"
 feedback "--> ======================================="
 feedback " "
 # Install Scratch GUI
-sudo bash ../Scratch_GUI/install_scratch_start.sh
+sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
+
+feedback "--> Install Troubleshooting"
+feedback "--> ======================================="
+feedback " "
+sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_trouvleshooting_start.sh
+
+
 
 # Enable LRC Infrared Control on Pi.
 feedback "--> Enable LRC Infrared Control on Pi."
@@ -433,7 +501,7 @@ feedback "-->installing Geany"
 geany_setup
 
 feedback "--> robot detection"
-sudo cp $RASPBIAN_PATH/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
+autodetect_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.

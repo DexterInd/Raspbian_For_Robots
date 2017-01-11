@@ -25,7 +25,7 @@ create_folder $PIHOME/$DEXTER/$LIB/$DEXTER/$SCRATCH
 pushd $SCRATCH_PATH > /dev/null
 
 feedback "Installing Scratch Environment"
-cp $RASPBIAN/$SCRATCH/* $SCRATCH_PATH
+cp -f $RASPBIAN/$SCRATCH/* $SCRATCH_PATH
 
 if [ -d $PIHOME/Desktop/GoBox/Scratch_GUI ] ; then
 	sudo rm -r $PIHOME/Desktop/GoBox/Scratch_GUI
@@ -40,7 +40,7 @@ popd > /dev/null
 
 # Copy shortcut to desktop.
 feedback "Installing Scratch on the desktop"
-cp $SCRATCH_PATH/Scratch_Start.desktop $PIHOME/Desktop
+sudo cp -f $SCRATCH_PATH/Scratch_Start.desktop $PIHOME/Desktop
 # Make shortcut executable
 sudo chmod +x $PIHOME/Desktop/Scratch_Start.desktop							# Desktop shortcut permissions.
 

@@ -10,9 +10,10 @@
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 echo "Version: $VERSION"
 
+
 HOME=/home/pi
 DEXTER=Dexter
-
+SCRATCH_PATH=$HOME/$DEXTER/lib/$DEXTER/Scratch_GUI
 
 if [ $VERSION -eq '7' ]; then
 	echo "Version 7 found!  You have Wheezy!"
@@ -153,8 +154,8 @@ fi
 # VM, Image, and Document are non-optional
 # Document has to be present even if empty for IMOPTIONS to work
 
-sudo rm $HOME/$DEXTER/Scratch_GUI/new.sb
-sudo cp $HOME/$DEXTER/Scratch_GUI/new.sb.bkp $HOME/$DEXTER/Scratch_GUI/new.sb
+sudo rm $SCRATCH_PATH/new.sb
+sudo cp $SCRATCH_PATH/new.sb.bkp $SCRATCH_PATH/new.sb
 
 ## Now, if we are running Jessie, we need to move everything
 ## into a new subdirectory.
