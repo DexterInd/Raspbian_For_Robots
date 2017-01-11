@@ -10,10 +10,11 @@ curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/in
 # needs to be sourced from here when we call this as a standalone
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
-delete_folder /home/pi/Desktop/GrovePi     # Delete the old location
+GROVEPI_DIR=$DEXTER_PATH/GrovePi
+
 
 # Check for a GrovePi directory under "Dexter" folder.  If it doesn't exist, create it.
-GROVEPI_DIR=$DEXTER_PATH/GrovePi
+
 if [ -d "$GROVEPI_DIR" ]; then
     echo "GrovePi Directory Exists"
     cd $GROVEPI_DIR             # Go to directory
@@ -25,10 +26,15 @@ else
     git clone https://github.com/DexterInd/GrovePi
 fi
 change_branch $BRANCH
+feedback "Putting link on desktop"
+
+# remove folder from Desktop and soft-link new one
+delete_folder /home/pi/Desktop/GrovePi
 sudo ln -s -f $DEXTER_PATH/GrovePi /home/pi/Desktop/GrovePi
 
 feedback "--> Start GrovePi update install."
-feedback "----------"
-cd $PIHOME/Desktop/GrovePi/Script
+feedback "---------------------------------"
+pushd $PIHOME/$DEXTER/GrovePi/Script > /dev/null
 sudo chmod +x install.sh
 sudo ./install.sh
+popd > /dev/null
