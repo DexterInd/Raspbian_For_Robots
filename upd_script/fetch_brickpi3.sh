@@ -22,5 +22,5 @@ else
     cd BrickPi3
     # change_branch $BRANCH  # change to a branch we're working on, if we've defined the branch above.
 fi
-sudo ln -s -f $DEXTER_PATH/BrickPi3 /home/pi/Desktop/BrickPi3
+
 sudo bash /home/pi/Dexter/BrickPi3/Install/install.sh
