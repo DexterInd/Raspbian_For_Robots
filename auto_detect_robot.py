@@ -3,6 +3,7 @@ from __future__ import division
 
 import time     # import the time library for the sleep function
 from smbus import SMBus
+import os
 import serial
 from BrickPi import *
 try:
@@ -12,6 +13,7 @@ except:
 
 bus = SMBus(1)
 detected_robot = "None"
+detectable_robots = ["GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
 
 
 def find_pivotpi():
@@ -140,7 +142,7 @@ def autodetect():
         add_robot("BrickPi3")
 
     if find_brickpi():
-        add_robot("BrickPi")
+        add_robot("BrickPi+")
     
     if find_grovepi():
         add_robot("GrovePi")
@@ -150,13 +152,28 @@ def autodetect():
 
     return detected_robot
 
+def add_symlink(src):
+    if src in detectable_robots: # sanity check
+        if not os.path.islink('/home/pi/Desktop/'+src):
+            os.symlink("/home/pi/Dexter/"+src, "/home/pi/Desktop/"+src)
+
+def remove_symlink(src):
+    if os.path.isdir('/home/pi/Desktop/'+src):
+        os.unlink('/home/pi/Desktop/'+src)
 
 if __name__ == '__main__':
     detected_robot = autodetect()
-    print ("Detected {}".format(detected_robot))
     try:
         with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
             outfile.write(detected_robot)
             outfile.write('\n')
     except:
-        print("Couldn't write to ~/Dexter/detected_robot.txt") 
+
+    detected_robot = "BrickPi+"
+    # adjust softlinks on desktop
+    for detection in detectable_robots:
+        if detected_robot.find(detection)==0:
+            add_symlink(detection)
+        else:
+            remove_symlink(detection)
+
