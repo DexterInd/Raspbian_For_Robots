@@ -3,13 +3,12 @@ from __future__ import division
 
 import time     # import the time library for the sleep function
 from smbus import SMBus
-import os
 import serial
 from BrickPi import *
+import brickpi3
 
 bus = SMBus(1)
 detected_robot = "None"
-detectable_robots = ["GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
 
 
 def find_pivotpi():
@@ -28,6 +27,7 @@ def find_pivotpi():
         for add in possible_addresses:
             try:
                 p = pivotpi.PivotPi(add)
+                print ("Found PivotPi at 0x{:X}".format(add))
                 pivotpi_found = True
             except:
                 pass
@@ -44,6 +44,7 @@ def find_gopigo():
     gopigo_address = 0x08
     try:
         test_gopigo = bus.read_byte(gopigo_address)
+        print ("Found GoPiGo")
         return True
     except:
         return False
@@ -64,6 +65,7 @@ def find_grovepi():
     for add in grovepi_address:
         try:
             test_grovepi = bus.read_byte(add)
+            print ("Found GrovePi at 0x{:X}".format(add))
             grovepi_found = True
         except:
             pass
@@ -78,6 +80,7 @@ def find_brickpi():
     BrickPiSetup()
     #if BrickPiSetupSensors() == 0: # really slow
     if BrickPiUpdateValues() == 0:
+        print ("Found BrickPi")
         return True
     else:
         return False
@@ -89,10 +92,8 @@ def find_brickpi3():
     returns True or False
     '''
     try:
-        import brickpi3
         BP3 = brickpi3.BrickPi3()
-        return True
-    except brickpi3.FirmwareVersionError:
+        print ("Found BrickPi3")
         return True
     except:
         return False
@@ -134,46 +135,32 @@ def autodetect():
 
 # the order in which these are tested is important
 # as it will determine the priority in Scratch    
-
+    print("Looking for GoPiGo")
     if find_gopigo():
         add_robot("GoPiGo")
     
+    print("Looking for BrickPi3")
     if find_brickpi3():
         add_robot("BrickPi3")
-    
+
+    print("Looking for BrickPi")
     if find_brickpi():
-        add_robot("BrickPi+")
+        add_robot("BrickPi")
     
+    print("Looking for GrovePi")
     if find_grovepi():
         add_robot("GrovePi")
-    
+
+    print("Looking for PivotPi")
     if find_pivotpi():
         add_robot("PivotPi")
-    
+
+    print ("Detected {}".format(detected_robot))
     return detected_robot
 
-def add_symlink(src):
-    if src in detectable_robots: # sanity check
-        if not os.path.islink('/home/pi/Desktop/'+src):
-            os.symlink("/home/pi/Dexter/"+src, "/home/pi/Desktop/"+src)
-
-def remove_symlink(src):
-    if os.path.isdir('/home/pi/Desktop/'+src):
-        os.unlink('/home/pi/Desktop/'+src)
 
 if __name__ == '__main__':
     detected_robot = autodetect()
-    print("Detected robot: %s" % detected_robot)
-    try:
-        with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
-            outfile.write(detected_robot)
-            outfile.write('\n')
-    except:
-        print("Couldn't write to ~/Dexter/detected_robot.txt")
-
-    # adjust softlinks on desktop
-    for detection in detectable_robots:
-        if detected_robot.find(detection)==0:
-            add_symlink(detection)
-        else:
-            remove_symlink(detection)
+    with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
+        outfile.write(detected_robot)
+        outfile.write('\n')
