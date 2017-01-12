@@ -169,7 +169,6 @@ if __name__ == '__main__':
             outfile.write('\n')
     except:
 
-    detected_robot = "BrickPi+"
     # adjust softlinks on desktop
     for detection in detectable_robots:
         if detected_robot.find(detection)==0:
