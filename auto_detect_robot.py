@@ -5,11 +5,7 @@ import time     # import the time library for the sleep function
 from smbus import SMBus
 import os
 import serial
-from BrickPi import *
-try:
-	import brickpi3
-except:
-	pass
+
 
 bus = SMBus(1)
 detected_robot = "None"
@@ -78,12 +74,17 @@ def find_brickpi():
     '''
     boolean function that detects the presence of a BrickPi+
     returns True or False
+    using try/except in case the BrickPi library is not found. Return False
     '''
-    BrickPiSetup()
-    #if BrickPiSetupSensors() == 0: # really slow
-    if BrickPiUpdateValues() == 0:
-        return True
-    else:
+    try:
+        import BrickPi
+        BrickPi.BrickPiSetup()
+        #if BrickPiSetupSensors() == 0: # really slow
+        if BrickPi.BrickPiUpdateValues() == 0:
+            return True
+        else:
+            return False
+    except:
         return False
 
 
@@ -93,7 +94,10 @@ def find_brickpi3():
     returns True or False
     '''
     try:
+        import brickpi3
         BP3 = brickpi3.BrickPi3()
+        return True
+    except brickpi3.FirmwareVersionError:
         return True
     except:
         return False
@@ -163,12 +167,14 @@ def remove_symlink(src):
 
 if __name__ == '__main__':
     detected_robot = autodetect()
+    print("Detected robot: %s" % detected_robot)
+
     try:
         with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
             outfile.write(detected_robot)
             outfile.write('\n')
     except:
-        pass
+        print("Couldn't write to ~/Dexter/detected_robot.txt")
 
     # adjust softlinks on desktop
     for detection in detectable_robots:
