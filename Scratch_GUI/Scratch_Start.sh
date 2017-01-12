@@ -2,7 +2,7 @@
 
 screen -d -r local
 # sudo python /home/pi/Desktop/GoBox/Scratch_GUI/Scratch_Start.py
-python /home/pi/Dexter/Scratch_GUI/Scratch_Start.py
+python /home/pi/Dexter/lib/Dexter/Scratch_GUI/Scratch_Start.py
 
 ##
 # Below is the graveyard of calls unsuccessfully tried to make this work.  

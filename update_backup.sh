@@ -1,5 +1,6 @@
 #! /bin/bash
 # Nuclear Backup Option.  
+# Run this with "sudo sh ~/update_backup.sh" in the command line.
 
 sudo rm -r /home/pi/di_update
 

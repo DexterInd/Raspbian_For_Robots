@@ -10,7 +10,7 @@ import psutil
 import signal
 
 robots = {}
-robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry"]
+robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry","PivotPi"]
 
 
 #	This program runs various update programs for Raspbian for Robots, from Dexter Industries.

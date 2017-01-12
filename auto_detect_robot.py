@@ -134,21 +134,22 @@ def autodetect():
 
 # the order in which these are tested is important
 # as it will determine the priority in Scratch    
+
     if find_gopigo():
         add_robot("GoPiGo")
     
     if find_brickpi3():
         add_robot("BrickPi3")
-
+    
     if find_brickpi():
         add_robot("BrickPi+")
     
     if find_grovepi():
         add_robot("GrovePi")
-
+    
     if find_pivotpi():
         add_robot("PivotPi")
-
+    
     return detected_robot
 
 def add_symlink(src):

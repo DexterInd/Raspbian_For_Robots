@@ -27,5 +27,6 @@ echo " "
 
 # First get update the hostname.
 sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
+sudo python /home/pi/Dexter/lib/Dexter/auto_detect_robot.py
 
 exit 0
