@@ -11,6 +11,37 @@ source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
 set_quiet_mode
 
+set_softlink_for(){
+    # if the detected_robot file exists
+    # then we will create a softlink onto the desktop
+    # for the detected robots. Non detected robots will not get a softlink
+    # if the file doesn't exist,
+    # then set all softlinks (assume a simulator mode)
+    if file_exists $PIHOME/$DEXTER/detected_robot.txt
+    then
+        if find_in_file "$1" $PIHOME/$DEXTER/detected_robot.txt
+        then
+            echo "found in file"
+            sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+        else
+            delete_folder "$1"
+        fi   
+    else
+        echo "file doesn't exist"
+        sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+    fi
+}
+
+set_all_softlinks(){
+    sudo python $PIHOME/$DEXTER/lib/$DEXTER/auto_detect_robot.py
+    set_softlink_for "GoPiGo"
+    set_softlink_for "GrovePi"
+    set_softlink_for "BrickPi+"
+    set_softlink_for "BrickPi3"
+    set_softlink_for "PivotPi"
+
+}
+
 ########################################################################
 ## Staging Code.
 ## Change this code to operate out of a particular branch of code.
@@ -139,6 +170,8 @@ else
     echo "---------------------------"
 fi
 
+set_all_softlinks
+
 # Install DexterEd Software
 feedback "--> Install DexterEd Software"
 feedback "-----------------------------"
@@ -169,6 +202,8 @@ fi
 delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+
+
 
 #########################################
 # Install All Python Scripts
