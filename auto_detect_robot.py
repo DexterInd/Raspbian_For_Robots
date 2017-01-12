@@ -168,6 +168,7 @@ if __name__ == '__main__':
             outfile.write(detected_robot)
             outfile.write('\n')
     except:
+        pass
 
     # adjust softlinks on desktop
     for detection in detectable_robots:
