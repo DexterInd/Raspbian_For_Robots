@@ -25,7 +25,7 @@ else
     git clone https://github.com/DexterInd/GrovePi
 fi
 
-change_branch $BRANCH
+change_branch $BRANCH #change to a branch ($BRANCH comes from /upd_script/fetch.sh) we're working on 
 feedback "Putting link on desktop"
 
 feedback "--> Start GrovePi update install."
