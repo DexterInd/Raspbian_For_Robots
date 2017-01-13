@@ -33,5 +33,5 @@ feedback "--> Start GrovePi update install."
 feedback "---------------------------------"
 pushd $PIHOME/$DEXTER/GrovePi/Script > /dev/null
 sudo chmod +x install.sh
-sudo ./install.sh
+sudo bash ./install.sh
 popd > /dev/null
