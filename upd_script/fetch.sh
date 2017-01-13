@@ -27,13 +27,16 @@ set_softlink_for(){
             delete_folder "$1"
         fi   
     else
-        echo "file doesn't exist"
+        echo "auto_detect file doesn't exist"
+        delete_file /home/pi/Desktop/$1
         sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
     fi
 }
 
 set_all_softlinks(){
-    sudo python $PIHOME/$DEXTER/lib/$DEXTER/auto_detect_robot.py
+    # use the file in Raspbian_For_Robots as it hasn't been
+    # transferred yet to ~/Dexter/lib/Dexter
+    sudo python $RASPBIAN/auto_detect_robot.py
     set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
     set_softlink_for "BrickPi+"
