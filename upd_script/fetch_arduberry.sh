@@ -22,5 +22,7 @@ else
     git clone https://github.com/DexterInd/ArduBerry
 fi
 
+#Arduberry does not have a update201612 branch
+
 sudo chmod +x $ARDUBERRY_DIR/script/install.sh
 sudo bash $ARDUBERRY_DIR/script/install.sh

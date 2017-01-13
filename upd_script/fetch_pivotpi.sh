@@ -16,5 +16,6 @@ else
     sudo git reset --hard  
     sudo git merge origin/master
 fi
+change_branch $BRANCH
 
 sudo bash $DEXTER_PATH/PivotPi/Install/install.sh

@@ -25,8 +25,8 @@ else
     cd $DEXTER_PATH
     git clone https://github.com/DexterInd/GoPiGo
     cd $DEXTER_PATH/GoPiGo
-    change_branch  $BRANCH # change to a branch we're working on.
 fi
+change_branch  $BRANCH # change to a branch we're working on.
 
 pushd $DEXTER_PATH/GoPiGo/Setup > /dev/null
 feedback "--> UPDATING LIBRARIES"
