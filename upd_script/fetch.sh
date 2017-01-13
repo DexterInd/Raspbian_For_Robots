@@ -120,6 +120,9 @@ else
     feedback "----------------------------"
 fi # end conditional statement on BRICKPI UPDATE
 
+###############################################
+# ARDUBERRY
+###############################################
 if [ $arduberry_update == 1 ] ; then
 
     # Arduberry Update
@@ -211,7 +214,7 @@ sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_sta
 #########################################
 if [ $brickpi_update=1 ] ; then
     # BrickPi Python Installation
-    cd /home/pi/Dexter/BrickPi+/BrickPi/Software/BrickPi_Python/
+    cd /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/
     sudo python setup.py install --record files.txt
 
     # This will cause all the installed files to be printed to that directory.
