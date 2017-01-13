@@ -175,7 +175,7 @@ geany_setup(){
   add_line_to_end_of_file "EX_00_CM=sudo $PYTHON_VER \"%d/%f\"" "$GEANY_PYTHON"
 
   # replace_in_file already checks for existence first
-  if ! replace_first_this_with_that_in_file "EX_00_WD=" "EX_00_WD=/home/pi/Dexter/tmp" "$GEANY_PYTHON"
+  if ! replace_first_this_with_that_in_file "EX_00_WD=.*" "EX_00_WD=/home/pi/Dexter/tmp" "$GEANY_PYTHON"
   then
       add_line_to_end_of_file "EX_00_WD=/home/pi/Dexter/tmp" "/home/pi/.config/geany/filedefs/filetypes.python"
   fi
