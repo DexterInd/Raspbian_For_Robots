@@ -12,7 +12,6 @@ source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
 GROVEPI_DIR=$DEXTER_PATH/GrovePi
 
-
 # Check for a GrovePi directory under "Dexter" folder.  If it doesn't exist, create it.
 
 if [ -d "$GROVEPI_DIR" ]; then
@@ -25,12 +24,9 @@ else
     cd /home/pi/Dexter/
     git clone https://github.com/DexterInd/GrovePi
 fi
+
 change_branch $BRANCH
 feedback "Putting link on desktop"
-
-# remove folder from Desktop and soft-link new one
-delete_folder /home/pi/Desktop/GrovePi
-sudo ln -s -f $DEXTER_PATH/GrovePi /home/pi/Desktop/GrovePi
 
 feedback "--> Start GrovePi update install."
 feedback "---------------------------------"

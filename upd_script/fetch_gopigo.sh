@@ -1,3 +1,9 @@
+#####################################################################
+#####################################################################
+#  FETCH GOPIGO FOLDERS
+#  SCRIPT MAY BE RUN ON ITS OWN
+#####################################################################
+#####################################################################
 PIHOME=/home/pi
 DEXTER=Dexter
 DEXTER_PATH=$PIHOME/$DEXTER
@@ -6,9 +12,6 @@ curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/in
 
 # needs to be sourced from here when we call this as a standalone
 source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
-
-# Changed file Location to ~/Dexter
-delete_folder /home/pi/Desktop/GoPiGo       # Delete the old location
 
 # Check for a GoPiGo directory.  If it doesn't exist, create it.
 GOPIGO_DIR=$DEXTER_PATH/GoPiGo
@@ -24,9 +27,9 @@ else
     cd $DEXTER_PATH/GoPiGo
     change_branch  $BRANCH # change to a branch we're working on.
 fi
-sudo ln -s -f $DEXTER_PATH/GoPiGo /home/pi/Desktop/GoPiGo
 
-cd $DEXTER_PATH/GoPiGo/Setup
+pushd $DEXTER_PATH/GoPiGo/Setup > /dev/null
 feedback "--> UPDATING LIBRARIES"
 feedback "------------------"
 sudo bash ./install.sh
+popd > /dev/null

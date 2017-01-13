@@ -74,12 +74,17 @@ def find_brickpi():
     '''
     boolean function that detects the presence of a BrickPi+
     returns True or False
+    using try/except in case the BrickPi library is not found. Return False
     '''
-    BrickPiSetup()
-    #if BrickPiSetupSensors() == 0: # really slow
-    if BrickPiUpdateValues() == 0:
-        return True
-    else:
+    try:
+        import BrickPi
+        BrickPi.BrickPiSetup()
+        #if BrickPiSetupSensors() == 0: # really slow
+        if BrickPi.BrickPiUpdateValues() == 0:
+            return True
+        else:
+            return False
+    except:
         return False
 
 
@@ -134,22 +139,21 @@ def autodetect():
 
 # the order in which these are tested is important
 # as it will determine the priority in Scratch    
-
     if find_gopigo():
         add_robot("GoPiGo")
     
     if find_brickpi3():
         add_robot("BrickPi3")
-    
+
     if find_brickpi():
         add_robot("BrickPi+")
     
     if find_grovepi():
         add_robot("GrovePi")
-    
+
     if find_pivotpi():
         add_robot("PivotPi")
-    
+
     return detected_robot
 
 def add_symlink(src):
@@ -164,6 +168,7 @@ def remove_symlink(src):
 if __name__ == '__main__':
     detected_robot = autodetect()
     print("Detected robot: %s" % detected_robot)
+
     try:
         with open("/home/pi/Dexter/detected_robot.txt", 'w+') as outfile:
             outfile.write(detected_robot)
