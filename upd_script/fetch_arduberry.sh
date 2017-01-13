@@ -20,6 +20,7 @@ if [ -d "$ARDUBERRY_DIR" ]; then
 else
     cd $DEXTER_PATH
     git clone https://github.com/DexterInd/ArduBerry
+    cd ArduBerry
 fi
 
 #Arduberry does not have a update201612 branch
