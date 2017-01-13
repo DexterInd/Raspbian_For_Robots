@@ -162,7 +162,7 @@ def add_symlink(src):
             os.symlink("/home/pi/Dexter/"+src, "/home/pi/Desktop/"+src)
 
 def remove_symlink(src):
-    if os.path.isdir('/home/pi/Desktop/'+src):
+    if os.path.islink('/home/pi/Desktop/'+src):
         os.unlink('/home/pi/Desktop/'+src)
 
 if __name__ == '__main__':
