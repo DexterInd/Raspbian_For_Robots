@@ -21,17 +21,18 @@ if [ -d "$GROVEPI_DIR" ]; then
     sudo git reset --hard  
     sudo git merge origin/master
 else
-    cd /home/pi/Dexter/
+	echo "Cloning"
+    cd $PIHOME/$DEXTER/
     git clone https://github.com/DexterInd/GrovePi
+    cd GrovePi
 fi
 
 change_branch $BRANCH   # Change to a branch we're working on in the GrovePi Directory. 
                         # Variable $BRANCH comes from /upd_script/fetch.sh
-feedback "Putting link on desktop"
 
 feedback "--> Start GrovePi update install."
 feedback "---------------------------------"
 pushd $PIHOME/$DEXTER/GrovePi/Script > /dev/null
 sudo chmod +x install.sh
-sudo ./install.sh
+sudo bash ./install.sh
 popd > /dev/null
