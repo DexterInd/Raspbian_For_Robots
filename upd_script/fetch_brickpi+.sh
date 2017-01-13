@@ -28,7 +28,6 @@ else
     cd $DEXTER_PATH/BrickPi+
 fi
 change_branch $BRANCH   
-sudo ln -s -f $DEXTER_PATH/BrickPi+ /home/pi/Desktop/BrickPi+
 
 # BrickPi_Python Update
 delete_folder /home/pi/Desktop/BrickPi_Python      # Delete the old location

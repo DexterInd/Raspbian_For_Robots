@@ -8,6 +8,10 @@ from collections import Counter
 import threading
 import psutil
 import signal
+try:
+	import auto_detect_robot
+except:
+	pass
 
 robots = {}
 robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry","PivotPi"]
@@ -41,6 +45,21 @@ def write_debug(in_string):
 	error_file = open('error_log', 'a')		# File: Error logging
 	error_file.write(write_string)
 	error_file.close()
+
+def detect():
+	try:
+		detected_robots=auto_detect_robot.autodetect()
+		print (detected_robots)
+		# handling it this way to cover the cases of 
+		# multiple robot detection
+		if detected_robots.find("GoPiGo")==0:
+			write_state("GoPiGo")
+		elif detected_robots.find("BrickPi3")==0:
+			write_state("BrickPi3")
+		elif detected_robots.find("GrovePi")==0:
+			write_state("GrovePi")
+	except:
+			write_state("dex")
 
 def write_state(in_string):
 	try:
@@ -144,10 +163,16 @@ class MainPanel(wx.Panel):
 		#firmware_box.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
 		#firmware_box.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
 		# Drop Boxes
-		controls = ['Choose your robot', 'GoPiGo', 'GrovePi']	# Options for drop down.
+		controls = ['Choose your robot', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
 
 		# Select Platform.
-		robotDrop = wx.ComboBox(self, -1, "Choose your Robot", pos=(35, 207+yoffset), size=(button_size.GetWidth(), -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		folder = read_state()
+		if folder in controls[1:]: # skip 'Choose your robot'
+			print("setting drop down to {}".format(folder))
+			robotDrop = wx.ComboBox(self, -1, str(folder), pos=(35, 207+yoffset), size=(button_size.GetWidth(), -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		else:
+			print ('default drop down')
+			robotDrop = wx.ComboBox(self, -1, "Choose your Robot", pos=(35, 207+yoffset), size=(button_size.GetWidth(), -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 		#robotDrop.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
 		#robotDrop.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
@@ -200,7 +225,7 @@ class MainPanel(wx.Panel):
 	# This is the function called whenever the drop down box is called.
 	def robotDrop(self, event):
 		write_debug("robotDrop Selected.")
-		controls = ['dex', 'GoPiGo', 'GrovePi']	# Options for drop down.
+		controls = ['dex', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
 		value = event.GetSelection()
 		print controls[value]
 		# position = 0					# Position in the key list on file
@@ -248,7 +273,7 @@ class MainPanel(wx.Panel):
 			print "Start software update!"
 			ran_dialog = True
 		else:
-			print "Cancel Firmware Update!"
+			print "Cancel Software Update!"
 		dlg.Destroy()
 		
 		write_debug("Update Dexter Software Finished.")
@@ -258,7 +283,7 @@ class MainPanel(wx.Panel):
 		ran_dialog = False		# For the first loop of choices.
 		show_dialog = False		# For the second loop of choices.
 		
-		write_debug("Update Dexter Software")	
+		write_debug("Update Dexter firmware")	
 		folder = read_state()
 		if folder == 'dex':
 			dlg = wx.MessageDialog(self, 'Use the dropdown to select the hardware to update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
@@ -273,6 +298,11 @@ class MainPanel(wx.Panel):
 			program = "/home/pi/di_update/Raspbian_For_Robots/upd_script/update_GrovePi_Firmware.sh"
 			dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 			show_dialog = True
+		elif folder == 'BrickPi3':
+			program = "/home/pi/Dexter/BrickPi3/Firmware/brickpi3samd_flash_firmware.sh"
+			dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+			show_dialog = True
+
 
 		ran_dialog = False
 		if ((dlg.ShowModal() == wx.ID_OK) and (show_dialog)):
@@ -281,7 +311,7 @@ class MainPanel(wx.Panel):
 				dlg2 = wx.MessageDialog(self, 'DISCONNECT THE MOTORS!  Before firmware update, disconnect the motors from the GoPiGo or you risk damaging the hardware.', 'DISCONNECT MOTORS!', wx.OK|wx.ICON_EXCLAMATION)
 				dlg2.ShowModal()
 				dlg2.Destroy()
-			start_command = "sudo sh "+program
+			start_command = "sudo bash "+program
 			# send_bash_command_in_background(start_command)
 			print "Start Firmware test!" + str(folder)
 			print send_bash_command(start_command)
@@ -362,7 +392,7 @@ class Main(wx.App):
 if __name__ == "__main__":
 	send_bash_command_in_background("xhost +")
 	write_debug(" # Program # started # !")
-	write_state("dex")
+	detect()
 	# reset_file()	#Reset the file every time we turn this program on.
 	app = Main()
 	app.MainLoop()
