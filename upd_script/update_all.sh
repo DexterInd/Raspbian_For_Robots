@@ -302,7 +302,7 @@ sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
 feedback "--> Install Troubleshooting"
 feedback "--> ======================================="
 feedback " "
-sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_trouvleshooting_start.sh
+sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 
 
 
