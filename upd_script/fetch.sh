@@ -1,8 +1,10 @@
 #! /bin/bash
+curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
 DEXTER=Dexter
+DESKTOP=Desktop
 DEXTER_PATH=$PIHOME/$DEXTER
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
 
@@ -14,19 +16,20 @@ set_quiet_mode
 set_softlink_for(){
     # if the detected_robot file exists
     # then we will create a softlink onto the desktop
-    # for the detected robots. Non detected robots will not get a softlink
-    # if the file doesn't exist,
+    # for the detected robots. 
+    # Non detected robots will not get a softlink.
+    # If the file doesn't exist,
     # then set all softlinks (assume a simulator mode)
-    delete_folder "$1"
+    # start by deleting the folder/softlink on the desktop
+
+    delete_folder "$PIHOME/$DESKTOP/$1"
     if file_exists $PIHOME/$DEXTER/detected_robot.txt
     then
         if find_in_file "$1" $PIHOME/$DEXTER/detected_robot.txt
         then
-            echo "found in file"
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
         fi   
     else
-        echo "auto_detect file doesn't exist"
         sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
     fi
 }
