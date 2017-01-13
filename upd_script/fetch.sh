@@ -17,18 +17,16 @@ set_softlink_for(){
     # for the detected robots. Non detected robots will not get a softlink
     # if the file doesn't exist,
     # then set all softlinks (assume a simulator mode)
+    delete_folder "$1"
     if file_exists $PIHOME/$DEXTER/detected_robot.txt
     then
         if find_in_file "$1" $PIHOME/$DEXTER/detected_robot.txt
         then
             echo "found in file"
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
-        else
-            delete_folder "$1"
         fi   
     else
         echo "auto_detect file doesn't exist"
-        delete_file /home/pi/Desktop/$1
         sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
     fi
 }
