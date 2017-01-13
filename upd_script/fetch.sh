@@ -17,23 +17,24 @@ set_softlink_for(){
     # for the detected robots. Non detected robots will not get a softlink
     # if the file doesn't exist,
     # then set all softlinks (assume a simulator mode)
+    delete_folder "$1"
     if file_exists $PIHOME/$DEXTER/detected_robot.txt
     then
         if find_in_file "$1" $PIHOME/$DEXTER/detected_robot.txt
         then
             echo "found in file"
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
-        else
-            delete_folder "$1"
         fi   
     else
-        echo "file doesn't exist"
+        echo "auto_detect file doesn't exist"
         sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
     fi
 }
 
 set_all_softlinks(){
-    sudo python $PIHOME/$DEXTER/lib/$DEXTER/auto_detect_robot.py
+    # use the file in Raspbian_For_Robots as it hasn't been
+    # transferred yet to ~/Dexter/lib/Dexter
+    sudo python $RASPBIAN/auto_detect_robot.py
     set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
     set_softlink_for "BrickPi+"
