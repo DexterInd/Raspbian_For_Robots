@@ -423,7 +423,7 @@ class MainPanel(wx.Panel):
 				dlg.ShowModal()
 				dlg.Destroy()
 				
-		elif folder.find('GrovePi') >= 0
+		elif folder.find('GrovePi') >= 0:
 			# Run GrovePi Test.
 			dlg = wx.MessageDialog(self, 'Ok, start GrovePi Test. Attach buzzer to D8 and a button to A0.  Press the button and the buzzer should sound.  Press Ok to start. ', 'Test GrovePi!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 			ran_dialog = False
