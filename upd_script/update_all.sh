@@ -190,11 +190,13 @@ geany_setup(){
 
 autodetect_setup() {
   # copying the file where rc.local can get it and where it's visible
+  pushd $RASPBIAN_PATH > /dev/null
   sudo cp $RASPBIAN_PATH/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
   sudo python $RASPBIAN_PATH/autodetect_setup.py install
   sudo rm -r build
   sudo rm -r dist
   sudo rm -r Dexter_AutoDetection.egg-info/
+  popd > /dev/null
 }
 
 
@@ -302,7 +304,7 @@ sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
 feedback "--> Install Troubleshooting"
 feedback "--> ======================================="
 feedback " "
-sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_trouvleshooting_start.sh
+sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 
 
 

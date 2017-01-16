@@ -38,7 +38,7 @@ if [ ! -d $PIHOME/$DEXTER/lib ] ; then
 	mkdir $PIHOME/$DEXTER/lib
 fi
 if [ -d $PIHOME/$DEXTER/lib ] ; then
-	"Copying libraries into $PIHOME/$DEXTER/lib"
+	echo "Copying libraries into $PIHOME/$DEXTER/lib"
 	sudo cp -r $PIHOME/di_update/Raspbian_For_Robots/lib/* $PIHOME/$DEXTER/lib
 fi
 
