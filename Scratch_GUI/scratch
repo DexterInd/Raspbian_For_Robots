@@ -7,12 +7,13 @@
 
 ## Check if we're running Jessie or Wheezy.  Set Variables accordingly
 ## Get the Debian Version we have installed.
+
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 echo "Version: $VERSION"
 
-HOME=/home/pi
+PIHOME=/home/pi
 DEXTER=Dexter
-SCRATCH_PATH=$HOME/$DEXTER/lib/$DEXTER/Scratch_GUI
+SCRATCH_PATH=$PIHOME/$DEXTER/lib/$DEXTER/Scratch_GUI
 
 if [ $VERSION -eq '7' ]; then
 	echo "Version 7 found!  You have Wheezy!"
@@ -80,13 +81,13 @@ echo $VERSION
 export SQUEAK_FAKEBIGCURSOR=0
 
 # default directories (used if not running as Sugar activity)
-[ -z "$SQUEAK_SECUREDIR" ] && export SQUEAK_SECUREDIR="$HOME/.scratch/private"
-[ -z "$SQUEAK_USERDIR" ] && export SQUEAK_USERDIR="$HOME/Scratch"
+[ -z "$SQUEAK_SECUREDIR" ] && export SQUEAK_SECUREDIR="$PIHOME/.scratch/private"
+[ -z "$SQUEAK_USERDIR" ] && export SQUEAK_USERDIR="$PIHOME/Scratch"
 
 [ ! -d "$SQUEAK_SECUREDIR" ] && mkdir -p "$SQUEAK_SECUREDIR" && chmod 700 "$SQUEAK_SECUREDIR"
 [ ! -d "$SQUEAK_USERDIR" ] && mkdir -p "$SQUEAK_USERDIR"
 
-[ ! -d "$HOME/Documents" ] && mkdir -p "$HOME/Documents"
+[ ! -d "$PIHOME/Documents" ] && mkdir -p "$PIHOME/Documents"
 
 usage()
 {
@@ -162,16 +163,16 @@ sudo rm $SCRATCH_PATH/new.sb
 sudo cp $SCRATCH_PATH/new.sb.bkp $SCRATCH_PATH/new.sb
 
 ###
-sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+sudo rm $SCRATCH_PATH/open_scratch.tmp
 
 if [ -n "$DOCUMENT" ]; then
 	echo "Document found and called."
 	echo "$DOCUMENT"
-	sudo python $HOME/$DEXTER/Scratch_GUI/click_scratch.py
+	sudo python $SCRATCH_PATH/click_scratch.py
 else
 
-	DOCUMENT="$HOME/$DEXTER/Scratch_GUI/new.sb"
-	sudo python $HOME/$DEXTER/Scratch_GUI/click_scratch.py
+	DOCUMENT="$SCRATCH_PATH/new.sb"
+	sudo python $SCRATCH_PATH/click_scratch.py
 fi
 
 ## Now, if we are running Jessie, we need to move everything
@@ -182,28 +183,28 @@ echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
 	echo "Version 7 found!  You have Wheezy!"
 
-	if [ -f $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp ]; then
-		sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+	if [ -f $SCRATCH_PATH/open_scratch.tmp ]; then
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
 		echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
 		exec $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
 	else
-		sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
 	fi
-	sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+	sudo rm $SCRATCH_PATH/open_scratch.tmp
 
 elif [ $VERSION -eq '8' ]; then
   echo "Version 8 found!  You have Jessie!"
   # If we found Jesse,
 
 	
-	if [ -f $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp ]; then
-		sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+	if [ -f $SCRATCH_PATH/open_scratch.tmp ]; then
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
 		echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
 		exec $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
 	else
-		sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
 	fi
-	sudo rm $HOME/$DEXTER/Scratch_GUI/open_scratch.tmp
+	sudo rm $SCRATCH_PATH/open_scratch.tmp
 fi
 
 

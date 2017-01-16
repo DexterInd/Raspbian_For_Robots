@@ -11,9 +11,9 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 echo "Version: $VERSION"
 
 
-HOME=/home/pi
+PIHOME=/home/pi
 DEXTER=Dexter
-SCRATCH_PATH=$HOME/$DEXTER/lib/$DEXTER/Scratch_GUI
+SCRATCH_PATH=$PIHOME/$DEXTER/lib/$DEXTER/Scratch_GUI
 
 if [ $VERSION -eq '7' ]; then
 	echo "Version 7 found!  You have Wheezy!"

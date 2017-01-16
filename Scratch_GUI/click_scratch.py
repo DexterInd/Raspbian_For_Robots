@@ -8,6 +8,7 @@ from collections import Counter
 import threading
 import psutil
 import signal
+from auto_detect_robot import *
 
 #	This program runs when a Scratch program is clicked on the desktop.
 #	It should be called by a modified script in /usr/bin/scratch to start.
@@ -24,10 +25,10 @@ import signal
 # dfu-programmer:  	http://dfu-programmer.github.io/
 
 
-HOME="/home/pi"
+PIHOME="/home/pi"
 DEXTER="Dexter"
 SCRATCH="Scratch_GUI"
-SCRATCH_PATH = HOME+"/"+DEXTER+"/"+SCRATCH+"/"
+SCRATCH_PATH = PIHOME+"/"+DEXTER+"/lib/"+DEXTER+"/"+SCRATCH+"/"
 
 
 # Writes debug to file "error_log"
@@ -40,6 +41,11 @@ def write_debug(in_string):
 	error_file.close()
 
 def write_state(in_string):
+	if in_string == "BrickPi3":
+		in_string = "BrickPi"
+	elif in_string == "BrickPi+":
+		in_string = "BrickPi"
+
 	error_file = open('selected_state', 'w')		# File: selected state
 	error_file.write(in_string)
 	error_file.close()
@@ -92,6 +98,11 @@ def kill_all_open_processes():
 			kill_line = "sudo kill " + str(pid)
 			send_bash_command(kill_line)
 			
+		if 'BrickPi3Scratch' in line:
+			print line
+			pid = int(line.split(None, 2)[1])
+			kill_line = "sudo kill " + str(pid)
+			send_bash_command(kill_line)	
 		if 'BrickPiScratch' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
@@ -138,7 +149,7 @@ class MainPanel(wx.Panel):
 
 		# Select Platform.
 		
-		robotDrop = wx.ComboBox(self, -1, "GoPiGo", pos=(25, 25), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
+		robotDrop = wx.ComboBox(self, -1, read_state(), pos=(25, 25), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
 		wx.StaticText(self, -1, "Select a Robot:", (25, 5))					# (Minus 50, minus 0)
 		
@@ -199,7 +210,11 @@ class MainPanel(wx.Panel):
 		
 			folder = read_state()
 			if folder == 'BrickPi':
-				program = "/home/pi/Desktop/BrickPi_Scratch/BrickPiScratch.py"
+				if detected_robot == "BrickPi+":
+					program = "/home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/BrickPiScratch.py"
+				elif detected_robot == "BrickPi3":
+					program = "/home/pi/Dexter/BrickPi3/Software/Scratch/BrickPi3Scratch.py"
+
 			if folder == 'GoPiGo':
 				program = "/home/pi/Desktop/GoPiGo/Software/Scratch/GoPiGoScratch.py"
 			if folder == 'GrovePi':
@@ -224,7 +239,7 @@ class MainPanel(wx.Panel):
 
 		# Start Scratch
 		''' 
-		start_command = "scratch /home/pi/Desktop/GoBox/Scratch_GUI/new.sb"
+		start_command = "scratch /home/pi/Dexter/lib/Dexter/Scratch_GUI/new.sb"
 		send_bash_command_in_background(start_command)
 		dlg = wx.MessageDialog(self, 'Starting Scratch Programming!', 'Update', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
@@ -270,7 +285,17 @@ class Main(wx.App):
 if __name__ == "__main__":
 	send_bash_command_in_background("xhost +")
 	write_debug(" # Program # started # !")
-	write_state("GoPiGo")
+	#write_state("GoPiGo")
+
+	# autodetect robot and pick the first one
+	detected_robot = autodetect().split("_")[0]
+	print detected_robot
+	if detected_robot == "None":
+		write_state("GoPiGo")
+	if detected_robot == "BrickPi3" or detected_robot == "BrickPi+":
+		write_state("BrickPi")
+	else:
+		write_state(detected_robot)
 	kill_all_open_processes()  # Kills all open squeak, Scratch programs.
 
 	# reset_file()	#Reset the file every time we turn this program on.

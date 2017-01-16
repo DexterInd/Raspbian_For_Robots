@@ -17,11 +17,11 @@ from auto_detect_robot import *
 # ComboBoxes!  		http://wiki.wxpython.org/AnotherTutorial#wx.ComboBox
 # 
 
-HOME="/home/pi"
+PIHOME="/home/pi"
 DEXTER="Dexter"
 SCRATCH="Scratch_GUI"
 s = "/";
-seq = (HOME, DEXTER,"lib",DEXTER,SCRATCH) # This is sequence of strings.
+seq = (PIHOME, DEXTER,"lib",DEXTER,SCRATCH) # This is sequence of strings.
 SCRATCH_PATH = s.join( seq )+"/"
 
 # Writes debug to file "error_log"

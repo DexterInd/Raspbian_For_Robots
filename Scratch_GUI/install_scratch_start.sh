@@ -76,19 +76,19 @@ sudo chmod 666 $PIHOME/nohup.out
 
 # BrickPi+ link
 delete_folder /usr/share/scratch/Projects/BrickPi
-sudo ln -s -f "$PIHOME/Dexter/BrickPi+/Software/BrickPi_Scratch/Examples" "/usr/share/scratch/Projects/BrickPi+" > /dev/null
+sudo ln -s -f /home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi+ > /dev/null
 
 # BrickPi3 link
-sudo ln -s -f $PIHOME/Dexter/BrickPi3/Software/Scratch/Examples /usr/share/scratch/Projects/BrickPi3  > /dev/null
+sudo ln -s -f /home/pi/Dexter/BrickPi3/Software/Scratch/Examples /usr/share/scratch/Projects/BrickPi3  > /dev/null
 
 # GoPiGo link
-sudo ln -s -f $PIHOME/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo  > /dev/null
+sudo ln -s -f /home/pi/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo  > /dev/null
 
 # GrovePi Link
-sudo ln -s -f $PIHOME/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi  > /dev/null
+sudo ln -s -f /home/pi/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi > /dev/null
 
 # PivotPi Link
-sudo ln -s -f $PIHOME/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi  > /dev/null
+sudo ln -s -f /home/pi/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi  > /dev/null
 
 
 # Remove Scratch Shortcuts if they're there.
