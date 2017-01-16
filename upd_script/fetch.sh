@@ -56,7 +56,7 @@ BRANCH=update201612
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if you're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-source /home/pi/di_update/Raspbian_For_Robots/upd_script/functions_library.sh
+# source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
 robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
 if [ -f $robots_2_update ]  # if the file exists, read it and adjust according to its content
