@@ -178,7 +178,7 @@ if __name__ == '__main__':
 
     # adjust softlinks on desktop
     for detection in detectable_robots:
-        if detected_robot.find(detection)==0:
+        if detected_robot.find(detection)==0 or detected_robot.find("None")==0:
             add_symlink(detection)
         else:
             remove_symlink(detection)

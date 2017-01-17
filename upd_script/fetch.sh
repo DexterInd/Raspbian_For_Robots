@@ -29,6 +29,10 @@ set_softlink_for(){
         then
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
         fi   
+        if find_in_file "None" $PIHOME/$DEXTER/detected_robot.txt
+        then
+            sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+        fi   
     else
         sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
     fi
