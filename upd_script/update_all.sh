@@ -54,13 +54,16 @@ sudo ntpd -q -g
 if file_exists $DEXTER_PATH/Version 
 then
    sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
-   feedback "Version file not found, copying to ~/Dexter"
+   feedback "Copying Version file to ~/Dexter"
 else
-   feedback "Version file found, doing nothing!"
+   feedback "Version file exists, doing nothing!"
 fi
+
+sudo chmod ugo+w $DEXTER_PATH/Version
 
 echo "#############"  >>  $DEXTER_PATH/Version
 echo "Start: `date`"  >>  $DEXTER_PATH/Version
+
 }
 
 install_copypaste() {
