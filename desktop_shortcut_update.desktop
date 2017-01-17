@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Version=1.0
 Type=Application
-Exec=lxterminal  --title "Update in Progress - Do not close this window!" --command "gksu sh /home/pi/di_update/Raspbian_For_Robots/update_master.sh"
+Exec=lxterminal  --title "Update in Progress - Do not close this window!" --command "gksu bash /home/pi/di_update/Raspbian_For_Robots/update_master.sh"
 Icon=/home/pi/di_update/Raspbian_For_Robots/desktop/DXT_Icon_64x64_Update.png
 Terminal=false
 Name=DI Software Update
