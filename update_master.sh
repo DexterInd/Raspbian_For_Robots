@@ -76,8 +76,6 @@ sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/shutdown.desktop
 
 delete_file /home/pi/Desktop/dexterindustries.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/dexterindustries.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/dexterindustries.desktop
 
 delete_file /home/pi/Desktop/idle3.desktop
 delete_file /home/pi/Desktop/idle.desktop
