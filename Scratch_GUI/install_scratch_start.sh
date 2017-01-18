@@ -74,21 +74,30 @@ sudo chmod 666 $PIHOME/nohup.out
 
 # Add the soft links that allows users to reach the Dexter Ind Scratch examples from within the Scratch interface
 
+# Note: there was a weird issue with the softlinks being created 
+# where they were not supposed to be.
+# ensuring that there isn't a pre-existing softlink fixes this issue
+
 # BrickPi+ link
-delete_folder /usr/share/scratch/Projects/BrickPi
-sudo ln -s -f /home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi+ > /dev/null
+sudo rm  /usr/share/scratch/Projects/BrickPi 2> /dev/null
+sudo rm  /usr/share/scratch/Projects/BrickPi+ 2> /dev/null
+sudo ln -s /home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/Examples /usr/share/scratch/Projects/BrickPi+ 2> /dev/null
 
 # BrickPi3 link
-sudo ln -s -f /home/pi/Dexter/BrickPi3/Software/Scratch/Examples /usr/share/scratch/Projects/BrickPi3  > /dev/null
+sudo rm /usr/share/scratch/Projects/BrickPi3 2> /dev/null
+sudo ln -s /home/pi/Dexter/BrickPi3/Software/Scratch/Examples /usr/share/scratch/Projects/BrickPi3 2> /dev/null
 
 # GoPiGo link
-sudo ln -s -f /home/pi/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo  > /dev/null
+sudo rm  /usr/share/scratch/Projects/GoPiGo 2> /dev/null
+sudo ln -s /home/pi/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo  2> /dev/null
 
 # GrovePi Link
-sudo ln -s -f /home/pi/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi > /dev/null
+sudo rm /usr/share/scratch/Projects/GrovePi 2> /dev/null
+sudo ln -s /home/pi/Dexter/GrovePi/Software/Scratch/Grove_Examples /usr/share/scratch/Projects/GrovePi 2> /dev/null
 
 # PivotPi Link
-sudo ln -s -f /home/pi/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi  > /dev/null
+sudo rm  /usr/share/scratch/Projects/PivotPi 2> /dev/null
+sudo ln -s /home/pi/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/Projects/PivotPi 2> /dev/null 
 
 
 # Remove Scratch Shortcuts if they're there.

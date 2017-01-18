@@ -54,13 +54,16 @@ sudo ntpd -q -g
 if file_exists $DEXTER_PATH/Version 
 then
    sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
-   feedback "Version file not found, copying to ~/Dexter"
+   feedback "Copying Version file to ~/Dexter"
 else
-   feedback "Version file found, doing nothing!"
+   feedback "Version file exists, doing nothing!"
 fi
+
+sudo chmod ugo+w $DEXTER_PATH/Version
 
 echo "#############"  >>  $DEXTER_PATH/Version
 echo "Start: `date`"  >>  $DEXTER_PATH/Version
+
 }
 
 install_copypaste() {
@@ -366,58 +369,70 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
+
+# if noVNC is enabled already, just do nothing and skip this
+test_for_novnc=$(sudo systemctl status novnc.service | grep "enabled" )
+
 feedback "--> Set up noVNC"
 feedback "--> ======================================="
 feedback " "
-cd /usr/local/share/
-feedback "--> Clone noVNC."
-sudo git clone git://github.com/DexterInd/noVNC
-cd noVNC
-sudo git pull
-sudo cp vnc_auto.html index.html
+if  [ -z "$test_for_novnc" ]
+then 
 
 
-# VNC Start on boot
-# reading VERSION again, in case lines get moved, or deleted above.
-# better safe
-VERSION=$(sed 's/\..*//' /etc/debian_version)
-# echo "Version: $VERSION"
-# setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
-# Wheezy 
-if [ $VERSION -eq '7' ]; then
-  feedback "Version 7 found!  You have Wheezy!"
-  cd /etc/init.d/
-  sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
-  sudo chmod 755 vncboot
-  sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
-  sudo chmod 755 vncproxy 
-  # why default 98? I can't find what it's supposed to do - NP
-  sudo update-rc.d vncproxy defaults 98
-  sudo update-rc.d vncproxy defaults
-  sudo update-rc.d vncproxy enable
-  sudo update-rc.d vncboot defaults
-  sudo update-rc.d vncboot enable
-  cd /usr/local/share/noVNC/utils
-  sudo ./launch.sh --vnc localhost:5900 &
+  cd /usr/local/share/
+  feedback "--> Clone noVNC."
+  sudo git clone git://github.com/DexterInd/noVNC
+  cd noVNC
+  sudo git pull
+  sudo cp vnc_auto.html index.html
 
-#jessie
-elif [ $VERSION -eq '8' ]; then
-  feedback "Version 8 found!  You have Jessie!"
-  pushd /home/pi
 
-  # if we have a local copy of novnc.service, get rid of it before downloading a new one
-  if [ -e /home/pi/novnc.service ]
-  then
-    sudo rm novnc.service
-    feedback "removing local copy of novnc.service"
+  # VNC Start on boot
+  # reading VERSION again, in case lines get moved, or deleted above.
+  # better safe
+  VERSION=$(sed 's/\..*//' /etc/debian_version)
+  # echo "Version: $VERSION"
+  # setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
+  # Wheezy 
+  if [ $VERSION -eq '7' ]; then
+    feedback "Version 7 found!  You have Wheezy!"
+    cd /etc/init.d/
+    sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
+    sudo chmod 755 vncboot
+    sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
+    sudo chmod 755 vncproxy 
+    # why default 98? I can't find what it's supposed to do - NP
+    sudo update-rc.d vncproxy defaults 98
+    sudo update-rc.d vncproxy defaults
+    sudo update-rc.d vncproxy enable
+    sudo update-rc.d vncboot defaults
+    sudo update-rc.d vncboot enable
+    cd /usr/local/share/noVNC/utils
+    sudo ./launch.sh --vnc localhost:5900 &
+
+  #jessie
+  elif [ $VERSION -eq '8' ]; then
+    feedback "Version 8 found!  You have Jessie!"
+    pushd /home/pi
+
+    # if we have a local copy of novnc.service, get rid of it before downloading a new one
+    if [ -e /home/pi/novnc.service ]
+    then
+      sudo rm novnc.service
+      feedback "removing local copy of novnc.service"
+    fi
+   
+  	  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
+  	  sudo mv novnc.service /etc/systemd/system/novnc.service
+  	  sudo systemctl daemon-reload
+  	  sudo systemctl enable novnc.service
+  	  sudo systemctl start novnc.service
+
   fi
-
-  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
-  sudo mv novnc.service /etc/systemd/system/novnc.service
-  sudo systemctl daemon-reload
-  sudo systemctl enable novnc.service
-  sudo systemctl start novnc.service
   popd
+else
+  feedback "noVNC already set up - skipping"
 fi
 
 # Change permissions so you can execute from the desktop
