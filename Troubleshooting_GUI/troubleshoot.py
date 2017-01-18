@@ -41,7 +41,15 @@ class MainPanel(wx.Panel):
 		self.SetBackgroundColour(wx.WHITE)
 		self.frame = parent
 		
+		# detect what's currently on
 		needed_robots=autodetect() 
+		# if you can't find a single robot 
+		# then show all of them just in case
+		if needed_robots.find("GoPiGo") == -1 and \
+		   needed_robots.find("GrovePi") == -1 and \
+		   needed_robots.find("BrickPi3") == -1:
+		   needed_robots = "GoPiGo_GrovePi_BrickPi3"
+
 		vSizer = wx.BoxSizer(wx.VERTICAL)
 				
 		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False, 
@@ -56,56 +64,58 @@ class MainPanel(wx.Panel):
 			type=wx.BITMAP_TYPE_PNG)	# Draw the photograph.
 		bitmap=wx.StaticBitmap(self,bitmap=bmp)
 		bmpW,bmpH = bitmap.GetSize()
-		icon_sizer.AddSpacer((50,bmpH))
-		icon_sizer.Add(bitmap,1)
-		icon_sizer.AddSpacer((50,bmpH))
+		icon_sizer.Add(bitmap,0,wx.RIGHT|wx.LEFT|wx.EXPAND,50)
 
 		# Troubleshoot the GoPiGo
-		if needed_robots.find("GoPiGo")==0:
+		if needed_robots.find("GoPiGo")!=-1:
 			gopigo_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_gopigo = wx.Button(self, label="Troubleshoot GoPiGo")
 			troubleshoot_gopigo.Bind(wx.EVT_BUTTON, self.troubleshoot_gopigo)
 			gopigo_txt=wx.StaticText(self, -1, "This button runs a series of tests on the GoPiGo Hardware.")
+			gopigo_txt.Wrap(150)
 			gopigo_sizer.AddSpacer(50)
-			gopigo_sizer.Add(troubleshoot_gopigo,1)
+			gopigo_sizer.Add(troubleshoot_gopigo,1,wx.EXPAND)
 			gopigo_sizer.AddSpacer(20)
-			gopigo_sizer.Add(gopigo_txt,1,wx.EXPAND)
+			gopigo_sizer.Add(gopigo_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			gopigo_sizer.AddSpacer(50)
 		
-		if needed_robots.find("GrovePi")==0:
+		if needed_robots.find("GrovePi")!=-1:
 			# Troubleshoot the GrovePi
 			grovepi_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_grovepi = wx.Button(self, label="Troubleshoot GrovePi")
 			troubleshoot_grovepi.Bind(wx.EVT_BUTTON, self.grovepi)			
 			grovepi_txt=wx.StaticText(self, -1, "This button runs a series of tests on the GrovePi Hardware.")
+			grovepi_txt.Wrap(150)
 			grovepi_sizer.AddSpacer(50)
-			grovepi_sizer.Add(troubleshoot_grovepi,1)
+			grovepi_sizer.Add(troubleshoot_grovepi,1,wx.EXPAND|wx.LEFT|wx.RIGHT,10)
 			grovepi_sizer.AddSpacer(20)
-			grovepi_sizer.Add(grovepi_txt,1,wx.EXPAND)
+			grovepi_sizer.Add(grovepi_txt,1)
 			grovepi_sizer.AddSpacer(50)
 
 		#Troubleshoot the BrickPi3
-		if needed_robots.find("BrickPi3")==0:
+		if needed_robots.find("BrickPi3")!=-1:
 			brickpi3_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_brickpi3 = wx.Button(self, label="Troubleshoot BrickPi3")
 			troubleshoot_brickpi3.Bind(wx.EVT_BUTTON, self.brickpi3)			
 			brickpi3_txt=wx.StaticText(self, -1, "This button runs a series of tests on the BrickPi3 Hardware.")
+			brickpi3_txt.Wrap(150)
 			brickpi3_sizer.AddSpacer(50)
-			brickpi3_sizer.Add(troubleshoot_brickpi3,1)
+			brickpi3_sizer.Add(troubleshoot_brickpi3,1,wx.EXPAND)
 			brickpi3_sizer.AddSpacer(20)
-			brickpi3_sizer.Add(brickpi3_txt,1,wx.EXPAND)
+			brickpi3_sizer.Add(brickpi3_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			brickpi3_sizer.AddSpacer(50)
 		
 		# Demo the GoPiGo
-		if needed_robots.find("GoPiGo")==0:
+		if needed_robots.find("GoPiGo") != -1:
 			demo_sizer=wx.BoxSizer(wx.HORIZONTAL)
 			demo_gopigo = wx.Button(self, label="Demo GoPiGo")
 			demo_gopigo.Bind(wx.EVT_BUTTON, self.demo_gopigo)
 			demo_gopigo_txt=wx.StaticText(self, -1, "This button demonstrates the GoPiGo Hardware.")
+			demo_gopigo_txt.Wrap(150)
 			demo_sizer.AddSpacer(50)
-			demo_sizer.Add(demo_gopigo,1)
+			demo_sizer.Add(demo_gopigo,1,wx.EXPAND)
 			demo_sizer.AddSpacer(20)
-			demo_sizer.Add(demo_gopigo_txt,1,wx.EXPAND)
+			demo_sizer.Add(demo_gopigo_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			demo_sizer.AddSpacer(50)
 
 		# Exit
@@ -122,22 +132,27 @@ class MainPanel(wx.Panel):
 		caution_sizer.Add(caution_txt,1,wx.EXPAND)		
 		caution_sizer.AddSpacer(50)
 
-		vSizer.Add(icon_sizer,1)
-		if needed_robots.find("GoPiGo")==0:
-			vSizer.Add(gopigo_sizer,0,wx.EXPAND)	
-		if needed_robots.find("GrovePi")==0:	
-			vSizer.Add(grovepi_sizer,0,wx.EXPAND)
-		if needed_robots.find("BrickPi3")==0:
-			vSizer.Add(brickpi3_sizer,0,wx.EXPAND)	
-		if needed_robots.find("GoPiGo")==0:
-			vSizer.Add(demo_sizer,0,wx.EXPAND)
-		vSizer.AddSpacer(20)
-		vSizer.Add(exit_sizer,0,wx.EXPAND)
-		vSizer.AddSpacer(20)
-		vSizer.Add(caution_sizer,0,wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)		
+		vSizer.Add(icon_sizer,0,wx.SHAPED|wx.FIXED_MINSIZE)
+		if needed_robots.find("GoPiGo") != -1:
+			vSizer.Add(gopigo_sizer,1,wx.EXPAND)	
+			vSizer.AddSpacer(20)
+		if needed_robots.find("GrovePi") != -1:	
+			vSizer.Add(grovepi_sizer,1,wx.EXPAND)
+			vSizer.AddSpacer(20)
+		if needed_robots.find("BrickPi3") != -1:
+			vSizer.Add(brickpi3_sizer,1,wx.EXPAND)	
+			vSizer.AddSpacer(20)
+		if needed_robots.find("GoPiGo") != -1:
+			vSizer.Add(demo_sizer,1,wx.EXPAND)
+			vSizer.AddSpacer(20)
 
-		self.SetSizer(vSizer)
-		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
+
+		vSizer.Add(exit_sizer,1,wx.EXPAND)
+		vSizer.AddSpacer(20)
+		vSizer.Add(caution_sizer,1,wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)		
+
+		self.SetSizerAndFit(vSizer)
+		# self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
  
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
@@ -259,12 +274,12 @@ class MainFrame(wx.Frame):
 		wx.Log.SetVerbose(False)
 
 		# Set the frame arguments
-		wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware",size=(500,400))		
-
+		# wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware",size=(500,500))		
+		wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware")		
 		self.panel = MainPanel(self)  
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		sizer.Add(self.panel,1,wx.EXPAND)
-		self.SetSizer(sizer)
+		self.SetSizerAndFit(sizer)
 		self.Center()
 		
 ########################################################################
