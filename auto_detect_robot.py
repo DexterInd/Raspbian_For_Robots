@@ -71,7 +71,15 @@ def find_grovepi():
     for add in grovepi_address:
         try:
             test_grovepi = bus.read_byte(add)
-            grovepi_found = True
+
+
+            # if we have found a GoPiGo so far, and we're finding something at address 0x06
+            # then assume it's a line follower and not a GrovePi
+
+            if detected_robot.find("GoPiGo") != -1 and add == 0x06:
+                grovepi_found = False
+            else:
+                grovepi_found = True
         except:
             pass
     return grovepi_found
