@@ -14,7 +14,7 @@ except:
 	pass
 
 robots = {}
-robots_names = ["GoPiGo","GrovePi","BrickPi","Arduberry","PivotPi"]
+robots_names = ["GoPiGo","GrovePi","BrickPi3"]  # no longer used
 
 
 #	This program runs various update programs for Raspbian for Robots, from Dexter Industries.
@@ -58,6 +58,8 @@ def detect():
 			write_state("BrickPi3")
 		elif detected_robots.find("GrovePi")==0:
 			write_state("GrovePi")
+		else:
+			write_state('dex')
 	except:
 			write_state("dex")
 
