@@ -5,11 +5,15 @@ import time     # import the time library for the sleep function
 from smbus import SMBus
 import os
 import serial
-from BrickPi import *
+
 
 bus = SMBus(1)
 detected_robot = "None"
 detectable_robots = ["GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
+
+def debug_print(in_str):
+    if False:  # change to False to get all prints to shut up
+        print(in_str)
 
 
 def find_pivotpi():
@@ -18,6 +22,7 @@ def find_pivotpi():
     Checks all four possible addresses
     Returns True or False
     '''
+    debug_print("Detecting PivotPi")
     pivotpi_found = False
     try:
         import pivotpi
@@ -41,6 +46,7 @@ def find_gopigo():
     boolean function that detects the presence of a GoPiGo
     returns True or False
     '''
+    debug_print("Detecting GoPiGo")
     gopigo_address = 0x08
     try:
         test_gopigo = bus.read_byte(gopigo_address)
@@ -55,6 +61,7 @@ def find_grovepi():
     ONLY HANDLES DEFAULT GrovePi ADDRESS
     returns True or False
     '''
+    debug_print("Detecting GrovePi")
     grovepi_address = [0x04,
                        0x03,
                        0x05,
@@ -76,14 +83,19 @@ def find_brickpi():
     returns True or False
     using try/except in case the BrickPi library is not found. Return False
     '''
+    debug_print("Detecting BrickPi+")
     try:
-        import BrickPi
-        BrickPi.BrickPiSetup()
-        #if BrickPiSetupSensors() == 0: # really slow
-        if BrickPi.BrickPiUpdateValues() == 0:
-            return True
-        else:
+        import ir_receiver_check
+        if ir_receiver_check.check_ir():
             return False
+        else:
+            import BrickPi
+            BrickPi.BrickPiSetup()
+            #if BrickPiSetupSensors() == 0: # really slow
+            if BrickPi.BrickPiUpdateValues() == 0:
+                return True
+            else:
+                return False
     except:
         return False
 
@@ -93,6 +105,7 @@ def find_brickpi3():
     boolean function that detects the presence of a BrickPi3
     returns True or False
     '''
+    debug_print("Detecting BrickPi3")
     try:
         import brickpi3
         BP3 = brickpi3.BrickPi3()
@@ -110,6 +123,7 @@ def add_robot(in_robot):
     '''
     global detected_robot
 
+    debug_print("Found {}".format(in_robot))
     if detected_robot != "None":
         detected_robot += "_"
     else:
@@ -134,6 +148,7 @@ def autodetect():
     BrickPi3
     BrickPi3_PivotPi
     '''
+    debug_print ("autodetect ")
     global detected_robot
     detected_robot = "None"
 
@@ -156,14 +171,19 @@ def autodetect():
 
     return detected_robot
 
+
 def add_symlink(src):
     if src in detectable_robots: # sanity check
         if not os.path.islink('/home/pi/Desktop/'+src):
             os.symlink("/home/pi/Dexter/"+src, "/home/pi/Desktop/"+src)
 
+
 def remove_symlink(src):
     if os.path.islink('/home/pi/Desktop/'+src):
         os.unlink('/home/pi/Desktop/'+src)
+
+##########################################################################
+##########################################################################
 
 if __name__ == '__main__':
     detected_robot = autodetect()
