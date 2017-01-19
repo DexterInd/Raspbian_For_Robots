@@ -182,13 +182,19 @@ def autodetect():
 
 def add_symlink(src):
     if src in detectable_robots: # sanity check
-        if not os.path.islink('/home/pi/Desktop/'+src):
-            os.symlink("/home/pi/Dexter/"+src, "/home/pi/Desktop/"+src)
+        try:
+            if not os.path.islink("/home/pi/Desktop/"+src):
+                os.symlink("/home/pi/Dexter/"+src, "/home/pi/Desktop/"+src)
+        except:
+            pass
 
 
 def remove_symlink(src):
-    if os.path.islink('/home/pi/Desktop/'+src):
-        os.unlink('/home/pi/Desktop/'+src)
+    try:
+        if os.path.islink('/home/pi/Desktop/'+src):
+            os.unlink('/home/pi/Desktop/'+src)
+    except:
+        pass
 
 ##########################################################################
 ##########################################################################
