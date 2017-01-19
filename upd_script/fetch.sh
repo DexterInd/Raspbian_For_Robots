@@ -54,7 +54,7 @@ set_all_softlinks(){
 ## Staging Code.
 ## Change this code to operate out of a particular branch of code.
 ## Uncomment this and add a branch name to work from a particular branch.
-BRANCH=update201612
+# BRANCH=update201612
 
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
