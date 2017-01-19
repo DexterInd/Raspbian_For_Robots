@@ -108,6 +108,12 @@ def kill_all_open_processes():
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
 			send_bash_command(kill_line)	
+
+		if 'BrickPi3Scratch' in line:
+			print line
+			pid = int(line.split(None, 2)[1])
+			kill_line = "sudo kill " + str(pid)
+			send_bash_command(kill_line)	
 			
 		if 'PivotPi' in line:
 			print line
@@ -268,7 +274,7 @@ class MainPanel(wx.Panel):
 
 		user_selection = read_state()
 		if user_selection.find('BrickPi') >= 0:
-			if autodetect().find("BrickPi3"):
+			if autodetect().find("BrickPi3") > -1:
 				program = "/home/pi/Dexter/BrickPi3/Software/Scratch/BrickPi3Scratch.py"
 			else: #BrickPi+, Kickstarter and Advanced, 
 				program = "/home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/BrickPiScratch.py"
