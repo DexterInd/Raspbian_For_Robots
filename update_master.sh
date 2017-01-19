@@ -19,7 +19,17 @@ else
 	sleep 10
 	exit 0
 fi
+curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 
+PIHOME=/home/pi
+DEXTER=Dexter
+DEXTER_PATH=$PIHOME/$DEXTER
+DEXTER_LIB=lib
+DEXTER_LIB_PATH=$DEXTER_PATH/$DEXTER_LIB
+DEXTER_SCRIPT_TOOLS=$DEXTER/script_tools
+DEXTER_SCRIPT_TOOLS_PATH=$DEXTER_LIB_PATH/$DEXTER_SCRIPT_TOOLS
+
+source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 ##############################################################################################################
 # 1.    Update the Source Files.  Pull the Raspbian for robots Github repo and put it in a subdirectory of pi.
 #		Get the latest update information.
@@ -57,29 +67,27 @@ echo "=============================="
 # Update the Desktop Shortcut for Software Update
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.sh
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
-sudo rm /home/pi/Desktop/desktop_shortcut_update.desktop
+delete_file /home/pi/Desktop/desktop_shortcut_update.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
 
-sudo rm /home/pi/Desktop/shutdown.desktop
+delete_file /home/pi/Desktop/shutdown.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/shutdown.desktop
 
-sudo rm /home/pi/Desktop/dexterindustries.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/dexterindustries.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/dexterindustries.desktop
+delete_file /home/pi/Desktop/dexterindustries.desktop
 
-sudo rm /home/pi/Desktop/idle3.desktop
-sudo rm /home/pi/Desktop/idle.desktop
-sudo rm /home/pi/Desktop/gksu.desktop
+delete_file /home/pi/Desktop/idle3.desktop
+delete_file /home/pi/Desktop/idle.desktop
+delete_file /home/pi/Desktop/gksu.desktop
 
 # Rename the wifi control.  Change the icon.
-sudo rm /home/pi/Desktop/wpa_gui.desktop
+delete_file /home/pi/Desktop/wpa_gui.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/wpa_gui.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/wpa_gui.desktop
 
 # Update the Backup
-sudo rm /home/pi/Desktop/backup.desktop
+delete_file /home/pi/Desktop/backup.desktop
 sudo cp /home/pi/di_update/Raspbian_For_Robots/backup/backup.desktop /home/pi/Desktop
 sudo chmod +x /home/pi/Desktop/backup.desktop
 
@@ -111,7 +119,7 @@ echo "=============================="
 today=`date '+%Y_%m_%d__%H_%M_%S'`;
 filename="/home/pi/Desktop/Dexter_Software_Update_log_$today.txt" 
 script -c 'sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py 2>&1' -f $filename
-sudo rm /home/pi/index.html*
+delete_file /home/pi/index.html*
 
 ###
 # Old Code John's holding onto as backup.

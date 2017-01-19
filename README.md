@@ -38,6 +38,8 @@ Place the microSD card in the SD card adapter, and place in your PC or Mac.  Ope
 
 The following ports are used or have the potential for being used:
 
+22: SSH/SFTP
+
 80: http://dex.local
 
 5901: noVNC service
