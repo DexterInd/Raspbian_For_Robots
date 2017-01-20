@@ -66,10 +66,6 @@ iptables-save > /etc/iptables.ipv4.cinch.nat
 # This creates a file "cinch" in the home directory.
 echo "1" > /home/pi/cinch
 
-# Redirect all URLs to 10.10.10.10
-sudo sed -i '/listen-address/s/^#//' /etc/dnsmasq.d/cinch.conf
-sudo sed -i '/address=\/#/s/^#//' /etc/dnsmasq.d/cinch.conf
-
 # Restart IP Tables
 /etc/init.d/networking restart
 

@@ -572,9 +572,6 @@ fi
 if [ ! -f /home/pi/cinch ]; then
     echo "No Cinch Found."
 else
-    feedback "Uncommented lines to redirect URLs to dex.local"
-    sudo sed -i '/listen-address/s/^#//' /etc/dnsmasq.d/cinch.conf
-    sudo sed -i '/address=\/#/s/^#//' /etc/dnsmasq.d/cinch.conf 
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
