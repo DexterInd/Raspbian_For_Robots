@@ -128,6 +128,8 @@ def add_robot(in_robot):
     '''
     Add detected robot into a concatenated string,
     all robots are separated by a _
+    Do not change the _ to another character as many places 
+    in the robot code depend on it
     '''
     global detected_robot
 
