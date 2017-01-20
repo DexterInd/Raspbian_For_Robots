@@ -8,14 +8,7 @@
 echo " "
 echo "Check for internet connectivity..."
 echo "=================================="
-# Check for Cinch and disable redirection of URLs to 10.10.10.10 for internet access
-if [ ! -f /home/pi/cinch ]; then
-    echo "No Cinch Found."
-else
-    sudo sed -i '/listen-address/s/^/#/' /etc/dnsmasq.d/cinch.conf
-    sudo sed -i '/address=\/#/s/^/#/' /etc/dnsmasq.d/cinch.conf
-    sudo /etc/init.d/dnsmasq restart
-fi
+
 wget -q --tries=2 --timeout=100 --output-document=/dev/null http://raspberrypi.org
 if [ $? -eq 0 ];then
 	echo "Connected.  Do not close this window!"
