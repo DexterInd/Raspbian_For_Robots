@@ -120,4 +120,7 @@ sudo chmod +x /usr/bin/scratch
 # sudo chmod +x $PIHOME/$DEXTER/Scratch_GUI/scratch_launch
 sudo chmod +x $SCRATCH_PATH/scratch_direct
 
+# remove annoying dialog that says remote sensors are enabled
+echo "remoteconnectiondialog = 0" > /home/pi/.scratch.ini
+
 popd > /dev/null

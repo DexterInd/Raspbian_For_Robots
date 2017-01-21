@@ -37,10 +37,14 @@ def write_debug(in_string):
 		print " "
 
 def write_state(in_string):
-	if in_string == "BrickPi+" or in_string == "BrickPi3":
-		in_string = "BrickPi"
+	# in case of multiple robot detection (ie BrickPi3 & PivotPi)
+	# only take the first robot
+	robot = in_string.split("_")[0]
+	if robot.find("BrickPi+") > -1 or robot.find("BrickPi3") > -1:
+		robot = "BrickPi"
+
 	error_file = open(SCRATCH_PATH+'selected_state', 'w')		# File: selected state
-	error_file.write(in_string)
+	error_file.write(robot)
 	error_file.close()
 
 def read_state():
