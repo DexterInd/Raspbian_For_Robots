@@ -28,10 +28,11 @@ echo "Current hostname: $THISHOST"
 # Leaving this out for now: https://github.com/DexterInd/Raspbian_For_Robots/issues/66
 # # Cinch Hostname change.  Check for hostapd, if it's present, we are running Cinch.
 # # If we have Cinch, change the value of the WPA name to the value of hostname.
+
 # # To change the Wifi access point name if hostname is changed using GUI
-#if [[ -f /etc/hostapd/hostapd.conf ]] ; then
-#  sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
-#fi
+if [[ -f /etc/hostapd/hostapd.conf ]] ; then
+  sudo sed -i '/^ssid=/s/ssid=.*/ssid='$THISHOST'/g' /etc/hostapd/hostapd.conf
+fi
 
 # Now run the code in rc.local that updates the hostname. 
 
