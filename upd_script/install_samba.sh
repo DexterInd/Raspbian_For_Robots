@@ -4,6 +4,9 @@
 # Reference: http://www.raspians.com/Knowledgebase/how-to-nas-with-samba-and-window/
 #
 
+## NOTE: THIS IS NO LONGER UP TO DATE
+## NEW VERSION OF SAMBA IS DIFFERENT
+
 sudo DEBIAN_FRONTEND=noninteractive apt-get install samba samba-common-bin -y
 echo "Modify Samba configuration."
 # Modify samba configuration
