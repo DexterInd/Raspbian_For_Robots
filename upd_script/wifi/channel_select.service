@@ -1,0 +1,10 @@
+ [Unit]
+ Description=Channel Select
+ After=graphical.target multi-user.target network.target network-online.target
+
+ [Service]
+ Type=idle
+ ExecStart=/usr/bin/python /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_channel_select.py 
+
+ [Install]
+ WantedBy=multi-user.target
