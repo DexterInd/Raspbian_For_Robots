@@ -76,3 +76,9 @@ systemctl start hostapd.service
 # Setup to Start at Boot
 systemctl enable hostapd.service
 systemctl enable dnsmasq.service
+
+# Enable Sam wifi channel select on device boot
+sudo cp $SCRIPTDIR/channel_select.service /etc/systemd/system/
+sudo chmod 755 /etc/systemd/system/channel_select.service
+sudo systemctl daemon-reload
+sudo systemctl enable channel_select.service 
