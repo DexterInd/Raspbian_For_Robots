@@ -4,10 +4,21 @@
 auto lo
 iface lo inet loopback
 
-auto eth0
+# auto eth0 waits for Ethernet device for more than 2 minutes.
+# Ref: http://raspberrypi.stackexchange.com/questions/45399/slow-boot-ethernet-wait
+# auto eth0
+
+# Ref for allow-hotplug:http://unix.stackexchange.com/questions/192671/what-is-a-hotplug-event-from-the-interface,
+# https://lists.debian.org/debian-doc/2008/02/msg00010.html,
+# https://www.debian.org/doc/manuals/debian-reference/ch05.en.html
 allow-hotplug eth0
+
 # iface eth0 inet dhcp
 iface eth0 inet dhcp
+
+# Ref: http://blog.embeddedcoding.com/2015/06/how-to-avoid-dhcp-delay-if-ethernet-is.html
+# You can reduce boot delay by 10 secs by uncommenting the below line and commenting dhcp which allots Dynamic IP address to eth0.
+#iface eth0 inet manual
 
 auto wlan0
 allow-hotplug wlan0
