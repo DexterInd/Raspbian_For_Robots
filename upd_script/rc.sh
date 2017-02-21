@@ -96,7 +96,6 @@ if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the Firs
         sudo sh -c "echo $IP >> /etc/hosts"
 
         echo "Delete hostname."
- 
         sudo echo $NEW_HOST > /etc/hostname
         echo "New hostname file created."
         
@@ -108,9 +107,7 @@ if [ "$NEW_HOST" != "$THISHOST" ];  # If the hostname isn't the same as the Firs
         # CINCH: if hostapd exists, ensure that the SSID matches the hostname
         if [[ -f /etc/hostapd/hostapd.conf ]] ; then
 
-            sudo /etc/init.d/hostapd stop
 			sudo sed -i '/^ssid=/s/ssid=.*/ssid='$NEW_HOST'/g' /etc/hostapd/hostapd.conf
-            sudo /etc/init.d/hostapd start
         fi    
         # sudo reboot
     else 
