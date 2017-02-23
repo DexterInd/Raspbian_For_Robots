@@ -1,0 +1,356 @@
+*************************************************************************************************************************************************
+########## wireless info START ##########
+
+Report from: 23 Jan 2017 06:52 UTC +0000
+
+Booted last: 01 Jan 1970 00:00 UTC +0000
+
+Script from: 08 Jul 2016 02:16 UTC +0000
+
+##### release ###########################
+
+Distributor ID:	Raspbian
+Description:	Raspbian GNU/Linux 8.0 (jessie)
+Release:	8.0
+Codename:	jessie
+
+##### kernel ############################
+
+Linux 4.4.38-v7+ #938 SMP Thu Dec 15 15:22:21 GMT 2016 armv7l unknown unknown GNU/Linux
+
+8250.nr_uarts=1, dma.dmachans=0x7f35, bcm2708_fb.fbwidth=656, bcm2708_fb.fbheight=416, bcm2709.boardrev=0xa22082, bcm2709.serial=0x6cb9ba9a, smsc95xx.macaddr=<MAC 'eth0' [IF1]>, bcm2708_fb.fbswap=1, bcm2709.uart_clock=32000000, vc_mem.mem_base=0x3dc00000, vc_mem.mem_size=0x3f000000, dwc_otg.lpm_enable=0, rootfstype=ext4, elevator=deadline, fsck.repair=yes, rootwait
+
+##### lsusb #############################
+
+Bus 001 Device 004: ID 0bda:8176 Realtek Semiconductor Corp. RTL8188CUS 802.11n WLAN Adapter
+Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp. SMSC9512/9514 Fast Ethernet Adapter
+Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. 
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+##### lsmod #############################
+
+8192cu                560049  0 
+cfg80211              428431  1 8192cu
+rfkill                 16037  3 cfg80211,bluetooth
+
+##### interfaces ########################
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+auto wlan0
+allow-hotplug wlan0
+
+iface wlan0 inet static
+address 10.10.10.10
+netmask 255.255.255.0
+
+up iptables-restore < /etc/iptables.ipv4.cinch.nat
+
+##### ifconfig ##########################
+
+eth0      Link encap:Ethernet  HWaddr <MAC 'eth0' [IF1]>  
+          inet6 addr: fe80::<IP6 'eth0' [IF1]>/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:544 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:720 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:50664 (49.4 KiB)  TX bytes:204213 (199.4 KiB)
+
+eth0:avahi Link encap:Ethernet  HWaddr <MAC 'eth0' [IF1]>  
+          inet addr:169.254.11.19  Bcast:169.254.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+
+wlan0     Link encap:Ethernet  HWaddr <MAC 'wlan0' [IF3]>  
+          inet addr:10.10.10.10  Bcast:10.10.10.255  Mask:255.255.255.0
+          inet6 addr: fe80::f76a:c399:6529:4b70/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:164 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:57 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:10388 (10.1 KiB)
+
+##### iwconfig ##########################
+
+lo        no wireless extensions.
+
+eth0      no wireless extensions.
+
+wlan0     IEEE 802.11bgn  ESSID:"dex"  Nickname:"<WIFI@REALTEK>"
+          Mode:Master  Frequency:2.437 GHz  Access Point: <MAC 'wlan0' [IF3]>   
+          Sensitivity:0/0  
+          Retry:off   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality:0  Signal level:0  Noise level:0
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+##### route #############################
+
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         0.0.0.0         0.0.0.0         U     1002   0        0 eth0
+10.10.10.0      0.0.0.0         255.255.255.0   U     0      0        0 wlan0
+169.254.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth0
+169.254.0.0     0.0.0.0         255.255.0.0     U     303    0        0 wlan0
+
+##### resolv.conf #######################
+
+nameserver 127.0.0.1
+
+##### iw reg get ########################
+
+Region: Etc/UTC (based on set time zone)
+
+country 00: DFS-UNSET
+	(2402 - 2472 @ 40), (N/A, 20), (N/A)
+	(2457 - 2482 @ 40), (N/A, 20), (N/A), NO-IR
+	(2474 - 2494 @ 20), (N/A, 20), (N/A), NO-OFDM, NO-IR
+	(5170 - 5250 @ 80), (N/A, 20), (N/A), NO-IR
+	(5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, NO-IR
+	(5490 - 5730 @ 160), (N/A, 20), (0 ms), DFS, NO-IR
+	(5735 - 5835 @ 80), (N/A, 20), (N/A), NO-IR
+	(57240 - 63720 @ 2160), (N/A, 0), (N/A)
+
+##### iwlist channels ###################
+
+lo        no frequency information.
+
+eth0      no frequency information.
+
+wlan0     14 channels in total; available frequencies :
+          Channel 01 : 2.412 GHz
+          Channel 02 : 2.417 GHz
+          Channel 03 : 2.422 GHz
+          Channel 04 : 2.427 GHz
+          Channel 05 : 2.432 GHz
+          Channel 06 : 2.437 GHz
+          Channel 07 : 2.442 GHz
+          Channel 08 : 2.447 GHz
+          Channel 09 : 2.452 GHz
+          Channel 10 : 2.457 GHz
+          Channel 11 : 2.462 GHz
+          Channel 12 : 2.467 GHz
+          Channel 13 : 2.472 GHz
+          Channel 14 : 2.484 GHz
+          Current Frequency:2.437 GHz (Channel 6)
+
+##### iwlist scan #######################
+
+lo        Interface doesn't support scanning.
+
+eth0      Interface doesn't support scanning.
+
+Channel occupancy:
+
+      1   APs on   Frequency:2.417 GHz (Channel 2)
+      1   APs on   Frequency:2.437 GHz (Channel 6)
+
+wlan0     Scan completed :
+          Cell 01 - Address: <MAC 'kamal' [AC1]>
+                    ESSID:"kamal"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.417 GHz (Channel 2)
+                    Encryption key:on
+                    Bit Rates:300 Mb/s
+                    Extra:wpa_ie=dd160050f20101000050f20201000050f20401000050f202
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                    Extra:rsn_ie=30140100000fac020100000fac040100000fac020000
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                    Quality=48/100  Signal level=92/100  
+          Cell 02 - Address: <MAC 'hlink_h1' [AC2]>
+                    ESSID:"hlink_h1"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.437 GHz (Channel 6)
+                    Encryption key:on
+                    Bit Rates:72 Mb/s
+                    Extra:rsn_ie=30140100000fac040100000fac040100000fac020c00
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : CCMP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                    Quality=36/100  Signal level=92/100  
+
+##### module infos ######################
+
+[8192cu]
+filename:       /lib/modules/4.4.38-v7+/kernel/drivers/net/wireless/realtek/rtl8192cu/8192cu.ko
+version:        v4.0.2_9000.20130911
+author:         Realtek Semiconductor Corp.
+description:    Realtek Wireless Lan Driver
+license:        GPL
+srcversion:     0CD768224820D00DC8FB2C8
+depends:        cfg80211
+intree:         Y
+vermagic:       4.4.38-v7+ SMP mod_unload modversions ARMv7 
+parm:           rtw_ips_mode:The default IPS mode (int)
+parm:           ifname:The default name to allocate for first interface (charp)
+parm:           if2name:The default name to allocate for second interface (charp)
+parm:           rtw_initmac:charp
+parm:           rtw_channel_plan:int
+parm:           rtw_chip_version:int
+parm:           rtw_rfintfs:int
+parm:           rtw_lbkmode:int
+parm:           rtw_network_mode:int
+parm:           rtw_channel:int
+parm:           rtw_mp_mode:int
+parm:           rtw_wmm_enable:int
+parm:           rtw_vrtl_carrier_sense:int
+parm:           rtw_vcs_type:int
+parm:           rtw_busy_thresh:int
+parm:           rtw_ht_enable:int
+parm:           rtw_cbw40_enable:int
+parm:           rtw_ampdu_enable:int
+parm:           rtw_rx_stbc:int
+parm:           rtw_ampdu_amsdu:int
+parm:           rtw_lowrate_two_xmit:int
+parm:           rtw_rf_config:int
+parm:           rtw_power_mgnt:int
+parm:           rtw_low_power:int
+parm:           rtw_wifi_spec:int
+parm:           rtw_special_rf_path:int
+parm:           rtw_antdiv_cfg:int
+parm:           rtw_enusbss:int
+parm:           rtw_hwpdn_mode:int
+parm:           rtw_hwpwrp_detect:int
+parm:           rtw_hw_wps_pbc:int
+parm:           rtw_max_roaming_times:The max roaming times to try (uint)
+parm:           rtw_force_iol:Force to enable IOL (bool)
+parm:           rtw_mc2u_disable:int
+parm:           rtw_mac_phy_mode:int
+parm:           rtw_80211d:int
+parm:           rtw_notch_filter:0:Disable, 1:Enable, 2:Enable only for P2P (uint)
+
+[cfg80211]
+filename:       /lib/modules/4.4.38-v7+/kernel/net/wireless/cfg80211.ko
+description:    wireless configuration support
+license:        GPL
+author:         Johannes Berg
+srcversion:     54D3087B578746046F8B434
+depends:        rfkill
+intree:         Y
+vermagic:       4.4.38-v7+ SMP mod_unload modversions ARMv7 
+parm:           bss_entries_limit:limit to number of scan BSS entries (per wiphy, default 1000) (int)
+parm:           ieee80211_regdom:IEEE 802.11 regulatory domain code (charp)
+parm:           cfg80211_disable_40mhz_24ghz:Disable 40MHz support in the 2.4GHz band (bool)
+
+##### module parameters #################
+
+[8192cu]
+if2name: wlan%d
+ifname: wlan%d
+rtw_80211d: 0
+rtw_ampdu_amsdu: 0
+rtw_ampdu_enable: 1
+rtw_antdiv_cfg: 2
+rtw_busy_thresh: 40
+rtw_cbw40_enable: 3
+rtw_channel: 1
+rtw_channel_plan: 65
+rtw_chip_version: 0
+rtw_enusbss: 0
+rtw_force_iol: N
+rtw_ht_enable: 1
+rtw_hwpdn_mode: 2
+rtw_hwpwrp_detect: 0
+rtw_hw_wps_pbc: 1
+rtw_initmac: (null)
+rtw_ips_mode: 1
+rtw_lbkmode: 0
+rtw_low_power: 0
+rtw_lowrate_two_xmit: 1
+rtw_mac_phy_mode: 0
+rtw_max_roaming_times: 2
+rtw_mc2u_disable: 0
+rtw_mp_mode: 0
+rtw_network_mode: 0
+rtw_notch_filter: 0
+rtw_power_mgnt: 0
+rtw_rf_config: 5
+rtw_rfintfs: 2
+rtw_rx_stbc: 1
+rtw_special_rf_path: 0
+rtw_vcs_type: 1
+rtw_vrtl_carrier_sense: 2
+rtw_wifi_spec: 0
+rtw_wmm_enable: 1
+
+[cfg80211]
+bss_entries_limit: 1000
+cfg80211_disable_40mhz_24ghz: N
+ieee80211_regdom: 00
+
+##### /etc/modules ######################
+
+i2c-bcm2708
+i2c-dev
+ipv6
+spi-dev
+
+##### modprobe options ##################
+
+[/etc/modprobe.d/8192cu.conf]
+options 8192cu rtw_power_mgnt=0 rtw_enusbss=0 rtw_ips_mode=1
+
+[/etc/modprobe.d/cinch-blacklist.conf]
+blacklist brcmfmac
+blacklist brcmutil
+
+[/etc/modprobe.d/ipv6.conf]
+alias net-pf-10 off
+
+[/etc/modprobe.d/libpisock9.conf]
+blacklist visor
+
+##### rc.local ##########################
+
+echo "  _____            _                                ";
+echo " |  __ \          | |                               ";
+echo " | |  | | _____  _| |_ ___ _ __                     ";
+echo " | |  | |/ _ \ \/ / __/ _ \ '__|                    ";
+echo " | |__| |  __/>  <| ||  __/ |                       ";
+echo " |_____/ \___/_/\_\\__\___|_| _        _            ";
+echo " |_   _|         | |         | |      (_)           ";
+echo "   | |  _ __   __| |_   _ ___| |_ _ __ _  ___  ___  ";
+echo "   | | | '_ \ / _    | | |   __| __|  | |/ _ \/ __| ";
+echo "  _| |_| | | | (_| | |_| \__ \ |_| |  | |  __/\__ \ ";
+echo " |_____|_| |_|\__,_|\__,_|___/\__|_|  |_|\___||___/ ";
+echo "                                                    ";
+echo "                                                    ";
+echo " "
+
+sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
+sudo python /home/pi/Dexter/lib/Dexter/auto_detect_robot.py
+
+exit 0
+
+##### pm-utils ##########################
+
+find: `/etc/pm/*.d': No such file or directory
+
+##### udev rules ########################
+
+##### dmesg #############################
+
+[    7.152248] smsc95xx 1-1.1:1.0 eth0: hardware isn't capable of remote wakeup
+[    7.152672] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready
+[    8.811145] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+[    8.812046] smsc95xx 1-1.1:1.0 eth0: link up, 100Mbps, full-duplex, lpa 0xCDE1
+[   78.225345] IPv6: ADDRCONF(NETDEV_UP): wlan0: link is not ready
+[   79.860647] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+
+########## wireless info END ############
+
