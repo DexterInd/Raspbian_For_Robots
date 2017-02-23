@@ -82,3 +82,5 @@ sudo cp $SCRIPTDIR/channel_select.service /etc/systemd/system/
 sudo chmod 755 /etc/systemd/system/channel_select.service
 sudo systemctl daemon-reload
 sudo systemctl enable channel_select.service 
+
+sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/wifi_debug/setup_wifi_debug.sh

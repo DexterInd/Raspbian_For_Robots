@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# This script creates the log with wireless info
 #
 # Copyright (c) 2012
 #
@@ -28,8 +30,7 @@
 SCRIPTDATE="2016-07-07 21:16 -0500"
 FILEBASE="wireless-info"
 OUTPUTDIR="$PWD"
-OUTPUTDIRFB="/tmp"
-
+OUTPUTDIRFB="/tmp" 
 MODMATCHES="(air|ar5|at7|ath[^3]?|b43|bcma|brcm|carl|ipw|iwl|ndis|r(818|8192[eu]|871|92su)|8(188|189|192|723|812)[acde][esu]|rt[23567]|rtl|ssb|wl|(cfg|mac)80211)"
 LSMODMATCHES="(wmi|(dell|ideapad)[-_]laptop)"
 IFACEMATCHES="(wlan[0-9]|eth[0-9])"
@@ -50,6 +51,12 @@ export LANG="en_US.UTF-8"
 export LANGUAGE="en_US:en"
 # export LC_ALL="en_US.UTF-8"
 
+# Exit if no Log folder found
+# if [ ! -d "/media/usb/Logs" ]
+# then
+    # exit 0
+# fi
+
 if [ -t 0 ]; then
     DIALOGAPP="terminal"
     DIALOGBREAK=" "
@@ -60,8 +67,8 @@ elif [ -x /usr/bin/zenity ]; then
 elif [ -x /usr/bin/kdialog ]; then
     DIALOGAPP="kdialog"
     DIALOGBREAK="\n"
-else
-    exit 1
+#else
+#    exit 1
 fi
 
 if [ -t 0 ]; then
@@ -142,6 +149,7 @@ exec 1> "$OUTPUTDIR/$FILEBASE.txt" || {
 }
 exec 2>&1
 
+printf "*************************************************************************************************************************************************"
 printf "\n########## wireless info START ##########\n\n"
 REPORTDATE=$(date +"%d %b %Y %H:%M %Z %z")
 SCRIPTDATE=$(date -u -d "$SCRIPTDATE" +"%d %b %Y %H:%M %Z %z")
@@ -415,9 +423,9 @@ done
 
 sed "$MACMASKSED /\([[:alnum:]]\{2\}:\)\{6,\}/! s/\([[:alnum:]]\{2\}:\)\{5\}[[:alnum:]]\{2\}/<MAC address>/" <<< "$RESULTS" > "$OUTPUTDIR/$FILEBASE.txt"
 
-##### The End #####
+#### The End #####
 
-# dialog_info "${TERMOUT+\n}Results saved in \"$OUTPUTDIR/$FILEBASE.txt\".${TERMOUT+\n}"
+dialog_info "${TERMOUT+\n}Results saved in \"$OUTPUTDIR/$FILEBASE.txt\".${TERMOUT+\n}" 
 
 # if (( $(stat -c %s "$OUTPUTDIR/$FILEBASE.txt") > 19968 )); then
     # tar -czf "$OUTPUTDIR/$FILEBASE.tar.gz" -C "$OUTPUTDIR" "$FILEBASE.txt" && \
@@ -442,3 +450,4 @@ sed "$MACMASKSED /\([[:alnum:]]\{2\}:\)\{6,\}/! s/\([[:alnum:]]\{2\}:\)\{5\}[[:a
 	# echo
     # fi
 # fi
+
