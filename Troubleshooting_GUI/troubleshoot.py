@@ -10,7 +10,7 @@ import psutil
 import signal
 import urllib2
 from auto_detect_robot import *
-		
+
 def send_bash_command(bashCommand):
 	process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE) #, stderr=subprocess.PIPE)
 	output = process.communicate()[0]
@@ -35,15 +35,15 @@ class MainPanel(wx.Panel):
 	#----------------------------------------------------------------------
 	def __init__(self, parent):
 		"""Constructor"""
-		
+
 		wx.Panel.__init__(self, parent=parent)
 		self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 		self.SetBackgroundColour(wx.WHITE)
 		self.frame = parent
-		
+
 		# detect what's currently on
-		needed_robots=autodetect() 
-		# if you can't find a single robot 
+		needed_robots=autodetect()
+		# if you can't find a single robot
 		# then show all of them just in case
 		if needed_robots.find("GoPiGo") == -1 and \
 		   needed_robots.find("GrovePi") == -1 and \
@@ -51,11 +51,11 @@ class MainPanel(wx.Panel):
 		   needed_robots = "GoPiGo_GrovePi_BrickPi3"
 
 		vSizer = wx.BoxSizer(wx.VERTICAL)
-				
-		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False, 
+
+		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False,
 						u'Helvetica')
 		self.SetFont(font)
-		
+
 		#-------------------------------------------------------------------
 		# icon
 		icon_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -78,12 +78,12 @@ class MainPanel(wx.Panel):
 			gopigo_sizer.AddSpacer(20)
 			gopigo_sizer.Add(gopigo_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			gopigo_sizer.AddSpacer(50)
-		
+
 		if needed_robots.find("GrovePi")!=-1:
 			# Troubleshoot the GrovePi
 			grovepi_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_grovepi = wx.Button(self, label="Troubleshoot GrovePi")
-			troubleshoot_grovepi.Bind(wx.EVT_BUTTON, self.grovepi)			
+			troubleshoot_grovepi.Bind(wx.EVT_BUTTON, self.grovepi)
 			grovepi_txt=wx.StaticText(self, -1, "This button runs a series of tests on the GrovePi Hardware.")
 			grovepi_txt.Wrap(150)
 			grovepi_sizer.AddSpacer(50)
@@ -96,15 +96,15 @@ class MainPanel(wx.Panel):
 		if needed_robots.find("BrickPi3")!=-1:
 			brickpi3_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_brickpi3 = wx.Button(self, label="Troubleshoot BrickPi3")
-			troubleshoot_brickpi3.Bind(wx.EVT_BUTTON, self.brickpi3)			
-			brickpi3_txt=wx.StaticText(self, -1, "This button runs a series of tests on the BrickPi3 Hardware.")
+			troubleshoot_brickpi3.Bind(wx.EVT_BUTTON, self.brickpi3)
+			brickpi3_txt=wx.StaticText(self, -1, "This button runs a series of tests on the BrickPi3 Hardware. (not BrickPi+)")
 			brickpi3_txt.Wrap(150)
 			brickpi3_sizer.AddSpacer(50)
 			brickpi3_sizer.Add(troubleshoot_brickpi3,1,wx.EXPAND)
 			brickpi3_sizer.AddSpacer(20)
 			brickpi3_sizer.Add(brickpi3_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			brickpi3_sizer.AddSpacer(50)
-		
+
 		# Demo the GoPiGo
 		if needed_robots.find("GoPiGo") != -1:
 			demo_sizer=wx.BoxSizer(wx.HORIZONTAL)
@@ -125,22 +125,22 @@ class MainPanel(wx.Panel):
 		exit_sizer.AddSpacer(50)
 		exit_sizer.Add(exit_button,1,wx.EXPAND)
 		exit_sizer.AddSpacer(50)
-		
+
 		caution_sizer = wx.BoxSizer(wx.HORIZONTAL)
 		caution_txt = wx.StaticText(self, -1, "Caution: Do not close the LXTerminal window running in the background right now.")
 		caution_sizer.AddSpacer(50)
-		caution_sizer.Add(caution_txt,1,wx.EXPAND)		
+		caution_sizer.Add(caution_txt,1,wx.EXPAND)
 		caution_sizer.AddSpacer(50)
 
 		vSizer.Add(icon_sizer,0,wx.SHAPED|wx.FIXED_MINSIZE)
 		if needed_robots.find("GoPiGo") != -1:
-			vSizer.Add(gopigo_sizer,1,wx.EXPAND)	
+			vSizer.Add(gopigo_sizer,1,wx.EXPAND)
 			vSizer.AddSpacer(20)
-		if needed_robots.find("GrovePi") != -1:	
+		if needed_robots.find("GrovePi") != -1:
 			vSizer.Add(grovepi_sizer,1,wx.EXPAND)
 			vSizer.AddSpacer(20)
 		if needed_robots.find("BrickPi3") != -1:
-			vSizer.Add(brickpi3_sizer,1,wx.EXPAND)	
+			vSizer.Add(brickpi3_sizer,1,wx.EXPAND)
 			vSizer.AddSpacer(20)
 		if needed_robots.find("GoPiGo") != -1:
 			vSizer.Add(demo_sizer,1,wx.EXPAND)
@@ -149,28 +149,28 @@ class MainPanel(wx.Panel):
 
 		vSizer.Add(exit_sizer,1,wx.EXPAND)
 		vSizer.AddSpacer(20)
-		vSizer.Add(caution_sizer,1,wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)		
+		vSizer.Add(caution_sizer,1,wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)
 
 		self.SetSizerAndFit(vSizer)
 		# self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
- 
+
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
 
 		dc = evt.GetDC()
- 
+
 		# if not dc:
 		# 	dc = wx.ClientDC(self)
 		# 	rect = self.GetUpdateRegion().GetBox()
 		# 	dc.SetClippingRect(rect)
-		# dc.Clear()	
+		# dc.Clear()
 		# bmp = wx.Bitmap("/home/pi/Desktop/GoBox/Troubleshooting_GUI/dex.png")	# Draw the photograph.
 		# dc.DrawBitmap(bmp, 10, 10)						# Absolute position of where to put the picture
 
 	###############################################################################
 	def troubleshoot_gopigo(self, event):
 		dlg = wx.MessageDialog(self, 'This program tests the GoPiGo for potential issues or problems and will make a log report you can send to Dexter Industries.  \n 1. Make sure the battery pack is connected to the GoPiGo and turn it on.  \n 2. Turn the GoPiGo upside down so the wheels are in the air for the test.  \n 3. Then click OK to begin the test.  \n It takes a few moments for the test to start, and once it has begun, it might take a few minutes to run through all the tests.', 'Troubleshoot the GoPiGo', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
-		
+
 		ran_dialog = False
 		if dlg.ShowModal() == wx.ID_OK:
 			print "Start GoPiGo Test!"
@@ -180,8 +180,8 @@ class MainPanel(wx.Panel):
 		else:
 			print "Cancel GoPiGo Test!"
 		dlg.Destroy()
-		
-		# Depending on what the user chose, we either cancel or complete.  
+
+		# Depending on what the user chose, we either cancel or complete.
 		if ran_dialog:
 			dlg = wx.MessageDialog(self, 'All tests are complete. The Log has been saved to Desktop. Please copy it and upload it into our Forums.  www.dexterindustries.com/Forum ', 'Complete', wx.OK|wx.ICON_INFORMATION)
 			dlg.ShowModal()
@@ -204,8 +204,8 @@ class MainPanel(wx.Panel):
 		else:
 			print "Cancel GoPiGo Demo!"
 		dlg.Destroy()
-		
-		# Depending on what the user chose, we either cancel or complete.  
+
+		# Depending on what the user chose, we either cancel or complete.
 		if ran_dialog:
 			dlg = wx.MessageDialog(self, 'Demo Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
 			dlg.ShowModal()
@@ -226,8 +226,8 @@ class MainPanel(wx.Panel):
 		else:
 			print "Cancel BrickPi3 Tests!"
 		dlg.Destroy()
-		
-		# Depending on what the user chose, we either cancel or complete.  
+
+		# Depending on what the user chose, we either cancel or complete.
 		if ran_dialog:
 			dlg = wx.MessageDialog(self, 'All tests are complete. The Log has been saved to Desktop. Please copy it and upload it into our Forums.  www.dexterindustries.com/Forum', 'OK', wx.OK|wx.ICON_INFORMATION)
 			dlg.ShowModal()
@@ -236,7 +236,7 @@ class MainPanel(wx.Panel):
 			dlg = wx.MessageDialog(self, 'BrickPi3 Test Cancelled', 'Canceled', wx.OK|wx.ICON_HAND)
 			dlg.ShowModal()
 			dlg.Destroy()
-	
+
 	###############################################################################
 	def grovepi(self, event):
 		dlg = wx.MessageDialog(self, 'This program tests the GrovePi for potential issues or problems and will make a log report you can send to Dexter Industries.  \n It takes a few moments for the test to start, and once it has begun, it might take a few minutes to run through all the tests.', 'Troubleshoot the GrovePi', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
@@ -249,8 +249,8 @@ class MainPanel(wx.Panel):
 		else:
 			print "Cancel GrovePi Tests!"
 		dlg.Destroy()
-		
-		# Depending on what the user chose, we either cancel or complete.  
+
+		# Depending on what the user chose, we either cancel or complete.
 		if ran_dialog:
 			dlg = wx.MessageDialog(self, 'All tests are complete. The Log has been saved to Desktop. Please copy it and upload it into our Forums.  www.dexterindustries.com/Forum', 'OK', wx.OK|wx.ICON_INFORMATION)
 			dlg.ShowModal()
@@ -262,7 +262,7 @@ class MainPanel(wx.Panel):
 
 	def onClose(self, event):	# Close the entire program.
 		self.frame.Close()
-  
+
 ########################################################################
 class MainFrame(wx.Frame):
 	#----------------------------------------------------------------------
@@ -274,14 +274,14 @@ class MainFrame(wx.Frame):
 		wx.Log.SetVerbose(False)
 
 		# Set the frame arguments
-		# wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware",size=(500,500))		
-		wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware")		
-		self.panel = MainPanel(self)  
+		# wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware",size=(500,500))
+		wx.Frame.__init__(self, None, title="Test and Troubleshoot Dexter Industries Hardware")
+		self.panel = MainPanel(self)
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		sizer.Add(self.panel,1,wx.EXPAND)
 		self.SetSizerAndFit(sizer)
 		self.Center()
-		
+
 ########################################################################
 #class Main(wx.App):
     #----------------------------------------------------------------------
@@ -290,7 +290,7 @@ class MainFrame(wx.Frame):
 #       wx.App.__init__(self, redirect, filename)
 #        dlg = MainFrame()
 #        dlg.Show()
-		
+
 if __name__ == "__main__":
 	app = wx.App(False)
 	frame = MainFrame()
