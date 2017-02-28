@@ -116,10 +116,13 @@ def find_brickpi3():
     debug_print("Detecting BrickPi3")
     try:
         import brickpi3
-        BP3 = brickpi3.BrickPi3()
-        return True
-    except brickpi3.FirmwareVersionError:
-        return True
+        try:
+            BP3 = brickpi3.BrickPi3()
+            return True
+        except brickpi3.FirmwareVersionError:
+            return True
+        except:
+            return False
     except:
         return False
 
