@@ -15,7 +15,7 @@ from auto_detect_robot import *
 # References
 # http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/
 # ComboBoxes!  		http://wiki.wxpython.org/AnotherTutorial#wx.ComboBox
-# 
+#
 
 PIHOME="/home/pi"
 DEXTER="Dexter"
@@ -78,7 +78,7 @@ def internet_on():
 	except urllib2.URLError as err: pass
 	return False
 
-	
+
 def kill_all_open_processes():
 	# p = subprocess.Popen(['ps', '-aux'], stdout=subprocess.PIPE)	# This line threw a BSD related warning.  Suppressed warning removing the "-"
 	p = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE)
@@ -89,41 +89,41 @@ def kill_all_open_processes():
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
-			send_bash_command(kill_line)		
+			send_bash_command(kill_line)
 		if 'squeakvm' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
-			send_bash_command(kill_line)			
+			send_bash_command(kill_line)
 		if 'GoPiGoScratch' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
 			send_bash_command(kill_line)
-			
+
 		if 'GrovePiScratch' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
 			send_bash_command(kill_line)
-			
+
 		if 'BrickPiScratch' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
-			send_bash_command(kill_line)	
+			send_bash_command(kill_line)
 
 		if 'BrickPi3Scratch' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
-			send_bash_command(kill_line)	
-			
+			send_bash_command(kill_line)
+
 		if 'PivotPi' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
-			send_bash_command(kill_line)	
+			send_bash_command(kill_line)
 
 ########################################################################
 class MainPanel(wx.Panel):
@@ -135,25 +135,25 @@ class MainPanel(wx.Panel):
 		wx.Panel.__init__(self, parent=parent)
 		self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 		self.frame = parent
- 
+
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		hSizer = wx.BoxSizer(wx.HORIZONTAL)
-		
+
 		# font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False, u'Consolas')
 		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False, u'Helvetica')
 		self.SetFont(font)
-		
+
 		#-------------------------------------------------------------------
 		# Standard Buttons
 
 		# Start Programming
 		start_programming = wx.Button(self, label="Start Programming", pos=(25,275))
 		start_programming.Bind(wx.EVT_BUTTON, self.start_programming)
-		
+
 		# Open Examples
 		examples_button = wx.Button(self, label="Open Examples", pos=(25, 325))
-		examples_button.Bind(wx.EVT_BUTTON, self.examples)			
-		
+		examples_button.Bind(wx.EVT_BUTTON, self.examples)
+
 		# Update Curriculum
 		curriculum_update = wx.Button(self, label="Update GoBox", pos=(25,375))
 		curriculum_update.Bind(wx.EVT_BUTTON, self.curriculum_update)
@@ -161,52 +161,52 @@ class MainPanel(wx.Panel):
 		# About
 		about_button = wx.Button(self, label="About", pos=(25, 425))
 		about_button.Bind(wx.EVT_BUTTON, self.About)
-		
+
 		# Test Hardware
 		test_button = wx.Button(self, label="Demo Hardware", pos=(225, 425))
 		test_button.Bind(wx.EVT_BUTTON, self.test)
-		
-		# Bind Stop Button 
+
+		# Bind Stop Button
 		stop_gopigo = wx.Button(self, label="Stop GoPiGo", pos=(225,475))
 		stop_gopigo.SetBackgroundColour('red')
 		stop_gopigo.Bind(wx.EVT_BUTTON, self.stop_gopigo)
-		
+
 		# Exit
 		exit_button = wx.Button(self, label="Exit", pos=(25,475))
 		exit_button.Bind(wx.EVT_BUTTON, self.onClose)
 
-		# End Standard Buttons		
+		# End Standard Buttons
 		#-------------------------------------------------------------------
 		# Drop Boxes
 
 		controls = ['GoPiGo', 'GrovePi', 'BrickPi', 'PivotPi','Just Scratch, no Robot.']	# Options for drop down.
 
 		# Select Platform.
-		
+
 		state = read_state()
 		if state in controls:
 			robotDrop = wx.ComboBox(self, -1, str(state), pos=(25, 225), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
 		else:
 			write_state("GoPiGo")
 			robotDrop = wx.ComboBox(self, -1, "GoPiGo", pos=(25, 225), size=(150, -1), choices=controls, style=wx.CB_READONLY)  # Drop down setup
-		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
-		
+		robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.
+
 		# wx.StaticText(self, -1, "Select a Robot:", (25, 205))					# (Minus 50, minus 0)
-		
+
 		# wx.StaticText(self, -1, "Caution: Do not close the LXTerminal window running \nin the background right now.", (25, 520))
 		wx.StaticText(self, -1, "Caution: Do not close the Scratch Controller window \nrunning in the background right now.", (25, 520))
 
 		# Drop Boxes
 		#-------------------------------------------------------------------
-		
+
 		hSizer.Add((1,1), 1, wx.EXPAND)
 		hSizer.Add(sizer, 0, wx.TOP, 100)
 		hSizer.Add((1,1), 0, wx.ALL, 75)
 		self.SetSizer(hSizer)
-	
+
 		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
 		send_bash_command_in_background("clear")	# This clears out the GTK Error Messages and warnings.
-		
+
 	#----------------------------------------------------------------------
 	def OnEraseBackground(self, evt):
 		"""
@@ -215,15 +215,15 @@ class MainPanel(wx.Panel):
 
 		# yanked from ColourDB.py
 		dc = evt.GetDC()
- 
+
 		if not dc:
 			dc = wx.ClientDC(self)
 			rect = self.GetUpdateRegion().GetBox()
 			dc.SetClippingRect(rect)
-		dc.Clear()	
+		dc.Clear()
 		bmp = wx.Bitmap(SCRATCH_PATH+"dex.png")	# Draw the photograph.
 		dc.DrawBitmap(bmp, 0, 0)						# Absolute position of where to put the picture
-		
+
 		# Add a second picture.
 		if read_state() == 'Just Scratch, no Robot.':
 			print "Selected Just Scratch no Robot."
@@ -233,7 +233,7 @@ class MainPanel(wx.Panel):
 				robot = "BrickPi"
 			robot = SCRATCH_PATH+robot+".png"
 			bmp = wx.Bitmap(robot)	# Draw the photograph.
-			dc.DrawBitmap(bmp, 200, 200)	
+			dc.DrawBitmap(bmp, 200, 200)
 
 	def robotDrop(self, event):
 		write_debug("robotDrop Selected.")
@@ -241,8 +241,8 @@ class MainPanel(wx.Panel):
 		value = event.GetSelection()
 		print controls[value]
 		# position = 0				# Position in the key list on file
-		
-		write_state(controls[value])    # print value to file.  
+
+		write_state(controls[value])    # print value to file.
 		if(controls[value]=='Just Scratch, no Robot.'):
 			print "Just Scratch!"
 			# robot = "/home/pi/Desktop/GoBox/Scratch_GUI/"+read_state()+".png"
@@ -250,8 +250,8 @@ class MainPanel(wx.Panel):
 			# wx.StaticBitmap(self, -1, png, (200, 200), (png.GetWidth(), png.GetHeight()))
 
 		else:
-			write_state(controls[value]) 	# print value to file.  
-		
+			write_state(controls[value]) 	# print value to file.
+
 			# Update Picture
 			try:
 				print "Read State: " + str(read_state())
@@ -261,7 +261,7 @@ class MainPanel(wx.Panel):
 			except:
 				print "Failed robotDrop."
 
-			
+
 
 	def stop_gopigo(self, event):
 		write_debug("STOP robot.")
@@ -269,7 +269,7 @@ class MainPanel(wx.Panel):
 
 	def start_programming(self, event):
 		# Kill all Python Programs.  Any running *Scratch* Python Programs.
-		write_debug("Start robot.")	
+		write_debug("Start robot.")
 		dlg = wx.MessageDialog(self, 'This will close any open Scratch programs.  Please save and click Ok!', 'Alert!', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
 		dlg.Destroy()
@@ -280,7 +280,7 @@ class MainPanel(wx.Panel):
 		if user_selection.find('BrickPi') >= 0:
 			if autodetect().find("BrickPi3") >= 0:
 				program = "/home/pi/Dexter/BrickPi3/Software/Scratch/BrickPi3Scratch.py"
-			else: #BrickPi+, Kickstarter and Advanced, 
+			else: #BrickPi+, Kickstarter and Advanced,
 				program = "/home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/BrickPiScratch.py"
 		elif user_selection.find('GoPiGo') >= 0:
 			program = "/home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGoScratch.py"
@@ -290,9 +290,9 @@ class MainPanel(wx.Panel):
 			program = "/home/pi/Dexter/GrovePi/Software/Scratch/GrovePiScratch.py"
 		start_command = "sudo python "+program
 		send_bash_command_in_background(start_command)
-		
-		write_debug("Programming Started.")	
-		
+
+		write_debug("Programming Started.")
+
 		# Start Scratch
 		start_command = "bash {0}scratch_direct {0}new.sb".format(SCRATCH_PATH)
 		send_bash_command_in_background(start_command)
@@ -325,7 +325,7 @@ class MainPanel(wx.Panel):
 				send_bash_command("sudo git clone https://github.com/DexterInd/GoBox")	# Clone the repo.
 				dlg.Update(35)
 			print "End of Dialog Box!"
-		
+
 			# Check Permissions of Scratch, Update them.
 			print "Install Scratch Shortcuts and Permissions."
 			send_bash_command("sudo rm /home/pi/Desktop/Scratch_Start.desktop")  					# Delete old icons off desktop
@@ -343,7 +343,7 @@ class MainPanel(wx.Panel):
 			send_bash_command("sudo chmod 777 /home/pi/nohup.out")
 			time.sleep(1)
 			print "File permissions changed."
-			
+
 			dlg.Destroy()
 		else:
 			dlg = wx.MessageDialog(self, 'Internet not detected!  Please connect to the internet and try again!', 'Update', wx.OK|wx.ICON_INFORMATION)
@@ -353,7 +353,7 @@ class MainPanel(wx.Panel):
 
 	def examples(self, event):
 		write_debug("Examples Pressed.")
-		# autodetect robots and pick the first one	
+		# autodetect robots and pick the first one
 		folder = autodetect().split("_")[0]
 		if(folder == "GoPiGo"):
 			directory = "nohup pcmanfm /home/pi/Dexter/GoPiGo/Software/Scratch/Examples/"
@@ -371,7 +371,7 @@ class MainPanel(wx.Panel):
 		write_debug("Opened up file manager!")
 
 	def test(self, event):
-		# Test the hardware.  Test the selected hardware.  
+		# Test the hardware.  Test the selected hardware.
 		write_debug("Demo robot.")
 		folder = read_state()
 		if folder.find('BrickPi') >= 0:
@@ -381,7 +381,7 @@ class MainPanel(wx.Panel):
 				ran_dialog = False
 				if dlg.ShowModal() == wx.ID_OK:
 					print "Run Hardware Test!"
-					program = "sudo python /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/Sensor_Examples/Brick_Hardware_Test.py"
+					program = "sudo python /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/Sensor_Examples/BrickPi_Hardware_Test.py"
 					send_bash_command_in_background(program)
 					ran_dialog = True
 				else:
@@ -399,8 +399,8 @@ class MainPanel(wx.Panel):
 				else:
 					print "Canceled!"
 				dlg.Destroy()
-			
-			# Depending on what the user chose, we either cancel or complete.  
+
+			# Depending on what the user chose, we either cancel or complete.
 			if ran_dialog:
 				dlg = wx.MessageDialog(self, 'Test Complete.', 'Complete', wx.OK|wx.ICON_INFORMATION)
 				dlg.ShowModal()
@@ -422,8 +422,8 @@ class MainPanel(wx.Panel):
 			else:
 				print "Canceled!"
 			dlg.Destroy()
-			
-			# Depending on what the user chose, we either cancel or complete.  
+
+			# Depending on what the user chose, we either cancel or complete.
 			if ran_dialog:
 				dlg = wx.MessageDialog(self, 'Demo Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
 				dlg.ShowModal()
@@ -432,7 +432,7 @@ class MainPanel(wx.Panel):
 				dlg = wx.MessageDialog(self, 'Demo Canceled', 'Canceled', wx.OK|wx.ICON_HAND)
 				dlg.ShowModal()
 				dlg.Destroy()
-				
+
 		elif folder.find('GrovePi') >= 0:
 			# Run GrovePi Test.
 			dlg = wx.MessageDialog(self, 'Ok, start GrovePi Test. Attach buzzer to D8 and a button to A0.  Press the button and the buzzer should sound.  Press Ok to start. ', 'Test GrovePi!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
@@ -445,8 +445,8 @@ class MainPanel(wx.Panel):
 			else:
 				print "Canceled!"
 			dlg.Destroy()
-			
-			# Depending on what the user chose, we either cancel or complete.  
+
+			# Depending on what the user chose, we either cancel or complete.
 			if ran_dialog:
 				dlg = wx.MessageDialog(self, 'Test Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
 				dlg.ShowModal()
@@ -455,25 +455,25 @@ class MainPanel(wx.Panel):
 				dlg = wx.MessageDialog(self, 'Test Canceled', 'Canceled', wx.OK|wx.ICON_HAND)
 				dlg.ShowModal()
 				dlg.Destroy()
-				
+
 	def About(self, event):
-		write_debug("About Pressed.")	
+		write_debug("About Pressed.")
 		dlg = wx.MessageDialog(self, 'Learn more about Dexter Industries and GoBox at dexterindustries.com', 'About', wx.OK|wx.ICON_INFORMATION)
 		dlg.ShowModal()
 		dlg.Destroy()
-		
+
 	def onClose(self, event):	# Close the entire program.
 		#write_state('GoPiGo')
 		write_debug("Close Pressed.")
 		"""
 		"""
 		self.frame.Close()
-  
- 
+
+
 ########################################################################
 class MainFrame(wx.Frame):
 	""""""
-	
+
 	#----------------------------------------------------------------------
 	def __init__(self):
 		"""Constructor"""
@@ -483,20 +483,20 @@ class MainFrame(wx.Frame):
 		wx.Log.SetVerbose(False)
 		wx.Frame.__init__(self, None, title="Scratch for Robots", size=(400,600))		# Set the fram size
 
-		panel = MainPanel(self)        
+		panel = MainPanel(self)
 		self.Center()
- 
+
 ########################################################################
 class Main(wx.App):
 	""""""
- 
+
 	#----------------------------------------------------------------------
 	def __init__(self, redirect=False, filename=None):
 		"""Constructor"""
 		wx.App.__init__(self, redirect, filename)
 		dlg = MainFrame()
 		dlg.Show()
- 
+
 #----------------------------------------------------------------------
 if __name__ == "__main__":
 	write_debug(" # Program # started # !")
