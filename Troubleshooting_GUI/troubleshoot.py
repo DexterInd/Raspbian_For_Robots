@@ -81,7 +81,7 @@ class MainPanel(wx.Panel):
 			gopigo_sizer.Add(gopigo_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			gopigo_sizer.AddSpacer(50)
 
-		if needed_robots.find("GrovePi")!=-1 and flag_BrickPiPlus is False:
+		if needed_robots.find("GrovePi")!=-1:
 			# Troubleshoot the GrovePi
 			grovepi_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_grovepi = wx.Button(self, label="Troubleshoot GrovePi")
