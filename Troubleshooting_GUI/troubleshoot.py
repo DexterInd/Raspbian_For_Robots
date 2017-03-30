@@ -50,7 +50,7 @@ class MainPanel(wx.Panel):
 		   needed_robots.find("GrovePi") == -1 and \
 		   needed_robots.find("BrickPi+") == -1 and \
 		   needed_robots.find("BrickPi3") == -1:
-		   needed_robots = "GoPiGo_GrovePi_BrickPi3"
+			needed_robots = "GoPiGo_GrovePi_BrickPi3"
 
 		vSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -302,7 +302,7 @@ class MainFrame(wx.Frame):
 
 ########################################################################
 #class Main(wx.App):
-    #----------------------------------------------------------------------
+	#----------------------------------------------------------------------
 #    def __init__(self, redirect=False, filename=None):
 #        """Constructor"""
 #       wx.App.__init__(self, redirect, filename)
