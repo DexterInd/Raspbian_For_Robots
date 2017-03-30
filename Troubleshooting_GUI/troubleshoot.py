@@ -43,10 +43,9 @@ class MainPanel(wx.Panel):
 
 		# detect what's currently on
 		needed_robots=autodetect()
-		needed_robots="GoPiGo_BrickPi+_BrickPi3"
 
 		# if you can't find a single robot
-		# then show all of them just in case
+		# then show all of them just in case (except BrickPi+)
 		if needed_robots.find("GoPiGo") == -1 and \
 		   needed_robots.find("GrovePi") == -1 and \
 		   needed_robots.find("BrickPi+") == -1 and \
