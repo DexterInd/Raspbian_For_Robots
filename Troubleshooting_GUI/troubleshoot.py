@@ -43,10 +43,13 @@ class MainPanel(wx.Panel):
 
 		# detect what's currently on
 		needed_robots=autodetect()
+		needed_robots="GoPiGo_BrickPi+_BrickPi3"
+
 		# if you can't find a single robot
 		# then show all of them just in case
 		if needed_robots.find("GoPiGo") == -1 and \
 		   needed_robots.find("GrovePi") == -1 and \
+		   needed_robots.find("BrickPi+") == -1 and \
 		   needed_robots.find("BrickPi3") == -1:
 		   needed_robots = "GoPiGo_GrovePi_BrickPi3"
 
@@ -79,7 +82,7 @@ class MainPanel(wx.Panel):
 			gopigo_sizer.Add(gopigo_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			gopigo_sizer.AddSpacer(50)
 
-		if needed_robots.find("GrovePi")!=-1:
+		if needed_robots.find("GrovePi")!=-1 and flag_BrickPiPlus is False:
 			# Troubleshoot the GrovePi
 			grovepi_sizer = wx.BoxSizer(wx.HORIZONTAL)
 			troubleshoot_grovepi = wx.Button(self, label="Troubleshoot GrovePi")
@@ -87,9 +90,9 @@ class MainPanel(wx.Panel):
 			grovepi_txt=wx.StaticText(self, -1, "This button runs a series of tests on the GrovePi Hardware.")
 			grovepi_txt.Wrap(150)
 			grovepi_sizer.AddSpacer(50)
-			grovepi_sizer.Add(troubleshoot_grovepi,1,wx.EXPAND|wx.LEFT|wx.RIGHT,10)
+			grovepi_sizer.Add(troubleshoot_grovepi,1,wx.EXPAND)
 			grovepi_sizer.AddSpacer(20)
-			grovepi_sizer.Add(grovepi_txt,1)
+			grovepi_sizer.Add(grovepi_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			grovepi_sizer.AddSpacer(50)
 
 		#Troubleshoot the BrickPi3
@@ -104,6 +107,19 @@ class MainPanel(wx.Panel):
 			brickpi3_sizer.AddSpacer(20)
 			brickpi3_sizer.Add(brickpi3_txt,1,wx.ALIGN_CENTER_VERTICAL)
 			brickpi3_sizer.AddSpacer(50)
+
+		#Troubleshoot the BrickPi+ (or don't)
+		if needed_robots.find("BrickPi+")!=-1:
+			brickpiP_sizer = wx.BoxSizer(wx.HORIZONTAL)
+			troubleshoot_brickpiP = wx.StaticText(self, label="BrickPi+ detected.")
+			brickpiP_txt=wx.StaticText(self, -1, "There are no troubleshooting scripts for BrickPi+")
+			brickpiP_txt.Wrap(150)
+			brickpiP_sizer.AddSpacer(50)
+			brickpiP_sizer.Add(troubleshoot_brickpiP,1,wx.EXPAND)
+			brickpiP_sizer.AddSpacer(20)
+			brickpiP_sizer.Add(brickpiP_txt,1,wx.ALIGN_CENTER_VERTICAL)
+			brickpiP_sizer.AddSpacer(50)
+
 
 		# Demo the GoPiGo
 		if needed_robots.find("GoPiGo") != -1:
@@ -141,6 +157,9 @@ class MainPanel(wx.Panel):
 			vSizer.AddSpacer(20)
 		if needed_robots.find("BrickPi3") != -1:
 			vSizer.Add(brickpi3_sizer,1,wx.EXPAND)
+			vSizer.AddSpacer(20)
+		if needed_robots.find("BrickPi+") != -1:
+			vSizer.Add(brickpiP_sizer,1,wx.EXPAND)
 			vSizer.AddSpacer(20)
 		if needed_robots.find("GoPiGo") != -1:
 			vSizer.Add(demo_sizer,1,wx.EXPAND)
