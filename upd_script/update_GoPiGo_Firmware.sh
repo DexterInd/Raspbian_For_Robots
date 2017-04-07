@@ -54,7 +54,7 @@ sleep 1
 '''
 
 source /home/pi/Desktop/GoPiGo/Firmware/gopigo_firmware_update.sh
-update_gopigo_firmware
+update_gopigo_firmware Dexter
 
 echo "GoPiGo Firmware updated succesfully."
 echo "GoPiGo Firmware complete!"
