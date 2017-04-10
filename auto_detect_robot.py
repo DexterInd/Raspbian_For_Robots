@@ -9,7 +9,7 @@ import serial
 
 bus = SMBus(1)
 detected_robot = "None"
-detectable_robots = ["GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
+detectable_robots = ["GoPiGo3","GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
 
 def debug_print(in_str):
     if False:  # change to False to get all prints to shut up
