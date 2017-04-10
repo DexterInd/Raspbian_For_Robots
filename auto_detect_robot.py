@@ -55,6 +55,25 @@ def find_gopigo():
         return False
 
 
+def find_gopigo3():
+    '''
+    boolean function that detects the presence of a GoPiGo3
+    returns True or False
+    '''
+    debug_print("Detecting GoPiGo3")
+    try:
+        import gopigo3
+        try:
+            GPG3 = gopigo3.GoPiGo3()
+            return True
+        except gopigo3.FirmwareVersionError:
+            return True
+        except:
+            return False
+    except:
+        return False
+
+
 def find_grovepi():
     '''
     boolean function that detects the presence of a GrovePi
@@ -167,7 +186,9 @@ def autodetect():
 
 # the order in which these are tested is important
 # as it will determine the priority in Scratch    
-    if find_gopigo():
+    if find_gopigo3():
+        add_robot("GoPiGo3")
+    elif find_gopigo():      # if GPG3 wasn't detected, check for GPG.
         add_robot("GoPiGo")
     
     if find_brickpi3():
