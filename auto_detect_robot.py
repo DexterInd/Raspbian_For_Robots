@@ -9,7 +9,7 @@ import serial
 
 bus = SMBus(1)
 detected_robot = "None"
-detectable_robots = ["GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
+detectable_robots = ["GoPiGo3","GoPiGo","BrickPi3","BrickPi+","GrovePi","PivotPi"]
 
 def debug_print(in_str):
     if False:  # change to False to get all prints to shut up
@@ -51,6 +51,25 @@ def find_gopigo():
     try:
         test_gopigo = bus.read_byte(gopigo_address)
         return True
+    except:
+        return False
+
+
+def find_gopigo3():
+    '''
+    boolean function that detects the presence of a GoPiGo3
+    returns True or False
+    '''
+    debug_print("Detecting GoPiGo3")
+    try:
+        import gopigo3
+        try:
+            GPG3 = gopigo3.GoPiGo3()
+            return True
+        except gopigo3.FirmwareVersionError:
+            return True
+        except:
+            return False
     except:
         return False
 
@@ -167,7 +186,9 @@ def autodetect():
 
 # the order in which these are tested is important
 # as it will determine the priority in Scratch    
-    if find_gopigo():
+    if find_gopigo3():
+        add_robot("GoPiGo3")
+    elif find_gopigo():      # if GPG3 wasn't detected, check for GPG.
         add_robot("GoPiGo")
     
     if find_brickpi3():
