@@ -8,11 +8,23 @@
 # 3).  Type in "dex.local" in browser.
 
 if [[ $EUID -ne 0 ]]; then
-	echo "This script must be run as root" 
+	echo "This script must be run as root"
 	exit 1
 fi
 
 SCRIPTDIR="$(readlink -f $(dirname $0))"
+INSTALLER_VERSION="$(cat $SCRIPTDIR/cinch)"
+
+
+if [[ -f /home/pi/cinch ]]; then
+  RPI_VERSION="$(cat /home/pi/cinch)"
+
+	if [[ $RPI_VERSION < $INSTALLER_VERSION ]]; then
+		sudo bash ./cinch_uninstaller.sh
+	fi
+else
+	echo INSTALLER_VERSION > /home/pi/cinch
+fi
 
 # Setup dnsmasq for DHCP server
 DNSMASQ_CONF_DIR="/etc/dnsmasq.d/"
@@ -62,10 +74,6 @@ iptables -t nat -A PREROUTING -i wlan0 --protocol tcp --match tcp --destination-
 # Save IP Tables
 iptables-save > /etc/iptables.ipv4.cinch.nat
 
-# Set the Cinch flag in /home/pi/cinch file
-# This creates a file "cinch" in the home directory.
-echo "1" > /home/pi/cinch
-
 # Restart IP Tables
 /etc/init.d/networking restart
 
@@ -81,6 +89,6 @@ systemctl enable dnsmasq.service
 sudo cp $SCRIPTDIR/channel_select.service /etc/systemd/system/
 sudo chmod 755 /etc/systemd/system/channel_select.service
 sudo systemctl daemon-reload
-sudo systemctl enable channel_select.service 
+sudo systemctl enable channel_select.service
 
 sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/wifi_debug/setup_wifi_debug.sh
