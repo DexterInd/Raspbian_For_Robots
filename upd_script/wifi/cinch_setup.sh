@@ -23,7 +23,7 @@ if [[ -f /home/pi/cinch ]]; then
 		sudo bash ./cinch_uninstaller.sh
 	fi
 else
-	echo INSTALLER_VERSION > /home/pi/cinch
+	echo $INSTALLER_VERSION > /home/pi/cinch
 fi
 
 # Setup dnsmasq for DHCP server
