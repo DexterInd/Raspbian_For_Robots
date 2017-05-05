@@ -15,7 +15,11 @@ fi
 SCRIPTDIR="$(readlink -f $(dirname $0))"
 INSTALLER_VERSION="$(cat $SCRIPTDIR/cinch)"
 
-
+# the next following lines check whether cinch is already installed
+# if it's installed it checks if we have a newer VERSION
+# if we have a newer version then we uninstall the current one & install the newer one
+# if we don't have a newer version, then exit this script
+# if it isn't installed then copy the version to /home/pi/cinch
 if [[ -f /home/pi/cinch ]]; then
   RPI_VERSION="$(cat /home/pi/cinch)"
 
