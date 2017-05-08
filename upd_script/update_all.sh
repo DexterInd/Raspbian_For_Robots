@@ -1,6 +1,6 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
-# This script will be changed OFTEN! 
+# This script will be changed OFTEN!
 curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
@@ -29,7 +29,7 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
-## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
+## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
 
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
@@ -43,7 +43,7 @@ set_quiet_mode
 
 handle_version() {
 ########################################################################
-## Mark the start time in the Version File of the update.  
+## Mark the start time in the Version File of the update.
 # Check if file 'Version' exists in ~/Dexter.  If it does, move on.  If it doesn't, copy it in.
 # Note we don't want to overwrite the file if it's there since we're going to be running updates and documenting when the updates were done.
 
@@ -51,7 +51,7 @@ handle_version() {
 # Pis that have been offline for long won't have the right date and time
 sudo ntpd -q -g
 
-if file_exists $DEXTER_PATH/Version 
+if file_exists $DEXTER_PATH/Version
 then
    sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
    feedback "Copying Version file to ~/Dexter"
@@ -95,7 +95,7 @@ install_packages() {
                 # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
   feedback "Install Specific Libraries."
 
-  # merge all the install lines into one, as each call to apt-get install 
+  # merge all the install lines into one, as each call to apt-get install
   # takes a while to build the dependency tree
 
 
@@ -117,15 +117,15 @@ install_packages() {
 
   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 
- 
+
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
 
   # only available on Jessie
-  # piclone used to make copies of the SD card; 
-  if [ ! $VERSION -eq '7' ] 
+  # piclone used to make copies of the SD card;
+  if [ ! $VERSION -eq '7' ]
   then
     sudo apt-get install piclone -y
   fi
@@ -141,7 +141,7 @@ geany_setup(){
   sudo chmod 777 $DEXTER_PATH/tmp
 
   # ensure the file exists by bringing over the defaults if needed
-  if ! file_exists $GEANY_PYTHON 
+  if ! file_exists $GEANY_PYTHON
   then
     sudo cp /usr/share/geany/filetypes.python $GEANY_PYTHON
   fi
@@ -174,7 +174,7 @@ geany_setup(){
 
   # delete this line completely to ensure that the python version is kept in sync
   # with what's in run_cmd
-  delete_line_from_file "EX_00_CM=" "$GEANY_PYTHON" 
+  delete_line_from_file "EX_00_CM=" "$GEANY_PYTHON"
   add_line_to_end_of_file "EX_00_CM=sudo $PYTHON_VER \"%d/%f\"" "$GEANY_PYTHON"
 
   # replace_in_file already checks for existence first
@@ -183,12 +183,12 @@ geany_setup(){
       add_line_to_end_of_file "EX_00_WD=/home/pi/Dexter/tmp" "/home/pi/.config/geany/filedefs/filetypes.python"
   fi
 
-  # remove sudo from the run line; 
+  # remove sudo from the run line;
   # it was put there for a few months but is no longer necessary
   # the existence of the first parameter is done within replace_first_this_with_that
   replace_first_this_with_that_in_file "Exec=sudo " "Exec=" "/usr/share/raspi-ui-overrides/applications/geany.desktop"
 
-  feedback "Done with Geany setup"  
+  feedback "Done with Geany setup"
 }
 
 autodetect_setup() {
@@ -222,7 +222,7 @@ sudo bash $RASPBIAN_PATH/lib/install.sh
 
 ########################################################################
 ## Kernel Updates
-# Enable I2c and SPI.  
+# Enable I2c and SPI.
 feedback "--> Begin Kernel Updates."
 feedback "--> Start Update /etc/modules."
 feedback "--> ======================================="
@@ -258,8 +258,8 @@ sudo echo "init_uart_clock=32000000" >> /boot/config.txt
 
 # Disable serial over UART
 sudo sed -i 's/console=ttyAMA0,115200//' /boot/cmdline.txt  #disable serial login on older images
-sudo sed -i 's/console=serial0,115200//' /boot/cmdline.txt  #disable serial login on the Pi3 
-sudo sed -i 's/console=tty1//' /boot/cmdline.txt            #console=tty1 can also be there in the cmdline.txt file so remove that 
+sudo sed -i 's/console=serial0,115200//' /boot/cmdline.txt  #disable serial login on the Pi3
+sudo sed -i 's/console=tty1//' /boot/cmdline.txt            #console=tty1 can also be there in the cmdline.txt file so remove that
 sudo sed -i 's/kgbdoc=ttyAMA0,115200//' /boot/cmdline.txt
 sudo systemctl stop serial-getty@ttyAMA0.service
 sudo systemctl disable serial-getty@ttyAMA0.service
@@ -358,10 +358,10 @@ elif [ $VERSION -eq '8' ]; then
   sudo mkdir /var/www/html
   sudo mv -v /var/www/* /var/www/html/
   sudo chmod +x /var/www/html/index.php
-  sudo chmod +x /var/www/html/css/main.css  
+  sudo chmod +x /var/www/html/css/main.css
 fi
 
-# disable requirement for SSL for shellinaboxa 
+# disable requirement for SSL for shellinaboxa
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
 sudo sed -i '/SHELLINABOX_ARGS=/d' /etc/init.d/shellinabox
@@ -377,7 +377,7 @@ feedback "--> Set up noVNC"
 feedback "--> ======================================="
 feedback " "
 if  [ -z "$test_for_novnc" ]
-then 
+then
 
 
   cd /usr/local/share/
@@ -394,14 +394,14 @@ then
   VERSION=$(sed 's/\..*//' /etc/debian_version)
   # echo "Version: $VERSION"
   # setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
-  # Wheezy 
+  # Wheezy
   if [ $VERSION -eq '7' ]; then
     feedback "Version 7 found!  You have Wheezy!"
     cd /etc/init.d/
     sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
     sudo chmod 755 vncboot
     sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
-    sudo chmod 755 vncproxy 
+    sudo chmod 755 vncproxy
     # why default 98? I can't find what it's supposed to do - NP
     sudo update-rc.d vncproxy defaults 98
     sudo update-rc.d vncproxy defaults
@@ -422,7 +422,7 @@ then
       sudo rm novnc.service
       feedback "removing local copy of novnc.service"
     fi
-   
+
   	  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
   	  sudo mv novnc.service /etc/systemd/system/novnc.service
   	  sudo systemctl daemon-reload
@@ -463,7 +463,7 @@ feedback " "
 ########################################################################
 #sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
-# This pause is placed because we'll overrun the if statement below if we don't wait a few seconds. 
+# This pause is placed because we'll overrun the if statement below if we don't wait a few seconds.
 sleep 10
 
 ########################################################################
@@ -493,7 +493,7 @@ install_copypaste
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
 # sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/spivsspi/SpyVsSpy_install.sh
 
-# Remove Spy vs Spi 
+# Remove Spy vs Spi
 sudo bash $RASPBIAN_PATH/upd_script/spivsspi/SpyVsSpi_remove.sh
 
 # Install Backup
@@ -522,18 +522,18 @@ autodetect_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
-if [ ! -f /home/pi/cinch ]; then
-    echo "No Cinch Found."
-else
-    feedback "Found cinch, running Cinch install."
-    cd $RASPBIAN_PATH/upd_script/wifi
-    sudo ./cinch_setup.sh
-fi
+#if [ ! -f /home/pi/cinch ]; then
+#    echo "No Cinch Found."
+#else
+#    feedback "Found cinch, running Cinch install."
+#    cd $RASPBIAN_PATH/upd_script/wifi
+#    sudo ./cinch_setup.sh
+#fi
 
 feedback "--> Begin cleanup."
 # remove wx version 3.0 - which gets pulled in by various other libraries
 # it creates graphical issues in our Python GUI
-# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.  
+# sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.
 # echo "Purged wxpython tools"
 sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
 echo "Installed wxpython tools"
@@ -549,12 +549,12 @@ feedback "--> Update version on Desktop."
 #Finally, if everything installed correctly, update information in Version!
 
 ########################################################################
-## Mark the start time in the Version File of the update.  
+## Mark the start time in the Version File of the update.
 echo "End: `date`"  >>  $DEXTER_PATH/Version
 
 cd $DESKTOP_PATH
 rm Version			# Delete the older versions.
-rm version.desktop	# Delete the older version. 
+rm version.desktop	# Delete the older version.
 sudo cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH	# Copy the shortcut to the desktop
 sudo chmod +x $DESKTOP_PATH/version.desktop
 
