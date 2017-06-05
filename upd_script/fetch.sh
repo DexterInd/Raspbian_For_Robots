@@ -43,6 +43,7 @@ set_all_softlinks(){
     # transferred yet to ~/Dexter/lib/Dexter
     sudo python $RASPBIAN/auto_detect_robot.py
     set_softlink_for "GoPiGo"
+    set_softlink_for "GoPiGo3"
     set_softlink_for "GrovePi"
     set_softlink_for "BrickPi+"
     set_softlink_for "BrickPi3"
@@ -98,6 +99,11 @@ fi
 ###############################################
 
 if [ $gopigo_update == 1 ] ; then
+    # GoPiGo3 Update
+    feedback "--> Start GoPiGo3 Update."
+    feedback "##############################"
+    source $RASPBIAN/upd_script/fetch_gopigo3.sh
+    
     # GoPiGo Update
     feedback "--> Start GoPiGo Update."
     feedback "##############################"
