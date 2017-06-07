@@ -74,7 +74,8 @@ class MainPanel(wx.Panel):
         icon_sizer.Add(bitmap,0,wx.RIGHT|wx.LEFT|wx.EXPAND,50)
         
         # Troubleshoot the GoPiGo
-        if needed_robots.find("GoPiGo")!=-1:
+        # Need to find the string GoPiGo and NOT find the string "3"
+        if needed_robots.find("GoPiGo")!=-1 and needed_robots.find("3") == -1:
             gopigo_sizer = wx.BoxSizer(wx.HORIZONTAL)
             troubleshoot_gopigo = wx.Button(self, label="Troubleshoot GoPiGo")
             troubleshoot_gopigo.Bind(wx.EVT_BUTTON, self.troubleshoot_gopigo)
@@ -98,6 +99,19 @@ class MainPanel(wx.Panel):
             gopigo3_sizer.AddSpacer(20)
             gopigo3_sizer.Add(gopigo3_txt,1,wx.ALIGN_CENTER_VERTICAL)
             gopigo3_sizer.AddSpacer(50)
+        
+        # Demo the GoPiGo3
+        if needed_robots.find("GoPiGo3") != -1:
+            gopigo3_demo_sizer=wx.BoxSizer(wx.HORIZONTAL)
+            demo_gopigo3 = wx.Button(self, label="Demo GoPiGo3")
+            demo_gopigo3.Bind(wx.EVT_BUTTON, self.demo_gopigo3)
+            demo_gopigo3_txt=wx.StaticText(self, -1, "This button demonstrates the GoPiGo3 Hardware.")
+            demo_gopigo3_txt.Wrap(150)
+            gopigo3_demo_sizer.AddSpacer(50)
+            gopigo3_demo_sizer.Add(demo_gopigo3,1,wx.EXPAND)
+            gopigo3_demo_sizer.AddSpacer(20)
+            gopigo3_demo_sizer.Add(demo_gopigo3_txt,1,wx.ALIGN_CENTER_VERTICAL)
+            gopigo3_demo_sizer.AddSpacer(50)
         
         if needed_robots.find("GrovePi")!=-1:
             # Troubleshoot the GrovePi
@@ -136,9 +150,9 @@ class MainPanel(wx.Panel):
             brickpiP_sizer.AddSpacer(20)
             brickpiP_sizer.Add(brickpiP_txt,1,wx.ALIGN_CENTER_VERTICAL)
             brickpiP_sizer.AddSpacer(50)
-        
+         
         # Demo the GoPiGo
-        if needed_robots.find("GoPiGo") != -1:
+        if needed_robots.find("GoPiGo") != -1 and needed_robots.find("3") == -1:
             demo_sizer=wx.BoxSizer(wx.HORIZONTAL)
             demo_gopigo = wx.Button(self, label="Demo GoPiGo")
             demo_gopigo.Bind(wx.EVT_BUTTON, self.demo_gopigo)
@@ -165,7 +179,7 @@ class MainPanel(wx.Panel):
         caution_sizer.AddSpacer(50)
         
         vSizer.Add(icon_sizer,0,wx.SHAPED|wx.FIXED_MINSIZE)
-        if needed_robots.find("GoPiGo") != -1:
+        if needed_robots.find("GoPiGo") != -1 and needed_robots.find("3") == -1:
             vSizer.Add(gopigo_sizer,1,wx.EXPAND)
             vSizer.AddSpacer(20)
         if needed_robots.find("GoPiGo3") != -1:
@@ -180,8 +194,11 @@ class MainPanel(wx.Panel):
         if needed_robots.find("BrickPi+") != -1:
             vSizer.Add(brickpiP_sizer,1,wx.EXPAND)
             vSizer.AddSpacer(20)
-        if needed_robots.find("GoPiGo") != -1:
+        if needed_robots.find("GoPiGo") != -1 and needed_robots.find("3") == -1:
             vSizer.Add(demo_sizer,1,wx.EXPAND)
+            vSizer.AddSpacer(20)
+        if needed_robots.find("GoPiGo3") != -1:
+            vSizer.Add(gopigo3_demo_sizer,1,wx.EXPAND)
             vSizer.AddSpacer(20)
         
         vSizer.Add(exit_sizer,1,wx.EXPAND)
@@ -236,6 +253,30 @@ class MainPanel(wx.Panel):
             print "Start GoPiGo Demo!"
             # send_bash_command('sudo python /home/pi/Desktop/GoPiGo/Software/Python/other_scripts/demo.py')
             program = "sudo python /home/pi/Desktop/GoPiGo/Software/Python/hardware_test_2.py"
+            send_bash_command_in_background(program)
+            ran_dialog = True
+        else:
+            print "Cancel GoPiGo Demo!"
+        dlg.Destroy()
+        
+        # Depending on what the user chose, we either cancel or complete.
+        if ran_dialog:
+            dlg = wx.MessageDialog(self, 'Demo Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
+        else:
+            dlg = wx.MessageDialog(self, 'Demo Canceled', 'Canceled', wx.OK|wx.ICON_HAND)
+            dlg.ShowModal()
+            dlg.Destroy()
+    
+    ###############################################################################
+    def demo_gopigo3(self, event):
+        dlg = wx.MessageDialog(self, 'This Demo program will make sure everything is working on your GoPiGo3.  The LEDs on your GoPiGo3 will blink for one second, and the GoPiGo3 will move forward, and then backwards.  So make sure it is on the floor so it does not fall off the table! \n\nMake sure your batteries are connected to the GoPiGo, motors are connected, and it is turned on.  Be sure to unplug the power supply wall adapter from the GoPiGo3. It is best to be working through wifi, but if the GoPiGo3 is connected to your computer with a cable right now, turn it upside down for the demo.  \n\nClick OK to begin.', 'Demonstrate the GoPiGo', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+        ran_dialog = False
+        if dlg.ShowModal() == wx.ID_OK:
+            print "Start GoPiGo3 Demo!"
+            # send_bash_command('sudo python /home/pi/Desktop/GoPiGo/Software/Python/other_scripts/demo.py')
+            program = "sudo python /home/pi/Dexter/GoPiGo3/Software/Python/hardware_test.py"
             send_bash_command_in_background(program)
             ran_dialog = True
         else:
