@@ -39,11 +39,10 @@ set_softlink_for(){
 }
 
 set_all_softlinks(){
-    # use the file in Raspbian_For_Robots as it hasn't been
-    # transferred yet to ~/Dexter/lib/Dexter
-    sudo python $RASPBIAN/auto_detect_robot.py
-    set_softlink_for "GoPiGo"
+    # auto_detect_robot now in script_tools
+    sudo python /home/pi/Dexter/lib/Dexter/script_tools/auto_detect_robot.py
     set_softlink_for "GoPiGo3"
+    set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
     set_softlink_for "BrickPi+"
     set_softlink_for "BrickPi3"
