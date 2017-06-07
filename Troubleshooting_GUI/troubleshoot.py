@@ -276,7 +276,7 @@ class MainPanel(wx.Panel):
         if dlg.ShowModal() == wx.ID_OK:
             print "Start GoPiGo3 Demo!"
             # send_bash_command('sudo python /home/pi/Desktop/GoPiGo/Software/Python/other_scripts/demo.py')
-            program = "sudo python /home/pi/Desktop/GoPiGo3/Software/Python/Examples/GoPiGo3_Hardware_Demo.py"
+            program = "sudo python /home/pi/Dexter/GoPiGo3/Software/Python/hardware_test.py"
             send_bash_command_in_background(program)
             ran_dialog = True
         else:
