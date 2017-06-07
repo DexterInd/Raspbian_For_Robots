@@ -52,7 +52,9 @@ def detect():
 		print (detected_robots)
 		# handling it this way to cover the cases of 
 		# multiple robot detection
-		if detected_robots.find("GoPiGo")==0:
+		if needed_robots.find("GoPiGo3") != -1:
+			write_state("GoPiGo3")
+		elif detected_robots.find("GoPiGo") != -1 and needed_robots.find("3") == -1:
 			write_state("GoPiGo")
 		elif detected_robots.find("BrickPi3")==0:
 			write_state("BrickPi3")
@@ -165,7 +167,7 @@ class MainPanel(wx.Panel):
 		#firmware_box.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
 		#firmware_box.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
 		# Drop Boxes
-		controls = ['Choose your robot', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
+		controls = ['Choose your robot', 'GoPiGo3', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
 
 		# Select Platform.
 		folder = read_state()
@@ -227,7 +229,7 @@ class MainPanel(wx.Panel):
 	# This is the function called whenever the drop down box is called.
 	def robotDrop(self, event):
 		write_debug("robotDrop Selected.")
-		controls = ['dex', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
+		controls = ['dex', 'GoPiGo3', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
 		value = event.GetSelection()
 		print controls[value]
 		# position = 0					# Position in the key list on file
@@ -291,7 +293,10 @@ class MainPanel(wx.Panel):
 			dlg = wx.MessageDialog(self, 'Use the dropdown to select the hardware to update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
 			program = " "
 			show_dialog = False
-
+		elif folder == 'GoPiGo3':
+			program = "/home/pi/Dexter/GoPiGo3/Firmware/gopigo3_flash_firmware.sh"
+			dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+			show_dialog = True
 		elif folder == 'GoPiGo':
 			program = "/home/pi/di_update/Raspbian_For_Robots/upd_script/update_GoPiGo_Firmware.sh"
 			dlg = wx.MessageDialog(self, 'We will begin the firmware update.', 'Firmware Update', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
