@@ -25,11 +25,11 @@ set_softlink_for(){
     delete_folder "$PIHOME/$DESKTOP/$1"
     if file_exists $PIHOME/$DEXTER/detected_robot.txt
     then
-        if find_in_file "$1" $PIHOME/$DEXTER/detected_robot.txt
+        if find_in_file_strict "$1" $PIHOME/$DEXTER/detected_robot.txt
         then
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
         fi   
-        if find_in_file "None" $PIHOME/$DEXTER/detected_robot.txt
+        if find_in_file_strict "None" $PIHOME/$DEXTER/detected_robot.txt
         then
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
         fi   
@@ -62,35 +62,16 @@ set_all_softlinks(){
 ## Importing the source will not work if you run "sudo sh update_all.sh"
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
-###############################################
-## Install DI_Sensors
-###############################################
-SENSOR_DIR=$DEXTER_PATH/DI_Sensors
-if folder_exists "$SENSOR_DIR" ; then
-    echo "DI_Sensors Directory Exists"
-    cd $DEXTER_PATH/DI_Sensors  # Go to directory
-    sudo git fetch origin       # Hard reset the git files
-    sudo git reset --hard  
-    sudo git merge origin/master
-
-else
-    cd $DEXTER_PATH
-    git clone https://github.com/DexterInd/DI_Sensors
-    cd DI_Sensors
-    # change_branch $BRANCH  # change to a branch we're working on, if we've defined the branch above.
-fi
-
-sudo python $SENSOR_DIR/setup.py install
-
-
 robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
-if [ -f $robots_2_update ]  # if the file exists, read it and adjust according to its content
+if [ -f $robots_2_update ]  
+# if the file exists, read it and adjust according to its content
 then
     gopigo_update=0
     brickpi_update=0
     grovepi_update=0
     arduberry_update=0
-    pivotpi=0
+    sensors_update=0
+    pivotpi_update=0
     while read -r line 
         do
         echo "Text read from file: $line"
@@ -104,6 +85,8 @@ then
            arduberry_update=1
         elif [ "$line" == "PivotPi" ] ; then
            pivotpi_update=1
+        elif [ "$line" == "Sensors" ] ; then
+           sensors_update=1
         fi
     done < $robots_2_update 
 else # if the file doesn't exist, update everything
@@ -112,6 +95,7 @@ else # if the file doesn't exist, update everything
     grovepi_update=1
     arduberry_update=1
     pivotpi_update=1
+    sensors_update=1
 fi
 
 ###############################################
@@ -204,6 +188,26 @@ if [ $pivotpi_update == 1 ] ; then
     popd > /dev/null
 else
     echo "--> PivotPi **NOT** Updated"
+    echo "---------------------------"
+fi
+
+###############################################
+# SENSORS
+###############################################
+if [ $sensors_update == 1 ] ; then
+    feedback "--> Start DI Sensors Update."
+    feedback "-------------------------"
+    
+    pushd /home/pi > /dev/null
+
+    # if Dexter folder doesn't exist, then create it
+    create_folder $DEXTER
+    cd $DEXTER_PATH
+    source $RASPBIAN/upd_script/fetch_sensors.sh
+        
+    popd > /dev/null
+else
+    echo "--> Sensors **NOT** Updated"
     echo "---------------------------"
 fi
 
