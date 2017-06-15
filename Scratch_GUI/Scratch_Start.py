@@ -39,7 +39,7 @@ def write_debug(in_string):
 def write_state(in_string):
 	# in case of multiple robot detection (ie BrickPi3 & PivotPi)
 	# only take the first robot
-	robot = in_string.split("_")[0]
+	robot = in_string.split("-")[0]
 	if robot.find("BrickPi+") > -1 or robot.find("BrickPi3") > -1:
 		robot = "BrickPi"
 
