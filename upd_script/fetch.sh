@@ -25,11 +25,11 @@ set_softlink_for(){
     delete_folder "$PIHOME/$DESKTOP/$1"
     if file_exists $PIHOME/$DEXTER/detected_robot.txt
     then
-        if find_in_file "$1" $PIHOME/$DEXTER/detected_robot.txt
+        if find_in_file_strict "$1" $PIHOME/$DEXTER/detected_robot.txt
         then
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
         fi   
-        if find_in_file "None" $PIHOME/$DEXTER/detected_robot.txt
+        if find_in_file_strict "None" $PIHOME/$DEXTER/detected_robot.txt
         then
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
         fi   
@@ -39,11 +39,10 @@ set_softlink_for(){
 }
 
 set_all_softlinks(){
-    # use the file in Raspbian_For_Robots as it hasn't been
-    # transferred yet to ~/Dexter/lib/Dexter
-    sudo python $RASPBIAN/auto_detect_robot.py
-    set_softlink_for "GoPiGo"
+    # auto_detect_robot now in script_tools
+    sudo python /home/pi/Dexter/lib/Dexter/script_tools/auto_detect_robot.py
     set_softlink_for "GoPiGo3"
+    set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
     set_softlink_for "BrickPi+"
     set_softlink_for "BrickPi3"
@@ -64,13 +63,15 @@ set_all_softlinks(){
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
 robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
-if [ -f $robots_2_update ]  # if the file exists, read it and adjust according to its content
+if [ -f $robots_2_update ]  
+# if the file exists, read it and adjust according to its content
 then
     gopigo_update=0
     brickpi_update=0
     grovepi_update=0
     arduberry_update=0
-    pivotpi=0
+    sensors_update=0
+    pivotpi_update=0
     while read -r line 
         do
         echo "Text read from file: $line"
@@ -84,6 +85,8 @@ then
            arduberry_update=1
         elif [ "$line" == "PivotPi" ] ; then
            pivotpi_update=1
+        elif [ "$line" == "Sensors" ] ; then
+           sensors_update=1
         fi
     done < $robots_2_update 
 else # if the file doesn't exist, update everything
@@ -92,6 +95,7 @@ else # if the file doesn't exist, update everything
     grovepi_update=1
     arduberry_update=1
     pivotpi_update=1
+    sensors_update=1
 fi
 
 ###############################################
@@ -184,6 +188,26 @@ if [ $pivotpi_update == 1 ] ; then
     popd > /dev/null
 else
     echo "--> PivotPi **NOT** Updated"
+    echo "---------------------------"
+fi
+
+###############################################
+# SENSORS
+###############################################
+if [ $sensors_update == 1 ] ; then
+    feedback "--> Start DI Sensors Update."
+    feedback "-------------------------"
+    
+    pushd /home/pi > /dev/null
+
+    # if Dexter folder doesn't exist, then create it
+    create_folder $DEXTER
+    cd $DEXTER_PATH
+    source $RASPBIAN/upd_script/fetch_sensors.sh
+        
+    popd > /dev/null
+else
+    echo "--> Sensors **NOT** Updated"
     echo "---------------------------"
 fi
 

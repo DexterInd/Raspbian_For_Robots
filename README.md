@@ -59,9 +59,6 @@ The following ports are used or have the potential for being used:
 
 These scripts manage to update the Raspbian for Robots image.  These changes are all executed using the Update button on the LXE Desktop of the Raspberry Pi.  
 
-## Changes 2016-01-05
-* Updated Avahi network settings.
-* Updated IPV6 network settings.
 
 ## Cinch
 We've developed a new way to connect using Cinch!  This lets you use wifi to tether to your robot.

@@ -288,7 +288,7 @@ if __name__ == "__main__":
 	#write_state("GoPiGo")
 
 	# autodetect robot and pick the first one
-	detected_robot = autodetect().split("_")[0]
+	detected_robot = autodetect().split("-")[0]
 	print detected_robot
 	if detected_robot == "None":
 		write_state("GoPiGo")
