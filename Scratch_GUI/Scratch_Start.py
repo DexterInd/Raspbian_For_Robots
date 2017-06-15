@@ -39,7 +39,7 @@ def write_debug(in_string):
 def write_state(in_string):
 	# in case of multiple robot detection (ie BrickPi3 & PivotPi)
 	# only take the first robot
-	robot = in_string.split("_")[0]
+	robot = in_string.split("-")[0]
 	if robot.find("BrickPi+") > -1 or robot.find("BrickPi3") > -1:
 		robot = "BrickPi"
 
@@ -100,7 +100,11 @@ def kill_all_open_processes():
 			pid = int(line.split(None, 2)[1])
 			kill_line = "sudo kill " + str(pid)
 			send_bash_command(kill_line)
-
+		if 'GoPiGo3Scratch' in line:
+			print line
+			pid = int(line.split(None, 2)[1])
+			kill_line = "sudo kill " + str(pid)
+			send_bash_command(kill_line)
 		if 'GrovePiScratch' in line:
 			print line
 			pid = int(line.split(None, 2)[1])
@@ -283,7 +287,10 @@ class MainPanel(wx.Panel):
 			else: #BrickPi+, Kickstarter and Advanced,
 				program = "/home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/BrickPiScratch.py"
 		elif user_selection.find('GoPiGo') >= 0:
-			program = "/home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGoScratch.py"
+			if autodetect().find("GoPiGo3") >= 0:
+				program = "/home/pi/Dexter/GoPiGo3/Software/Scratch/GoPiGo3Scratch.py"
+			else:
+				program = "/home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGoScratch.py"
 		elif user_selection.find('PivotPi') >= 0:
 			program = "/home/pi/Dexter/PivotPi/Software/Scratch/PivotPiScratch.py"
 		else:
@@ -354,7 +361,9 @@ class MainPanel(wx.Panel):
 	def examples(self, event):
 		write_debug("Examples Pressed.")
 		# autodetect robots and pick the first one
-		folder = autodetect().split("_")[0]
+		folder = autodetect().split("-")[0]
+		if(folder == "GoPiGo3"):
+			directory = "nohup pcmanfm /home/pi/Dexter/GoPiGo3/Software/Scratch/Examples/"
 		if(folder == "GoPiGo"):
 			directory = "nohup pcmanfm /home/pi/Dexter/GoPiGo/Software/Scratch/Examples/"
 		if(folder == "GrovePi"):
@@ -409,7 +418,9 @@ class MainPanel(wx.Panel):
 				dlg = wx.MessageDialog(self, 'Test Canceled.', 'Canceled', wx.OK|wx.ICON_HAND)
 				dlg.ShowModal()
 				dlg.Destroy()
-
+		elif folder.find("GoPiGo3") >=0:
+			# TBD
+			pass
 		elif folder.find('GoPiGo') >= 0:
 			# Run GoPiGo Test.
 			dlg = wx.MessageDialog(self, 'This Demo program will make sure everything is working on your GoPiGo.  The red LEDs in the front of the GoPiGo will blink once, and the GoPiGo will move forward, and then backwards.  So make sure it is on the floor so it does not fall off the table! \n\nMake sure your batteries are connected to the GoPiGo, motors are connected, and it is turned on.  Be sure to unplug the power supply wall adapter from the GoPiGo. It is best to be working through wifi, but if the GoPiGo is connected to your computer with a cable right now, turn it upside down for the demo.  \n\nClick OK to begin.', 'Demonstrate the GoPiGo', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
