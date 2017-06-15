@@ -193,10 +193,9 @@ geany_setup(){
 
 autodetect_setup() {
   # copying the file where rc.local can get it and where it's visible
-  pushd $RASPBIAN_PATH > /dev/null
-  sudo cp $DEXTER_PATH/lib/Dexter/script_tools/auto_detect_robot.py $DEXTER_PATH/lib/$DEXTER/.
-  sudo chown -R pi:pi $DEXTER_PATH/lib/Dexter/script_tools/
-  sudo python $DEXTER_PATH/lib/Dexter/script_tools/autodetect_setup.py install
+  pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
+  sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
+  sudo python autodetect_setup.py install
   sudo rm -r build
   sudo rm -r dist
   sudo rm -r Dexter_AutoDetection.egg-info/
