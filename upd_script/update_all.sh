@@ -131,14 +131,13 @@ install_packages() {
   
   #####
   # Kernel Control - Make sure we're using a stable, working kernel version.
-  # Follow steps Here https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=79031 to control kernel version.
+  # Helpeful guide: https://github.com/Hexxeh/rpi-update#options
   # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
-  # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command.  Before updating the kernel check that
+  # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command in python.  Before updating the kernel check that
   # the new version works with this function in python.
   
   sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
-                                                            # Verify this with the command - uname -a
-
+                                                            # Verify you have the right firmware version with the command - uname -a
 }
 
 geany_setup(){
@@ -585,7 +584,7 @@ else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
-
+  
 unset_quiet_mode
 
 feedback "--> ======================================="
