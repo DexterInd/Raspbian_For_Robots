@@ -102,7 +102,8 @@ install_packages() {
   # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
   # espeak used to read text out loud
   # Oct 27th 2016: add raspberrypi-kernel for DirtyCow security issue
-  # Jun 18th 2017: remove raspberrypi-kernel  because it breaks I2C read_i2c_block_data() call in python.  
+  # Jun 18th 2017: remove raspberrypi-kernel  because it breaks I2C read_i2c_block_data() call in python using smbus.  
+  #         Possible solution to this problem in the future is http://abyz.co.uk/rpi/pigpio/python.html
   # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
   sudo apt-get install -y python3-serial python-serial i2c-tools  \
                           avahi-daemon avahi-utils \
@@ -121,13 +122,23 @@ install_packages() {
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
-
   # only available on Jessie
   # piclone used to make copies of the SD card;
   if [ ! $VERSION -eq '7' ]
   then
     sudo apt-get install piclone -y
   fi
+  
+  #####
+  # Kernel Control - Make sure we're using a stable, working kernel version.
+  # Follow steps Here https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=79031 to control kernel version.
+  # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
+  # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command.  Before updating the kernel check that
+  # the new version works with this function in python.
+  
+  sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
+                                                            # Verify this with the command - uname -a
+
 }
 
 geany_setup(){
