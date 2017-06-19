@@ -301,6 +301,8 @@ if __name__ == "__main__":
         write_state("GoPiGo")
     if detected_robot == "BrickPi3" or detected_robot == "BrickPi+":
         write_state("BrickPi")
+    if detected_robot == "GoPiGo3" or detected_robot == "GoPiGo":
+        write_state("GoPiGo")
     else:
         write_state(detected_robot)
     kill_all_open_processes()  # Kills all open squeak, Scratch programs.
