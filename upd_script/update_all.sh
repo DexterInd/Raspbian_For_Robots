@@ -103,6 +103,7 @@ install_packages() {
   # espeak used to read text out loud
   # Oct 27th 2016: add raspberrypi-kernel for DirtyCow security issue
   # Jun 18th 2017: remove raspberrypi-kernel  because it breaks I2C read_i2c_block_data() call in python using smbus.  
+  #         Issue was submitted on Github:  https://github.com/raspberrypi/firmware/issues/828
   #         Possible solution to this problem in the future is http://abyz.co.uk/rpi/pigpio/python.html
   # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
   sudo apt-get install -y python3-serial python-serial i2c-tools  \
