@@ -1,5 +1,5 @@
 #! /bin/bash
-# Copyright Dexter Industries, 2015.
+# Copyright Dexter Industries, 2017.
 # Install the Scratch GUI.
 # Dev Notes:
 # Helpful Link on Bin Paths:  http://www.cyberciti.biz/faq/how-do-i-find-the-path-to-a-command-file/
@@ -90,6 +90,10 @@ sudo ln -s /home/pi/Dexter/BrickPi3/Software/Scratch/Examples /usr/share/scratch
 # GoPiGo link
 sudo rm  /usr/share/scratch/Projects/GoPiGo 2> /dev/null
 sudo ln -s /home/pi/Dexter/GoPiGo/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo  2> /dev/null
+
+# GoPiGo3 link
+sudo rm  /usr/share/scratch/Projects/GoPiGo3 2> /dev/null
+sudo ln -s /home/pi/Dexter/GoPiGo3/Software/Scratch/Examples /usr/share/scratch/Projects/GoPiGo3  2> /dev/null
 
 # GrovePi Link
 sudo rm /usr/share/scratch/Projects/GrovePi 2> /dev/null
