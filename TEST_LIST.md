@@ -49,7 +49,7 @@ Robot Functional Testing:  Run the test with the hardware.
 - [ ] GoPiGo3: Test that `gopigo3_power.py` is running in the background when GoPiGo3 is attached.
 - [ ] GoPiGo3: Test that you can power on and off with the button.
 - [ ] GoPiGo3: Test line follower in python and scratch
-- [ ] GoPiGo3: Test Python light sensor example in python.
+- [ ] GoPiGo3: Test Python light sensor example in python and scratch
 - [ ] GoPiGo3: Test Python IR Remote sensor example in python.
 - [ ] GoPiGo3: Test Servo.py example
 - [ ] GoPiGo3: Test and Troubleshoot should detect GoPiGo3.
