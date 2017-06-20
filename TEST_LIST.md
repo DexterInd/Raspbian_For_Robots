@@ -26,7 +26,7 @@ Desktop Tests:  Run These Programs to Make Sure They Work
 - [ ] Run `ir_receiver_example.py` in /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs and press buttons on the remote and see if it works
 - [ ] Check that folders appear for the detected robot and non-relevant folders get removed
 - [ ] Connect a GoPiGo3 and PivotPi.  Do both folders appear on the Desktop?
-- [ ] Check Copy/Paste in VNC and noNVC.
+- [ ] Check Copy/Paste in VNC (NOT noNVC).
 - [ ] Check Geany is not run as root (try to edit a file in Dexter Python examples and you should be denied permission).
 
 Robot Functional Testing:  Run the test with the hardware.
