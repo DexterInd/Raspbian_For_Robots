@@ -274,6 +274,52 @@ advanced_comms(){
   cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop  
 }
 
+dead_wood() {
+    
+    #########################################
+    # Install All Python Scripts
+
+    #########################################
+    if [ $brickpi_update=1 ] ; then
+        # BrickPi Python Installation
+        cd /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/
+        sudo python setup.py install --record files.txt
+
+        # This will cause all the installed files to be printed to that directory.
+        # Remove the files.txt
+
+        sudo cat files.txt | xargs sudo rm -rf
+        sudo rm files.txt
+        sudo python setup.py install
+    fi # end second brickpi conditional test
+
+    ##########################################
+    #GoPiGo Python Installation
+    if [ $gopigo_update=1 ] ; then
+        echo "Installing GoPiGo Libraries from Fetch"
+        cd /home/pi/Dexter/GoPiGo/Software/Python/
+        sudo python setup.py install --record files.txt
+        sudo cat files.txt | xargs sudo rm -rf
+        sudo rm files.txt
+        sudo python setup.py install
+    fi # end second gopigo conditional test
+
+
+    ##########################################
+    # GoPiGo Line Follower Installation
+    # TBA
+
+    #########################################
+    #  GrovePi
+    if [ $grovepi_update=1 ] ; then
+        cd /home/pi/Dexter/GrovePi/Software/Python/
+        sudo python setup.py install --record files.txt
+        sudo cat files.txt | xargs sudo rm -rf
+        sudo rm files.txt
+        sudo python setup.py install
+    fi
+}
+
 ###############################################
 #
 # MAIN
@@ -305,50 +351,9 @@ delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
 
+dead_wood
 
 
-#########################################
-# Install All Python Scripts
-
-#########################################
-if [ $brickpi_update=1 ] ; then
-    # BrickPi Python Installation
-    cd /home/pi/Dexter/BrickPi+/Software/BrickPi_Python/
-    sudo python setup.py install --record files.txt
-
-    # This will cause all the installed files to be printed to that directory.
-    # Remove the files.txt
-
-    sudo cat files.txt | xargs sudo rm -rf
-    sudo rm files.txt
-    sudo python setup.py install
-fi # end second brickpi conditional test
-
-##########################################
-#GoPiGo Python Installation
-if [ $gopigo_update=1 ] ; then
-    echo "Installing GoPiGo Libraries from Fetch"
-    cd /home/pi/Dexter/GoPiGo/Software/Python/
-    sudo python setup.py install --record files.txt
-    sudo cat files.txt | xargs sudo rm -rf
-    sudo rm files.txt
-    sudo python setup.py install
-fi # end second gopigo conditional test
-
-
-##########################################
-# GoPiGo Line Follower Installation
-# TBA
-
-#########################################
-#  GrovePi
-if [ $grovepi_update=1 ] ; then
-    cd /home/pi/Dexter/GrovePi/Software/Python/
-    sudo python setup.py install --record files.txt
-    sudo cat files.txt | xargs sudo rm -rf
-    sudo rm files.txt
-    sudo python setup.py install
-fi
 
 echo "--> Done updating Dexter Industries Github repos!"
 
