@@ -22,13 +22,12 @@ Desktop Tests:  Run These Programs to Make Sure They Work
 =====================================
 - [ ] Line Follower Calibration - verify files are saved in /home/pi/Dexter
 - [ ] Run Backup Files
-- [ ] Run IR Receiver Setup
 - [ ] Enable the IR receiver from *Advanced Communications Options* on the desktop and reboot
 - [ ] Connect the IR receiver to the Serial port on the GoPiGo
 - [ ] Run `sudo monit status` and check if di_ir_reader is running
 - [ ] Run `ir_receiver_example.py` in /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs and press buttons on the remote and see if it works
-- [ ] Run `GoPiGo_IR_Remote_Example.sb` for the IR receiver for scratch with GoPiGo
 - [ ] Check that folders appear for the detected robot and non-relevant folders get removed
+- [ ] Connect a GoPiGo3 and PivotPi.  Do both folders appear on the Desktop?
 - [ ] Check that SpyVsPis is removed
 - [ ] Check Copy/Paste in VNC and noNVC
 - [ ] Check Geany is not run as root
@@ -43,14 +42,18 @@ Robot Functional Testing:  Run the test with the hardware.
 - [ ] GoPiGo: Run the test program from the Desktop GUI.
 - [ ] GoPiGo: Run Scratch Example Program
 - [ ] GoPiGo: Create new Scratch Program - example: broadcast forward
-- [ ] GoPiGo: Test line follower in python and scratch
+- [ ] GoPiGo: Test line follower in python
 - [ ] GoPiGo: Test and Troubleshoot should detect GoPiGo2
-- [ ] GoPiGo3: Run the hardware test - ~/Dexter/GoPiGo3/Software/Python/Examples/Read_Info.py
+- [ ] GoPiGo: Run Scratch Example - IR Sensor
+- [ ] GoPiGo: Run Scratch Example - 
+- [ ] GoPiGo3: Run the hardware test - `~/Dexter/GoPiGo3/Software/Python/Examples/Read_Info.py`
 - [ ] GoPiGo3: Run a Python Example
-- [ ] GoPiGo3: Run a  Scratch Example
+- [ ] GoPiGo3: Run Scratch Example
 - [ ] GoPiGo3: Test that `gopigo3_power.py` is running in the background when GoPiGo3 is attached.
 - [ ] GoPiGo3: Test that you can power on and off with the button.
 - [ ] GoPiGo3: Test line follower in python and scratch
+- [ ] GoPiGo3: Test Python light sensor example in python.
+- [ ] GoPiGo3: Test Python IR Remote sensor example in python.
 - [ ] GoPiGo3: Test and Troubleshoot should detect GoPiGo3
 - [ ] BrickPi3: Run the BrickPi3 Test - BrickPi3/Software/Python/Examples/Read_Info.py
 - [ ] BrickPi3: Run Scratch Example Program
