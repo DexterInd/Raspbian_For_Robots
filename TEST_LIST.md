@@ -4,7 +4,7 @@ This is testing for Raspbian for Robots.
 
 General Tests:  Run and Check for Errors
 =====================================
-- [ ] Is Minecraft Installed?
+- [ ] Is Minecraft Installed?  `minecraft-pi`
 - [ ] Does it fit on a 4Gig Sandisk SD card? 
 - [ ] Shellinabox - Login and test. 
 - [ ] noVNC - Login and test.
@@ -39,13 +39,15 @@ Robot Functional Testing:  Run the test with the hardware.
 - [ ] GrovePi: Update the firmware of the GrovePi and GoPiGo to test AVRDude
 - [ ] GrovePi: Run Scratch Example Program
 - [ ] GrovePi: Create new Scratch program
+- [ ] GoPiGo: Test Desktop Control Panel
 - [ ] GoPiGo: Run the test program from the Desktop GUI.
 - [ ] GoPiGo: Run Scratch Example Program
 - [ ] GoPiGo: Create new Scratch Program - example: broadcast forward
 - [ ] GoPiGo: Test line follower in python
 - [ ] GoPiGo: Test and Troubleshoot should detect GoPiGo2
 - [ ] GoPiGo: Run Scratch Example - IR Sensor
-- [ ] GoPiGo: Run Scratch Example - 
+- [ ] GoPiGo3: Test Desktop Control Panel
+- [ ] GoPiGo3: Update the Firmware from the Desktop
 - [ ] GoPiGo3: Run the hardware test - `~/Dexter/GoPiGo3/Software/Python/Examples/Read_Info.py`
 - [ ] GoPiGo3: Run a Python Example
 - [ ] GoPiGo3: Run Scratch Example
