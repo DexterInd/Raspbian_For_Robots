@@ -14,7 +14,6 @@ General Tests:  Run and Check for Errors
 - [ ] Test change the hostname.
 - [ ] Run as headless on a network.
 - [ ] Run with an HDMI monitor, USB keyboard, USB mouse.
-- [ ] Boot on the Pi B+
 - [ ] Boot on the Pi 2
 - [ ] Boot on the Pi 3
 
@@ -24,14 +23,13 @@ Desktop Tests:  Run These Programs to Make Sure They Work
 - [ ] Run Backup Files
 - [ ] Enable the IR receiver from *Advanced Communications Options* on the desktop and reboot
 - [ ] Connect the IR receiver to the Serial port on the GoPiGo
-- [ ] Run `sudo monit status` and check if di_ir_reader is running
+- [ ] Run `sudo monit status` and check if Process `di_ir_reader` is running
 - [ ] Run `ir_receiver_example.py` in /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs and press buttons on the remote and see if it works
 - [ ] Check that folders appear for the detected robot and non-relevant folders get removed
 - [ ] Connect a GoPiGo3 and PivotPi.  Do both folders appear on the Desktop?
 - [ ] Check that SpyVsPis is removed
 - [ ] Check Copy/Paste in VNC and noNVC
-- [ ] Check Geany is not run as root
-- [ ] Check Geany does not give write access to the Dexter Python examples
+- [ ] Check Geany is not run as root (try to edit a file in Dexter Python examples and you should be denied permission)
 
 Robot Functional Testing:  Run the test with the hardware.
 =====================================
@@ -40,11 +38,10 @@ Robot Functional Testing:  Run the test with the hardware.
 - [ ] GrovePi: Run Scratch Example Program
 - [ ] GrovePi: Create new Scratch program
 - [ ] GoPiGo: Test Desktop Control Panel
-- [ ] GoPiGo: Run the test program from the Desktop GUI.
 - [ ] GoPiGo: Run Scratch Example Program
 - [ ] GoPiGo: Create new Scratch Program - example: broadcast forward
 - [ ] GoPiGo: Test line follower in python
-- [ ] GoPiGo: Test and Troubleshoot should detect GoPiGo2
+- [ ] GoPiGo: Test and Troubleshoot should detect GoPiGo2.  Run Test and Demo.
 - [ ] GoPiGo: Run Scratch Example - IR Sensor
 - [ ] GoPiGo3: Test Desktop Control Panel
 - [ ] GoPiGo3: Update the Firmware from the Desktop
@@ -56,6 +53,7 @@ Robot Functional Testing:  Run the test with the hardware.
 - [ ] GoPiGo3: Test line follower in python and scratch
 - [ ] GoPiGo3: Test Python light sensor example in python.
 - [ ] GoPiGo3: Test Python IR Remote sensor example in python.
+- [ ] GoPiGo3: Test Servo.py example
 - [ ] GoPiGo3: Test and Troubleshoot should detect GoPiGo3
 - [ ] BrickPi3: Run the BrickPi3 Test - BrickPi3/Software/Python/Examples/Read_Info.py
 - [ ] BrickPi3: Run Scratch Example Program
@@ -74,7 +72,7 @@ Branding and Cleanup:
 - [ ] Is the Desktop Version updated?  Is the date current?
 - [ ] Are the serial lines on by default?
 - [ ] Is the camera enabled?  Run `sudo raspistill -o 1.jpg`
-- [ ] Is the recovery script in /home/pi directory there?
+- [ ] Is the recovery script in place at ~/update_backup.sh ?
 
 Publishing Tasks for Raspbian for Robots
 =====================================
