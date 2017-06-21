@@ -228,8 +228,8 @@ class MainPanel(wx.Panel):
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             print "Start GoPiGo Test!"
-            send_bash_command('sudo chmod +x /home/pi/Desktop/GoPiGo/Troubleshooting/all_tests.sh')
-            send_bash_command('sudo bash /home/pi/Desktop/GoPiGo/Troubleshooting/all_tests.sh')
+            send_bash_command('sudo chmod +x /home/pi/Dexter/GoPiGo/Troubleshooting/all_tests.sh')
+            send_bash_command('sudo bash /home/pi/Dexter/GoPiGo/Troubleshooting/all_tests.sh')
             ran_dialog = True
         else:
             print "Cancel GoPiGo Test!"
@@ -251,8 +251,7 @@ class MainPanel(wx.Panel):
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             print "Start GoPiGo Demo!"
-            # send_bash_command('sudo python /home/pi/Desktop/GoPiGo/Software/Python/other_scripts/demo.py')
-            program = "sudo python /home/pi/Desktop/GoPiGo/Software/Python/hardware_test_2.py"
+            program = "sudo python /home/pi/Dexter/GoPiGo/Software/Python/hardware_test_2.py"
             send_bash_command_in_background(program)
             ran_dialog = True
         else:
@@ -275,7 +274,6 @@ class MainPanel(wx.Panel):
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             print "Start GoPiGo3 Demo!"
-            # send_bash_command('sudo python /home/pi/Desktop/GoPiGo/Software/Python/other_scripts/demo.py')
             program = "sudo python /home/pi/Dexter/GoPiGo3/Software/Python/hardware_test.py"
             send_bash_command_in_background(program)
             ran_dialog = True
@@ -345,8 +343,8 @@ class MainPanel(wx.Panel):
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             print "Running GrovePi Tests!"
-            send_bash_command('sudo chmod +x /home/pi/Desktop/GrovePi/Troubleshooting/all_tests.sh')
-            send_bash_command('sudo bash /home/pi/Desktop/GrovePi/Troubleshooting/all_tests.sh')
+            send_bash_command('sudo chmod +x /home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh')
+            send_bash_command('sudo bash /home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh')
             ran_dialog = True
         else:
             print "Cancel GrovePi Tests!"

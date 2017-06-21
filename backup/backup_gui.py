@@ -18,9 +18,6 @@ import threading
 import psutil
 import signal
 
-
-
-#	This program runs various update programs for Raspbian for Robots, from Dexter Industries.
 #	See more about Dexter Industries at http://www.dexterindustries.com
 '''
 
