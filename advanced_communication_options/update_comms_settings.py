@@ -48,7 +48,23 @@ def replace_in_file(filename,replace_from,replace_to):
 	f.close()
 
 def disable_ir_setting():
-	send_command("sudo rm /etc/monit/conf.d/gobox_ir_receiver_monit.conf")
+	is_service_active = send_command("systemctl is-active ir-server.service")
+	is_service_enabled = send_command("systemctl is-enabled ir-server.service")
+
+	if debug:
+		print("[disable_ir_setting()][is service active = {}]".format(is_service_active))
+		print("[disable_ir_setting()][is service enabled = {}]".format(is_service_enabled))
+
+	if is_service_active == "active":
+		send_command("sudo systemctl stop ir-server.service")
+		if debug:
+			print("[disable_ir_setting()][sent command to stop ir-server.service]")
+
+	if is_service_enabled == "enabled":
+		send_command("sudo systemctl disable ir-server.service")
+		if debug:
+			print("[disable_ir_setting()][sent command to disable ir-server.service]")
+
 	if check_ir_setting()==True:
 		if debug:
 			print "Disabling IR"
@@ -62,7 +78,23 @@ def disable_ir_setting():
 			print "IR already disabled"
 
 def enable_ir_setting():
-	send_command("sudo cp /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/gobox_ir_receiver_monit.conf /etc/monit/conf.d")
+	is_service_active = send_command("systemctl is-active ir-server.service")
+	is_service_enabled = send_command("systemctl is-enabled ir-server.service")
+
+	if debug:
+		print("[enable_ir_setting()][is service active = {}]".format(is_service_active))
+		print("[enable_ir_setting()][is service enabled = {}]".format(is_service_enabled))
+
+	if not is_service_active == "active":
+		send_command("sudo systemctl start ir-server.service")
+		if debug:
+			print("[enable_ir_setting()][sent command to start ir-server.service]")
+
+	if not is_service_enabled == "enabled":
+		send_command("sudo systemctl enable ir-server.service")
+		if debug:
+			print("[enable_ir_setting()][sent command to enable ir-server.service]")
+
 	if 'lirc_dev' in open('/etc/modules').read():
 		if debug:
 			print "lirc_dev already in /etc/modules"
