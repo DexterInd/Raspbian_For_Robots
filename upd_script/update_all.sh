@@ -98,11 +98,13 @@ install_packages() {
   # merge all the install lines into one, as each call to apt-get install
   # takes a while to build the dependency tree
 
-
   # geany wasn't always installed by default on Wheezy or Jessie
   # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
   # espeak used to read text out loud
   # Oct 27th 2016: add raspberrypi-kernel for DirtyCow security issue
+  # Jun 18th 2017: remove raspberrypi-kernel  because it breaks I2C read_i2c_block_data() call in python using smbus.  
+  #         Issue was submitted on Github:  https://github.com/raspberrypi/firmware/issues/828
+  #         Possible solution to this problem in the future is http://abyz.co.uk/rpi/pigpio/python.html
   # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
   sudo apt-get install -y python3-serial python-serial i2c-tools  \
                           avahi-daemon avahi-utils \
@@ -110,18 +112,16 @@ install_packages() {
                           python-rpi.gpio python3-rpi.gpio \
                           python-picamera python3-picamera \
                           python-smbus python3-smbus \
-                          raspberrypi-kernel python-setuptools \
+                          python-setuptools \
                           geany espeak autocutsel \
                           raspberrypi-net-mods \
                           shellinabox screen
 
   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 
-
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
-
 
   # only available on Jessie
   # piclone used to make copies of the SD card;
@@ -129,6 +129,16 @@ install_packages() {
   then
     sudo apt-get install piclone -y
   fi
+  
+  #####
+  # Kernel Control - Make sure we're using a stable, working kernel version.
+  # Helpeful guide: https://github.com/Hexxeh/rpi-update#options
+  # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
+  # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command in python.  Before updating the kernel check that
+  # the new version works with this function in python.
+  
+  sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
+                                                            # Verify you have the right firmware version with the command - uname -a
 }
 
 geany_setup(){
@@ -575,7 +585,7 @@ else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
-
+  
 unset_quiet_mode
 
 feedback "--> ======================================="
