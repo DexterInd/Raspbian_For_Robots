@@ -52,8 +52,8 @@ def disable_ir_setting():
 	# disabling the ir-server service
 
 	# get service status using sytemctl
-	is_service_active = send_command("systemctl is-active ir-server.service")
-	is_service_enabled = send_command("systemctl is-enabled ir-server.service")
+	is_service_active = send_command("systemctl is-active ir-server.service").rstrip()
+	is_service_enabled = send_command("systemctl is-enabled ir-server.service").rstrip()
 
 
 	# display service's short-status summary when debug mode is set
@@ -103,8 +103,8 @@ def enable_ir_setting():
 	send_command("sudo systemctl daemon-reload")
 
 	# get service status using sytemctl
-	is_service_enabled = send_command("systemctl is-enabled ir-server.service")
-	is_service_active = send_command("systemctl is-active ir-server.service")
+	is_service_enabled = send_command("systemctl is-enabled ir-server.service").rstrip()
+	is_service_active = send_command("systemctl is-active ir-server.service").rstrip()
 
 
 	# display service's short-status summary when debug mode is set
