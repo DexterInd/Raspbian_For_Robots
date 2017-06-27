@@ -22,7 +22,7 @@ Desktop Tests:  Run These Programs to Make Sure They Work
 - [ ] Backup Files
 - [ ] Enable the IR receiver from *Advanced Communications Options* on the desktop and reboot
 - [ ] Connect the IR receiver to the Serial port on the GoPiGo
-- [ ] Run `sudo monit status` and check if Process `di_ir_reader` is running
+- [ ] Run `sudo systemctl status ir-server.service` and check if IR server is running
 - [ ] Run `ir_receiver_example.py` in /home/pi/Desktop/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs and press buttons on the remote and see if it works
 - [ ] Check that folders appear for the detected robot and non-relevant folders get removed
 - [ ] Connect a GoPiGo3 and PivotPi.  Do both folders appear on the Desktop?
