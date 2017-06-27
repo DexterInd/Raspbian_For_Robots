@@ -64,7 +64,7 @@ These scripts manage to update the Raspbian for Robots image.  These changes are
 We've developed a new way to connect using Cinch!  This lets you use wifi to tether to your robot.
 
 ## Testing
-On each publication, we run [these tests](https://github.com/DexterInd/Utilities/blob/master/Raspbian_For_Robots_Testing/README.md) on a burned image to test it.
+On each publication, we run [these tests](https://github.com/DexterInd/Raspbian_For_Robots/blob/master/TEST_LIST.md) on a burned image to test it.
 
 
 ## License

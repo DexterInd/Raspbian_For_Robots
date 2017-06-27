@@ -75,8 +75,6 @@ fi
 
 echo $VERSION
 
-
-
 #set to 1 to work around OLPC bug #8008
 export SQUEAK_FAKEBIGCURSOR=0
 
@@ -170,9 +168,9 @@ if [ -n "$DOCUMENT" ]; then
 	echo "$DOCUMENT"
 	sudo python $SCRATCH_PATH/click_scratch.py
 else
-
-	DOCUMENT="$SCRATCH_PATH/new.sb"
-	sudo python $SCRATCH_PATH/click_scratch.py
+    echo "Document not found and not called."
+    DOCUMENT="$SCRATCH_PATH/new.sb"
+    sudo python $SCRATCH_PATH/click_scratch.py
 fi
 
 ## Now, if we are running Jessie, we need to move everything
