@@ -315,6 +315,7 @@ sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 feedback "--> Enable LRC Infrared Control on Pi."
 feedback "--> ======================================="
 feedback " "
+sudo apt-get remove monit --yes # legacy service manager that is no longer required - systemd is the alternative
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
 sudo chmod +x $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
