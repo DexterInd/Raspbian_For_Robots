@@ -25,4 +25,8 @@ else
     # change_branch $BRANCH  # change to a branch we're working on, if we've defined the branch above.
 fi
 
-sudo python $SENSOR_DIR/setup.py install
+sudo python $SENSOR_DIR/Python/setup.py install
+sudo python3 $SENSOR_DIR/Python/setup.py install
+
+sudo python $SENSOR_DIR/Python/di_sensors/DHT_Sensor/setup.py install
+sudo python3 $SENSOR_DIR/Python/di_sensors/DHT_Sensor/setup.py install
