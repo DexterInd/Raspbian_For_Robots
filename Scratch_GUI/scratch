@@ -166,11 +166,11 @@ sudo rm $SCRATCH_PATH/open_scratch.tmp
 if [ -n "$DOCUMENT" ]; then
 	echo "Document found and called."
 	echo "$DOCUMENT"
-	sudo python $SCRATCH_PATH/click_scratch.py
+	sudo -E python $SCRATCH_PATH/click_scratch.py
 else
     echo "Document not found and not called."
     DOCUMENT="$SCRATCH_PATH/new.sb"
-    sudo python $SCRATCH_PATH/click_scratch.py
+    sudo -E python $SCRATCH_PATH/click_scratch.py
 fi
 
 ## Now, if we are running Jessie, we need to move everything
