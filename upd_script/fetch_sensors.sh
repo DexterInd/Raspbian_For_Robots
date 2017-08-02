@@ -15,7 +15,7 @@ if folder_exists "$SENSOR_DIR" ; then
     echo "DI_Sensors Directory Exists"
     cd $DEXTER_PATH/DI_Sensors  # Go to directory
     sudo git fetch origin       # Hard reset the git files
-    sudo git reset --hard  
+    sudo git reset --hard
     sudo git merge origin/master
 
 else
@@ -25,8 +25,12 @@ else
     # change_branch $BRANCH  # change to a branch we're working on, if we've defined the branch above.
 fi
 
-sudo python $SENSOR_DIR/Python/setup.py install
-sudo python3 $SENSOR_DIR/Python/setup.py install
+cd $SENSOR_DIR/Python
 
-sudo python $SENSOR_DIR/Python/di_sensors/DHT_Sensor/setup.py install
-sudo python3 $SENSOR_DIR/Python/di_sensors/DHT_Sensor/setup.py install
+sudo python setup.py install
+sudo python3 setup.py install
+
+cd $SENSOR_DIR/Python/di_sensors/DHT_Sensor
+
+sudo python setup.py install
+sudo python3 setup.py install
