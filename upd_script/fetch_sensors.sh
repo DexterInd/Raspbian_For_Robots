@@ -13,24 +13,25 @@ source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 SENSOR_DIR=$DEXTER_PATH/DI_Sensors
 if folder_exists "$SENSOR_DIR" ; then
     echo "DI_Sensors Directory Exists"
-    cd $DEXTER_PATH/DI_Sensors  # Go to directory
+    pushd $DEXTER_PATH/DI_Sensors  # Go to directory
     sudo git fetch origin       # Hard reset the git files
     sudo git reset --hard
     sudo git merge origin/master
+    popd
 
 else
-    cd $DEXTER_PATH
+    pushd $DEXTER_PATH
     git clone https://github.com/DexterInd/DI_Sensors
-    cd DI_Sensors
-    # change_branch $BRANCH  # change to a branch we're working on, if we've defined the branch above.
+    popd
+
 fi
 
-cd $SENSOR_DIR/Python
-
+pushd $SENSOR_DIR/Python
 sudo python setup.py install
 sudo python3 setup.py install
+popd
 
-cd $SENSOR_DIR/Python/di_sensors/DHT_Sensor
-
+pushd $SENSOR_DIR/Python/di_sensors/DHT_Sensor
 sudo python setup.py install
 sudo python3 setup.py install
+popd
