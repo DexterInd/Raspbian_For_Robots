@@ -330,10 +330,12 @@ sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 feedback "--> Enable LRC Infrared Control on Pi."
 feedback "--> ======================================="
 feedback " "
-sudo apt-get remove monit --yes # legacy service manager that is no longer required - systemd is the alternative
-sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/script/ir_install.sh
-sudo chmod +x $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
-sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/gobox_ir_receiver_libs/install.sh
+# legacy service manager that is no longer required - systemd is the alternative
+sudo apt-get remove monit --yes 
+
+sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/lirc/install.sh
+
+sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/server/install.sh
 
 # Update background image - Change to dilogo.png
 # These commands don't work:  sudo rm /etc/alternatives/desktop-background  ;;  sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo.jpg /etc/alternatives/

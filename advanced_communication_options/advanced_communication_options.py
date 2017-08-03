@@ -82,9 +82,13 @@ class line_sensor_app(wx.Frame):
             return ("IR Receiver "+ ("Enabled" if update_comms_settings.check_ir_setting() else "Disabled"))
 
     def update_labels(self):
-        self.label_blt.SetLabel(self.current_status("blt"))
-        self.label_uart.SetLabel(self.current_status("UART"))
-        self.label_ir.SetLabel(self.current_status("ir"))
+        # in some cases the bluetooth option is not there
+        try:
+            self.label_uart.SetLabel(self.current_status("UART"))
+            self.label_ir.SetLabel(self.current_status("ir"))
+            self.label_blt.SetLabel(self.current_status("blt"))
+        except:
+            pass
 
     def enable_ir_receiver_button_OnClick(self,event):
         dlg = wx.MessageDialog(self, 'Enabling IR Receiver', ' ', wx.OK|wx.ICON_INFORMATION)
