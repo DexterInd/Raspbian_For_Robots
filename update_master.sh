@@ -41,7 +41,7 @@ if [ -d /home/pi/di_update ] ; then
 	sudo rm -r /home/pi/di_update
 fi
 
-# Make the directory again.  Clone into it.  
+# Make the directory again.  Clone into it.
 mkdir /home/pi/di_update
 cd /home/pi/di_update
 sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
@@ -109,7 +109,7 @@ NOW=$(date +%m-%d-%Y-%H%M%S)
 LOG_FILE="/home/pi/di_update/log_output.$NOW.txt"
 
 # Start raspbian_for_robots_update.py
-# This is the GUI that will let you choose to: 
+# This is the GUI that will let you choose to:
 # 	1. OS Update
 #	2. DI Software Update
 #	3. DI Hardware Update
@@ -118,7 +118,7 @@ echo "START UPDATE GUI."
 echo "=============================="
 # sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
 today=`date '+%Y_%m_%d__%H_%M_%S'`;
-filename="/home/pi/Desktop/Dexter_Software_Update_log_$today.txt" 
+filename="/home/pi/Desktop/Dexter_Software_Update_log_$today.txt"
 script -c 'sudo python /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py 2>&1' -f $filename
 delete_file /home/pi/index.html*
 
