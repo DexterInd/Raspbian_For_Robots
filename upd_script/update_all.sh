@@ -102,7 +102,7 @@ install_packages() {
   # autocutsel used for sharing the copy/paste clipboard between VNC and host computer
   # espeak used to read text out loud
   # Oct 27th 2016: add raspberrypi-kernel for DirtyCow security issue
-  # Jun 18th 2017: remove raspberrypi-kernel  because it breaks I2C read_i2c_block_data() call in python using smbus.  
+  # Jun 18th 2017: remove raspberrypi-kernel  because it breaks I2C read_i2c_block_data() call in python using smbus.
   #         Issue was submitted on Github:  https://github.com/raspberrypi/firmware/issues/828
   #         Possible solution to this problem in the future is http://abyz.co.uk/rpi/pigpio/python.html
   # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
@@ -129,16 +129,21 @@ install_packages() {
   then
     sudo apt-get install piclone -y
   fi
-  
+
   #####
   # Kernel Control - Make sure we're using a stable, working kernel version.
   # Helpeful guide: https://github.com/Hexxeh/rpi-update#options
   # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
   # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command in python.  Before updating the kernel check that
   # the new version works with this function in python.
-  
-  sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
-                                                            # Verify you have the right firmware version with the command - uname -a
+  if [ ! $VERSION -eq '7' ]
+  then
+
+       sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
+                                                                 # Verify you have the right firmware version with the command - uname -a
+  else
+       sudo apt-get install -y raspberrypi-kernel
+  fi
 }
 
 geany_setup(){
@@ -221,6 +226,20 @@ handle_version
 
 feedback "--> Begin Update."
 feedback "--> ======================================="
+
+# echo "Version: $VERSION"
+if [ $VERSION -eq '7' ]; then
+  feedback "Version 7 found!  You have Wheezy!"
+  feedback "Wheezy is no longer supported by the Raspberry Pi Foundation."
+  feedback "To update, you must download a new version of Raspbian for Robots."
+  feedback "You can find directions on downloading and updating your SD Card here: "
+  feedback "https://www.dexterindustries.com/howto/install-raspbian-for-robots-image-on-an-sd-card/"
+  exit 1
+elif [ $VERSION -eq '8' ]; then
+  feedback "Version 8 found!  You have Jessie!"
+  # If we found Jesse, the proper location of the html files is in
+fi
+
 install_packages
 
 sudo adduser pi i2c
@@ -325,8 +344,11 @@ sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 feedback "--> Enable LRC Infrared Control on Pi."
 feedback "--> ======================================="
 feedback " "
+# legacy service manager that is no longer required - systemd is the alternative
+sudo apt-get remove monit --yes
+
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/lirc/install.sh
-sudo chmod +x $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/server/install.sh
+
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/server/install.sh
 
 # Update background image - Change to dilogo.png
@@ -585,7 +607,7 @@ else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
-  
+
 unset_quiet_mode
 
 feedback "--> ======================================="

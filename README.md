@@ -16,6 +16,22 @@ If all this looks too complicated, don't fear!  You can [download a pre-configur
 
 We have detailed step by step instructions on how to [install this image onto an SD Card here.](http://www.dexterindustries.com/howto/raspberry-pi-tutorials/install-raspbian-for-robots-image-on-an-sd-card/)
 
+## Quick Install - instead of burning the image
+In order to create a `Raspbian For Robots` from a pure `Jessie` image, open up a terminal in a GUI instantiated environment (the Desktop) and type the following command:
+```
+sudo curl -L dexterindustries.com/update_r4r | bash
+```
+The same command can be used for updating all the repositories that are found under the "umbrella" of `Raspbian For Robots`:
+
+* https://github.com/DexterInd/Arduberry
+* https://github.com/DexterInd/BrickPi
+* https://github.com/DexterInd/BrickPi3
+* https://github.com/DexterInd/DI_Sensors
+* https://github.com/DexterInd/GoPiGo
+* https://github.com/DexterInd/GoPiGo3
+* https://github.com/DexterInd/GrovePi
+* https://github.com/DexterInd/PivotPi
+
 ## Features
 
 * Default hostname is dex.  Default user is pi.  The default password is robots1234.  VNC password is robots1234.
