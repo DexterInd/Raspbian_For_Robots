@@ -20,7 +20,7 @@ else
 	sleep 10
 	exit 0
 fi
-curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
+sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
 
 PIHOME=/home/pi
 DEXTER=Dexter

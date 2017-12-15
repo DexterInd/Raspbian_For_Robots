@@ -19,7 +19,7 @@ DEXTERLIB_PATH=$LIB_PATH/$DEXTER
 TROUBLESHOOTING=Troubleshooting_GUI
 TROUBLESHOOTING_PATH=$DEXTERLIB_PATH/$TROUBLESHOOTING
 
-curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
+sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 create_folder $PIHOME/$DEXTER
 create_folder $PIHOME/$DEXTER/$LIB
