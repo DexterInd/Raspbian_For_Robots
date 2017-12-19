@@ -101,8 +101,9 @@ sudo chmod +x /home/pi/Desktop/backup.desktop
 # Make sure we keep a log file.
 
 # ensure we have wx version 2.8 and not version 3.0
-sudo apt-get install python-wxgtk2.8 -y
+sudo apt-get install python-wxgtk2.8 build-essential python-dev python-pip -y
 sudo apt-get purge python-wxgtk3.0 -y
+sudo pip install psutil
 
 # Run update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)
