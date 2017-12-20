@@ -1,7 +1,7 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
 # This script will be changed OFTEN!
-curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
+sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.

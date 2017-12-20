@@ -1,5 +1,5 @@
 #! /bin/bash
-curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
+sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
