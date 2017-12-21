@@ -14,7 +14,7 @@ DEXTERLIB_PATH=$LIB_PATH/$DEXTER
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$DEXTERLIB_PATH/$SCRATCH
 
-curl --silent https://raw.githubusercontent.com/DexterInd/script_tools/master/install_script_tools.sh | bash
+sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
 source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
 create_folder $PIHOME/$DEXTER
