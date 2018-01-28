@@ -1,0 +1,11 @@
+ [Unit]
+ Description=Wifi_interface
+ Before=channel_select.service
+ 
+ [Service]
+ Type=oneshot
+ ExecStartPre=-/usr/bin/python /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_channel_select.py 
+ ExecStart=/usr/bin/env bash /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/hostapd_change.sh
+
+ [Install]
+ WantedBy=multi-user.target
