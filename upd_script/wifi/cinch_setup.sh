@@ -34,7 +34,10 @@ fi
 DNSMASQ_CONF_DIR="/etc/dnsmasq.d/"
 mkdir -p $DNSMASQ_CONF_DIR
 cp $SCRIPTDIR/dnsmasq.conf $DNSMASQ_CONF_DIR/cinch.conf
-apt-get install -y dnsmasq
+
+# NOTE: 2018.01 - We need up update or dnsmasq will throw a 404, and libnl-route-3-200 is not installed in older Jessie.
+apt-get update
+apt-get install -y dnsmasq libnl-route-3-200
 
 cd ~
 wget https://github.com/DexterInd/RTL8188-hostapd/archive/v2.0.tar.gz
@@ -89,10 +92,27 @@ systemctl start hostapd.service
 systemctl enable hostapd.service
 systemctl enable dnsmasq.service
 
-# Enable Sam wifi channel select on device boot
+# Enable wifi channel select on device boot
 sudo cp $SCRIPTDIR/channel_select.service /etc/systemd/system/
 sudo chmod 755 /etc/systemd/system/channel_select.service
 sudo systemctl daemon-reload
 sudo systemctl enable channel_select.service
 
 sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/wifi_debug/setup_wifi_debug.sh
+
+
+# Copy hostapd for rtl wifi adapter and Pi3 wifi adapter
+# Copied the binary file-/usr/local/bin/hostapd from cinch image and renamed it to hostapd_rtl_wifi
+sudo cp $SCRIPTDIR/hostapd_rtl_wifi /usr/local/bin
+# Pi3 wifi adapter was made to work with Raspbian jessie and copied the binary file-/usr/local/bin/hostapd from Raspbian jessie image 
+# and renamed it to hostapd_pi3_wifi.
+sudo cp $SCRIPTDIR/hostapd_pi3_wifi /usr/local/bin
+
+
+# Setup the Wifi Interfaces
+# This selects which wifi device starts: the USB Device or the Pi3 Wifi
+sudo cp $SCRIPTDIR/wifi_interface.service /etc/systemd/system
+sudo chmod 644 /etc/systemd/system/wifi_interface.service
+sudo systemctl enable wifi_interface.service
+
+echo "Installation complete.  Check errors and reboot to see Cinch network."
