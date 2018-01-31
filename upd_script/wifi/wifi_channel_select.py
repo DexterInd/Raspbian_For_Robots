@@ -1,12 +1,12 @@
 #! /usr/bin/python
 #
-# This script is used to select a felicitous wifi channel for the Sam access point.
+# This script is used to select a felicitous wifi channel for the access point.
 #
 # History
 # -------------------------------------------------------
 # Author              Date      	Comments
 # Shoban Narayan      17 Feb 17  	Initial Authoring
-# 	
+# 
 #
 # Algorithm
 # -------------------------------------------------------
