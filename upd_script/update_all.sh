@@ -472,13 +472,8 @@ fi
 ####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
 
 feedback "Change bash permissions for desktop."
-if grep -Fxq "xhost +" /home/pi/.bashrc
-then
-	#Found it, do nothing!
-	echo "Found xhost in .bashrc"
-else
-	sudo echo "xhost +" >> /home/pi/.bashrc
-fi
+delete_line_from_file "xhost +" /home/pi/.bashrc
+add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
 
 feedback "--> Finished setting up noVNC"
 feedback "--> ======================================="
