@@ -136,7 +136,7 @@ install_packages() {
   # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
   # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command in python.  Before updating the kernel check that
   # the new version works with this function in python.
-  if [ ! $VERSION -eq '7' ]
+  if [ $VERSION -eq '8' ]
   then
 
        sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
