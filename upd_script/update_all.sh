@@ -323,7 +323,7 @@ handle_version
 feedback "--> Begin Update."
 feedback "--> ======================================="
 
-echo "Version: $VERSION"
+# echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
   feedback "Version 7 found!  You have Wheezy!"
   feedback "Wheezy is no longer supported by the Raspberry Pi Foundation."
