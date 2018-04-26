@@ -90,7 +90,6 @@ update_gopigo() {
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
     fi  # end conditional statement on GOPIGO UPDATE
-
 }
 
 ###############################################
@@ -98,7 +97,6 @@ update_gopigo() {
 ###############################################
 
 update_brickpi() {
-    
     if [ $brickpi_update == 1 ] ; then
 
         # BrickPi3 Update
@@ -213,14 +211,16 @@ fi
 ###############################################
 # DexterEd
 ###############################################
-install_dextered(){
+install_dextered()
+# this deletes the dextered folder
+{
     # Install DexterEd Software
     feedback "--> Install DexterEd Software"
     feedback "-----------------------------"
     delete_folder /home/pi/Desktop/DexterEd
 
     pushd /home/pi/Desktop > /dev/null
-    sudo git clone https://github.com/DexterInd/DexterEd.git
+    # sudo git clone https://github.com/DexterInd/DexterEd.git
     popd > /dev/null
 }
 
@@ -228,17 +228,20 @@ install_dextered(){
 # GoBox
 ###############################################
 install_gobox()
+# this now deletes gobox, no question asked
 {
-    # Install GoBox Software
-    feedback "--> Install GoBox"
-    feedback "-----------------"
-    delete_folder /home/pi/Desktop/GoBox
-    pushd /home/pi/Desktop > /dev/null
-    sudo git clone https://github.com/DexterInd/GoBox.git
+    if [ $VERSION -eq '8' ]; then
+        # Install GoBox Software
+        feedback "--> Install GoBox"
+        feedback "-----------------"
+        delete_folder /home/pi/Desktop/GoBox
+        pushd /home/pi/Desktop > /dev/null
+        # sudo git clone https://github.com/DexterInd/GoBox.git
 
-    delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
-    delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
-    popd > /dev/null
+        delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
+        delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
+        popd > /dev/null
+    fi
 }
 
 advanced_comms(){
@@ -296,14 +299,15 @@ dead_wood() {
 # MAIN
 #
 ###############################################
-
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 staging
 update_gopigo
 update_brickpi
-update_arduberry
 update_grovepi
 update_pivotpi
 update_sensors
+# arduberry no longer supported.
+# update_arduberry    
 set_all_softlinks
 
 install_dextered
@@ -317,14 +321,12 @@ if [ $VERSION -eq '8' ]; then
   sudo cp /home/pi/di_update/Raspbian_For_Robots/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
 fi
 
-# Install GoBox Troubleshooting Software
+# Install Troubleshooting Software
 delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
-sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
-sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
+sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
 
-dead_wood
-
-
+# dead_wood
 
 echo "--> Done updating Dexter Industries Github repos!"
 
