@@ -50,7 +50,7 @@ cd /home/pi/di_update/Raspbian_For_Robots/
 
 #
 # Take this part out when you're done!
-git checkout develop
+# git checkout develop
 #
 
 # Make files executable.
