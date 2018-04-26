@@ -10,7 +10,7 @@ RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
 
 # This script updates the the code repos on Raspbian for Robots.
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
-
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 set_quiet_mode
 
 set_softlink_for(){
@@ -63,42 +63,12 @@ set_all_softlinks(){
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
 staging(){
-    
-    robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
-    if [ -f $robots_2_update ]  
-    # if the file exists, read it and adjust according to its content
-    then
-        gopigo_update=0
-        brickpi_update=0
-        grovepi_update=0
-        arduberry_update=0
-        sensors_update=0
-        pivotpi_update=0
-        while read -r line 
-            do
-            echo "Text read from file: $line"
-            if [ "$line" == "GoPiGo" ] ; then
-               gopigo_update=1
-            elif [ "$line" == "BrickPi" ] ; then
-               brickpi_update=1
-            elif [ "$line" == "GrovePi" ] ; then
-               grovepi_update=1
-            elif [ "$line" == "Arduberry" ] ; then
-               arduberry_update=1
-            elif [ "$line" == "PivotPi" ] ; then
-               pivotpi_update=1
-            elif [ "$line" == "Sensors" ] ; then
-               sensors_update=1
-            fi
-        done < $robots_2_update 
-    else # if the file doesn't exist, update everything
-        gopigo_update=1
-        brickpi_update=1
-        grovepi_update=1
-        arduberry_update=1
-        pivotpi_update=1
-        sensors_update=1
-    fi
+    gopigo_update=1
+    brickpi_update=1
+    grovepi_update=1
+    arduberry_update=1
+    pivotpi_update=1
+    sensors_update=1
 }
 
 ###############################################
@@ -106,19 +76,16 @@ staging(){
 ###############################################
 
 update_gopigo() {
-    
-
-
     if [ $gopigo_update == 1 ] ; then
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_gopigo3.sh
+        curl -kL dexterindustries.com/update_gopigo3 | sudo bash
         
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_gopigo.sh
+        curl -kL dexterindustries.com/update_gopigo | sudo bash
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
@@ -137,12 +104,15 @@ update_brickpi() {
         # BrickPi3 Update
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_brickpi3.sh
+        curl -kL dexterindustries.com/update_brickpi3 | sudo bash
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
-        feedback "--> Start BrickPi+ Update."
-        feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_brickpi+.sh
+        # Install BrickPi+ on Jessie, but not in future versions
+        if [ $VERSION -eq '8' ]; then
+            feedback "--> Start BrickPi+ Update."
+            feedback "##############################"
+            curl -kL dexterindustries.com/update_brickpi_plus | sudo bash
+        fi
 
     else
         feedback "--> BrickPi **NOT** Updated."
@@ -156,19 +126,21 @@ update_brickpi() {
 
 update_arduberry ()
 {
-    
-    if [ $arduberry_update == 1 ] ; then
+    # Load up arduberry only on Jessie, drop it from Stretch onwards
+    if [ $VERSION -eq '8' ]; then
+        if [ $arduberry_update == 1 ] ; then
 
-        # Arduberry Update
-        feedback "--> Start Arduberry Update."
-        feedback "---------------------------"
+            # Arduberry Update
+            feedback "--> Start Arduberry Update."
+            feedback "---------------------------"
 
-        source $RASPBIAN/upd_script/fetch_arduberry.sh
-    else
-        feedback "--> Arduberry **NOT** Updated."
-        feedback "------------------------------"
-    fi 
-    # end conditional statement on ARDUBERRY UPDATE
+            curl -kL dexterindustries.com/update_arduberry | sudo bash
+        else
+            feedback "--> Arduberry **NOT** Updated."
+            feedback "------------------------------"
+        fi 
+        # end conditional statement on ARDUBERRY UPDATE
+    fi
 }
 
 ###############################################
@@ -182,8 +154,7 @@ update_grovepi() {
         # GrovePi Update
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
-        source $RASPBIAN/upd_script/fetch_grovepi.sh
-        
+        curl -kL dexterindustries.com/update_grovepi | sudo bash
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -206,7 +177,7 @@ update_pivotpi() {
         # if Dexter folder doesn't exist, then create it
         create_folder $DEXTER
         cd $DEXTER_PATH
-        source $RASPBIAN/upd_script/fetch_pivotpi.sh
+        curl -kL dexterindustries.com/update_pivotpi | sudo bash
             
         popd > /dev/null
     else
@@ -230,7 +201,7 @@ if [ $sensors_update == 1 ] ; then
     # if Dexter folder doesn't exist, then create it
     create_folder $DEXTER
     cd $DEXTER_PATH
-    source $RASPBIAN/upd_script/fetch_sensors.sh
+    curl -kL dexterindustries.com/update_sensors | sudo bash
         
     popd > /dev/null
 else
