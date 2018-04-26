@@ -504,8 +504,17 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 # Setup noVNC
 install_novnc
 
+feedback "Change bash permissions for desktop."
+delete_line_from_file "xhost +" /home/pi/.bashrc
+add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
 
-
+feedback "--> Finished setting up noVNC"
+feedback "--> ======================================="
+# feedback "--> !"
+# feedback "--> !"
+# feedback "--> !"
+# feedback "--> ======================================="
+feedback " "
 
 ########################################################################
 # ensure the Scratch examples are reachable via Scratch GUI

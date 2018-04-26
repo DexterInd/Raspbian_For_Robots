@@ -63,42 +63,13 @@ set_all_softlinks(){
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
 staging(){
-    
-    robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
-    if [ -f $robots_2_update ]  
-    # if the file exists, read it and adjust according to its content
-    then
-        gopigo_update=0
-        brickpi_update=0
-        grovepi_update=0
-        arduberry_update=0
-        sensors_update=0
-        pivotpi_update=0
-        while read -r line 
-            do
-            echo "Text read from file: $line"
-            if [ "$line" == "GoPiGo" ] ; then
-               gopigo_update=1
-            elif [ "$line" == "BrickPi" ] ; then
-               brickpi_update=1
-            elif [ "$line" == "GrovePi" ] ; then
-               grovepi_update=1
-            elif [ "$line" == "Arduberry" ] ; then
-               arduberry_update=1
-            elif [ "$line" == "PivotPi" ] ; then
-               pivotpi_update=1
-            elif [ "$line" == "Sensors" ] ; then
-               sensors_update=1
-            fi
-        done < $robots_2_update 
-    else # if the file doesn't exist, update everything
-        gopigo_update=1
-        brickpi_update=1
-        grovepi_update=1
-        arduberry_update=1
-        pivotpi_update=1
-        sensors_update=1
-    fi
+    # this determines which robots to update. 
+    gopigo_update=1
+    brickpi_update=1
+    grovepi_update=1
+    # arduberry_update=1
+    sensors_update=1
+    pivotpi_update=1
 }
 
 ###############################################
@@ -106,9 +77,6 @@ staging(){
 ###############################################
 
 update_gopigo() {
-    
-
-
     if [ $gopigo_update == 1 ] ; then
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
@@ -123,7 +91,6 @@ update_gopigo() {
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
     fi  # end conditional statement on GOPIGO UPDATE
-
 }
 
 ###############################################
@@ -131,7 +98,6 @@ update_gopigo() {
 ###############################################
 
 update_brickpi() {
-    
     if [ $brickpi_update == 1 ] ; then
 
         # BrickPi3 Update
@@ -140,9 +106,12 @@ update_brickpi() {
         source $RASPBIAN/upd_script/fetch_brickpi3.sh
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
-        feedback "--> Start BrickPi+ Update."
-        feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_brickpi+.sh
+        # don't install BrickPi+ on Stretch and up
+        if [ $VERSION -eq '8']; then
+            feedback "--> Start BrickPi+ Update."
+            feedback "##############################"
+            source $RASPBIAN/upd_script/fetch_brickpi+.sh
+        fi
 
     else
         feedback "--> BrickPi **NOT** Updated."
@@ -242,14 +211,16 @@ fi
 ###############################################
 # DexterEd
 ###############################################
-install_dextered(){
+install_dextered()
+# this deletes the dextered folder
+{
     # Install DexterEd Software
     feedback "--> Install DexterEd Software"
     feedback "-----------------------------"
     delete_folder /home/pi/Desktop/DexterEd
 
     pushd /home/pi/Desktop > /dev/null
-    sudo git clone https://github.com/DexterInd/DexterEd.git
+    # sudo git clone https://github.com/DexterInd/DexterEd.git
     popd > /dev/null
 }
 
@@ -257,17 +228,20 @@ install_dextered(){
 # GoBox
 ###############################################
 install_gobox()
+# this now deletes gobox, no question asked
 {
-    # Install GoBox Software
-    feedback "--> Install GoBox"
-    feedback "-----------------"
-    delete_folder /home/pi/Desktop/GoBox
-    pushd /home/pi/Desktop > /dev/null
-    sudo git clone https://github.com/DexterInd/GoBox.git
+    if [ $VERSION -eq '8' ]; then
+        # Install GoBox Software
+        feedback "--> Install GoBox"
+        feedback "-----------------"
+        delete_folder /home/pi/Desktop/GoBox
+        pushd /home/pi/Desktop > /dev/null
+        # sudo git clone https://github.com/DexterInd/GoBox.git
 
-    delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
-    delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
-    popd > /dev/null
+        delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
+        delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
+        popd > /dev/null
+    fi
 }
 
 advanced_comms(){
@@ -325,14 +299,15 @@ dead_wood() {
 # MAIN
 #
 ###############################################
-
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 staging
 update_gopigo
 update_brickpi
-update_arduberry
 update_grovepi
 update_pivotpi
 update_sensors
+# arduberry no longer supported.
+# update_arduberry    
 set_all_softlinks
 
 install_dextered
@@ -346,14 +321,12 @@ if [ $VERSION -eq '8' ]; then
   sudo cp /home/pi/di_update/Raspbian_For_Robots/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
 fi
 
-# Install GoBox Troubleshooting Software
+# Install Troubleshooting Software
 delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
-sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
-sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
+sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
 
-dead_wood
-
-
+# dead_wood
 
 echo "--> Done updating Dexter Industries Github repos!"
 
