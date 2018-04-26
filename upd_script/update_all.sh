@@ -47,10 +47,6 @@ handle_version() {
 # Check if file 'Version' exists in ~/Dexter.  If it does, move on.  If it doesn't, copy it in.
 # Note we don't want to overwrite the file if it's there since we're going to be running updates and documenting when the updates were done.
 
-# force clock update
-# Pis that have been offline for long won't have the right date and time
-sudo ntpd -q -g
-
 if file_exists $DEXTER_PATH/Version
 then
    sudo cp $RASPBIAN_PATH/Version $DEXTER_PATH  # Copy version to the Dexter folder
@@ -92,7 +88,7 @@ install_copypaste() {
 install_packages() {
   sudo dpkg --configure -a
   sudo DEBIAN_FRONTEND=noninteractive apt-get update -y # Get everything updated.  Don't interact with any configuration menus.
-                # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
+  # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
   feedback "Install Specific Libraries."
 
   # merge all the install lines into one, as each call to apt-get install
@@ -108,7 +104,6 @@ install_packages() {
   # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
   sudo apt-get install -y python3-serial python-serial i2c-tools  \
                           avahi-daemon avahi-utils \
-                          apache2 php5 libapache2-mod-php5 \
                           python-rpi.gpio python3-rpi.gpio \
                           python-picamera python3-picamera \
                           python-smbus python3-smbus \
@@ -117,15 +112,24 @@ install_packages() {
                           raspberrypi-net-mods \
                           shellinabox screen
 
+
+  if [ $VERSION -eq '8' ]; then
+    # php5 on Jessie
+    sudo apt-get install -y apache2 websockify php5 libapache2-mod-php5 
+  elif [ $VERSION -eq '9' ]; then
+  # php7 on Stretch
+    sudo apt-get install apache2 websockify php lib/apache2-mod-php -y
+  fi
+
   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
-  # only available on Jessie
+  # only for old versions of Jessie , it's already installed on Stretch
   # piclone used to make copies of the SD card;
-  if [ ! $VERSION -eq '7' ]
+  if [ $VERSION -eq '8' ]
   then
     sudo apt-get install piclone -y
   fi
@@ -136,7 +140,7 @@ install_packages() {
   # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
   # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command in python.  Before updating the kernel check that
   # the new version works with this function in python.
-  if [ ! $VERSION -eq '7' ]
+  if [ $VERSION -eq '8' ]
   then
 
        sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
@@ -217,6 +221,98 @@ autodetect_setup() {
   popd > /dev/null
 }
 
+install_novnc() {
+
+  # if noVNC is enabled already, just do nothing and skip this
+  test_for_novnc=$(sudo systemctl status novnc.service | grep "active" )
+
+  feedback "--> Set up noVNC"
+  feedback "--> ======================================="
+  feedback " "
+  if  [ -z "$test_for_novnc" ]
+  then
+    pushd /usr/local/share/ >/dev/null
+    feedback "--> Clone noVNC."
+
+    if [ $VERSION -eq '8' ]; then
+      sudo git clone  --depth=1 git://github.com/DexterInd/noVNC
+      cd noVNC
+      sudo git pull
+      sudo cp vnc_auto.html index.html
+    elif [ $VERSION -eq '9' ]; then
+      if  ! folder_exists noVNC; then
+      # On Stretch and future versions let's update noVNC to version 1.0
+      sudo git clone --depth=1 --branch v1.0.0 https://github.com/novnc/noVNC.git
+      fi
+    fi
+
+    popd >/dev/null
+
+
+    # VNC Start on boot
+    if [ $VERSION -eq '8' ]; then
+      feedback "Version 8 found!  You have Jessie!"
+      pushd $PIHOME >/dev/null
+
+      # if we have a local copy of novnc.service, get rid of it before downloading a new one
+      if [ -e $PIHOME/novnc.service ]
+      then
+        sudo rm novnc.service
+        feedback "removing local copy of novnc.service"
+      fi
+
+      popd >/dev/null
+
+    #Stretch
+    elif [ $VERSION -eq '9' ]; then
+      feedback "--> Set up dex.local webpage."
+      feedback "--> ======================================="
+      feedback " "
+      create_folder /var/www/novnc
+      sudo cp -r $PIHOME/di_update/Raspbian_For_Robots/www/* /var/www/novnc
+      sudo cp /var/www/novnc/index_stretch.php /var/www/novnc/index.php
+      sudo cp /var/www/novnc/css/main_stretch.css /var/www/novnc/css/main.css
+      sudo chmod +x /var/www/novnc/index.php
+      sudo chmod +x /var/www/novnc/css/main.css
+      sudo cp $PIHOME/di_update/Raspbian_For_Robots/upd_script/001-novnc.conf /etc/apache2/sites-available
+      pushd /etc/apache2/sites-enabled >/dev/null
+      delete_file 000-default.conf
+      delete_file 001-novnc.conf
+      sudo ln -s ../sites-available/001-novnc.conf .
+      popd >/dev/null
+      feedback "Start noVNC service"
+      sudo cp $PIHOME/di_update/Raspbian_For_Robots/upd_script/novnc_stretch.service /etc/systemd/system/novnc.service
+      sudo chown root:root /etc/systemd/system/novnc.service
+      sudo systemctl daemon-reload
+      sudo systemctl enable novnc.service
+      sudo systemctl start novnc.service
+      feedback "--> restarting the apache server"
+      sudo /etc/init.d/apache2 reload
+    fi
+  else
+    feedback "noVNC already set up - skipping"
+  fi
+  # Change permissions so you can execute from the desktop
+  ####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html
+  ####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
+
+  feedback "Change bash permissions for desktop."
+  if grep -Fxq "xhost +" $PIHOME/.bashrc
+  then
+    #Found it, do nothing!
+    echo "Found xhost in .bashrc"
+  else
+    sudo echo "xhost +" >> $PIHOME/.bashrc
+  fi
+
+  feedback "--> Finished setting up noVNC"
+  feedback "--> ======================================="
+  # feedback "--> !"
+  # feedback "--> !"
+  # feedback "--> !"
+  # feedback "--> ======================================="
+  feedback " "
+}
 
 #####################################################################
 # main script
@@ -238,6 +334,8 @@ if [ $VERSION -eq '7' ]; then
 elif [ $VERSION -eq '8' ]; then
   feedback "Version 8 found!  You have Jessie!"
   # If we found Jesse, the proper location of the html files is in
+elif [ $VERSION -eq '9' ]; then
+  feedback "Version 9 found! You have Stretch!"
 fi
 
 install_packages
@@ -383,6 +481,7 @@ sudo chmod +x /var/www/css/main.css
 # echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
   feedback "Version 7 found!  You have Wheezy!"
+  feedback "Wheezy is no longer supported, unfortunately."
 elif [ $VERSION -eq '8' ]; then
   feedback "Version 8 found!  You have Jessie!"
   # If we found Jesse, the proper location of the html files is in
@@ -391,6 +490,8 @@ elif [ $VERSION -eq '8' ]; then
   sudo mv -v /var/www/* /var/www/html/
   sudo chmod +x /var/www/html/index.php
   sudo chmod +x /var/www/html/css/main.css
+elif [ $VERSION -eq '9' ]; then
+  feedback "Version 9 found!  You have Stretch!"
 fi
 
 # disable requirement for SSL for shellinaboxa
@@ -401,75 +502,7 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
-
-# if noVNC is enabled already, just do nothing and skip this
-test_for_novnc=$(sudo systemctl status novnc.service | grep "enabled" )
-
-feedback "--> Set up noVNC"
-feedback "--> ======================================="
-feedback " "
-if  [ -z "$test_for_novnc" ]
-then
-
-
-  cd /usr/local/share/
-  feedback "--> Clone noVNC."
-  sudo git clone git://github.com/DexterInd/noVNC
-  cd noVNC
-  sudo git pull
-  sudo cp vnc_auto.html index.html
-
-
-  # VNC Start on boot
-  # reading VERSION again, in case lines get moved, or deleted above.
-  # better safe
-  VERSION=$(sed 's/\..*//' /etc/debian_version)
-  # echo "Version: $VERSION"
-  # setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
-  # Wheezy
-  if [ $VERSION -eq '7' ]; then
-    feedback "Version 7 found!  You have Wheezy!"
-    cd /etc/init.d/
-    sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
-    sudo chmod 755 vncboot
-    sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
-    sudo chmod 755 vncproxy
-    # why default 98? I can't find what it's supposed to do - NP
-    sudo update-rc.d vncproxy defaults 98
-    sudo update-rc.d vncproxy defaults
-    sudo update-rc.d vncproxy enable
-    sudo update-rc.d vncboot defaults
-    sudo update-rc.d vncboot enable
-    cd /usr/local/share/noVNC/utils
-    sudo ./launch.sh --vnc localhost:5900 &
-
-  #jessie
-  elif [ $VERSION -eq '8' ]; then
-    feedback "Version 8 found!  You have Jessie!"
-    pushd /home/pi
-
-    # if we have a local copy of novnc.service, get rid of it before downloading a new one
-    if [ -e /home/pi/novnc.service ]
-    then
-      sudo rm novnc.service
-      feedback "removing local copy of novnc.service"
-    fi
-
-  	  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
-  	  sudo mv novnc.service /etc/systemd/system/novnc.service
-  	  sudo systemctl daemon-reload
-  	  sudo systemctl enable novnc.service
-  	  sudo systemctl start novnc.service
-
-  fi
-  popd
-else
-  feedback "noVNC already set up - skipping"
-fi
-
-# Change permissions so you can execute from the desktop
-####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html
-####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
+install_novnc
 
 feedback "Change bash permissions for desktop."
 delete_line_from_file "xhost +" /home/pi/.bashrc
