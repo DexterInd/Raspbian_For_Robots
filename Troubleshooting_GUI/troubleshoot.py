@@ -17,22 +17,10 @@ def send_bash_command(bashCommand):
     output = process.communicate()[0]
     return output
 
-
-def send_bash_command_output(bashCommand):
-    # print bashCommand
-    # write_debug(bashCommand)
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE) #, stderr=subprocess.PIPE)
-    # print process
-    output = process.communicate()[0]
-    # print output
-    return output
-
-
 def send_bash_command_in_background(bashCommand):
     # Fire off a bash command and forget about it.
     # write_debug(bashCommand)
     process = subprocess.Popen(bashCommand.split())
-
 
 class MainPanel(wx.Panel):
     """"""
@@ -172,11 +160,11 @@ class MainPanel(wx.Panel):
         exit_sizer.Add(exit_button,1,wx.EXPAND)
         exit_sizer.AddSpacer(50)
         
-        caution_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        caution_txt = wx.StaticText(self, -1, "Caution: Do not close the LXTerminal window running in the background right now.")
-        caution_sizer.AddSpacer(50)
-        caution_sizer.Add(caution_txt,1,wx.EXPAND)
-        caution_sizer.AddSpacer(50)
+        # caution_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        # caution_txt = wx.StaticText(self, -1, "Caution: Do not close the LXTerminal window running in the background right now.")
+        # caution_sizer.AddSpacer(50)
+        # caution_sizer.Add(caution_txt,1,wx.EXPAND)
+        # caution_sizer.AddSpacer(50)
         
         vSizer.Add(icon_sizer,0,wx.SHAPED|wx.FIXED_MINSIZE)
         if needed_robots.find("GoPiGo") != -1 and needed_robots.find("3") == -1:
@@ -203,7 +191,7 @@ class MainPanel(wx.Panel):
         
         vSizer.Add(exit_sizer,1,wx.EXPAND)
         vSizer.AddSpacer(20)
-        vSizer.Add(caution_sizer,1,wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)
+        # vSizer.Add(caution_sizer,1,wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)
         
         self.SetSizerAndFit(vSizer)
         # self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
@@ -258,42 +246,43 @@ class MainPanel(wx.Panel):
             print "Cancel GoPiGo Demo!"
         dlg.Destroy()
         
-        # Depending on what the user chose, we either cancel or complete.
-        if ran_dialog:
-            dlg = wx.MessageDialog(self, 'Demo Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
-            dlg.ShowModal()
-            dlg.Destroy()
-        else:
-            dlg = wx.MessageDialog(self, 'Demo Canceled', 'Canceled', wx.OK|wx.ICON_HAND)
-            dlg.ShowModal()
-            dlg.Destroy()
+        # # Depending on what the user chose, we either cancel or complete.
+        # if ran_dialog:
+        #     dlg = wx.MessageDialog(self, 'Demo Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
+        #     dlg.ShowModal()
+        #     dlg.Destroy()
+        # else:
+        #     dlg = wx.MessageDialog(self, 'Demo Cancelled', 'Cancelled', wx.OK|wx.ICON_HAND)
+        #     dlg.ShowModal()
+        #     dlg.Destroy()
     
     ###############################################################################
     def demo_gopigo3(self, event):
-        dlg = wx.MessageDialog(self, 'This Demo program will make sure everything is working on your GoPiGo3.  The LEDs on your GoPiGo3 will blink for one second, and the GoPiGo3 will move forward, and then backwards.  So make sure it is on the floor so it does not fall off the table! \n\nMake sure your batteries are connected to the GoPiGo, motors are connected, and it is turned on.  Be sure to unplug the power supply wall adapter from the GoPiGo3. It is best to be working through wifi, but if the GoPiGo3 is connected to your computer with a cable right now, turn it upside down for the demo.  \n\nClick OK to begin.', 'Demonstrate the GoPiGo', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
-        ran_dialog = False
+        from subprocess import check_output
+        dlg = wx.MessageDialog(self, 'This Demo program will make sure everything is working on your GoPiGo3.  \n\n'+\
+                                    'The GoPiGo will move forward, and then backwards.  Make sure it is on the floor so it does not fall off the table! \n\n'+\
+                                    'The GoPiGo will need good batteries.  Be sure it is not connected via the usb port. \n\n'+\
+                                    'It is best to be working through wifi, but if the GoPiGo is connected to your computer with a cable right now, turn it upside down for the demo.  \n\n'+\
+                                    'Click OK to begin.', 'Demonstrate the GoPiGo', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
         if dlg.ShowModal() == wx.ID_OK:
-            print "Start GoPiGo3 Demo!"
-            program = "sudo python /home/pi/Dexter/GoPiGo3/Software/Python/hardware_test.py"
-            send_bash_command_in_background(program)
-            ran_dialog = True
+            print ("Start GoPiGo3 Demo!")
+            program = 'lxterminal'
+            param1 = '-e'
+            param2 = "/usr/bin/python"
+            param3 = "/home/pi/Dexter/GoPiGo3/Software/Python/hardware_test.py"
+            subprocess.call([program, param1, param2, param3])
+            # demo_pid=check_output("hardware_test.py")
         else:
             print "Cancel GoPiGo Demo!"
+            dlg = wx.MessageDialog(self, 'Demo Cancelled', '', wx.OK|wx.ICON_HAND)
+            dlg.ShowModal()
+            dlg.Destroy()
+
         dlg.Destroy()
-        
-        # Depending on what the user chose, we either cancel or complete.
-        if ran_dialog:
-            dlg = wx.MessageDialog(self, 'Demo Complete', 'Complete', wx.OK|wx.ICON_INFORMATION)
-            dlg.ShowModal()
-            dlg.Destroy()
-        else:
-            dlg = wx.MessageDialog(self, 'Demo Canceled', 'Canceled', wx.OK|wx.ICON_HAND)
-            dlg.ShowModal()
-            dlg.Destroy()
-    
+            
     ###############################################################################
     def gopigo3(self, event):
-        dlg = wx.MessageDialog(self, 'This program tests the GoPiGo3 for potential issues or problems and will make a log report you can send to Dexter Industries.  \n It takes a few moments for the test to start, and once it has begun, it might take a few minutes to run through all the tests.', 'Troubleshoot the GoPiGo3', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+        dlg = wx.MessageDialog(self, 'This program tests the GoPiGo3 for potential issues or problems and will make a log report you can send to Dexter Industries.  \n', 'Troubleshoot the GoPiGo3', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             print "Running GoPiGo3 Tests!"
