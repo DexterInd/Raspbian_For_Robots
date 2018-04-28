@@ -109,6 +109,8 @@ sudo ln -s /home/pi/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/
 [ -f $PIHOME/Desktop/GoPiGo_Scratch_Start.desktop ] && sudo rm $PIHOME/Desktop/GoPiGo_Scratch_Start.desktop
 [ -f $PIHOME/Desktop/scratch.desktop ] && sudo rm $PIHOME/Desktop/scratch.desktop
 
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+echo "Version: $VERSION"
 
 if [ $VERSION -eq '8' ] ; then
     # Make sure that Scratch always starts Scratch GUI
@@ -131,8 +133,7 @@ if [ $VERSION -eq '8' ] ; then
 elif [ $VERSION -eq '9'] ; then
     # Leave Scratch alone
     # sudo cp $SCRATCH_PATH/scratch_stretch /usr/bin/scratch
-else
-    feedback "Unknown OS" 
+    echo "Nothing special to do for Stretch"
 fi
 
 popd > /dev/null
