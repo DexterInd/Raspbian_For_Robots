@@ -454,7 +454,8 @@ class MainPanel(wx.Panel):
     def test(self, event):
         # Test the hardware.  Test the selected hardware.
         write_debug("Demo robot.")
-        folder = read_state()
+        folder = autodetect()
+        print("Preparing demo mode for {}".format(folder))
         if folder.find('BrickPi') >= 0:
             if autodetect().find("BrickPi+"):
                 # Run BrickPi+ Test.
@@ -491,7 +492,17 @@ class MainPanel(wx.Panel):
                 dlg.ShowModal()
                 dlg.Destroy()
         elif folder.find("GoPiGo3") >=0:
-            # TBD
+            # Run GoPiGo Test.
+            dlg = wx.MessageDialog(self, 'This Demo program will make sure everything is working on your GoPiGo.  It is best to be working through wifi, but if the GoPiGo is connected to your computer with a cable right now, turn it upside down for the demo.  \n\nClick OK to begin.', 'Demonstrate the GoPiGo', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
+            ran_dialog = False
+            if dlg.ShowModal() == wx.ID_OK:
+                print "Begin Running GoPiGo Test!"
+                program = "python /home/pi/Dexter/GoPiGo3/Software/Python/hardware_test.py"
+                send_bash_command_in_background(program)
+                ran_dialog = True
+            else:
+                print "Canceled!"
+            dlg.Destroy()
             pass
         elif folder.find('GoPiGo') >= 0:
             # Run GoPiGo Test.
