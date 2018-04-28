@@ -14,7 +14,7 @@ DEXTERLIB_PATH=$LIB_PATH/$DEXTER
 SCRATCH=Scratch_GUI
 SCRATCH_PATH=$DEXTERLIB_PATH/$SCRATCH
 
-sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
+curl -kL dexterindustries.com/update_tools | sudo bash
 source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
 create_folder $PIHOME/$DEXTER
@@ -33,7 +33,7 @@ fi
 
 pushd $LIB_PATH > /dev/null
 delete_folder scratchpy
-git clone --quiet https://github.com/DexterInd/scratchpy
+git clone --quiet --depth=1 https://github.com/DexterInd/scratchpy
 cd scratchpy
 sudo make install > /dev/null
 popd > /dev/null
@@ -109,22 +109,30 @@ sudo ln -s /home/pi/Dexter/PivotPi/Software/Scratch/Examples /usr/share/scratch/
 [ -f $PIHOME/Desktop/GoPiGo_Scratch_Start.desktop ] && sudo rm $PIHOME/Desktop/GoPiGo_Scratch_Start.desktop
 [ -f $PIHOME/Desktop/scratch.desktop ] && sudo rm $PIHOME/Desktop/scratch.desktop
 
-# Make sure that Scratch always starts Scratch GUI
-# We'll install these parts to make sure that if a user double-clicks on a file on the desktop
-# Scratch GUI is launched, and all other programs are killed.
 
-#delete scratch from /usr/bin
-sudo rm /usr/bin/scratch
-# make a new scratch in /usr/bin
-sudo cp $SCRATCH_PATH/scratch /usr/bin
-# Change scratch permissions
-sudo chmod +x /usr/bin/scratch
+if [ $VERSION -eq '8' ] ; then
+    # Make sure that Scratch always starts Scratch GUI
+    # We'll install these parts to make sure that if a user double-clicks on a file on the desktop
+    # Scratch GUI is launched, and all other programs are killed.
 
-# set permissions
-# sudo chmod +x $PIHOME/$DEXTER/Scratch_GUI/scratch_launch
-sudo chmod +x $SCRATCH_PATH/scratch_direct
+    #delete scratch from /usr/bin
+    sudo rm /usr/bin/scratch
+    # make a new scratch in /usr/bin
+    sudo cp $SCRATCH_PATH/scratch_jessie /usr/bin/scratch
+    # Change scratch permissions
+    sudo chmod +x /usr/bin/scratch
 
-# remove annoying dialog that says remote sensors are enabled
-echo "remoteconnectiondialog = 0" > /home/pi/.scratch.ini
+    # set permissions
+    # sudo chmod +x $PIHOME/$DEXTER/Scratch_GUI/scratch_launch
+    sudo chmod +x $SCRATCH_PATH/scratch_direct
+
+    # remove annoying dialog that says remote sensors are enabled
+    echo "remoteconnectiondialog = 0" > /home/pi/.scratch.ini
+elif [ $VERSION -eq '9'] ; then
+    # Leave Scratch alone
+    # sudo cp $SCRATCH_PATH/scratch_stretch /usr/bin/scratch
+else
+    feedback "Unknown OS" 
+fi
 
 popd > /dev/null

@@ -32,7 +32,14 @@ class MainPanel(wx.Panel):
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.WHITE)
         self.frame = parent
-        
+
+        font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False,
+                        u'Helvetica')
+        self.SetFont(font)
+
+        vSizer = wx.BoxSizer(wx.VERTICAL)
+        # hSizer = wx.BoxSizer(wx.HORIZONTAL)
+
         # detect what's currently on
         needed_robots=autodetect()
         
@@ -44,13 +51,7 @@ class MainPanel(wx.Panel):
            needed_robots.find("BrickPi+") == -1 and \
            needed_robots.find("BrickPi3") == -1:
             needed_robots = "GoPiGo_GoPiGo3_GrovePi_BrickPi3"
-        
-        vSizer = wx.BoxSizer(wx.VERTICAL)
-        
-        font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False,
-                        u'Helvetica')
-        self.SetFont(font)
-        
+
         #-------------------------------------------------------------------
         # icon
         icon_sizer = wx.BoxSizer(wx.HORIZONTAL)

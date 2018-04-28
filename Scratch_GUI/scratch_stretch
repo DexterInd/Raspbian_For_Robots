@@ -1,0 +1,130 @@
+#!/bin/sh
+# File:            scratch
+# Description:     Script to start the Cog Stack VM binary with the nuscratch image
+# Original Author: Bert Freudenberg
+# Adapted by:      Miriam Ruiz, Alex Bradbury, tim@Rowledge.org
+# tim - trying to simplify a bit but good grief, shell script is incomprehensible
+# set -x
+VM="/usr/bin/squeak"
+VMOPTIONS="-vm-sound-alsa"
+IMAGE=`ls -t /usr/share/scratch/NuScratch*.image| head -1`
+IMOPTIONS=""
+DOCUMENT=""
+WRAPPER=""
+#set to 1 to work around OLPC bug #8008
+export SQUEAK_FAKEBIGCURSOR=0
+
+# default directories (used if not running as Sugar activity)
+[ -z "$SQUEAK_SECUREDIR" ] && export SQUEAK_SECUREDIR="$HOME/.scratch/private"
+[ -z "$SQUEAK_USERDIR" ] && export SQUEAK_USERDIR="$HOME/Scratch"
+
+[ ! -d "$SQUEAK_SECUREDIR" ] && mkdir -p "$SQUEAK_SECUREDIR" && chmod 700 "$SQUEAK_SECUREDIR"
+[ ! -d "$SQUEAK_USERDIR" ] && mkdir -p "$SQUEAK_USERDIR"
+
+[ ! -d "$HOME/Documents" ] && mkdir -p "$HOME/Documents"
+
+usage()
+{
+    echo "Usage: scratch [--sudo] [--help] [--param value] [-vmopt value] [arg]"
+    echo "       where --param is --image, or --document"
+    echo "       and args are passed to the Squeak image exactly as written."
+    echo "       As a short-cut you can invoke a Scratch project with -"
+    echo "       scratch myProject.sb"
+    echo "       or, to request fullscreen or presentaion mode on startup -"
+    echo "       scratch fullscreen MyOtherProject.sb"
+    echo "       --help tells you this"
+}
+
+#	echo "num args = $#"
+#	echo "args = $*"
+
+if [ $# -eq 1 ] ; then
+	#echo "single argument $1"
+	case "$1" in
+	    --sudo)
+		WRAPPER="sudo -E"
+		;;
+	    --help)
+		usage
+ 		exit
+		;;
+	    /*.sb) DOCUMENT="$1"
+		;;
+	    *.sb) DOCUMENT="$PWD/$1"
+		;;
+	    *)  IMOPTIONS="$IMOPTIONS $1"
+		;;
+	esac
+	shift
+else
+    while [ -n "$1" ] ; do
+#	if [ -z "$2" ] ; then
+#	        usage
+#		exit -1
+#	fi
+	case "$1" in
+	        --help)
+			usage
+ 			exit
+			;;
+	        --document)
+			case "$2" in
+			    /*) DOCUMENT="$2"
+				;;
+			    *) DOCUMENT="$PWD/$2"
+				;;
+			esac
+			shift
+			;;
+	        --image)
+			case "$2" in
+			    /*) IMAGE="$2"
+				;;
+			    *) IMAGE="$PWD/$2"
+				;;
+			esac
+			shift
+			;;
+	        --sudo)
+			 WRAPPER="sudo -E"
+			#shift
+			;;
+	        -vmopt)
+			 VMOPTIONS="$VMOPTIONS $2"
+			shift
+			;;
+	        /*.sb) DOCUMENT="$1"
+		        ;;
+		*.sb)  DOCUMENT="$PWD/$1"
+			#shift
+			;;
+		*)  IMOPTIONS="$IMOPTIONS $1"
+			#shift
+			;;
+	esac
+	shift
+    done
+fi
+#test for likely camera setup, install v4l2 driver if needed
+vcgencmd get_camera | grep -q 'supported=1 detected=1'
+if [ $? -eq 0 ]; then
+	sudo modprobe bcm2835-v4l2
+fi
+
+grep -q 'Sense HAT' /proc/device-tree/hat/product > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+	sudo modprobe i2c-dev
+fi
+
+systemctl -q is-active pigpiod
+PIGPIOD_ACTIVE=$?
+
+sudo systemctl start pigpiod
+
+# VM, Image, and Document are non-optional
+# Document has to be present even if empty for IMOPTIONS to work
+$WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+
+if [ $PIGPIOD_ACTIVE -ne 0 ]; then
+	sudo systemctl stop pigpiod
+fi

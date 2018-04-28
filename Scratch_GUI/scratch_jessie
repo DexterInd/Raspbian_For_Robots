@@ -1,0 +1,208 @@
+#!/bin/sh
+# File:            scratch
+# Description:     Script to start the Squeak VM binary with the scratch image
+# Original Author: Bert Freudenberg
+# Adapted by:      Miriam Ruiz
+
+
+## Check if we're running Jessie or Wheezy.  Set Variables accordingly
+## Get the Debian Version we have installed.
+
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+# echo "Version: $VERSION"
+
+PIHOME=/home/pi
+DEXTER=Dexter
+SCRATCH_PATH=$PIHOME/$DEXTER/lib/$DEXTER/Scratch_GUI
+
+if [ $VERSION -eq '7' ]; then
+	echo "Version 7 found!  You have Wheezy!"
+	VM_VERSION=`find /usr/lib/squeak/ -name "squeakvm" -type f|cut -f5 -d"/"`
+	SQ_DIR=/usr/lib/squeak/$VM_VERSION
+	VM="$SQ_DIR/squeakvm"
+	VMOPTIONS="-encoding UTF-8 -vm-display-x11 -xshm -plugins /usr/lib/scratch/plugins/:$SQ_DIR/"
+
+	IMAGE="/usr/share/scratch/Scratch20131203.image"
+	IMOPTIONS=""
+	DOCUMENT=""
+	WRAPPER=""
+	
+	# do not crash on dbus errors
+	export DBUS_FATAL_WARNINGS=0
+
+	# make Compose input methods work
+	# 30/01/2013: apprently this causes issues, so comment out. asb@asbradbury.org
+	#[ -z "$LC_ALL" ] && export LC_ALL="$LANG"
+
+	VMOPTIONS="$VMOPTIONS -vm-sound-alsa"
+	
+elif [ $VERSION -eq '8' ]; then
+	echo "Version 8 found!  You have Jessie!"
+	# If we found Jesse, the proper location of the html files is in
+	VM="/usr/bin/squeak"
+	VMOPTIONS=""
+	# IMAGE="/usr/share/scratch/NuScratch02052016.image" 
+
+	if test -n "$(find /usr/share/scratch/ -maxdepth 1 -name 'NuScratch*')"
+	then
+	IMAGE=`find /usr/share/scratch/ -maxdepth 1 -name "NuScratch*" -type f`
+	fi
+	VMOPTIONS="$VMOPTIONS -vm-sound-alsa"
+	
+	IMOPTIONS=""
+	DOCUMENT=""
+	# WRAPPER="sudo -E "
+	WRAPPER=""
+
+	# prevent wiringPi from terminating  brutally
+	export WIRINGPI_CODES="TRUE"
+	#set to 1 to work around OLPC bug #8008
+	export SQUEAK_FAKEBIGCURSOR=0
+
+	#test for likely camera setup, install v4l2 driver if needed
+	vcgencmd get_camera | grep -q 'supported=1 detected=1'
+	if [ $? -eq 0 ]; then
+		sudo modprobe bcm2835-v4l2
+	fi
+
+
+	grep -q 'Sense HAT' /proc/device-tree/hat/product > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		sudo modprobe i2c-dev
+	fi
+	
+fi
+
+echo $VERSION
+
+#set to 1 to work around OLPC bug #8008
+export SQUEAK_FAKEBIGCURSOR=0
+
+# default directories (used if not running as Sugar activity)
+[ -z "$SQUEAK_SECUREDIR" ] && export SQUEAK_SECUREDIR="$PIHOME/.scratch/private"
+[ -z "$SQUEAK_USERDIR" ] && export SQUEAK_USERDIR="$PIHOME/Scratch"
+
+[ ! -d "$SQUEAK_SECUREDIR" ] && mkdir -p "$SQUEAK_SECUREDIR" && chmod 700 "$SQUEAK_SECUREDIR"
+[ ! -d "$SQUEAK_USERDIR" ] && mkdir -p "$SQUEAK_USERDIR"
+
+[ ! -d "$PIHOME/Documents" ] && mkdir -p "$PIHOME/Documents"
+
+usage()
+{
+    echo "Usage: scratch [--param value] [-vmopt value] [arg value]"
+    echo "       where --param is --vm, --image, or --document;"
+    echo "       -vmopt is an option passed to the Squeak VM;"
+    echo "       and args are passed to the Squeak image."
+}
+
+if [ $# -eq 1 ] ; then
+	case "$1" in
+	    /*) DOCUMENT="$1"
+		;;
+	    *) DOCUMENT="$PWD/$1"
+		;;
+	esac
+	shift
+else
+    while [ -n "$1" ] ; do
+	if [ -z "$2" ] ; then
+	        usage
+		exit -1
+	fi
+	case "$1" in
+	        --help)
+			usage
+ 			exit
+			;;
+	        --document)
+			case "$2" in
+			    /*) DOCUMENT="$2"
+				;;
+			    *) DOCUMENT="$PWD/$2"
+				;;
+			esac
+ 			shift
+			;;
+	        --image)
+			case "$2" in
+			    /*) IMAGE="$2"
+				;;
+			    *) IMAGE="$PWD/$2"
+				;;
+			esac
+ 			shift
+			;;
+	        --vm)
+			case "$2" in
+			    /*) VM="$2"
+				;;
+			    *) VM="$PWD/$2"
+				;;
+			esac
+ 			shift
+			;;
+		-*) VMOPTIONS="$VMOPTIONS $1 $2"
+			shift
+			;;
+		*)  IMOPTIONS="$IMOPTIONS $1 $2"
+			shift
+			;;
+	esac
+	shift
+    done
+fi
+# VM, Image, and Document are non-optional
+# Document has to be present even if empty for IMOPTIONS to work
+
+echo "$DOCUMENT"
+xhost +
+
+sudo rm $SCRATCH_PATH/new.sb
+sudo cp $SCRATCH_PATH/new.sb.bkp $SCRATCH_PATH/new.sb
+
+###
+sudo rm $SCRATCH_PATH/open_scratch.tmp
+
+if [ -n "$DOCUMENT" ]; then
+	echo "Document found and called."
+	echo "$DOCUMENT"
+	sudo -E python $SCRATCH_PATH/click_scratch.py
+else
+    echo "Document not found and not called."
+    DOCUMENT="$SCRATCH_PATH/new.sb"
+    sudo -E python $SCRATCH_PATH/click_scratch.py
+fi
+
+## Now, if we are running Jessie, we need to move everything
+## into a new subdirectory.
+## Get the Debian Version we have installed.
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+echo "Version: $VERSION"
+if [ $VERSION -eq '7' ]; then
+	echo "Version 7 found!  You have Wheezy!"
+
+	if [ -f $SCRATCH_PATH/open_scratch.tmp ]; then
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
+		echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+		exec $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+	else
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
+	fi
+	sudo rm $SCRATCH_PATH/open_scratch.tmp
+
+elif [ $VERSION -eq '8' ]; then
+  echo "Version 8 found!  You have Jessie!"
+  # If we found Jesse,
+
+	
+	if [ -f $SCRATCH_PATH/open_scratch.tmp ]; then
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
+		echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+		exec $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+	else
+		sudo rm $SCRATCH_PATH/open_scratch.tmp
+	fi
+	sudo rm $SCRATCH_PATH/open_scratch.tmp
+fi
+
+
