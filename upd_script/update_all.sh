@@ -628,7 +628,7 @@ if [ $VERSION -eq '8' ]; then
   sudo sed -i 's/Stretch/Jessie/g' $DEXTER_PATH/Version
 fi
 if [ $VERSION -eq '9' ]; then
-  feedback "Modifying Version file to reflect Jessie distro"
+  feedback "Modifying Version file to reflect Stretch distro"
   sudo sed -i 's/Wheezy/Stretch/g' $DEXTER_PATH/Version
   sudo sed -i 's/Jessie/Stretch/g' $DEXTER_PATH/Version
 fi
