@@ -636,6 +636,8 @@ else
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
 
+bash $RASPBIAN_PATH/upd_script/update_desktop.sh
+
 unset_quiet_mode
 
 feedback "--> ======================================="
