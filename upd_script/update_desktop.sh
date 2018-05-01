@@ -23,12 +23,12 @@ echo "=============================="
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.sh
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
 delete_file $DESKTOP_PATH/desktop_shortcut_update.desktop
-sudo cp $RASPBIAN_PATH/desktop_shortcut_update.desktop /home/pi/Desktop
-sudo chmod +x $DESKTOP_PATH/desktop_shortcut_update.desktop
+cp $RASPBIAN_PATH/desktop_shortcut_update.desktop /home/pi/Desktop
+chmod +x $DESKTOP_PATH/desktop_shortcut_update.desktop
 
 delete_file $DESKTOP_PATH/shutdown.desktop
-sudo cp $RASPBIAN_PATH/shutdown.desktop /home/pi/Desktop
-sudo chmod +x $DESKTOP_PATH/shutdown.desktop
+cp $RASPBIAN_PATH/shutdown.desktop /home/pi/Desktop
+chmod +x $DESKTOP_PATH/shutdown.desktop
 
 delete_file $DESKTOP_PATH/dexterindustries.desktop
 
@@ -46,12 +46,12 @@ then
 
     # Rename the wifi control.  Change the icon.
     delete_file $DESKTOP_PATH/wpa_gui.desktop
-    sudo cp $RASPBIAN_PATH/desktop/wpa_gui.desktop /home/pi/Desktop
-    sudo chmod +x $DESKTOP_PATH/wpa_gui.desktop
+    cp $RASPBIAN_PATH/desktop/wpa_gui.desktop /home/pi/Desktop
+    chmod +x $DESKTOP_PATH/wpa_gui.desktop
 fi
 
 # Update the Backup
 delete_file $DESKTOP_PATH/backup.desktop
-sudo cp $RASPBIAN_PATH/backup/backup.desktop /home/pi/Desktop
-sudo chmod +x $DESKTOP_PATH/backup.desktop
+cp $RASPBIAN_PATH/backup/backup.desktop /home/pi/Desktop
+chmod +x $DESKTOP_PATH/backup.desktop
 
