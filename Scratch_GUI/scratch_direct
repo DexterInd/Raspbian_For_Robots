@@ -16,64 +16,62 @@ DEXTER=Dexter
 SCRATCH_PATH=$PIHOME/$DEXTER/lib/$DEXTER/Scratch_GUI
 
 if [ $VERSION -eq '7' ]; then
-	echo "Version 7 found!  You have Wheezy!"
-	VM_VERSION=`find /usr/lib/squeak/ -name "squeakvm" -type f|cut -f5 -d"/"`
-	SQ_DIR=/usr/lib/squeak/$VM_VERSION
-	VM="$SQ_DIR/squeakvm"
-	VMOPTIONS="-encoding UTF-8 -vm-display-x11 -xshm -plugins /usr/lib/scratch/plugins/:$SQ_DIR/"
+    echo "Version 7 found!  You have Wheezy!"
+    VM_VERSION=`find /usr/lib/squeak/ -name "squeakvm" -type f|cut -f5 -d"/"`
+    SQ_DIR=/usr/lib/squeak/$VM_VERSION
+    VM="$SQ_DIR/squeakvm"
+    VMOPTIONS="-encoding UTF-8 -vm-display-x11 -xshm -plugins /usr/lib/scratch/plugins/:$SQ_DIR/"
 
-	IMAGE="/usr/share/scratch/Scratch20131203.image"
-	IMOPTIONS=""
-	DOCUMENT=""
-	WRAPPER=""
-	
-	# do not crash on dbus errors
-	export DBUS_FATAL_WARNINGS=0
+    IMAGE="/usr/share/scratch/Scratch20131203.image"
+    IMOPTIONS=""
+    DOCUMENT=""
+    WRAPPER=""
+    
+    # do not crash on dbus errors
+    export DBUS_FATAL_WARNINGS=0
 
-	# make Compose input methods work
-	# 30/01/2013: apprently this causes issues, so comment out. asb@asbradbury.org
-	#[ -z "$LC_ALL" ] && export LC_ALL="$LANG"
+    # make Compose input methods work
+    # 30/01/2013: apprently this causes issues, so comment out. asb@asbradbury.org
+    #[ -z "$LC_ALL" ] && export LC_ALL="$LANG"
 
-	VMOPTIONS="$VMOPTIONS -vm-sound-alsa"
-	
+    VMOPTIONS="$VMOPTIONS -vm-sound-alsa"
+    
 elif [ $VERSION -eq '8' ]; then
-	echo "Version 8 found!  You have Jessie!"
-	# If we found Jessie, the proper filename for Scratch is:
-	VM="/usr/bin/squeak"
+    echo "Version 8 found!  You have Jessie!"
+    # If we found Jessie, the proper filename for Scratch is:
+    VM="/usr/bin/squeak"
         VMOPTIONS=""
-	# To store the path of the file starting with NuScratch
-	if test -n "$(find /usr/share/scratch/ -maxdepth 1 -name 'NuScratch*')"
-	then
-	IMAGE=`find /usr/share/scratch/ -maxdepth 1 -name "NuScratch*" -type f`
-	fi
+    # To store the path of the file starting with NuScratch
+    if test -n "$(find /usr/share/scratch/ -maxdepth 1 -name 'NuScratch*')"
+    then
+    IMAGE=`find /usr/share/scratch/ -maxdepth 1 -name "NuScratch*" -type f`
+    fi
 
-	VMOPTIONS="$VMOPTIONS -vm-sound-alsa"
-	IMOPTIONS=""
-	DOCUMENT=""
-	WRAPPER="sudo -E "
+    VMOPTIONS="$VMOPTIONS -vm-sound-alsa"
+    IMOPTIONS=""
+    DOCUMENT=""
+    WRAPPER="sudo -E "
 
-	# prevent wiringPi from terminating  brutally
-	export WIRINGPI_CODES="TRUE"
-	#set to 1 to work around OLPC bug #8008
-	export SQUEAK_FAKEBIGCURSOR=0
+    # prevent wiringPi from terminating  brutally
+    export WIRINGPI_CODES="TRUE"
+    #set to 1 to work around OLPC bug #8008
+    export SQUEAK_FAKEBIGCURSOR=0
 
-	#test for likely camera setup, install v4l2 driver if needed
-	vcgencmd get_camera | grep -q 'supported=1 detected=1'
-	if [ $? -eq 0 ]; then
-		sudo modprobe bcm2835-v4l2
-	fi
+    #test for likely camera setup, install v4l2 driver if needed
+    vcgencmd get_camera | grep -q 'supported=1 detected=1'
+    if [ $? -eq 0 ]; then
+        sudo modprobe bcm2835-v4l2
+    fi
 
 
-	grep -q 'Sense HAT' /proc/device-tree/hat/product > /dev/null 2>&1
-	if [ $? -eq 0 ]; then
-		sudo modprobe i2c-dev
-	fi
-	
+    grep -q 'Sense HAT' /proc/device-tree/hat/product > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        sudo modprobe i2c-dev
+    fi
+
+elif [ $VERSION -eq '9' ]; then
+    echo ""
 fi
-
-echo $VERSION
-
-
 
 #set to 1 to work around OLPC bug #8008
 export SQUEAK_FAKEBIGCURSOR=0
@@ -96,59 +94,59 @@ usage()
 }
 
 if [ $# -eq 1 ] ; then
-	case "$1" in
-	    /*) DOCUMENT="$1"
-		;;
-	    *) DOCUMENT="$PWD/$1"
-		;;
-	esac
-	shift
+    case "$1" in
+        /*) DOCUMENT="$1"
+        ;;
+        *) DOCUMENT="$PWD/$1"
+        ;;
+    esac
+    shift
 else
     while [ -n "$1" ] ; do
-	if [ -z "$2" ] ; then
-	        usage
-		exit -1
-	fi
-	case "$1" in
-	        --help)
-			usage
- 			exit
-			;;
-	        --document)
-			case "$2" in
-			    /*) DOCUMENT="$2"
-				;;
-			    *) DOCUMENT="$PWD/$2"
-				;;
-			esac
- 			shift
-			;;
-	        --image)
-			case "$2" in
-			    /*) IMAGE="$2"
-				;;
-			    *) IMAGE="$PWD/$2"
-				;;
-			esac
- 			shift
-			;;
-	        --vm)
-			case "$2" in
-			    /*) VM="$2"
-				;;
-			    *) VM="$PWD/$2"
-				;;
-			esac
- 			shift
-			;;
-		-*) VMOPTIONS="$VMOPTIONS $1 $2"
-			shift
-			;;
-		*)  IMOPTIONS="$IMOPTIONS $1 $2"
-			shift
-			;;
-	esac
-	shift
+    if [ -z "$2" ] ; then
+            usage
+        exit -1
+    fi
+    case "$1" in
+            --help)
+            usage
+             exit
+            ;;
+            --document)
+            case "$2" in
+                /*) DOCUMENT="$2"
+                ;;
+                *) DOCUMENT="$PWD/$2"
+                ;;
+            esac
+             shift
+            ;;
+            --image)
+            case "$2" in
+                /*) IMAGE="$2"
+                ;;
+                *) IMAGE="$PWD/$2"
+                ;;
+            esac
+             shift
+            ;;
+            --vm)
+            case "$2" in
+                /*) VM="$2"
+                ;;
+                *) VM="$PWD/$2"
+                ;;
+            esac
+             shift
+            ;;
+        -*) VMOPTIONS="$VMOPTIONS $1 $2"
+            shift
+            ;;
+        *)  IMOPTIONS="$IMOPTIONS $1 $2"
+            shift
+            ;;
+    esac
+    shift
     done
 fi
 # VM, Image, and Document are non-optional
@@ -160,19 +158,21 @@ sudo cp $SCRATCH_PATH/new.sb.bkp $SCRATCH_PATH/new.sb
 ## Now, if we are running Jessie, we need to move everything
 ## into a new subdirectory.
 ## Get the Debian Version we have installed.
-VERSION=$(sed 's/\..*//' /etc/debian_version)
-echo "Version: $VERSION"
 if [ $VERSION -eq '7' ]; then
-	echo "Version 7 found!  You have Wheezy!"
+    echo "Version 7 found!  You have Wheezy!"
 
-	echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
-	exec $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+    echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+    exec $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
 
 elif [ $VERSION -eq '8' ]; then
   echo "Version 8 found!  You have Jessie!"
   # If we found Jesse,
-	echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
-	exec $WRAPPER "$VM"  $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+    echo Executing: $WRAPPER "$VM" $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+    exec $WRAPPER "$VM"  $VMOPTIONS "$IMAGE" "$DOCUMENT" $IMOPTIONS
+elif [ $VERSION -eq '9' ]; then
+    echo "You have Stretch"
+    echo Executing: scratch "$DOCUMENT"
+    scratch "$DOCUMENT"
 fi
 
 

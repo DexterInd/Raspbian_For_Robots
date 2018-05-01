@@ -1,4 +1,6 @@
 #! /bin/bash
+ #OBSOLETE
+
 
 screen -d -r local
 # sudo python /home/pi/Desktop/GoBox/Scratch_GUI/Scratch_Start.py
