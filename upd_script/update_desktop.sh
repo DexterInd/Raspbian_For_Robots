@@ -34,7 +34,7 @@ delete_file $DESKTOP_PATH/dexterindustries.desktop
 
 if [ $VERSION -eq '9' ] 
 then
-    echo ""
+    delete_file $DESKTOP_PATH/wpa_gui.desktop
 fi
 
 if [ $VERSION -eq '8' ] 
