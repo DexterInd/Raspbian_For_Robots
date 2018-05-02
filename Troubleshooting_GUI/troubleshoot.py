@@ -333,8 +333,14 @@ class MainPanel(wx.Panel):
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             print "Running GrovePi Tests!"
-            send_bash_command('sudo chmod +x /home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh')
-            send_bash_command('sudo bash /home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh')
+            # send_bash_command('sudo bash /home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh')
+            param = []
+            param.append('lxterminal')
+            param.append( '-e')
+            param.append( "sudo")
+            param.append( "/bin/bash")
+            param.append( "/home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh")
+            subprocess.call(param)
             ran_dialog = True
         else:
             print "Cancel GrovePi Tests!"

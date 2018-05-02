@@ -1,5 +1,5 @@
 /home/pi/Dexter/GrovePi/Software/
 /home/pi/Dexter/GoPiGo/Software/
 /home/pi/Dexter/GoPiGo3/Software/
-/home/pi/Dexter/ArduBerry/
-/home/pi/Documents
+/home/pi/Desktop/
+/home/pi/Documents/
