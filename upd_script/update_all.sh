@@ -613,10 +613,10 @@ feedback "--> Update version on Desktop."
 echo "End: `date`"  >>  $DEXTER_PATH/Version
 
 cd $DESKTOP_PATH
-rm Version			# Delete the older versions.
-rm version.desktop	# Delete the older version.
-sudo cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH	# Copy the shortcut to the desktop
-sudo chmod +x $DESKTOP_PATH/version.desktop
+sudo rm Version			# Delete the older versions.
+sudo rm version.desktop	# Delete the older version.
+cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH	# Copy the shortcut to the desktop
+chmod +x $DESKTOP_PATH/version.desktop
 
 
 # edition version file to reflect which Rasbpian flavour
@@ -635,6 +635,8 @@ else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
+
+bash $RASPBIAN_PATH/upd_script/update_desktop.sh
 
 unset_quiet_mode
 

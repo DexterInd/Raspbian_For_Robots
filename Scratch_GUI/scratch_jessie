@@ -9,7 +9,7 @@
 ## Get the Debian Version we have installed.
 
 VERSION=$(sed 's/\..*//' /etc/debian_version)
-echo "Version: $VERSION"
+# echo "Version: $VERSION"
 
 PIHOME=/home/pi
 DEXTER=Dexter

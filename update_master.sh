@@ -50,47 +50,19 @@ cd /home/pi/di_update/Raspbian_For_Robots/
 
 #
 # Take this part out when you're done!
-git checkout develop
+# git checkout develop
 #
 
 # Make files executable.
-echo "MAKE FILES EXECUTABLE."
-echo "=============================="
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+# echo "MAKE FILES EXECUTABLE."
+# echo "=============================="
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
 
 ##############################################################################################################
 # 2.	Change all desktop icons around.
 #
-echo "START DESKTOP SHORTCUT UPDATE."
-echo "=============================="
-# Update the Desktop Shortcut for Software Update
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
-delete_file /home/pi/Desktop/desktop_shortcut_update.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
-
-delete_file /home/pi/Desktop/shutdown.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/shutdown.desktop
-
-delete_file /home/pi/Desktop/dexterindustries.desktop
-
-delete_file /home/pi/Desktop/idle3.desktop
-delete_file /home/pi/Desktop/idle.desktop
-delete_file /home/pi/Desktop/gksu.desktop
-
-# Rename the wifi control.  Change the icon.
-delete_file /home/pi/Desktop/wpa_gui.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/wpa_gui.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/wpa_gui.desktop
-
-# Update the Backup
-delete_file /home/pi/Desktop/backup.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/backup/backup.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/backup.desktop
 
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh

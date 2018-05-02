@@ -10,7 +10,7 @@ RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
 
 # This script updates the the code repos on Raspbian for Robots.
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
-
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 set_quiet_mode
 
 set_softlink_for(){
@@ -63,13 +63,12 @@ set_all_softlinks(){
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
 staging(){
-    # this determines which robots to update. 
     gopigo_update=1
     brickpi_update=1
     grovepi_update=1
-    # arduberry_update=1
-    sensors_update=1
+    arduberry_update=1
     pivotpi_update=1
+    sensors_update=1
 }
 
 ###############################################
@@ -81,12 +80,12 @@ update_gopigo() {
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_gopigo3.sh
+        curl -kL dexterindustries.com/update_gopigo3 | sudo bash
         
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_gopigo.sh
+        curl -kL dexterindustries.com/update_gopigo | sudo bash
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
@@ -103,14 +102,14 @@ update_brickpi() {
         # BrickPi3 Update
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_brickpi3.sh
+        curl -kL dexterindustries.com/update_brickpi3 | sudo bash
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
-        # don't install BrickPi+ on Stretch and up
-        if [ $VERSION -eq '8']; then
+        # Install BrickPi+ on Jessie, but not in future versions
+        if [ $VERSION -eq '8' ]; then
             feedback "--> Start BrickPi+ Update."
             feedback "##############################"
-            source $RASPBIAN/upd_script/fetch_brickpi+.sh
+            curl -kL dexterindustries.com/update_brickpi_plus | sudo bash
         fi
 
     else
@@ -125,19 +124,21 @@ update_brickpi() {
 
 update_arduberry ()
 {
-    
-    if [ $arduberry_update == 1 ] ; then
+    # Load up arduberry only on Jessie, drop it from Stretch onwards
+    if [ $VERSION -eq '8' ]; then
+        if [ $arduberry_update == 1 ] ; then
 
-        # Arduberry Update
-        feedback "--> Start Arduberry Update."
-        feedback "---------------------------"
+            # Arduberry Update
+            feedback "--> Start Arduberry Update."
+            feedback "---------------------------"
 
-        source $RASPBIAN/upd_script/fetch_arduberry.sh
-    else
-        feedback "--> Arduberry **NOT** Updated."
-        feedback "------------------------------"
-    fi 
-    # end conditional statement on ARDUBERRY UPDATE
+            curl -kL dexterindustries.com/update_arduberry | sudo bash
+        else
+            feedback "--> Arduberry **NOT** Updated."
+            feedback "------------------------------"
+        fi 
+        # end conditional statement on ARDUBERRY UPDATE
+    fi
 }
 
 ###############################################
@@ -151,8 +152,7 @@ update_grovepi() {
         # GrovePi Update
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
-        source $RASPBIAN/upd_script/fetch_grovepi.sh
-        
+        curl -kL dexterindustries.com/update_grovepi | sudo bash
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -175,7 +175,7 @@ update_pivotpi() {
         # if Dexter folder doesn't exist, then create it
         create_folder $DEXTER
         cd $DEXTER_PATH
-        source $RASPBIAN/upd_script/fetch_pivotpi.sh
+        curl -kL dexterindustries.com/update_pivotpi | sudo bash
             
         popd > /dev/null
     else
@@ -199,7 +199,7 @@ if [ $sensors_update == 1 ] ; then
     # if Dexter folder doesn't exist, then create it
     create_folder $DEXTER
     cd $DEXTER_PATH
-    source $RASPBIAN/upd_script/fetch_sensors.sh
+    curl -kL dexterindustries.com/update_sensors | sudo bash
         
     popd > /dev/null
 else
