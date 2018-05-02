@@ -222,7 +222,6 @@ autodetect_setup() {
 }
 
 install_novnc() {
-
     feedback "--> Set up noVNC"
     feedback "--> ======================================="
     feedback " "
