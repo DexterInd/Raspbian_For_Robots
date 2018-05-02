@@ -223,8 +223,6 @@ autodetect_setup() {
 
 install_novnc() {
 
-  # if noVNC is enabled already, just do nothing and skip this
-
     feedback "--> Set up noVNC"
     feedback "--> ======================================="
     feedback " "
