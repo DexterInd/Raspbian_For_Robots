@@ -534,7 +534,7 @@ then
 fi
 if [ $VERSION -eq '9' ]
 then
-    sudo apt-get install python-wxgtk3.0 -y
+    sudo apt-get install python-wxgtk3.0 python-psutil -y
 fi
 echo "Python-PSUtil"
 sudo apt-get clean -y		# Remove any unused packages.

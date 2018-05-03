@@ -1,14 +1,8 @@
 import time
 import wx
 import os
-import pickle
 from datetime import datetime
 import subprocess
-from collections import Counter
-import threading
-import psutil
-import signal
-import urllib2
 from auto_detect_robot import *
 
 
@@ -336,6 +330,8 @@ class MainPanel(wx.Panel):
             # send_bash_command('sudo bash /home/pi/Dexter/GrovePi/Troubleshooting/all_tests.sh')
             param = []
             param.append('lxterminal')
+            param.append("--title")
+            param.append("Troubleshoot")
             param.append( '-e')
             param.append( "sudo")
             param.append( "/bin/bash")

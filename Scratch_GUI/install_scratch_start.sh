@@ -41,6 +41,8 @@ popd > /dev/null
 # Copy shortcut to desktop.
 feedback "Installing Scratch on the desktop"
 sudo cp -f $SCRATCH_PATH/Scratch_Start.desktop $PIHOME/Desktop
+sudo cp -f $SCRATCH_PATH/Scratch_Start.desktop /usr/share/applications/
+sudo lxpanelctl restart
 # Make shortcut executable
 sudo chmod +x $PIHOME/Desktop/Scratch_Start.desktop							# Desktop shortcut permissions.
 
@@ -56,6 +58,11 @@ sudo chmod +x $PIHOME/Desktop/Scratch_Start.desktop							# Desktop shortcut per
 # sudo chmod 777 /usr/share/raspi-ui-overrides/applications/scratch.desktop		# Menu Shortcut Permissions.
 
 
+# If not called from Raspbian for Robots, pull in the wxpython libraries
+if ! quiet_mode
+then
+    sudo apt-get install python-wxgtk2.8 python-wxgtk3.0 python-wxtools wx2.8-i18n python-psutil --yes 
+fi
 
 # # Make run_scratch_gui executable.
 sudo chmod +x $SCRATCH_PATH/Scratch_Start.sh
@@ -130,7 +137,7 @@ if [ $VERSION -eq '8' ] ; then
 
     # remove annoying dialog that says remote sensors are enabled
     echo "remoteconnectiondialog = 0" > /home/pi/.scratch.ini
-elif [ $VERSION -eq '9'] ; then
+elif [ $VERSION -eq '9' ] ; then
     # Leave Scratch alone
     # sudo cp $SCRATCH_PATH/scratch_stretch /usr/bin/scratch
     echo "Nothing special to do for Stretch"

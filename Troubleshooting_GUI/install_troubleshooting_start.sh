@@ -28,11 +28,7 @@ create_folder $PIHOME/$DEXTER/$LIB/$DEXTER/$TROUBLESHOOTING
 
 if ! quiet_mode
 then
-	# updated from --force-yes to --yes --force-yes (2nd answer here: http://superuser.com/questions/164553/automatically-answer-yes-when-using-apt-get-install)
-	sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y
-	sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --yes --force-yes
-	sudo apt-get install python-psutil --yes --force-yes
-	sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n --yes --force-yes
+    sudo apt-get install python-wxgtk2.8 python-wxgtk3.0 python-wxtools wx2.8-i18n python-psutil --yes 
 fi
 
 sudo cp -f $RASPBIAN/$TROUBLESHOOTING/* $TROUBLESHOOTING_PATH
