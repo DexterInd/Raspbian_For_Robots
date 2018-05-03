@@ -520,13 +520,22 @@ autodetect_setup
 #fi
 
 feedback "--> Begin cleanup."
-# remove wx version 3.0 - which gets pulled in by various other libraries
+
+
 # it creates graphical issues in our Python GUI
 # sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.
 # echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
+
 echo "Installed wxpython tools"
-sudo apt-get remove python-wxgtk3.0 -y
+if [ $VERSION -eq '8' ]
+then
+    sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
+    sudo apt-get remove python-wxgtk3.0 -y
+fi
+if [ $VERSION -eq '9' ]
+then
+    sudo apt-get install python-wxgtk3.0 -y
+fi
 echo "Python-PSUtil"
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
