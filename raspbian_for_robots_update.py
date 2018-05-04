@@ -152,13 +152,14 @@ class MainPanel(wx.Panel):
         # LEFT SIZER
 
         # Update DI Software
+        update_software_label = wx.StaticText(self, label="Libraries and Projects:")
         update_software = wx.Button(self, label="Update Dexter Software")
         update_software.Bind(wx.EVT_BUTTON, self.update_software)	
-        button_size=update_software.GetSize()
 
         #-------------------------------------------------------------------
         # Update Firmware
 
+        update_firmware_label = wx.StaticText(self, label="Firmware:")
         update_firmware = wx.Button(self, label="Update Robot")
         update_firmware.Bind(wx.EVT_BUTTON, self.update_firmware)
         update_firmware.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
@@ -178,9 +179,11 @@ class MainPanel(wx.Panel):
         #robotDrop.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
         #robotDrop.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
 
-        vSizerLeft.AddSpacer(10)
+        vSizerLeft.AddSpacer(5)
+        vSizerLeft.Add(update_software_label)
         vSizerLeft.Add(update_software, 0, wx.EXPAND)
-        vSizerLeft.AddSpacer(75)
+        vSizerLeft.AddSpacer(45)
+        vSizerLeft.Add(update_firmware_label)
         vSizerLeft.Add(update_firmware, 0, wx.EXPAND)
         vSizerLeft.Add(robotDrop)
         vSizerLeft.AddSpacer(10)
@@ -194,7 +197,7 @@ class MainPanel(wx.Panel):
         bmp = wx.Bitmap(SCRATCH_PATH+robot,type=wx.BITMAP_TYPE_PNG)
         robotbitmap=wx.StaticBitmap(self,bitmap=bmp)
         bmpW,bmpH = robotbitmap.GetSize()
-        icon_sizer.Add(robotbitmap,1,wx.RIGHT|wx.LEFT|wx.TOP|wx.EXPAND)
+        icon_sizer.Add(robotbitmap,1,wx.RIGHT|wx.LEFT|wx.EXPAND| wx.ALIGN_TOP)
 
         vSizerRight.Add(icon_sizer)
 
