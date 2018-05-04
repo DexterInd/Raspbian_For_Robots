@@ -582,6 +582,10 @@ fi
 
 bash $RASPBIAN_PATH/upd_script/update_desktop.sh
 
+# we intentionally use sudo here to make this file owner be root
+# less danger of the user deleting it.
+sudo cp $RASPBIAN_PATH/update_master.sh $PIHOME/Dexter/update_master.sh
+
 unset_quiet_mode
 
 feedback "--> ======================================="
