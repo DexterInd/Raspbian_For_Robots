@@ -211,7 +211,7 @@ class MainPanel(wx.Panel):
 
         logo_sizer = wx.BoxSizer(wx.HORIZONTAL)
         bmp = wx.Bitmap(SCRATCH_PATH+"dex.png",type=wx.BITMAP_TYPE_PNG)
-        bitmap=wx.StaticBitmap(self,bitmap=bmp)
+        bitmap = wx.StaticBitmap(self, bitmap=bmp)
         bmpW,bmpH = bitmap.GetSize()
         logo_sizer.Add(bitmap,0,wx.RIGHT|wx.LEFT|wx.EXPAND,50)
 
