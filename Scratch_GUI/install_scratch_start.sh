@@ -138,9 +138,8 @@ if [ $VERSION -eq '8' ] ; then
     # remove annoying dialog that says remote sensors are enabled
     echo "remoteconnectiondialog = 0" > /home/pi/.scratch.ini
 elif [ $VERSION -eq '9' ] ; then
-    # Leave Scratch alone
-    # sudo cp $SCRATCH_PATH/scratch_stretch /usr/bin/scratch
-    echo "Nothing special to do for Stretch"
+    # associate Scratch file to our program
+    cp $SCRATCH_PATH/mimeapps.list $HOME/.config/
 fi
 
 popd > /dev/null
