@@ -584,6 +584,8 @@ bash $RASPBIAN_PATH/upd_script/update_desktop.sh
 
 # we intentionally use sudo here to make this file owner be root
 # less danger of the user deleting it.
+# we put a copy of update_master.sh into the Dexter folder as a backup if something
+# should happen to di_update/Raspbian_For_Robots
 sudo cp $RASPBIAN_PATH/update_master.sh $PIHOME/Dexter/update_master.sh
 
 unset_quiet_mode
