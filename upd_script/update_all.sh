@@ -250,33 +250,7 @@ install_novnc() {
         popd >/dev/null
         
     elif [ $VERSION -eq '9' ]; then
-        if  ! folder_exists noVNC; then
-        # On Stretch and future versions let's update noVNC to version 1.0
-            sudo git clone --depth=1 --branch v1.0.0 https://github.com/novnc/noVNC.git
-        fi
-        feedback "--> Set up dex.local webpage."
-        feedback "--> ======================================="
-        feedback " "
-        create_folder /var/www/novnc
-        sudo cp -r $PIHOME/di_update/Raspbian_For_Robots/www/* /var/www/novnc
-        sudo cp /var/www/novnc/index_stretch.php /var/www/novnc/index.php
-        sudo cp /var/www/novnc/css/main_stretch.css /var/www/novnc/css/main.css
-        sudo chmod +x /var/www/novnc/index.php
-        sudo chmod +x /var/www/novnc/css/main.css
-        sudo cp $PIHOME/di_update/Raspbian_For_Robots/upd_script/001-novnc.conf /etc/apache2/sites-available
-        pushd /etc/apache2/sites-enabled >/dev/null
-        delete_file 000-default.conf
-        delete_file 001-novnc.conf
-        sudo ln -s ../sites-available/001-novnc.conf .
-        popd >/dev/null
-        feedback "Start noVNC service"
-        sudo cp $PIHOME/di_update/Raspbian_For_Robots/upd_script/novnc_stretch.service /etc/systemd/system/novnc.service
-        sudo chown root:root /etc/systemd/system/novnc.service
-        sudo systemctl daemon-reload
-        sudo systemctl enable novnc.service
-        sudo systemctl start novnc.service
-        feedback "--> restarting the apache server"
-        sudo /etc/init.d/apache2 reload
+        bash ../VNC/install_novnc.sh    
     fi
     popd >/dev/null
 
