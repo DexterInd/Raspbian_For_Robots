@@ -17,9 +17,6 @@ SCRATCH_PATH=$DEXTERLIB_PATH/$SCRATCH
 curl -kL dexterindustries.com/update_tools | sudo bash
 source $PIHOME/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 
-create_folder $PIHOME/$DEXTER
-create_folder $PIHOME/$DEXTER/$LIB
-create_folder $PIHOME/$DEXTER/$LIB/$DEXTER
 create_folder $PIHOME/$DEXTER/$LIB/$DEXTER/$SCRATCH
 
 pushd $SCRATCH_PATH > /dev/null
@@ -139,7 +136,7 @@ if [ $VERSION -eq '8' ] ; then
     echo "remoteconnectiondialog = 0" > /home/pi/.scratch.ini
 elif [ $VERSION -eq '9' ] ; then
     # associate Scratch file to our program
-    cp $SCRATCH_PATH/mimeapps.list $HOME/.config/
+    cp $SCRATCH_PATH/mimeapps.list $PIHOME/.config/
 fi
 
 popd > /dev/null

@@ -121,7 +121,7 @@ install_packages() {
     sudo apt-get install apache2 websockify php lib/apache2-mod-php -y
   fi
 
-  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+#   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
@@ -210,16 +210,16 @@ geany_setup(){
   feedback "Done with Geany setup"
 }
 
-autodetect_setup() {
-  # copying the file where rc.local can get it and where it's visible
-  pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
-  sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
-  sudo python autodetect_setup.py install
-  sudo rm -r build
-  sudo rm -r dist
-  sudo rm -r Dexter_AutoDetection.egg-info/
-  popd > /dev/null
-}
+# autodetect_setup() {
+#   # copying the file where rc.local can get it and where it's visible
+#   pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
+#   sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
+#   sudo python setup.py install
+#   sudo rm -r build
+#   sudo rm -r dist
+#   sudo rm -r Dexter_AutoDetection.egg-info/
+#   popd > /dev/null
+# }
 
 install_novnc() {
     feedback "--> Set up noVNC"
@@ -480,8 +480,9 @@ sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 feedback "-->installing Geany"
 geany_setup
 
-feedback "--> robot detection"
-autodetect_setup
+# feedback "--> robot detection"
+# leave this to the script_tools installer
+# autodetect_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.

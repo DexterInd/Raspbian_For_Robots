@@ -291,7 +291,7 @@ class MainPanel(wx.Panel):
 
         # wx.StaticText(self, -1, "Caution: Do not close the LXTerminal window running \nin the background right now.", (25, 520))
         footnote_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        footnote = wx.StaticText(self, -1, "Caution: Do not close the Scratch Controller window \nrunning in the background right now.")
+        footnote = wx.StaticText(self, -1, "Caution: Do not close the Scratch Controller window \nrunning in the background when you start Scratch.")
         footnote_sizer.AddSpacer(20)
         footnote_sizer.Add(footnote, 1, wx.EXPAND)
         footnote_sizer.AddSpacer(20)
