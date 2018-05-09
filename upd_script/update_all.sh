@@ -1,7 +1,7 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
 # This script will be changed OFTEN!
-sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
+
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
@@ -27,11 +27,15 @@ SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
 
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 
+BRANCH=develop
+
+
+
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-
+curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $BRANCH
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
@@ -504,8 +508,8 @@ feedback "--> Begin cleanup."
 echo "Installed wxpython tools"
 if [ $VERSION -eq '8' ]
 then
-    sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
-    sudo apt-get remove python-wxgtk3.0 -y
+    sudo apt-get install python-wxgtk3.0 python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
+    # sudo apt-get remove python-wxgtk3.0 -y
 fi
 if [ $VERSION -eq '9' ]
 then
