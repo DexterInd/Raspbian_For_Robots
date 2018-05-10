@@ -1,16 +1,16 @@
-import time
+# import time
 import wx
 import os
-import pickle
+# import pickle
 from datetime import datetime
 import subprocess
-from collections import Counter
-import threading
-import psutil
-import signal
+# from collections import Counter
+# import threading
+# import psutil
+# import signal
 import urllib2
-from gopigo import *
-from auto_detect_robot import *
+import auto_detect_robot
+# from auto_detect_robot import *
 import sys
 
 # References
@@ -46,15 +46,15 @@ def write_state(in_string):
     if robot.find("BrickPi+") > -1 or robot.find("BrickPi3") > -1:
         robot = "BrickPi"
 
-    error_file = open(SCRATCH_PATH+'selected_state', 'w')		# File: selected state
-    error_file.write(robot)
-    error_file.close()
+    detected_robot_file = open(SCRATCH_PATH+'selected_state', 'w')		# File: selected state
+    detected_robot_file.write(robot)
+    detected_robot_file.close()
 
 def read_state():
-    error_file = open(SCRATCH_PATH+'selected_state', 'r')		# File: selected state
+    detected_robot_file = open(SCRATCH_PATH+'selected_state', 'r')		# File: selected state
     in_string = ""
-    in_string = error_file.read()
-    error_file.close()
+    in_string = detected_robot_file.read()
+    detected_robot_file.close()
     if len(in_string):
         return in_string
     else:
@@ -105,12 +105,12 @@ def launch_all(scratch_file=SCRATCH_PATH+"new.sb"):
 
     user_selection = read_state()
     if user_selection.find('BrickPi') >= 0:
-        if autodetect().find("BrickPi3") >= 0:
+        if auto_detect_robot.autodetect().find("BrickPi3") >= 0:
             program = "/home/pi/Dexter/BrickPi3/Software/Scratch/BrickPi3Scratch.py"
         else: #BrickPi+, Kickstarter and Advanced,
             program = "/home/pi/Dexter/BrickPi+/Software/BrickPi_Scratch/BrickPiScratch.py"
     elif user_selection.find('GoPiGo') >= 0:
-        if autodetect().find("GoPiGo3") >= 0:
+        if auto_detect_robot.autodetect().find("GoPiGo3") >= 0:
             program = "/home/pi/Dexter/GoPiGo3/Software/Scratch/GoPiGo3Scratch.py"
         else:
             program = "/home/pi/Dexter/GoPiGo/Software/Scratch/GoPiGoScratch.py"
@@ -204,10 +204,9 @@ class MainPanel(wx.Panel):
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # Draw the photograph.
-        robot = autodetect()
-        if robot == "BrickPi3" or robot == "BrickPi+":
-            robot = "BrickPi"
-        print(robot)
+        robot = read_state()
+
+        print("Loading Scratch up for {}".format(robot))
 
         logo_sizer = wx.BoxSizer(wx.HORIZONTAL)
         bmp = wx.Bitmap(SCRATCH_PATH+"dex.png",type=wx.BITMAP_TYPE_PNG)
@@ -433,7 +432,7 @@ class MainPanel(wx.Panel):
     def examples(self, event):
         write_debug("Examples Pressed.")
         # autodetect robots and pick the first one
-        folder = autodetect().split("-")[0]
+        folder = auto_detect_robot.autodetect().split("-")[0]
         if(folder == "GoPiGo3"):
             directory = "nohup pcmanfm /home/pi/Dexter/GoPiGo3/Software/Scratch/Examples/"
         if(folder == "GoPiGo"):
@@ -454,10 +453,10 @@ class MainPanel(wx.Panel):
     def test(self, event):
         # Test the hardware.  Test the selected hardware.
         write_debug("Demo robot.")
-        folder = autodetect()
+        folder = auto_detect_robot.autodetect()
         print("Preparing demo mode for {}".format(folder))
         if folder.find('BrickPi') >= 0:
-            if autodetect().find("BrickPi+"):
+            if auto_detect_robot.autodetect().find("BrickPi+"):
                 # Run BrickPi+ Test.
                 dlg = wx.MessageDialog(self, 'Ok, start BrickPi+ Test. Make sure the BrickPi+ is powered by batteries, a motor is connected, and a touch sensor is connected to Port 1.  You should see the LEDs blink and the motors move when the touch sensor is pressed.  Then press Ok. ', 'Test BrickPi+!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
                 ran_dialog = False
@@ -593,7 +592,7 @@ class Main(wx.App):
 #----------------------------------------------------------------------
 if __name__ == "__main__":
     write_debug(" # Program # started # !")
-    write_state(autodetect())
+    write_state(auto_detect_robot.autodetect())
     #write_state("GoPiGo")
     kill_all_open_processes()
 
