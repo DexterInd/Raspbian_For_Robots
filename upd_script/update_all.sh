@@ -374,16 +374,16 @@ sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 # fetch will remove quiet_mode so set it back
 set_quiet_mode
 
-feedback "--> Install Scratch"
-feedback "--> ======================================="
-feedback " "
+# feedback "--> Install Scratch"
+# feedback "--> ======================================="
+# feedback " "
 # Install Scratch GUI
-sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
+# sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
 
-feedback "--> Install Troubleshooting"
-feedback "--> ======================================="
-feedback " "
-sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
+# feedback "--> Install Troubleshooting"
+# feedback "--> ======================================="
+# feedback " "
+# sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 
 
 

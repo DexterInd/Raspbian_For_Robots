@@ -71,6 +71,11 @@ staging(){
     sensors_update=1
 }
 
+update_rfr_tools() {
+    feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
+    curl -kL dexterindustries.com/update_rfrtools | sudo -u pi bash
+}
+
 ###############################################
 # GOPIGO
 ###############################################
@@ -308,6 +313,7 @@ dead_wood() {
 ###############################################
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 staging
+update_rfr_tools
 update_gopigo
 update_brickpi
 update_grovepi
