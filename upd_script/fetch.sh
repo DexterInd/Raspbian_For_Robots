@@ -216,7 +216,7 @@ fi
 ###############################################
 # DexterEd
 ###############################################
-install_dextered()
+delete_dextered()
 # this deletes the dextered folder
 {
     # Install DexterEd Software
@@ -232,7 +232,7 @@ install_dextered()
 ###############################################
 # GoBox
 ###############################################
-install_gobox()
+delete_gobox()
 # this now deletes gobox, no question asked
 {
     if [ $VERSION -eq '8' ]; then
@@ -249,16 +249,6 @@ install_gobox()
     fi
 }
 
-advanced_comms(){
-    if [ $VERSION -eq '8' ]
-    then
-        cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop  
-    fi
-    if [ $VERSION -eq '9']
-    then
-        delete_file /home/pi/Desktop/advanced_comms_options.desktop
-    fi
-}
 
 dead_wood() {
     
@@ -323,9 +313,8 @@ update_sensors
 # update_arduberry    
 set_all_softlinks
 
-install_dextered
-install_gobox
-advanced_comms
+delete_dextered
+delete_gobox
 
 
 # in Jessie, add a warning before user can reach the Raspberry Pi Configuration Menu Item
