@@ -31,10 +31,10 @@ set_softlink_for(){
         fi   
         if find_in_file_strict "None" $PIHOME/$DEXTER/detected_robot.txt
         then
-            sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+            sudo ln -s -f $DEXTER_PATH/$1 $PIHOME/Desktop/$1
         fi   
     else
-        sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+        sudo ln -s -f $DEXTER_PATH/$1 $PIHOME/Desktop/$1
     fi
 }
 
@@ -80,12 +80,12 @@ update_gopigo() {
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        curl -kL dexterindustries.com/update_gopigo3 | sudo bash
+        curl -kL dexterindustries.com/update_gopigo3 | sudo -u pi bash
         
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
-        curl -kL dexterindustries.com/update_gopigo | sudo bash
+        curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
@@ -102,14 +102,14 @@ update_brickpi() {
         # BrickPi3 Update
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
-        curl -kL dexterindustries.com/update_brickpi3 | sudo bash
+        curl -kL dexterindustries.com/update_brickpi3 | sudo -u pi bash
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
         # Install BrickPi+ on Jessie, but not in future versions
         if [ $VERSION -eq '8' ]; then
             feedback "--> Start BrickPi+ Update."
             feedback "##############################"
-            curl -kL dexterindustries.com/update_brickpi_plus | sudo bash
+            curl -kL dexterindustries.com/update_brickpi_plus | sudo -u pi bash
         fi
 
     else
@@ -132,7 +132,7 @@ update_arduberry ()
             feedback "--> Start Arduberry Update."
             feedback "---------------------------"
 
-            curl -kL dexterindustries.com/update_arduberry | sudo bash
+            curl -kL dexterindustries.com/update_arduberry | sudo -u pi bash
         else
             feedback "--> Arduberry **NOT** Updated."
             feedback "------------------------------"
@@ -152,7 +152,7 @@ update_grovepi() {
         # GrovePi Update
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
-        curl -kL dexterindustries.com/update_grovepi | sudo bash
+        curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -175,7 +175,7 @@ update_pivotpi() {
         # if Dexter folder doesn't exist, then create it
         create_folder $DEXTER
         cd $DEXTER_PATH
-        curl -kL dexterindustries.com/update_pivotpi | sudo bash
+        curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
             
         popd > /dev/null
     else
@@ -199,7 +199,7 @@ if [ $sensors_update == 1 ] ; then
     # if Dexter folder doesn't exist, then create it
     create_folder $DEXTER
     cd $DEXTER_PATH
-    curl -kL dexterindustries.com/update_sensors | sudo bash
+    curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
         
     popd > /dev/null
 else
@@ -245,7 +245,14 @@ install_gobox()
 }
 
 advanced_comms(){
-  cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop  
+    if [ $VERSION -eq '8' ]
+    then
+        cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop  
+    fi
+    if [ $VERSION -eq '9']
+    then
+        delete_file /home/pi/Desktop/advanced_comms_options.desktop
+    fi
 }
 
 dead_wood() {
@@ -325,6 +332,14 @@ fi
 delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
 sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
+
+# Change all Dexter folders to root ownership 
+# Reason for this is to stop users from editing/creating files in there
+# And losing their work when they run DI Update
+
+pushd $PIHOME/DEXTER >/dev/null
+sudo chown -R root:root *
+popd >/dev/null
 
 # dead_wood
 

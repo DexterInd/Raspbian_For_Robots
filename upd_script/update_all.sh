@@ -121,7 +121,7 @@ install_packages() {
     sudo apt-get install apache2 websockify php lib/apache2-mod-php -y
   fi
 
-  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+#   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
@@ -210,107 +210,52 @@ geany_setup(){
   feedback "Done with Geany setup"
 }
 
-autodetect_setup() {
-  # copying the file where rc.local can get it and where it's visible
-  pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
-  sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
-  sudo python autodetect_setup.py install
-  sudo rm -r build
-  sudo rm -r dist
-  sudo rm -r Dexter_AutoDetection.egg-info/
-  popd > /dev/null
-}
+# autodetect_setup() {
+#   # copying the file where rc.local can get it and where it's visible
+#   pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
+#   sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
+#   sudo python setup.py install
+#   sudo rm -r build
+#   sudo rm -r dist
+#   sudo rm -r Dexter_AutoDetection.egg-info/
+#   popd > /dev/null
+# }
 
 install_novnc() {
-
-  # if noVNC is enabled already, just do nothing and skip this
-  test_for_novnc=$(sudo systemctl status novnc.service | grep "active" )
-
-  feedback "--> Set up noVNC"
-  feedback "--> ======================================="
-  feedback " "
-  if  [ -z "$test_for_novnc" ]
-  then
+    feedback "--> Set up noVNC"
+    feedback "--> ======================================="
+    feedback " "
     pushd /usr/local/share/ >/dev/null
     feedback "--> Clone noVNC."
 
     if [ $VERSION -eq '8' ]; then
-      sudo git clone  --depth=1 git://github.com/DexterInd/noVNC
-      cd noVNC
-      sudo git pull
-      sudo cp vnc_auto.html index.html
-    elif [ $VERSION -eq '9' ]; then
-      if  ! folder_exists noVNC; then
-      # On Stretch and future versions let's update noVNC to version 1.0
-      sudo git clone --depth=1 --branch v1.0.0 https://github.com/novnc/noVNC.git
-      fi
-    fi
+        sudo git clone  --depth=1 git://github.com/DexterInd/noVNC
+        cd noVNC
+        sudo git pull
+        sudo cp vnc_auto.html index.html
+        #   # If we found Jesse, the proper location of the html files is in
+        #   # /var/www/html
+        sudo mkdir -p /var/www/html
+        sudo cp -r $RASPBIAN_PATH/www /var/www/html
+        sudo mv -v /var/www/* /var/www/html/
+        sudo chmod +x /var/www/html/index.php
+        sudo chmod +x /var/www/html/css/main.css
 
+        pushd $PIHOME >/dev/null
+        # if we have a local copy of novnc.service, get rid of it before downloading a new one
+        if [ -e $PIHOME/novnc.service ]
+        then
+            sudo rm novnc.service
+        fi
+        popd >/dev/null
+        
+    elif [ $VERSION -eq '9' ]; then
+        bash ../VNC/install_novnc.sh    
+    fi
     popd >/dev/null
-
-
-    # VNC Start on boot
-    if [ $VERSION -eq '8' ]; then
-      feedback "Version 8 found!  You have Jessie!"
-      pushd $PIHOME >/dev/null
-
-      # if we have a local copy of novnc.service, get rid of it before downloading a new one
-      if [ -e $PIHOME/novnc.service ]
-      then
-        sudo rm novnc.service
-        feedback "removing local copy of novnc.service"
-      fi
-
-      popd >/dev/null
-
-    #Stretch
-    elif [ $VERSION -eq '9' ]; then
-      feedback "--> Set up dex.local webpage."
-      feedback "--> ======================================="
-      feedback " "
-      create_folder /var/www/novnc
-      sudo cp -r $PIHOME/di_update/Raspbian_For_Robots/www/* /var/www/novnc
-      sudo cp /var/www/novnc/index_stretch.php /var/www/novnc/index.php
-      sudo cp /var/www/novnc/css/main_stretch.css /var/www/novnc/css/main.css
-      sudo chmod +x /var/www/novnc/index.php
-      sudo chmod +x /var/www/novnc/css/main.css
-      sudo cp $PIHOME/di_update/Raspbian_For_Robots/upd_script/001-novnc.conf /etc/apache2/sites-available
-      pushd /etc/apache2/sites-enabled >/dev/null
-      delete_file 000-default.conf
-      delete_file 001-novnc.conf
-      sudo ln -s ../sites-available/001-novnc.conf .
-      popd >/dev/null
-      feedback "Start noVNC service"
-      sudo cp $PIHOME/di_update/Raspbian_For_Robots/upd_script/novnc_stretch.service /etc/systemd/system/novnc.service
-      sudo chown root:root /etc/systemd/system/novnc.service
-      sudo systemctl daemon-reload
-      sudo systemctl enable novnc.service
-      sudo systemctl start novnc.service
-      feedback "--> restarting the apache server"
-      sudo /etc/init.d/apache2 reload
-    fi
-  else
-    feedback "noVNC already set up - skipping"
-  fi
-  # Change permissions so you can execute from the desktop
-  ####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html
-  ####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
-
-  feedback "Change bash permissions for desktop."
-  if grep -Fxq "xhost +" $PIHOME/.bashrc
-  then
-    #Found it, do nothing!
-    echo "Found xhost in .bashrc"
-  else
-    sudo echo "xhost +" >> $PIHOME/.bashrc
-  fi
 
   feedback "--> Finished setting up noVNC"
   feedback "--> ======================================="
-  # feedback "--> !"
-  # feedback "--> !"
-  # feedback "--> !"
-  # feedback "--> ======================================="
   feedback " "
 }
 
@@ -446,7 +391,6 @@ feedback " "
 sudo apt-get remove monit --yes
 
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/lirc/install.sh
-
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/server/install.sh
 
 # Update background image - Change to dilogo.png
@@ -465,35 +409,6 @@ sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork
 sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 sudo bash $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
-# Set up Webpage
-feedback "--> Set up webpage."
-feedback "--> ======================================="
-feedback " "
-sudo rm -r /var/www
-sudo cp -r $RASPBIAN_PATH/www /var/
-sudo chmod +x /var/www/index.php
-sudo chmod +x /var/www/css/main.css
-
-## Now, if we are running Jessie, we need to move everything
-## into a new subdirectory.
-## Get the Debian Version we have installed.
-
-# echo "Version: $VERSION"
-if [ $VERSION -eq '7' ]; then
-  feedback "Version 7 found!  You have Wheezy!"
-  feedback "Wheezy is no longer supported, unfortunately."
-elif [ $VERSION -eq '8' ]; then
-  feedback "Version 8 found!  You have Jessie!"
-  # If we found Jesse, the proper location of the html files is in
-  # /var/www/html
-  sudo mkdir /var/www/html
-  sudo mv -v /var/www/* /var/www/html/
-  sudo chmod +x /var/www/html/index.php
-  sudo chmod +x /var/www/html/css/main.css
-elif [ $VERSION -eq '9' ]; then
-  feedback "Version 9 found!  You have Stretch!"
-fi
-
 # disable requirement for SSL for shellinaboxa
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
@@ -504,24 +419,12 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 # Setup noVNC
 install_novnc
 
+
 feedback "Change bash permissions for desktop."
-delete_line_from_file "xhost +" /home/pi/.bashrc
+delete_line_from_file "xhost" /home/pi/.bashrc
 add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
 
-feedback "--> Finished setting up noVNC"
-feedback "--> ======================================="
-# feedback "--> !"
-# feedback "--> !"
-# feedback "--> !"
-# feedback "--> ======================================="
-feedback " "
 
-########################################################################
-# ensure the Scratch examples are reachable via Scratch GUI
-# this is done by using soft links
-# this is now done in Scratch_GUI/install_scratch_start.sh
-########################################################################
-#sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds.
 sleep 10
@@ -577,8 +480,9 @@ sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 feedback "-->installing Geany"
 geany_setup
 
-feedback "--> robot detection"
-autodetect_setup
+# feedback "--> robot detection"
+# leave this to the script_tools installer
+# autodetect_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
@@ -591,13 +495,22 @@ autodetect_setup
 #fi
 
 feedback "--> Begin cleanup."
-# remove wx version 3.0 - which gets pulled in by various other libraries
+
+
 # it creates graphical issues in our Python GUI
 # sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.
 # echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
+
 echo "Installed wxpython tools"
-sudo apt-get remove python-wxgtk3.0 -y
+if [ $VERSION -eq '8' ]
+then
+    sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
+    sudo apt-get remove python-wxgtk3.0 -y
+fi
+if [ $VERSION -eq '9' ]
+then
+    sudo apt-get install python-wxgtk3.0 python-psutil -y
+fi
 echo "Python-PSUtil"
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
@@ -625,6 +538,12 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 if [ $VERSION -eq '8' ]; then
   feedback "Modifying Version file to reflect Jessie distro"
   sudo sed -i 's/Wheezy/Jessie/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Stretch/Jessie/g' $DEXTER_PATH/Version
+fi
+if [ $VERSION -eq '9' ]; then
+  feedback "Modifying Version file to reflect Stretch distro"
+  sudo sed -i 's/Wheezy/Stretch/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Jessie/Stretch/g' $DEXTER_PATH/Version
 fi
 
 # Add Cinch Stamp in Version File
@@ -637,6 +556,12 @@ else
 fi
 
 bash $RASPBIAN_PATH/upd_script/update_desktop.sh
+
+# we intentionally use sudo here to make this file owner be root
+# less danger of the user deleting it.
+# we put a copy of update_master.sh into the Dexter folder as a backup if something
+# should happen to di_update/Raspbian_For_Robots
+sudo cp $RASPBIAN_PATH/update_master.sh $PIHOME/Dexter/update_master.sh
 
 unset_quiet_mode
 
