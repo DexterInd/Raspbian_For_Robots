@@ -122,7 +122,7 @@ install_packages() {
     sudo apt-get install -y apache2 websockify php5 libapache2-mod-php5 
   elif [ $VERSION -eq '9' ]; then
   # php7 on Stretch
-    sudo apt-get install apache2 websockify php lib/apache2-mod-php -y
+    sudo apt-get install apache2 websockify php libapache2-mod-php -y
   fi
 
 #   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
