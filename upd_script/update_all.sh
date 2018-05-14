@@ -424,9 +424,9 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 install_novnc
 
 
-feedback "Change bash permissions for desktop."
-delete_line_from_file "xhost" /home/pi/.bashrc
-add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
+# feedback "Change bash permissions for desktop."
+# delete_line_from_file "xhost" /home/pi/.bashrc
+# add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
 
 
 
@@ -560,6 +560,10 @@ else
 fi
 
 bash $RASPBIAN_PATH/upd_script/update_desktop.sh
+
+# copies set_xhost into a place that will run it on boot, after xserver is started
+# without requiring user to open a terminal
+sudo cp -f $RASPBIAN_PATH/upd_script/set_xhost.sh /etc/profile.d/
 
 # we intentionally use sudo here to make this file owner be root
 # less danger of the user deleting it.
