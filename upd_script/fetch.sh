@@ -75,7 +75,7 @@ staging(){
 
 update_rfr_tools() {
     feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
-    curl -kL https://raw.githubusercontent.com/DexterInd/RFR_Tools/master/scripts/install_tools.sh | sudo -u pi bash
+    curl -kL dexterindustries.com/update_rfrtools | sudo bash -u pi -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
 }
 
 ###############################################
