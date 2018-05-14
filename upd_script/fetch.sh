@@ -13,6 +13,8 @@ source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 set_quiet_mode
 
+BRANCH=develop
+
 set_softlink_for(){
     # if the detected_robot file exists
     # then we will create a softlink onto the desktop
@@ -71,6 +73,11 @@ staging(){
     sensors_update=1
 }
 
+update_rfr_tools() {
+    feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
+    curl -kL https://raw.githubusercontent.com/DexterInd/RFR_Tools/master/scripts/install_tools.sh | sudo -u pi bash
+}
+
 ###############################################
 # GOPIGO
 ###############################################
@@ -80,12 +87,14 @@ update_gopigo() {
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        curl -kL dexterindustries.com/update_gopigo3 | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo3/$BRANCH/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools
+
         
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
-        curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
+        # curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$BRANCH/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
@@ -102,14 +111,15 @@ update_brickpi() {
         # BrickPi3 Update
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
-        curl -kL dexterindustries.com/update_brickpi3 | sudo -u pi bash
+       # curl -kL dexterindustries.com/update_brickpi3 | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi3/$BRANCH/Install/update_brickpi3.sh | sudo -u pi bash -s -- --bypass-rfrtools
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
         # Install BrickPi+ on Jessie, but not in future versions
         if [ $VERSION -eq '8' ]; then
             feedback "--> Start BrickPi+ Update."
             feedback "##############################"
-            curl -kL dexterindustries.com/update_brickpi_plus | sudo -u pi bash
+            curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi/master/Setup_Files/update_brickpi.sh | sudo -u pi bash
         fi
 
     else
@@ -152,7 +162,8 @@ update_grovepi() {
         # GrovePi Update
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
-        curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
+        # curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/GrovePi/develop/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -175,7 +186,8 @@ update_pivotpi() {
         # if Dexter folder doesn't exist, then create it
         create_folder $DEXTER
         cd $DEXTER_PATH
-        curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
+        # curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/PivotPi/develop/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools
             
         popd > /dev/null
     else
@@ -199,7 +211,8 @@ if [ $sensors_update == 1 ] ; then
     # if Dexter folder doesn't exist, then create it
     create_folder $DEXTER
     cd $DEXTER_PATH
-    curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
+    # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
+    curl -kL https://raw.githubusercontent.com/DexterInd/DI_Sensors/develop/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
         
     popd > /dev/null
 else
@@ -211,7 +224,7 @@ fi
 ###############################################
 # DexterEd
 ###############################################
-install_dextered()
+delete_dextered()
 # this deletes the dextered folder
 {
     # Install DexterEd Software
@@ -227,7 +240,7 @@ install_dextered()
 ###############################################
 # GoBox
 ###############################################
-install_gobox()
+delete_gobox()
 # this now deletes gobox, no question asked
 {
     if [ $VERSION -eq '8' ]; then
@@ -244,16 +257,6 @@ install_gobox()
     fi
 }
 
-advanced_comms(){
-    if [ $VERSION -eq '8' ]
-    then
-        cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop  
-    fi
-    if [ $VERSION -eq '9']
-    then
-        delete_file /home/pi/Desktop/advanced_comms_options.desktop
-    fi
-}
 
 dead_wood() {
     
@@ -308,6 +311,7 @@ dead_wood() {
 ###############################################
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 staging
+update_rfr_tools
 update_gopigo
 update_brickpi
 update_grovepi
@@ -317,9 +321,8 @@ update_sensors
 # update_arduberry    
 set_all_softlinks
 
-install_dextered
-install_gobox
-advanced_comms
+delete_dextered
+delete_gobox
 
 
 # in Jessie, add a warning before user can reach the Raspberry Pi Configuration Menu Item

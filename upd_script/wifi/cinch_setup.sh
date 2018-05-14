@@ -98,7 +98,7 @@ sudo chmod 755 /etc/systemd/system/channel_select.service
 sudo systemctl daemon-reload
 sudo systemctl enable channel_select.service
 
-sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/wifi_debug/setup_wifi_debug.sh
+sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/wifi/wifi_debug/setup_wifi_debug.sh
 
 
 # Copy hostapd for rtl wifi adapter and Pi3 wifi adapter

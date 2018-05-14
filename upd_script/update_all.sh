@@ -1,7 +1,7 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
 # This script will be changed OFTEN!
-sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
+
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
@@ -27,11 +27,15 @@ SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
 
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 
+BRANCH=develop
+
+
+
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-
+curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $BRANCH
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
@@ -118,7 +122,7 @@ install_packages() {
     sudo apt-get install -y apache2 websockify php5 libapache2-mod-php5 
   elif [ $VERSION -eq '9' ]; then
   # php7 on Stretch
-    sudo apt-get install apache2 websockify php lib/apache2-mod-php -y
+    sudo apt-get install apache2 websockify php libapache2-mod-php -y
   fi
 
 #   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
@@ -370,16 +374,16 @@ sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 # fetch will remove quiet_mode so set it back
 set_quiet_mode
 
-feedback "--> Install Scratch"
-feedback "--> ======================================="
-feedback " "
+# feedback "--> Install Scratch"
+# feedback "--> ======================================="
+# feedback " "
 # Install Scratch GUI
-sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
+# sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
 
-feedback "--> Install Troubleshooting"
-feedback "--> ======================================="
-feedback " "
-sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
+# feedback "--> Install Troubleshooting"
+# feedback "--> ======================================="
+# feedback " "
+# sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 
 
 
@@ -420,9 +424,9 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 install_novnc
 
 
-feedback "Change bash permissions for desktop."
-delete_line_from_file "xhost" /home/pi/.bashrc
-add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
+# feedback "Change bash permissions for desktop."
+# delete_line_from_file "xhost" /home/pi/.bashrc
+# add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
 
 
 
@@ -504,8 +508,8 @@ feedback "--> Begin cleanup."
 echo "Installed wxpython tools"
 if [ $VERSION -eq '8' ]
 then
-    sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
-    sudo apt-get remove python-wxgtk3.0 -y
+    sudo apt-get install python-wxgtk3.0 python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
+    # sudo apt-get remove python-wxgtk3.0 -y
 fi
 if [ $VERSION -eq '9' ]
 then
@@ -556,6 +560,10 @@ else
 fi
 
 bash $RASPBIAN_PATH/upd_script/update_desktop.sh
+
+# copies set_xhost into a place that will run it on boot, after xserver is started
+# without requiring user to open a terminal
+sudo cp -f $RASPBIAN_PATH/upd_script/set_xhost.sh /etc/profile.d/
 
 # we intentionally use sudo here to make this file owner be root
 # less danger of the user deleting it.
