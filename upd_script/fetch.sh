@@ -13,7 +13,7 @@ source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 set_quiet_mode
 
-BRANCH=develop
+BRANCH=feature/use-rfr-tools-too
 
 set_softlink_for(){
     # if the detected_robot file exists
@@ -212,7 +212,7 @@ if [ $sensors_update == 1 ] ; then
     create_folder $DEXTER
     cd $DEXTER_PATH
     # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
-    curl -kL https://raw.githubusercontent.com/RobertLucian/DI_Sensors/develop/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
+    curl -kL https://raw.githubusercontent.com/RobertLucian/develop/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
         
     popd > /dev/null
 else
