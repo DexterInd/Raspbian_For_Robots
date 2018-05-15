@@ -340,8 +340,9 @@ sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_tro
 # Reason for this is to stop users from editing/creating files in there
 # And losing their work when they run DI Update
 
-pushd $PIHOME/DEXTER >/dev/null
+pushd $PIHOME/$DEXTER >/dev/null
 sudo chown -R root:root *
+sudo chmod 666 *.txt
 popd >/dev/null
 
 # dead_wood
