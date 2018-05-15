@@ -493,6 +493,13 @@ then
     geany_setup
 fi
 
+# install ffmpeg on Stretch
+# if [ $VERSION -eq '9' ]
+# then
+#     pip3 install ffmpeg-python
+#     sudo apt-get install ffmpeg
+# fi
+
 # feedback "--> robot detection"
 # leave this to the script_tools installer
 # autodetect_setup
@@ -579,6 +586,11 @@ sudo cp -f $RASPBIAN_PATH/upd_script/set_xhost.sh /etc/profile.d/
 # we put a copy of update_master.sh into the Dexter folder as a backup if something
 # should happen to di_update/Raspbian_For_Robots
 sudo cp $RASPBIAN_PATH/update_master.sh $PIHOME/Dexter/update_master.sh
+
+pushd /home/pi/Dexter >/dev/null
+sudo chown -R root:root .
+sudo chmod 666 detected_robot.txt
+popd >/dev/null
 
 unset_quiet_mode
 

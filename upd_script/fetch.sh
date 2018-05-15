@@ -42,7 +42,7 @@ set_softlink_for(){
 
 set_all_softlinks(){
     # auto_detect_robot now in script_tools
-    sudo python /home/pi/Dexter/lib/Dexter/script_tools/auto_detect_robot.py
+    sudo python /home/pi/Dexter/lib/Dexter/RFR_Tools/miscellaneous/auto_detect_robot.py
     set_softlink_for "GoPiGo3"
     set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
@@ -75,7 +75,7 @@ staging(){
 
 update_rfr_tools() {
     feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
-    curl -kL dexterindustries.com/update_rfrtools | sudo bash -u pi -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
+    curl -kL dexterindustries.com/update_rfrtools | sudo -u pi bash -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
 }
 
 ###############################################
@@ -87,14 +87,14 @@ update_gopigo() {
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo3/$BRANCH/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/GoPiGo3/$BRANCH/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools
 
         
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
         # curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$BRANCH/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/GoPiGo/$BRANCH/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
@@ -112,14 +112,14 @@ update_brickpi() {
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
        # curl -kL dexterindustries.com/update_brickpi3 | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi3/$BRANCH/Install/update_brickpi3.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/BrickPi3/$BRANCH/Install/update_brickpi3.sh | sudo -u pi bash -s -- --bypass-rfrtools
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
         # Install BrickPi+ on Jessie, but not in future versions
         if [ $VERSION -eq '8' ]; then
             feedback "--> Start BrickPi+ Update."
             feedback "##############################"
-            curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi/master/Setup_Files/update_brickpi.sh | sudo -u pi bash
+            curl -kL https://raw.githubusercontent.com/RobertLucian/BrickPi/master/Setup_Files/update_brickpi.sh | sudo -u pi bash
         fi
 
     else
@@ -163,7 +163,7 @@ update_grovepi() {
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
         # curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/GrovePi/develop/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/GrovePi/develop/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -187,7 +187,7 @@ update_pivotpi() {
         create_folder $DEXTER
         cd $DEXTER_PATH
         # curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/PivotPi/develop/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/PivotPi/develop/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools
             
         popd > /dev/null
     else
@@ -212,7 +212,7 @@ if [ $sensors_update == 1 ] ; then
     create_folder $DEXTER
     cd $DEXTER_PATH
     # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
-    curl -kL https://raw.githubusercontent.com/DexterInd/DI_Sensors/develop/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
+    curl -kL https://raw.githubusercontent.com/RobertLucian/DI_Sensors/develop/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
         
     popd > /dev/null
 else
