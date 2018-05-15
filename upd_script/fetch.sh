@@ -328,13 +328,11 @@ delete_gobox
 # in Jessie, add a warning before user can reach the Raspberry Pi Configuration Menu Item
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 if [ $VERSION -eq '8' ]; then
-  sudo cp /home/pi/di_update/Raspbian_For_Robots/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
+  sudo cp $RASPBIAN/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
 fi
 
 # Install Troubleshooting Software
 delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
-sudo bash /home/pi/di_update/Raspbian_For_Robots/Troubleshooting_GUI/install_troubleshooting_start.sh
 
 # Change all Dexter folders to root ownership 
 # Reason for this is to stop users from editing/creating files in there
