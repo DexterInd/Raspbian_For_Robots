@@ -212,7 +212,7 @@ if [ $sensors_update == 1 ] ; then
     create_folder $DEXTER
     cd $DEXTER_PATH
     # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
-    curl -kL https://raw.githubusercontent.com/RobertLucian/$BRANCH/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
+    curl -kL https://raw.githubusercontent.com/RobertLucian/DI_Sensors/$BRANCH/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
         
     popd > /dev/null
 else
