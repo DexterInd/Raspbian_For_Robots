@@ -35,6 +35,7 @@ sudo cp $PIHOME/di_update/Raspbian_For_Robots/VNC/001-novnc.conf /etc/apache2/si
 pushd /etc/apache2/sites-enabled >/dev/null
 delete_file 000-default.conf
 delete_file 001-novnc.conf
+sudo ln -s ../sites-available/001-novnc.conf
 popd >/dev/null
 feedback "--> restarting the apache server"
 sudo /etc/init.d/apache2 reload
