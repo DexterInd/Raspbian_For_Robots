@@ -347,6 +347,6 @@ popd >/dev/null
 
 # dead_wood
 
-echo "--> Done updating Dexter Industries Github repos!"
+feedback "--> Done updating Dexter Industries Github repos!"
 
 unset_quiet_mode
