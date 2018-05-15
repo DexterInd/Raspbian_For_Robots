@@ -163,7 +163,7 @@ update_grovepi() {
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
         # curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/RobertLucian/GrovePi/develop/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/GrovePi/$BRANCH/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -187,7 +187,7 @@ update_pivotpi() {
         create_folder $DEXTER
         cd $DEXTER_PATH
         # curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/RobertLucian/PivotPi/develop/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools
+        curl -kL https://raw.githubusercontent.com/RobertLucian/PivotPi/$BRANCH/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools
             
         popd > /dev/null
     else
@@ -212,7 +212,7 @@ if [ $sensors_update == 1 ] ; then
     create_folder $DEXTER
     cd $DEXTER_PATH
     # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
-    curl -kL https://raw.githubusercontent.com/RobertLucian/develop/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
+    curl -kL https://raw.githubusercontent.com/RobertLucian/$BRANCH/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools
         
     popd > /dev/null
 else
