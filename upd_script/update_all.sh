@@ -476,13 +476,22 @@ sudo chmod +x $RASPBIAN_PATH/backup/file_list.txt
 sudo chmod +x $RASPBIAN_PATH/backup/backup_gui.py
 feedback "--> End installing Backup."
 
-feedback "--> Update for RPi3."
-# Run the update script for updating overlays for Rpi3.
-sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
-sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 
-feedback "-->installing Geany"
-geany_setup
+# since Jessie still support BrickPi+, we need to disable bluetooth on it
+if [ $VERSION -eq '8' ]
+then
+    feedback "--> Update for RPi3."
+    # Run the update script for updating overlays for Rpi3.
+    sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
+    sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
+fi
+
+# leave GEANY alone on Stretch
+if [ $VERSION -eq '8' ]
+then
+    feedback "-->installing Geany"
+    geany_setup
+fi
 
 # feedback "--> robot detection"
 # leave this to the script_tools installer
