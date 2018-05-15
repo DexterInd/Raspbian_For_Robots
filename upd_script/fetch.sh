@@ -332,7 +332,7 @@ if [ $VERSION -eq '8' ]; then
 fi
 
 # Install Troubleshooting Software
-delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
+# delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 
 # Change all Dexter folders to root ownership 
 # Reason for this is to stop users from editing/creating files in there
