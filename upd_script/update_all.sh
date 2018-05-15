@@ -254,7 +254,7 @@ install_novnc() {
         popd >/dev/null
         
     elif [ $VERSION -eq '9' ]; then
-        bash ../VNC/install_novnc.sh    
+        bash $RASPBIAN_PATH/VNC/install_novnc.sh    
     fi
     popd >/dev/null
 
