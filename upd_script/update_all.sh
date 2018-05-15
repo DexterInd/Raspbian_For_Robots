@@ -589,7 +589,7 @@ sudo cp $RASPBIAN_PATH/update_master.sh $PIHOME/Dexter/update_master.sh
 
 pushd /home/pi/Dexter >/dev/null
 sudo chown -R root:root .
-sudo chmod 666 detected_robot.txt
+sudo chmod 666 *.txt
 popd >/dev/null
 
 unset_quiet_mode
