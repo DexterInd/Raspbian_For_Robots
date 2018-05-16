@@ -227,14 +227,17 @@ fi
 delete_dextered()
 # this deletes the dextered folder
 {
+    if [ $VERSION -eq '8' ]
+    then
     # Install DexterEd Software
     feedback "--> Install DexterEd Software"
     feedback "-----------------------------"
     delete_folder /home/pi/Desktop/DexterEd
 
-    pushd /home/pi/Desktop > /dev/null
+    # pushd /home/pi/Desktop > /dev/null
     # sudo git clone https://github.com/DexterInd/DexterEd.git
-    popd > /dev/null
+    # popd > /dev/null
+    fi
 }
 
 ###############################################
