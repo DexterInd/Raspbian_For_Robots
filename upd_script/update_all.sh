@@ -233,9 +233,9 @@ install_novnc() {
     feedback "--> Clone noVNC."
 
     if [ $VERSION -eq '8' ]; then
+        sudo rm -r noVNC
         sudo git clone  --depth=1 git://github.com/DexterInd/noVNC
         cd noVNC
-        sudo git pull
         sudo cp vnc_auto.html index.html
         #   # If we found Jesse, the proper location of the html files is in
         #   # /var/www/html
@@ -431,8 +431,8 @@ install_novnc
 
 
 # feedback "Change bash permissions for desktop."
-# delete_line_from_file "xhost" /home/pi/.bashrc
-# add_line_to_end_of_file "xhost + >/dev/null" /home/pi/.bashrc
+delete_line_from_file "xhost" /home/pi/.bashrc
+add_line_to_end_of_file "xhost + >/dev/null 2>&1" /home/pi/.bashrc
 
 
 
