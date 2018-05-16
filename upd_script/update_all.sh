@@ -241,7 +241,7 @@ install_novnc() {
         #   # /var/www/html
         sudo mkdir -p /var/www/html
         sudo cp -r $RASPBIAN_PATH/www /var/www/html
-        sudo mv -v /var/www/* /var/www/html/
+        sudo mv -f /var/www/* /var/www/html/
         sudo chmod +x /var/www/html/index.php
         sudo chmod +x /var/www/html/css/main.css
 
@@ -440,7 +440,7 @@ add_line_to_end_of_file "xhost + >/dev/null 2>&1" /home/pi/.bashrc
 sleep 10
 
 ########################################################################
-## Last bit of house cleaning.
+## Last bit of house cleaning
 
 # Setup Hostname Changer
 feedback "--> Set up Hostname Changer."
