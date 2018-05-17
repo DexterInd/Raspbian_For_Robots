@@ -314,6 +314,8 @@ dead_wood() {
 ###############################################
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 staging
+sudo touch $DEXTER_PATH/detected_robot.txt
+sudo chmod 666 $DEXTER_PATH/detected_robot.txt
 update_rfr_tools
 update_gopigo
 update_brickpi
