@@ -74,7 +74,7 @@ def detect():
 
 def write_state(in_string):
     try:
-        selected_robot = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'w')		# File: selected state
+        selected_robot = open(ICON_PATH+'selected_state', 'w')		# File: selected state
         if(' ' in in_string): 
             in_string = "dex"
         selected_robot.write(in_string)
@@ -85,7 +85,7 @@ def write_state(in_string):
 
 def read_state():
     try:
-        selected_robot = open('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/selected_state', 'r')		# File: selected state
+        selected_robot = open(ICON_PATH+'selected_state', 'r')		# File: selected state
         in_string = selected_robot.read()
         selected_robot.close()
     except:
@@ -245,8 +245,8 @@ class MainPanel(wx.Panel):
         write_state(controls[value]) 	# print value to file.  
         
         # Update Picture
-        robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
-        robot = read_state()+".png"
+        robot = ICON_PATH+read_state()+".png"
+        # robot = read_state()+".png"
         newrobotbitmap = wx.Bitmap(robot,type=wx.BITMAP_TYPE_PNG)
         robotbitmap.SetBitmap(newrobotbitmap)
 
@@ -379,7 +379,7 @@ class MainFrame(wx.Frame):
         """Constructor"""
         # wx.ComboBox
 
-        wx.Icon('/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/favicon.ico', wx.BITMAP_TYPE_ICO)
+        wx.Icon(ICON_PATH+'favicon.ico', wx.BITMAP_TYPE_ICO)
         wx.Log.SetVerbose(False)
         wx.Frame.__init__(self, None, title="Dexter Industries Update")		# Set the frame size
 
