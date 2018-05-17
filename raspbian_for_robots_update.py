@@ -137,6 +137,7 @@ class MainPanel(wx.Panel):
         topSizer = wx.BoxSizer(wx.HORIZONTAL) # top logo
         hSizer = wx.BoxSizer(wx.HORIZONTAL) # main
         bottomSizer = wx.BoxSizer(wx.HORIZONTAL)    # static text
+        exitSizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # hSizer contains 2 vertical sizer
         vSizerLeft = wx.BoxSizer(wx.VERTICAL)
@@ -146,7 +147,7 @@ class MainPanel(wx.Panel):
         # TOP SIZER WITH LOGO
 
         logoSizer = wx.BoxSizer(wx.VERTICAL)
-        bmp = wx.Bitmap(ICON_PATH+"dex.png",type=wx.BITMAP_TYPE_PNG)
+        bmp = wx.Bitmap(ICON_PATH+"dexter_industries_logo.png",type=wx.BITMAP_TYPE_PNG)
         logo=wx.StaticBitmap(self,bitmap=bmp)
         logoSizer.Add(logo,0,wx.RIGHT|wx.LEFT|wx.EXPAND)
         topSizer.Add(logoSizer)
@@ -198,27 +199,26 @@ class MainPanel(wx.Panel):
         print(robot)
         bmp = wx.Bitmap(ICON_PATH+robot,type=wx.BITMAP_TYPE_PNG)
         robotbitmap=wx.StaticBitmap(self,bitmap=bmp)
-        bmpW,bmpH = robotbitmap.GetSize()
-        icon_sizer.Add(robotbitmap,1,wx.RIGHT|wx.LEFT|wx.EXPAND| wx.ALIGN_TOP)
+        icon_sizer.Add(robotbitmap,1,wx.RIGHT|wx.LEFT|wx.EXPAND| wx.ALIGN_TOP | wx.ALIGN_RIGHT)
 
-        vSizerRight.Add(icon_sizer)
+        vSizerRight.Add(icon_sizer, 0, wx.ALIGN_RIGHT)
 
 
         # BOTTOM SIZER: static text plus exit button
+        update_firmware_static = wx.StaticText(self,-1,"Use this to update the robot firmware.  This only needs to be done occasionally!  If you have questions, please ask on our forums!")
+        bottomSizer.AddSpacer(20)
+        bottomSizer.Add(update_firmware_static, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
+        bottomSizer.AddSpacer(5)
 
         # Exit
         exit_button = wx.Button(self, label="Exit")
         exit_button.Bind(wx.EVT_BUTTON, self.onClose)
-
-        update_firmware_static = wx.StaticText(self,-1,"Use this to update the robot firmware.\nThis only needs to be done occasionally! \nIf you have questions, \nplease ask on our forums!")
-        bottomSizer.AddSpacer(20)
-        bottomSizer.Add(update_firmware_static, 1, wx.EXPAND| wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
-        bottomSizer.Add(exit_button, 1, wx.RIGHT)
-        bottomSizer.AddSpacer(40)
+        exitSizer.Add(exit_button, 0, wx.RIGHT | wx.ALIGN_RIGHT)
+        exitSizer.AddSpacer(20)
 
         hSizer.AddSpacer(30)
         hSizer.Add(vSizerLeft,0,wx.EXPAND)
-        hSizer.AddSpacer(10)
+        hSizer.AddSpacer(50)
         hSizer.Add(vSizerRight,0,wx.EXPAND)
         hSizer.AddSpacer(30)
 
@@ -226,6 +226,9 @@ class MainPanel(wx.Panel):
         Sizer.Add(topSizer,1,wx.EXPAND)
         Sizer.Add(hSizer,1, wx.EXPAND)
         Sizer.Add(bottomSizer, 1, wx.EXPAND)
+        Sizer.Add(exitSizer, 0, wx.ALIGN_RIGHT)
+        Sizer.AddSpacer(20)
+        
         self.SetSizer(Sizer)
         update_firmware_static.Hide()
     
@@ -381,7 +384,7 @@ class MainFrame(wx.Frame):
 
         wx.Icon(ICON_PATH+'favicon.ico', wx.BITMAP_TYPE_ICO)
         wx.Log.SetVerbose(False)
-        wx.Frame.__init__(self, None, title="Dexter Industries Update")		# Set the frame size
+        wx.Frame.__init__(self, None, title="Dexter Industries Update",size=(500,550))		# Set the frame size
 
         panel = MainPanel(self)        
         self.Center()
