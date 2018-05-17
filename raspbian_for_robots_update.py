@@ -13,8 +13,7 @@ try:
 except:
     pass
 
-robots = {}
-robotbitmap = None
+
 
 
 #	This program runs various update programs for Raspbian for Robots, from Dexter Industries.
@@ -40,6 +39,9 @@ SCRATCH="Scratch_GUI"
 s = "/";
 seq = (PIHOME, DEXTER,"lib",DEXTER,SCRATCH) # This is sequence of strings.
 SCRATCH_PATH = s.join( seq )+"/"
+robots = {}
+robotbitmap = None
+ICON_PATH="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"
 
 # Writes debug to file "error_log"
 def write_debug(in_string):
@@ -144,7 +146,7 @@ class MainPanel(wx.Panel):
         # TOP SIZER WITH LOGO
 
         logoSizer = wx.BoxSizer(wx.VERTICAL)
-        bmp = wx.Bitmap(SCRATCH_PATH+"dex.png",type=wx.BITMAP_TYPE_PNG)
+        bmp = wx.Bitmap(ICON_PATH+"dex.png",type=wx.BITMAP_TYPE_PNG)
         logo=wx.StaticBitmap(self,bitmap=bmp)
         logoSizer.Add(logo,0,wx.RIGHT|wx.LEFT|wx.EXPAND)
         topSizer.Add(logoSizer)
@@ -194,7 +196,7 @@ class MainPanel(wx.Panel):
         icon_sizer = wx.BoxSizer(wx.VERTICAL)
         robot = read_state()+".png"
         print(robot)
-        bmp = wx.Bitmap(SCRATCH_PATH+robot,type=wx.BITMAP_TYPE_PNG)
+        bmp = wx.Bitmap(ICON_PATH+robot,type=wx.BITMAP_TYPE_PNG)
         robotbitmap=wx.StaticBitmap(self,bitmap=bmp)
         bmpW,bmpH = robotbitmap.GetSize()
         icon_sizer.Add(robotbitmap,1,wx.RIGHT|wx.LEFT|wx.EXPAND| wx.ALIGN_TOP)
@@ -245,7 +247,7 @@ class MainPanel(wx.Panel):
         # Update Picture
         robot = "/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/"+read_state()+".png"
         robot = read_state()+".png"
-        newrobotbitmap = wx.Bitmap(SCRATCH_PATH+robot,type=wx.BITMAP_TYPE_PNG)
+        newrobotbitmap = wx.Bitmap(robot,type=wx.BITMAP_TYPE_PNG)
         robotbitmap.SetBitmap(newrobotbitmap)
 
     # Update the Operating System.
