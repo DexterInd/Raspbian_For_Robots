@@ -227,14 +227,17 @@ fi
 delete_dextered()
 # this deletes the dextered folder
 {
+    if [ $VERSION -eq '8' ]
+    then
     # Install DexterEd Software
     feedback "--> Install DexterEd Software"
     feedback "-----------------------------"
     delete_folder /home/pi/Desktop/DexterEd
 
-    pushd /home/pi/Desktop > /dev/null
+    # pushd /home/pi/Desktop > /dev/null
     # sudo git clone https://github.com/DexterInd/DexterEd.git
-    popd > /dev/null
+    # popd > /dev/null
+    fi
 }
 
 ###############################################
@@ -332,7 +335,7 @@ if [ $VERSION -eq '8' ]; then
 fi
 
 # Install Troubleshooting Software
-delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
+# delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 
 # Change all Dexter folders to root ownership 
 # Reason for this is to stop users from editing/creating files in there
