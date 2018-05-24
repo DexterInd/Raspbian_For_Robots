@@ -27,7 +27,7 @@ SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
 
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 
-BRANCH=develop
+BRANCH=master
 
 
 
@@ -35,7 +35,7 @@ BRANCH=develop
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $BRANCH
+curl -kL https://raw.githubusercontent.com/DexterInd/script_tools/$selectedbranch/install_script_tools.sh | sudo -u pi bash -s -- $BRANCH
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end

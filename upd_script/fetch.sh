@@ -1,5 +1,5 @@
 #! /bin/bash
-curl -kL dexterindustries.com/update_tools | sudo -u pi bash
+
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
@@ -7,13 +7,14 @@ DEXTER=Dexter
 DESKTOP=Desktop
 DEXTER_PATH=$PIHOME/$DEXTER
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
+BRANCH=master
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 # This script updates the the code repos on Raspbian for Robots.
+curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $BRANCH
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
-VERSION=$(sed 's/\..*//' /etc/debian_version)
 set_quiet_mode
 
-BRANCH=develop
 
 set_softlink_for(){
     # if the detected_robot file exists
@@ -75,7 +76,7 @@ staging(){
 
 update_rfr_tools() {
     feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
-    curl -kL dexterindustries.com/update_rfrtools | sudo -u pi bash -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
+    curl -kL https://raw.githubusercontent.com/DexterInd/RFR_Tools/$selectedbranch/scripts/install_tools.sh | sudo -u pi bash -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
 }
 
 ###############################################
