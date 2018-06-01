@@ -1,5 +1,5 @@
 #! /bin/bash
-curl -kL dexterindustries.com/update_tools | sudo -u pi bash
+
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
@@ -7,13 +7,14 @@ DEXTER=Dexter
 DESKTOP=Desktop
 DEXTER_PATH=$PIHOME/$DEXTER
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
+selectedbranch=master
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 # This script updates the the code repos on Raspbian for Robots.
+curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $selectedbranch
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
-VERSION=$(sed 's/\..*//' /etc/debian_version)
 set_quiet_mode
 
-BRANCH=develop
 
 set_softlink_for(){
     # if the detected_robot file exists
@@ -75,7 +76,7 @@ staging(){
 
 update_rfr_tools() {
     feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
-    curl -kL dexterindustries.com/update_rfrtools | sudo -u pi bash -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
+    curl -kL https://raw.githubusercontent.com/DexterInd/RFR_Tools/$selectedbranch/scripts/install_tools.sh | sudo -u pi bash -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
 }
 
 ###############################################
@@ -87,14 +88,14 @@ update_gopigo() {
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo3/$BRANCH/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $BRANCH
+        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo3/$selectedbranch/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
 
-        
+
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
         # curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$BRANCH/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools  $BRANCH
+        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$selectedbranch/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
@@ -112,14 +113,14 @@ update_brickpi() {
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
        # curl -kL dexterindustries.com/update_brickpi3 | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi3/$BRANCH/Install/update_brickpi3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $BRANCH
+        curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi3/$selectedbranch/Install/update_brickpi3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
         # Install BrickPi+ on Jessie, but not in future versions
         if [ $VERSION -eq '8' ]; then
             feedback "--> Start BrickPi+ Update."
             feedback "##############################"
-            curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi/master/Setup_Files/update_brickpi.sh | sudo -u pi bash 
+            curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi/master/Setup_Files/update_brickpi.sh | sudo -u pi bash
         fi
 
     else
@@ -146,7 +147,7 @@ update_arduberry ()
         else
             feedback "--> Arduberry **NOT** Updated."
             feedback "------------------------------"
-        fi 
+        fi
         # end conditional statement on ARDUBERRY UPDATE
     fi
 }
@@ -163,7 +164,7 @@ update_grovepi() {
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
         # curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/GrovePi/$BRANCH/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools $BRANCH
+        curl -kL https://raw.githubusercontent.com/DexterInd/GrovePi/$selectedbranch/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools $selectedbranch
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -176,19 +177,19 @@ update_grovepi() {
 ###############################################
 
 update_pivotpi() {
-        
+
     if [ $pivotpi_update == 1 ] ; then
         feedback "--> Start PivotPi Update."
         feedback "-------------------------"
-        
+
         pushd /home/pi > /dev/null
 
         # if Dexter folder doesn't exist, then create it
         create_folder $DEXTER
         cd $DEXTER_PATH
         # curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/PivotPi/$BRANCH/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools $BRANCH
-            
+        curl -kL https://raw.githubusercontent.com/DexterInd/PivotPi/$selectedbranch/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools $selectedbranch
+
         popd > /dev/null
     else
         echo "--> PivotPi **NOT** Updated"
@@ -200,20 +201,20 @@ update_pivotpi() {
 # SENSORS
 ###############################################
 update_sensors() {
-    
+
 
 if [ $sensors_update == 1 ] ; then
     feedback "--> Start DI Sensors Update."
     feedback "-------------------------"
-    
+
     pushd /home/pi > /dev/null
 
     # if Dexter folder doesn't exist, then create it
     create_folder $DEXTER
     cd $DEXTER_PATH
     # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
-    curl -kL https://raw.githubusercontent.com/DexterInd/DI_Sensors/$BRANCH/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools $BRANCH
-        
+    curl -kL https://raw.githubusercontent.com/DexterInd/DI_Sensors/$selectedbranch/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools $selectedbranch
+
     popd > /dev/null
 else
     echo "--> Sensors **NOT** Updated"

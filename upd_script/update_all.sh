@@ -27,7 +27,7 @@ SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
 
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 
-BRANCH=develop
+selectedbranch=master
 
 
 
@@ -35,7 +35,7 @@ BRANCH=develop
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $BRANCH
+curl -kL https://raw.githubusercontent.com/DexterInd/script_tools/$selectedbranch/install_script_tools.sh | sudo -u pi bash -s -- $selectedbranch
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
@@ -119,7 +119,7 @@ install_packages() {
 
   if [ $VERSION -eq '8' ]; then
     # php5 on Jessie
-    sudo apt-get install -y apache2 websockify php5 libapache2-mod-php5 
+    sudo apt-get install -y apache2 websockify php5 libapache2-mod-php5
   elif [ $VERSION -eq '9' ]; then
   # php7 on Stretch
     sudo apt-get install apache2 websockify php libapache2-mod-php -y
@@ -252,9 +252,9 @@ install_novnc() {
             sudo rm novnc.service
         fi
         popd >/dev/null
-        
+
     elif [ $VERSION -eq '9' ]; then
-        bash $RASPBIAN_PATH/VNC/install_novnc.sh    
+        bash $RASPBIAN_PATH/VNC/install_novnc.sh
     fi
     popd >/dev/null
 
