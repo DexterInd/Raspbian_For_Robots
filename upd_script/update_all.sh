@@ -1,7 +1,7 @@
 #! /bin/bash
 # This script will do the updates.  This script can change all the time!
 # This script will be changed OFTEN!
-sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
+
 ########################################################################
 ## These Changes to the image are all mandatory.  If you want to run DI
 ## Hardware, you're going to need these changes.
@@ -27,11 +27,15 @@ SCRATCH_PATH=$PIHOME/$DEXTER/$SCRATCH
 
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 
+selectedbranch=master
+
+
+
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
-
+curl -kL https://raw.githubusercontent.com/DexterInd/script_tools/$selectedbranch/install_script_tools.sh | sudo -u pi bash -s -- $selectedbranch
 source $DEXTER_SCRIPT_TOOLS_PATH/functions_library.sh
 
 # set quiet mode so the user isn't told to reboot before the very end
@@ -46,10 +50,6 @@ handle_version() {
 ## Mark the start time in the Version File of the update.
 # Check if file 'Version' exists in ~/Dexter.  If it does, move on.  If it doesn't, copy it in.
 # Note we don't want to overwrite the file if it's there since we're going to be running updates and documenting when the updates were done.
-
-# force clock update
-# Pis that have been offline for long won't have the right date and time
-sudo ntpd -q -g
 
 if file_exists $DEXTER_PATH/Version
 then
@@ -92,7 +92,7 @@ install_copypaste() {
 install_packages() {
   sudo dpkg --configure -a
   sudo DEBIAN_FRONTEND=noninteractive apt-get update -y # Get everything updated.  Don't interact with any configuration menus.
-                # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
+  # Referenced from here - http://serverfault.com/questions/227190/how-do-i-ask-apt-get-to-skip-any-interactive-post-install-configuration-steps
   feedback "Install Specific Libraries."
 
   # merge all the install lines into one, as each call to apt-get install
@@ -108,7 +108,6 @@ install_packages() {
   # raspberrypi-net-mods Updates wifi configuration.  Does it wipe out network information?
   sudo apt-get install -y python3-serial python-serial i2c-tools  \
                           avahi-daemon avahi-utils \
-                          apache2 php5 libapache2-mod-php5 \
                           python-rpi.gpio python3-rpi.gpio \
                           python-picamera python3-picamera \
                           python-smbus python3-smbus \
@@ -117,15 +116,24 @@ install_packages() {
                           raspberrypi-net-mods \
                           shellinabox screen
 
-  sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
+
+  if [ $VERSION -eq '8' ]; then
+    # php5 on Jessie
+    sudo apt-get install -y apache2 websockify php5 libapache2-mod-php5
+  elif [ $VERSION -eq '9' ]; then
+  # php7 on Stretch
+    sudo apt-get install apache2 websockify php libapache2-mod-php -y
+  fi
+
+#   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
 
   # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
-  # only available on Jessie
+  # only for old versions of Jessie , it's already installed on Stretch
   # piclone used to make copies of the SD card;
-  if [ ! $VERSION -eq '7' ]
+  if [ $VERSION -eq '8' ]
   then
     sudo apt-get install piclone -y
   fi
@@ -136,7 +144,7 @@ install_packages() {
   # You can find firmware commits here:  https://github.com/Hexxeh/rpi-firmware/commits/master to find the specific commit-id of the firmware.
   # As of 2017.06 4.4.50 v7+ is the last working version with the smbus.read_i2c_block_data() command in python.  Before updating the kernel check that
   # the new version works with this function in python.
-  if [ ! $VERSION -eq '7' ]
+  if [ $VERSION -eq '8' ]
   then
 
        sudo rpi-update 52241088c1da59a359110d39c1875cda56496764  # kernel: Bump to 4.4.50 - v7+
@@ -206,17 +214,54 @@ geany_setup(){
   feedback "Done with Geany setup"
 }
 
-autodetect_setup() {
-  # copying the file where rc.local can get it and where it's visible
-  pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
-  sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
-  sudo python autodetect_setup.py install
-  sudo rm -r build
-  sudo rm -r dist
-  sudo rm -r Dexter_AutoDetection.egg-info/
-  popd > /dev/null
-}
+# autodetect_setup() {
+#   # copying the file where rc.local can get it and where it's visible
+#   pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
+#   sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
+#   sudo python setup.py install
+#   sudo rm -r build
+#   sudo rm -r dist
+#   sudo rm -r Dexter_AutoDetection.egg-info/
+#   popd > /dev/null
+# }
 
+install_novnc() {
+    feedback "--> Set up noVNC"
+    feedback "--> ======================================="
+    feedback " "
+    pushd /usr/local/share/ >/dev/null
+    feedback "--> Clone noVNC."
+
+    if [ $VERSION -eq '8' ]; then
+        sudo rm -r noVNC
+        sudo git clone  --depth=1 git://github.com/DexterInd/noVNC
+        cd noVNC
+        sudo cp vnc_auto.html index.html
+        #   # If we found Jesse, the proper location of the html files is in
+        #   # /var/www/html
+        sudo mkdir -p /var/www/html
+        sudo cp -r $RASPBIAN_PATH/www /var/www/html
+        sudo mv -f /var/www/* /var/www/html/
+        sudo chmod +x /var/www/html/index.php
+        sudo chmod +x /var/www/html/css/main.css
+
+        pushd $PIHOME >/dev/null
+        # if we have a local copy of novnc.service, get rid of it before downloading a new one
+        if [ -e $PIHOME/novnc.service ]
+        then
+            sudo rm novnc.service
+        fi
+        popd >/dev/null
+
+    elif [ $VERSION -eq '9' ]; then
+        bash $RASPBIAN_PATH/VNC/install_novnc.sh
+    fi
+    popd >/dev/null
+
+  feedback "--> Finished setting up noVNC"
+  feedback "--> ======================================="
+  feedback " "
+}
 
 #####################################################################
 # main script
@@ -238,6 +283,8 @@ if [ $VERSION -eq '7' ]; then
 elif [ $VERSION -eq '8' ]; then
   feedback "Version 8 found!  You have Jessie!"
   # If we found Jesse, the proper location of the html files is in
+elif [ $VERSION -eq '9' ]; then
+  feedback "Version 9 found! You have Stretch!"
 fi
 
 install_packages
@@ -281,17 +328,23 @@ sudo sed -i "/dtparam=spi=on/d" /boot/config.txt
 sudo echo "dtparam=spi=on" >> /boot/config.txt
 sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
 
-# This is really imprtant for the BrickPi!
-sudo sed -i "/init_uart_clock=32000000/d" /boot/config.txt
-sudo echo "init_uart_clock=32000000" >> /boot/config.txt
 
-# Disable serial over UART
-sudo sed -i 's/console=ttyAMA0,115200//' /boot/cmdline.txt  #disable serial login on older images
-sudo sed -i 's/console=serial0,115200//' /boot/cmdline.txt  #disable serial login on the Pi3
-sudo sed -i 's/console=tty1//' /boot/cmdline.txt            #console=tty1 can also be there in the cmdline.txt file so remove that
-sudo sed -i 's/kgbdoc=ttyAMA0,115200//' /boot/cmdline.txt
-sudo systemctl stop serial-getty@ttyAMA0.service
-sudo systemctl disable serial-getty@ttyAMA0.service
+# Only reset UART on Jessie as we still support the BrickPi+
+if [ $VERSION -eq '8' ]
+then
+    # This is really imprtant for the BrickPi!
+    sudo sed -i "/init_uart_clock=32000000/d" /boot/config.txt
+    sudo echo "init_uart_clock=32000000" >> /boot/config.txt
+
+
+    # Disable serial over UART
+    sudo sed -i 's/console=ttyAMA0,115200//' /boot/cmdline.txt  #disable serial login on older images
+    sudo sed -i 's/console=serial0,115200//' /boot/cmdline.txt  #disable serial login on the Pi3
+    sudo sed -i 's/console=tty1//' /boot/cmdline.txt            #console=tty1 can also be there in the cmdline.txt file so remove that
+    sudo sed -i 's/kgbdoc=ttyAMA0,115200//' /boot/cmdline.txt
+    sudo systemctl stop serial-getty@ttyAMA0.service
+    sudo systemctl disable serial-getty@ttyAMA0.service
+fi
 
 feedback "--> End Kernel Updates."
 
@@ -327,16 +380,16 @@ sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 # fetch will remove quiet_mode so set it back
 set_quiet_mode
 
-feedback "--> Install Scratch"
-feedback "--> ======================================="
-feedback " "
+# feedback "--> Install Scratch"
+# feedback "--> ======================================="
+# feedback " "
 # Install Scratch GUI
-sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
+# sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
 
-feedback "--> Install Troubleshooting"
-feedback "--> ======================================="
-feedback " "
-sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
+# feedback "--> Install Troubleshooting"
+# feedback "--> ======================================="
+# feedback " "
+# sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
 
 
 
@@ -348,7 +401,6 @@ feedback " "
 sudo apt-get remove monit --yes
 
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/lirc/install.sh
-
 sudo bash $DEXTER_PATH/GoPiGo/Software/Python/ir_remote_control/server/install.sh
 
 # Update background image - Change to dilogo.png
@@ -367,32 +419,6 @@ sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork
 sudo chmod +x $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 sudo bash $RASPBIAN_PATH/upd_script/wifi/wifi_disable_sleep.sh
 
-# Set up Webpage
-feedback "--> Set up webpage."
-feedback "--> ======================================="
-feedback " "
-sudo rm -r /var/www
-sudo cp -r $RASPBIAN_PATH/www /var/
-sudo chmod +x /var/www/index.php
-sudo chmod +x /var/www/css/main.css
-
-## Now, if we are running Jessie, we need to move everything
-## into a new subdirectory.
-## Get the Debian Version we have installed.
-
-# echo "Version: $VERSION"
-if [ $VERSION -eq '7' ]; then
-  feedback "Version 7 found!  You have Wheezy!"
-elif [ $VERSION -eq '8' ]; then
-  feedback "Version 8 found!  You have Jessie!"
-  # If we found Jesse, the proper location of the html files is in
-  # /var/www/html
-  sudo mkdir /var/www/html
-  sudo mv -v /var/www/* /var/www/html/
-  sudo chmod +x /var/www/html/index.php
-  sudo chmod +x /var/www/html/css/main.css
-fi
-
 # disable requirement for SSL for shellinaboxa
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
@@ -401,105 +427,20 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 
 # Setup noVNC
-
-# if noVNC is enabled already, just do nothing and skip this
-test_for_novnc=$(sudo systemctl status novnc.service | grep "enabled" )
-
-feedback "--> Set up noVNC"
-feedback "--> ======================================="
-feedback " "
-if  [ -z "$test_for_novnc" ]
-then
+install_novnc
 
 
-  cd /usr/local/share/
-  feedback "--> Clone noVNC."
-  sudo git clone git://github.com/DexterInd/noVNC
-  cd noVNC
-  sudo git pull
-  sudo cp vnc_auto.html index.html
+# feedback "Change bash permissions for desktop."
+delete_line_from_file "xhost" /home/pi/.bashrc
+add_line_to_end_of_file "xhost + >/dev/null 2>&1" /home/pi/.bashrc
 
 
-  # VNC Start on boot
-  # reading VERSION again, in case lines get moved, or deleted above.
-  # better safe
-  VERSION=$(sed 's/\..*//' /etc/debian_version)
-  # echo "Version: $VERSION"
-  # setting start-on-boot for Wheezy. Those two scripts are not needed for Jessie
-  # Wheezy
-  if [ $VERSION -eq '7' ]; then
-    feedback "Version 7 found!  You have Wheezy!"
-    cd /etc/init.d/
-    sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncboot --no-check-certificate
-    sudo chmod 755 vncboot
-    sudo wget https://raw.githubusercontent.com/DexterInd/teachers-classroom-guide/master/vncproxy --no-check-certificate
-    sudo chmod 755 vncproxy
-    # why default 98? I can't find what it's supposed to do - NP
-    sudo update-rc.d vncproxy defaults 98
-    sudo update-rc.d vncproxy defaults
-    sudo update-rc.d vncproxy enable
-    sudo update-rc.d vncboot defaults
-    sudo update-rc.d vncboot enable
-    cd /usr/local/share/noVNC/utils
-    sudo ./launch.sh --vnc localhost:5900 &
-
-  #jessie
-  elif [ $VERSION -eq '8' ]; then
-    feedback "Version 8 found!  You have Jessie!"
-    pushd /home/pi
-
-    # if we have a local copy of novnc.service, get rid of it before downloading a new one
-    if [ -e /home/pi/novnc.service ]
-    then
-      sudo rm novnc.service
-      feedback "removing local copy of novnc.service"
-    fi
-
-  	  sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie_update/novnc.service
-  	  sudo mv novnc.service /etc/systemd/system/novnc.service
-  	  sudo systemctl daemon-reload
-  	  sudo systemctl enable novnc.service
-  	  sudo systemctl start novnc.service
-
-  fi
-  popd
-else
-  feedback "noVNC already set up - skipping"
-fi
-
-# Change permissions so you can execute from the desktop
-####  http://thepiandi.blogspot.ae/2013/10/can-python-script-with-gui-run-from.html
-####  http://superuser.com/questions/514688/sudo-x11-application-does-not-work-correctly
-
-feedback "Change bash permissions for desktop."
-if grep -Fxq "xhost +" /home/pi/.bashrc
-then
-	#Found it, do nothing!
-	echo "Found xhost in .bashrc"
-else
-	sudo echo "xhost +" >> /home/pi/.bashrc
-fi
-
-feedback "--> Finished setting up noVNC"
-feedback "--> ======================================="
-# feedback "--> !"
-# feedback "--> !"
-# feedback "--> !"
-# feedback "--> ======================================="
-feedback " "
-
-########################################################################
-# ensure the Scratch examples are reachable via Scratch GUI
-# this is done by using soft links
-# this is now done in Scratch_GUI/install_scratch_start.sh
-########################################################################
-#sudo bash $RASPBIAN_PATH/upd_script/upd_scratch_softlinks.sh
 
 # This pause is placed because we'll overrun the if statement below if we don't wait a few seconds.
 sleep 10
 
 ########################################################################
-## Last bit of house cleaning.
+## Last bit of house cleaning
 
 # Setup Hostname Changer
 feedback "--> Set up Hostname Changer."
@@ -541,16 +482,33 @@ sudo chmod +x $RASPBIAN_PATH/backup/file_list.txt
 sudo chmod +x $RASPBIAN_PATH/backup/backup_gui.py
 feedback "--> End installing Backup."
 
-feedback "--> Update for RPi3."
-# Run the update script for updating overlays for Rpi3.
-sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
-sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
 
-feedback "-->installing Geany"
-geany_setup
+# since Jessie still support BrickPi+, we need to disable bluetooth on it
+if [ $VERSION -eq '8' ]
+then
+    feedback "--> Update for RPi3."
+    # Run the update script for updating overlays for Rpi3.
+    sudo chmod +x $RASPBIAN_PATH/pi3/Pi3.sh
+    sudo bash $RASPBIAN_PATH/pi3/Pi3.sh
+fi
 
-feedback "--> robot detection"
-autodetect_setup
+# leave GEANY alone on Stretch
+if [ $VERSION -eq '8' ]
+then
+    feedback "-->installing Geany"
+    geany_setup
+fi
+
+# install ffmpeg on Stretch
+# if [ $VERSION -eq '9' ]
+# then
+#     pip3 install ffmpeg-python
+#     sudo apt-get install ffmpeg
+# fi
+
+# feedback "--> robot detection"
+# leave this to the script_tools installer
+# autodetect_setup
 
 # Update Cinch, if it's installed.
 # check for file /home/pi/cinch, if it is, call cinch setup.
@@ -563,14 +521,23 @@ autodetect_setup
 #fi
 
 feedback "--> Begin cleanup."
-# remove wx version 3.0 - which gets pulled in by various other libraries
+
+
 # it creates graphical issues in our Python GUI
 # sudo apt-get --purge remove python-wxgtk2.8 python-wxtools wx2.8-i18n -y          # Removed, this can sometimes cause hangups.
 # echo "Purged wxpython tools"
-sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil --force-yes -y     # Install wx for python for windows / GUI programs.
+
 echo "Installed wxpython tools"
-sudo apt-get remove python-wxgtk3.0 -y
-echo "Python-PSUtil"
+if [ $VERSION -eq '8' ]
+then
+    sudo apt-get install python-wxgtk3.0 python-wxgtk2.8 python-wxtools wx2.8-i18n python-psutil -y     # Install wx for python for windows / GUI programs.
+    # sudo apt-get remove python-wxgtk3.0 -y
+fi
+if [ $VERSION -eq '9' ]
+then
+    sudo apt-get install python-wxgtk3.0 python-psutil -y
+fi
+
 sudo apt-get clean -y		# Remove any unused packages.
 sudo apt-get autoremove -y 	# Remove unused packages.
 feedback "--> End cleanup."
@@ -585,10 +552,10 @@ feedback "--> Update version on Desktop."
 echo "End: `date`"  >>  $DEXTER_PATH/Version
 
 cd $DESKTOP_PATH
-rm Version			# Delete the older versions.
-rm version.desktop	# Delete the older version.
-sudo cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH	# Copy the shortcut to the desktop
-sudo chmod +x $DESKTOP_PATH/version.desktop
+sudo rm Version			# Delete the older versions.
+sudo rm version.desktop	# Delete the older version.
+cp $RASPBIAN_PATH/desktop/version.desktop $DESKTOP_PATH	# Copy the shortcut to the desktop
+chmod +x $DESKTOP_PATH/version.desktop
 
 
 # edition version file to reflect which Rasbpian flavour
@@ -597,6 +564,12 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 if [ $VERSION -eq '8' ]; then
   feedback "Modifying Version file to reflect Jessie distro"
   sudo sed -i 's/Wheezy/Jessie/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Stretch/Jessie/g' $DEXTER_PATH/Version
+fi
+if [ $VERSION -eq '9' ]; then
+  feedback "Modifying Version file to reflect Stretch distro"
+  sudo sed -i 's/Wheezy/Stretch/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Jessie/Stretch/g' $DEXTER_PATH/Version
 fi
 
 # Add Cinch Stamp in Version File
@@ -607,6 +580,23 @@ else
     feedback "Found cinch, noting in Version File."
     echo "Cinch Installed."  >> $DEXTER_PATH/Version
 fi
+
+bash $RASPBIAN_PATH/upd_script/update_desktop.sh
+
+# copies set_xhost into a place that will run it on boot, after xserver is started
+# without requiring user to open a terminal
+sudo cp -f $RASPBIAN_PATH/upd_script/set_xhost.sh /etc/profile.d/
+
+# we intentionally use sudo here to make this file owner be root
+# less danger of the user deleting it.
+# we put a copy of update_master.sh into the Dexter folder as a backup if something
+# should happen to di_update/Raspbian_For_Robots
+sudo cp $RASPBIAN_PATH/update_master.sh $PIHOME/Dexter/update_master.sh
+
+pushd /home/pi/Dexter >/dev/null
+sudo chown -R root:root .
+sudo chmod 666 *.txt
+popd >/dev/null
 
 unset_quiet_mode
 

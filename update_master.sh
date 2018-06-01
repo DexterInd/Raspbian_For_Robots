@@ -20,7 +20,7 @@ else
 	sleep 10
 	exit 0
 fi
-sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
+# sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
 
 PIHOME=/home/pi
 DEXTER=Dexter
@@ -44,7 +44,7 @@ fi
 # Make the directory again.  Clone into it.
 mkdir /home/pi/di_update
 cd /home/pi/di_update
-sudo git clone https://github.com/DexterInd/Raspbian_For_Robots/
+sudo git clone --depth=1 https://github.com/DexterInd/Raspbian_For_Robots/
 cd Raspbian_For_Robots
 cd /home/pi/di_update/Raspbian_For_Robots/
 
@@ -54,43 +54,15 @@ cd /home/pi/di_update/Raspbian_For_Robots/
 #
 
 # Make files executable.
-echo "MAKE FILES EXECUTABLE."
-echo "=============================="
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
+# echo "MAKE FILES EXECUTABLE."
+# echo "=============================="
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/update_master.sh
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh
+# sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/raspbian_for_robots_update.py
 
 ##############################################################################################################
 # 2.	Change all desktop icons around.
 #
-echo "START DESKTOP SHORTCUT UPDATE."
-echo "=============================="
-# Update the Desktop Shortcut for Software Update
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.sh
-sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update_start.sh
-delete_file /home/pi/Desktop/desktop_shortcut_update.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop_shortcut_update.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/desktop_shortcut_update.desktop
-
-delete_file /home/pi/Desktop/shutdown.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/shutdown.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/shutdown.desktop
-
-delete_file /home/pi/Desktop/dexterindustries.desktop
-
-delete_file /home/pi/Desktop/idle3.desktop
-delete_file /home/pi/Desktop/idle.desktop
-delete_file /home/pi/Desktop/gksu.desktop
-
-# Rename the wifi control.  Change the icon.
-delete_file /home/pi/Desktop/wpa_gui.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/desktop/wpa_gui.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/wpa_gui.desktop
-
-# Update the Backup
-delete_file /home/pi/Desktop/backup.desktop
-sudo cp /home/pi/di_update/Raspbian_For_Robots/backup/backup.desktop /home/pi/Desktop
-sudo chmod +x /home/pi/Desktop/backup.desktop
 
 # Update the Desktop Shortcut for GrovePi and GoPiGo Firmware Update
 # sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/desktop_firmware_update.sh
@@ -100,10 +72,7 @@ sudo chmod +x /home/pi/Desktop/backup.desktop
 # 3.    Execute the file update_all.sh
 # Make sure we keep a log file.
 
-# ensure we have wx version 2.8 and not version 3.0
-sudo apt-get install python-wxgtk2.8 build-essential python-dev python-pip -y
-sudo apt-get purge python-wxgtk3.0 -y
-sudo pip install psutil
+sudo apt-get install python-wxgtk3.0 python-wxgtk2.8 build-essential python-psutil python-dev python-pip -y
 
 # Run update_all.sh
 NOW=$(date +%m-%d-%Y-%H%M%S)

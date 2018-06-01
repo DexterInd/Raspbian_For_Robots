@@ -1,0 +1,14 @@
+[Unit]
+Description=Remote desktop service (noVNC)
+Requires=vncserver@1.service
+After=vncserver@1.service
+
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/usr/local/share/noVNC/utils/launch.sh --vnc localhost:5901 --listen 8001
+
+[Install]
+WantedBy=multi-user.target

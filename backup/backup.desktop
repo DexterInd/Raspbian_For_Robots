@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Comment=Graphical user interface backup
-Exec=lxterminal --title "Backup your files - do not close this window!" --command "gksu sh /home/pi/di_update/Raspbian_For_Robots/backup/run_backup.sh"
+Exec=python /home/pi/di_update/Raspbian_For_Robots/backup/backup_gui.py
 Icon=/home/pi/di_update/Raspbian_For_Robots/backup/xarchiver-add.png
 GenericName=Backup Files
 Terminal=false

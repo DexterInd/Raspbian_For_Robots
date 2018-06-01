@@ -1,5 +1,5 @@
 #! /bin/bash
-sudo sh -c "curl -kL dexterindustries.com/update_tools | bash"
+
 
 # Can't use $HOME here as this is being run as sudo and $home defaults to root
 PIHOME=/home/pi
@@ -7,11 +7,14 @@ DEXTER=Dexter
 DESKTOP=Desktop
 DEXTER_PATH=$PIHOME/$DEXTER
 RASPBIAN=$PIHOME/di_update/Raspbian_For_Robots
+selectedbranch=master
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 # This script updates the the code repos on Raspbian for Robots.
+curl -kL dexterindustries.com/update_tools | sudo -u pi bash -s -- $selectedbranch
 source /home/pi/$DEXTER/lib/$DEXTER/script_tools/functions_library.sh
-
 set_quiet_mode
+
 
 set_softlink_for(){
     # if the detected_robot file exists
@@ -31,16 +34,16 @@ set_softlink_for(){
         fi   
         if find_in_file_strict "None" $PIHOME/$DEXTER/detected_robot.txt
         then
-            sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+            sudo ln -s -f $DEXTER_PATH/$1 $PIHOME/Desktop/$1
         fi   
     else
-        sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
+        sudo ln -s -f $DEXTER_PATH/$1 $PIHOME/Desktop/$1
     fi
 }
 
 set_all_softlinks(){
     # auto_detect_robot now in script_tools
-    sudo python /home/pi/Dexter/lib/Dexter/script_tools/auto_detect_robot.py
+    sudo python /home/pi/Dexter/lib/Dexter/RFR_Tools/miscellaneous/auto_detect_robot.py
     set_softlink_for "GoPiGo3"
     set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
@@ -63,42 +66,17 @@ set_all_softlinks(){
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
 staging(){
-    
-    robots_2_update="/home/pi/di_update/Raspbian_For_Robots/update_gui_elements/robots_2_update"
-    if [ -f $robots_2_update ]  
-    # if the file exists, read it and adjust according to its content
-    then
-        gopigo_update=0
-        brickpi_update=0
-        grovepi_update=0
-        arduberry_update=0
-        sensors_update=0
-        pivotpi_update=0
-        while read -r line 
-            do
-            echo "Text read from file: $line"
-            if [ "$line" == "GoPiGo" ] ; then
-               gopigo_update=1
-            elif [ "$line" == "BrickPi" ] ; then
-               brickpi_update=1
-            elif [ "$line" == "GrovePi" ] ; then
-               grovepi_update=1
-            elif [ "$line" == "Arduberry" ] ; then
-               arduberry_update=1
-            elif [ "$line" == "PivotPi" ] ; then
-               pivotpi_update=1
-            elif [ "$line" == "Sensors" ] ; then
-               sensors_update=1
-            fi
-        done < $robots_2_update 
-    else # if the file doesn't exist, update everything
-        gopigo_update=1
-        brickpi_update=1
-        grovepi_update=1
-        arduberry_update=1
-        pivotpi_update=1
-        sensors_update=1
-    fi
+    gopigo_update=1
+    brickpi_update=1
+    grovepi_update=1
+    arduberry_update=1
+    pivotpi_update=1
+    sensors_update=1
+}
+
+update_rfr_tools() {
+    feedback "--> Installing RFR TOOLS including Scratch and Troubleshooting"
+    curl -kL https://raw.githubusercontent.com/DexterInd/RFR_Tools/$selectedbranch/scripts/install_tools.sh | sudo -u pi bash -s -- --install-python-package --update-aptget --install-deb-deps --use-python3-exe-too
 }
 
 ###############################################
@@ -106,24 +84,22 @@ staging(){
 ###############################################
 
 update_gopigo() {
-    
-
-
     if [ $gopigo_update == 1 ] ; then
         # GoPiGo3 Update
         feedback "--> Start GoPiGo3 Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_gopigo3.sh
-        
+        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo3/$selectedbranch/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
+
+
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_gopigo.sh
+        # curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$selectedbranch/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
     fi  # end conditional statement on GOPIGO UPDATE
-
 }
 
 ###############################################
@@ -131,18 +107,21 @@ update_gopigo() {
 ###############################################
 
 update_brickpi() {
-    
     if [ $brickpi_update == 1 ] ; then
 
         # BrickPi3 Update
         feedback "--> Start BrickPi3 Update."
         feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_brickpi3.sh
+       # curl -kL dexterindustries.com/update_brickpi3 | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi3/$selectedbranch/Install/update_brickpi3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
     #   sudo chmod +x /home/pi/Dexter/BrickPi3/Install/install.sh
 
-        feedback "--> Start BrickPi+ Update."
-        feedback "##############################"
-        source $RASPBIAN/upd_script/fetch_brickpi+.sh
+        # Install BrickPi+ on Jessie, but not in future versions
+        if [ $VERSION -eq '8' ]; then
+            feedback "--> Start BrickPi+ Update."
+            feedback "##############################"
+            curl -kL https://raw.githubusercontent.com/DexterInd/BrickPi/master/Setup_Files/update_brickpi.sh | sudo -u pi bash
+        fi
 
     else
         feedback "--> BrickPi **NOT** Updated."
@@ -156,19 +135,21 @@ update_brickpi() {
 
 update_arduberry ()
 {
-    
-    if [ $arduberry_update == 1 ] ; then
+    # Load up arduberry only on Jessie, drop it from Stretch onwards
+    if [ $VERSION -eq '8' ]; then
+        if [ $arduberry_update == 1 ] ; then
 
-        # Arduberry Update
-        feedback "--> Start Arduberry Update."
-        feedback "---------------------------"
+            # Arduberry Update
+            feedback "--> Start Arduberry Update."
+            feedback "---------------------------"
 
-        source $RASPBIAN/upd_script/fetch_arduberry.sh
-    else
-        feedback "--> Arduberry **NOT** Updated."
-        feedback "------------------------------"
-    fi 
-    # end conditional statement on ARDUBERRY UPDATE
+            curl -kL dexterindustries.com/update_arduberry | sudo -u pi bash
+        else
+            feedback "--> Arduberry **NOT** Updated."
+            feedback "------------------------------"
+        fi
+        # end conditional statement on ARDUBERRY UPDATE
+    fi
 }
 
 ###############################################
@@ -182,8 +163,8 @@ update_grovepi() {
         # GrovePi Update
         feedback "--> Start GrovePi Update."
         feedback "-------------------------"
-        source $RASPBIAN/upd_script/fetch_grovepi.sh
-        
+        # curl -kL dexterindustries.com/update_grovepi | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/GrovePi/$selectedbranch/Script/update_grovepi.sh | sudo -u pi bash -s -- --bypass-rfrtools $selectedbranch
     else
         feedback "--> GrovePi **NOT** Updated."
         feedback "----------------------------"
@@ -196,18 +177,19 @@ update_grovepi() {
 ###############################################
 
 update_pivotpi() {
-        
+
     if [ $pivotpi_update == 1 ] ; then
         feedback "--> Start PivotPi Update."
         feedback "-------------------------"
-        
+
         pushd /home/pi > /dev/null
 
         # if Dexter folder doesn't exist, then create it
         create_folder $DEXTER
         cd $DEXTER_PATH
-        source $RASPBIAN/upd_script/fetch_pivotpi.sh
-            
+        # curl -kL dexterindustries.com/update_pivotpi | sudo -u pi bash
+        curl -kL https://raw.githubusercontent.com/DexterInd/PivotPi/$selectedbranch/Install/install.sh | sudo -u pi bash -s -- --bypass-rfrtools $selectedbranch
+
         popd > /dev/null
     else
         echo "--> PivotPi **NOT** Updated"
@@ -219,19 +201,20 @@ update_pivotpi() {
 # SENSORS
 ###############################################
 update_sensors() {
-    
+
 
 if [ $sensors_update == 1 ] ; then
     feedback "--> Start DI Sensors Update."
     feedback "-------------------------"
-    
+
     pushd /home/pi > /dev/null
 
     # if Dexter folder doesn't exist, then create it
     create_folder $DEXTER
     cd $DEXTER_PATH
-    source $RASPBIAN/upd_script/fetch_sensors.sh
-        
+    # curl -kL dexterindustries.com/update_sensors | sudo -u pi bash
+    curl -kL https://raw.githubusercontent.com/DexterInd/DI_Sensors/$selectedbranch/Install/update_sensors.sh | sudo -u pi bash -s -- --bypass-rfrtools $selectedbranch
+
     popd > /dev/null
 else
     echo "--> Sensors **NOT** Updated"
@@ -242,37 +225,42 @@ fi
 ###############################################
 # DexterEd
 ###############################################
-install_dextered(){
+delete_dextered()
+# this deletes the dextered folder
+{
+    if [ $VERSION -eq '8' ]
+    then
     # Install DexterEd Software
     feedback "--> Install DexterEd Software"
     feedback "-----------------------------"
     delete_folder /home/pi/Desktop/DexterEd
 
-    pushd /home/pi/Desktop > /dev/null
-    sudo git clone https://github.com/DexterInd/DexterEd.git
-    popd > /dev/null
+    # pushd /home/pi/Desktop > /dev/null
+    # sudo git clone https://github.com/DexterInd/DexterEd.git
+    # popd > /dev/null
+    fi
 }
 
 ###############################################
 # GoBox
 ###############################################
-install_gobox()
+delete_gobox()
+# this now deletes gobox, no question asked
 {
-    # Install GoBox Software
-    feedback "--> Install GoBox"
-    feedback "-----------------"
-    delete_folder /home/pi/Desktop/GoBox
-    pushd /home/pi/Desktop > /dev/null
-    sudo git clone https://github.com/DexterInd/GoBox.git
+    if [ $VERSION -eq '8' ]; then
+        # Install GoBox Software
+        feedback "--> Install GoBox"
+        feedback "-----------------"
+        delete_folder /home/pi/Desktop/GoBox
+        pushd /home/pi/Desktop > /dev/null
+        # sudo git clone https://github.com/DexterInd/GoBox.git
 
-    delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
-    delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
-    popd > /dev/null
+        delete_folder /home/pi/Desktop/GoBox/Scratch_GUI
+        delete_folder /home/pi/Desktop/GoBox/LIRC_GUI
+        popd > /dev/null
+    fi
 }
 
-advanced_comms(){
-  cp /home/pi/di_update/Raspbian_For_Robots/advanced_communication_options/advanced_comms_options.desktop /home/pi/Desktop  
-}
 
 dead_wood() {
     
@@ -325,36 +313,44 @@ dead_wood() {
 # MAIN
 #
 ###############################################
-
+VERSION=$(sed 's/\..*//' /etc/debian_version)
 staging
+sudo touch $DEXTER_PATH/detected_robot.txt
+sudo chmod 666 $DEXTER_PATH/detected_robot.txt
+update_rfr_tools
 update_gopigo
 update_brickpi
-update_arduberry
 update_grovepi
 update_pivotpi
 update_sensors
+# arduberry no longer supported.
+# update_arduberry    
 set_all_softlinks
 
-install_dextered
-install_gobox
-advanced_comms
+delete_dextered
+delete_gobox
 
 
 # in Jessie, add a warning before user can reach the Raspberry Pi Configuration Menu Item
 VERSION=$(sed 's/\..*//' /etc/debian_version)
 if [ $VERSION -eq '8' ]; then
-  sudo cp /home/pi/di_update/Raspbian_For_Robots/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
+  sudo cp $RASPBIAN/rpi_config_menu_gui/rc_gui.desktop /usr/share/applications/rc_gui.desktop
 fi
 
-# Install GoBox Troubleshooting Software
-delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
-sudo chmod +x /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
-sudo bash /home/pi/Desktop/GoBox/Troubleshooting_GUI/install_troubleshooting_start.sh
+# Install Troubleshooting Software
+# delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 
-dead_wood
+# Change all Dexter folders to root ownership 
+# Reason for this is to stop users from editing/creating files in there
+# And losing their work when they run DI Update
 
+pushd $PIHOME/$DEXTER >/dev/null
+sudo chown -R root:root *
+sudo chmod 666 *.txt
+popd >/dev/null
 
+# dead_wood
 
-echo "--> Done updating Dexter Industries Github repos!"
+feedback "--> Done updating Dexter Industries Github repos!"
 
 unset_quiet_mode
