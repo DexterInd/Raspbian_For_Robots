@@ -1,19 +1,8 @@
 <?php
-
-	// Check for Lan IP on ethernet.
-	$command="/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'";
-	$ethernetIP = exec($command);
-
-	// Did you find an IP address?  If not, get it for wifi
-	if(strlen($ethernetIP)  == 0){
-		// echo "Nothing in ethernet!  ";
-		$command="/sbin/ifconfig wlan0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'";
-		$ethernetIP = exec($command);
-  }
-  
+  // Get host name and IP address
+  $ethernetIP = $_SERVER['SERVER_ADDR'];
   $dexhost = $_SERVER['HTTP_HOST'];
 ?>
-
 <html>
 <head>
     <title>Dexter Industries Raspbian for Robots</title>
@@ -51,7 +40,7 @@
   </p>
 </section>
 <section class="vnc">
-  <a href=" http://<?php echo $dexhost; ?>:8001/vnc.html?host=dex&port=8001&autoconnect=true&password=robots1234">
+  <a href=" http://<?php echo $dexhost; ?>:8001/vnc.html?host=<?php echo $dexhost; ?>&port=8001&autoconnect=true&password=robots1234&scaleViewport=true">
     <img src="img/vnc.svg" onerror="this.src='img/vnc.png'; this.onerror=null;"style="height:128px;">
     <span class="button">Launch VNC</span>
   </a>
@@ -69,7 +58,10 @@
   </em>
 </section>
 <section class="IP">
-<p>Your IP is: <?php echo $ethernetIP; ?> </p>
+    <ul>
+        <li>The robot hostname is: <?php echo $dexhost; ?> </li>
+        <li>The robot IP address is: <?php echo $ethernetIP; ?> </li>
+  </ul>
 </section>
 
 <footer>
@@ -86,7 +78,7 @@
 </footer>
 </article>
 </div> <!-- #main -->
-   </div> <!-- #main-container -->
+</div> <!-- #main-container -->
 
 </body>
 </html>
