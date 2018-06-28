@@ -18,4 +18,8 @@ if [ ! -f "/home/pi/.resize_done_once" ]
 then
     setup_resize_on_boot
     touch /home/pi/.resize_done_once
+else
+    echo "***************************************************************************"
+    echo "resize on boot not set up because /home/pi/.resize_done_once exists already"
+    echo "***************************************************************************"
 fi
