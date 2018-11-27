@@ -292,11 +292,6 @@ install_packages
 sudo adduser pi i2c
 
 ########################################################################
-# Installing libraries
-feedback "Installing some useful libraries"
-sudo bash $RASPBIAN_PATH/lib/install.sh
-
-########################################################################
 ## Kernel Updates
 # Enable I2c and SPI.
 feedback "--> Begin Kernel Updates."
