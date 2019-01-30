@@ -4,9 +4,12 @@ To change the desktop locale to the US:  run sudo dpkg-configure locales  unsele
 
 ========================================================================================
 
-GKSU is used to call python GUI's.  However, GKSU does not work with command line input.  If the user needs to input information (like a y/n or a 1/2) the sh script will hangup and not move forward.  
+When creating an image for distribution, do not forget to add
+init=/usr/lib/raspi-config/init_resize.sh  in /boot/cmdline.txt, right before the 'splash' word
 
-https://bugs.launchpad.net/ubuntu/+source/gksu/+bug/244930
+<!-- GKSU is used to call python GUI's.  However, GKSU does not work with command line input.  If the user needs to input information (like a y/n or a 1/2) the sh script will hangup and not move forward.  
+
+https://bugs.launchpad.net/ubuntu/+source/gksu/+bug/244930 -->
 
 ========================================================================================
 
@@ -15,15 +18,15 @@ https://groups.google.com/forum/#!topic/novnc/bOpKeuZCd7s
 
 ========================================================================================
 
-This hack help solves permissions for VNC.
+<!-- This hack help solves permissions for VNC.
 
 http://stackoverflow.com/questions/20286705/tkinter-through-vnc-without-physical-display
 
 You need to run "xhost +" in the command line before running a program in Scratch.
 Finally solved the problem: In the desktop shortcut, use "gksu" instead of sudo to call the startup script for Scratch.
-Also took "lxterminal" out of some of the calls.  lxterminal starts open new windows, so I removed that.
+Also took "lxterminal" out of some of the calls.  lxterminal starts open new windows, so I removed that. -->
 
-========================================================================================
+<!-- ======================================================================================== -->
 
 If the Pi goes into a continous reboot, try this:
 https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=27905
