@@ -263,6 +263,15 @@ install_novnc() {
   feedback " "
 }
 
+install_wifi_antenna() {
+    sudo cp $RASPBIAN_PATH/antenna_wifi.sh $DEXTER_PATH/antenna_wifi.sh
+    sudo cp -r $RASPBIAN_PATH/antenna_wifi.service /etc/systemd/system/
+    sudo chown root:root /etc/systemd/system/antenna_wifi.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable antenna_wifi.service
+    sudo systemctl start antenna_wifi.service
+}
+
 #####################################################################
 # main script
 #####################################################################
@@ -423,6 +432,9 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 # Setup noVNC
 install_novnc
+
+# Setup Wifi antenna LED service
+install_wifi_antenna
 
 
 # feedback "Change bash permissions for desktop."

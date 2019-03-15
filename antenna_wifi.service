@@ -1,0 +1,16 @@
+[Unit]
+Description=Antenna Wifi Indicator
+Requires=novnc.service
+After=novnc.service
+
+
+[Service]
+Type=idle
+User=pi
+WorkingDirectory=/home/pi
+ExecStart=/bin/bash /home/pi/Dexter/antenna_wifi.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
