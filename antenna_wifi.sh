@@ -2,7 +2,7 @@
 # 2 Detect if we have Wifi connection
 # 3 Throw a yellow-orangey LED or turn it off
 
-if grep -q GoPiGo3 $DEXTER_PATH/detected_robot.txt 
+if grep -q GoPiGo3 /home/pi/Dexter/detected_robot.txt 
 then
     if iwgetid --scheme
     then
