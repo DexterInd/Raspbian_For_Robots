@@ -90,6 +90,11 @@ update_gopigo() {
         feedback "##############################"
         curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo3/$selectedbranch/Install/update_gopigo3.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
 
+        # set wifi antenna led for Raspbian for Robots
+        sudo mkdir /etc/systemd/system/antenna_wifi.service.d/
+        sudo cp $RASPBIAN/upd_script/antenna_wifi_override.conf /etc/systemd/system/antenna_wifi.service.d/
+        sudo systemctl daemon-reload
+        sudo systemctl restart antenna_wifi.service
 
         # GoPiGo Update
         feedback "--> Start GoPiGo Update."
