@@ -29,8 +29,6 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 selectedbranch=master
 
-
-
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
