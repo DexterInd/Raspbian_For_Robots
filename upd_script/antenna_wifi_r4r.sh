@@ -1,6 +1,6 @@
 # 1 Detect if we are on a GoPiGo3
 # 2 Detect if we have Wifi connection
-# 3 Throw a yellow-orangey LED or turn it off
+# 3 Throw a yellow LED or turn it off
 
 
 # If detected_robot exists and it contains GoPiGo3, or 
