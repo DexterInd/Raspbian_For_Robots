@@ -411,10 +411,6 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 # Setup noVNC
 install_novnc
 
-# Setup Wifi antenna LED service
-install_wifi_antenna
-
-
 # feedback "Change bash permissions for desktop."
 delete_line_from_file "xhost" /home/pi/.bashrc
 add_line_to_end_of_file "xhost + >/dev/null 2>&1" /home/pi/.bashrc
