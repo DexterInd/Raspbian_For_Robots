@@ -29,8 +29,6 @@ VERSION=$(sed 's/\..*//' /etc/debian_version)
 
 selectedbranch=master
 
-
-
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
 ## Note if your're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
@@ -263,6 +261,8 @@ install_novnc() {
   feedback " "
 }
 
+
+
 #####################################################################
 # main script
 #####################################################################
@@ -375,19 +375,6 @@ sudo bash $RASPBIAN_PATH/upd_script/fetch.sh
 # fetch will remove quiet_mode so set it back
 set_quiet_mode
 
-# feedback "--> Install Scratch"
-# feedback "--> ======================================="
-# feedback " "
-# Install Scratch GUI
-# sudo bash $RASPBIAN_PATH//Scratch_GUI/install_scratch_start.sh
-
-# feedback "--> Install Troubleshooting"
-# feedback "--> ======================================="
-# feedback " "
-# sudo bash $RASPBIAN_PATH//Troubleshooting_GUI/install_troubleshooting_start.sh
-
-
-
 # Enable LRC Infrared Control on Pi.
 feedback "--> Enable LRC Infrared Control on Pi."
 feedback "--> ======================================="
@@ -423,7 +410,6 @@ sudo sed -i '41 i\SHELLINABOX_ARGS="--disable-ssl"' /etc/init.d/shellinabox
 
 # Setup noVNC
 install_novnc
-
 
 # feedback "Change bash permissions for desktop."
 delete_line_from_file "xhost" /home/pi/.bashrc
