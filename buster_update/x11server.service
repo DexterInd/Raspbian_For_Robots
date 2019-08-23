@@ -1,0 +1,10 @@
+[Unit]
+Description = Start X11VNC
+After=syslog.target network.target
+
+[Service]
+Type = simple
+ExecStart = /usr/bin/x11vnc -auth guess -forever -loop -noxdamage -repeat -rfbport 5900 --shared
+
+[Install]
+WantedBy = multi-user.target

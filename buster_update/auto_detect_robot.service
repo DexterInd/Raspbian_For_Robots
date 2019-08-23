@@ -1,0 +1,12 @@
+[Unit]
+Description=Robot autodetection
+After=syslog.target network.target
+
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/Dexter
+ExecStart=/usr/bin/python /home/pi/Dexter/lib/Dexter/RFR_Tools/miscellaneous/auto_detect_robot.py
+
+[Install]
+WantedBy=multi-user.target

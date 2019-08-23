@@ -1,15 +1,8 @@
-#! /bin/bash
-#
-# Add LX Desktop And Raspberry Pi to Jessie On a Diet
-# by John Cole // Dexter Industries
-#
-###################################################
 #
 # To Setup and Run:
 # cd /home/pi/
 # sudo wget https://raw.githubusercontent.com/DexterInd/Raspbian_For_Robots/master/jessie-heavy-upgrade.sh
-# sudo chmod +x jessie-heavy-upgrade.sh
-# sudo ./jessie-heavy-upgrade.sh
+# sudo bash jessie-heavy-upgrade.sh
 #
 ###################################################
 
@@ -111,7 +104,3 @@ sudo apt-get autoremove -y
 
 # Changes by Hand:
 # Change background desktop to white.
-
-
-
-

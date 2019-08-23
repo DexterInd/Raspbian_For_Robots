@@ -4,7 +4,9 @@
 
 
 # Copy the new rc.local script in place, set permissions. 
+
 sudo cp /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.local /etc/rc.local
 sudo chmod 755 /etc/rc.local	# Change permissions to -rwxr-xr-x
+
 sudo chmod +x /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
 sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/rc.sh
