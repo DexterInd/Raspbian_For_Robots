@@ -1,6 +1,18 @@
 <?php
-  // Get host name and IP address
-  $ethernetIP = $_SERVER['SERVER_ADDR'];
+  $ethcommand = "ifconfig eth0 | grep 'inet ' | cut -d' ' -f10";
+  exec($ethcommand, $output, $return_var);
+  if (strlen($output[0]) > 0) {
+    $eth_ip = $output[0];
+  } else {
+    $eth_ip = "";
+  }
+  $wlan0command = "ifconfig wlan0 | grep 'inet ' | cut -d' ' -f10";
+  exec($wlan0command, $wlan0output, $return_var);
+  if (strlen($wlan0output[0]) > 0) {
+    $wlan0_ip = $wlan0output[0];
+  } else {
+    $wlan0_ip = "";
+  }
   $dexhost = $_SERVER['HTTP_HOST'];
 ?>
 <html>
@@ -58,9 +70,20 @@
   </em>
 </section>
 <section class="IP">
+<?php 
+$dexip = "";
+foreach ($ips as &$ip) { 
+   $dexip = $dexip + $ip; 
+} 
+?>
     <ul>
-        <li>The robot hostname is: <?php echo $dexhost; ?> </li>
-        <li>The robot IP address is: <?php echo $ethernetIP; ?> </li>
+        <li>Robot hostname : <?php echo $dexhost; ?> </li>
+        <?php if (strlen($wlan0_ip) > 0 ) { ?>
+        <li>Robot WiFi IP address : <?php echo $wlan0_ip; ?> </li>
+        <?php } ?>
+        <?php if (strlen($eth_ip) > 0 ) { ?>
+        <li>Robot ethernet IP address : <?php echo $eth_ip; ?> </li>
+        <?php } ?>
   </ul>
 </section>
 
