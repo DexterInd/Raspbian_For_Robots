@@ -11,7 +11,7 @@ sudo apt-get install websockify -y
 # Install noVNC
 # this installation will only work if :
 # 1. Apache is already installed
-# 2. tightvncserver is already installed
+# 2. realvncserver is already installed
 
 # Setup Webpage
 echo "--> Setup webpage."
@@ -21,7 +21,7 @@ sudo rm -r /var/www
 sudo mkdir -p /var/www/html
 sudo cp -rp /home/pi/di_update/Raspbian_For_Robots/www/* /var/www/html
 sudo cp /var/www/html/index_buster.php /var/www/html/index.php
-sudo cp /var/www/html/css/main_stretch.css /var/www/html/css/main.css
+sudo cp /var/www/html/css/main_buster.css /var/www/html/css/main.css
 
 
 # Setup Shellinabox
@@ -33,8 +33,8 @@ sudo apt-get install shellinabox -y
 #echo "--> Setup screen."
 #echo "--> ======================================="
 #echo " "
-# screen currently installed but not used. 
-#sudo apt-get install screen -y 
+# screen currently installed but not used.
+#sudo apt-get install screen -y
 
 # clone noVNC
 echo "--> Setup noVNC"

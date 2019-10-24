@@ -88,20 +88,31 @@ sudo systemctl daemon-reload
 sudo systemctl restart antenna_wifi.service
 
 ####################################
+# background image
+####################################
+
+sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparent_bg.png /usr/share/rpd-wallpaper/
+
+
+####################################
 # DO MANUALLY
 ####################################
 
 # 1.
 # From the Preferences menu, select recommended software
-# install Scratch
+# install Scratch and Mu
 
 
 # 2.
 # open File Manager
 # go to Edit / Preferences
-# click on `Don't ask options on launch executable file`
+# set `Don't ask options on launch executable file`
 
 # 3.
 # in ~/.bashrc, add `xhost + &>/dev/null` as the last line
 
 # 4. change background image and background/text color
+# right click on background, select Desktop Preferences
+# set image to dexter background, with layout as 'centre image on screen'
+# text color to #020202
+# background color to #F6F3FE

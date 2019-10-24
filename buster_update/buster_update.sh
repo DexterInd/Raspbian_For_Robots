@@ -21,7 +21,7 @@ sudo apt-get install -y novnc websockify
 sudo apt-get -y install avahi-daemon avahi-utils
 # Overwrite Avahi Config file.
 sudo cp -f /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
-sudo chmod +x /etc/avahi/avahi-daemon.conf 
+sudo chmod +x /etc/avahi/avahi-daemon.conf
 sudo apt-get install  apache2 php7.3 -y
 sudo apt-get install raspberrypi-net-mods wpagui -y
 
@@ -40,6 +40,9 @@ sudo systemctl restart apache2
 echo "Installing MariaDB"
 sudo apt install -y mariadb-server mariadb-client
 
+# Install novnc
+bash novnc.sh
+
 ##################################################################
 #
 # install Dexter Robot libraries
@@ -57,7 +60,7 @@ curl -kL dexterindustries.com/update_sensors | bash
 
 
 sudo apt-get clean
-sudo apt-get autoremove -y 
+sudo apt-get autoremove -y
 
 ###################################################
 # give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
@@ -66,13 +69,8 @@ sudo apt-get autoremove -y
 ###################################################
 bash /home/pi/di_update/Raspbian_For_Robots/buster_update/Raspbian_for_Robots_Buster_Flavor.sh
 
-##################################################################
-##
-## After you run this, run the update software on the Desktop.
-##
-##################################################################
 
-# Changes by Hand:
-# Change background desktop to white.
+
+
 
 sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparent_bg.png  /usr/share/rpd-wallpaper

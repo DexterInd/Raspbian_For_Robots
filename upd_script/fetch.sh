@@ -19,7 +19,7 @@ set_quiet_mode
 set_softlink_for(){
     # if the detected_robot file exists
     # then we will create a softlink onto the desktop
-    # for the detected robots. 
+    # for the detected robots.
     # Non detected robots will not get a softlink.
     # If the file doesn't exist,
     # then set all softlinks (assume a simulator mode)
@@ -28,21 +28,23 @@ set_softlink_for(){
     delete_folder "$PIHOME/$DESKTOP/$1"
     if file_exists $PIHOME/$DEXTER/detected_robot.txt
     then
+        echo "detected robot exists"
         if find_in_file_strict "$1" $PIHOME/$DEXTER/detected_robot.txt
         then
             sudo ln -s -f $DEXTER_PATH/$1 /home/pi/Desktop/$1
-        fi   
-        if find_in_file_strict "None" $PIHOME/$DEXTER/detected_robot.txt
+        fi
+        if find_in_file None $PIHOME/$DEXTER/detected_robot.txt
         then
+            echo "Found None"
             sudo ln -s -f $DEXTER_PATH/$1 $PIHOME/Desktop/$1
-        fi   
+        fi
     else
         sudo ln -s -f $DEXTER_PATH/$1 $PIHOME/Desktop/$1
     fi
 }
 
 set_all_softlinks(){
-    # auto_detect_robot now in script_tools
+    # auto_detect_robot now in RFR_Tools
     sudo python /home/pi/Dexter/lib/Dexter/RFR_Tools/miscellaneous/auto_detect_robot.py
     set_softlink_for "GoPiGo3"
     set_softlink_for "GoPiGo"
@@ -61,7 +63,7 @@ set_all_softlinks(){
 
 ########################################################################
 ## IMPORT FUNCTIONS LIBRARY
-## Note if you're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh 
+## Note if you're doing any testing: to make this work you need to chmod +x it, and then run the file it's called from as ./update_all.sh
 ## Importing the source will not work if you run "sudo sh update_all.sh"
 # source /home/pi/Dexter/lib/Dexter/script_tools/functions_library.sh
 
@@ -268,7 +270,7 @@ delete_gobox()
 
 
 dead_wood() {
-    
+
     #########################################
     # Install All Python Scripts
 
@@ -329,7 +331,7 @@ update_grovepi
 update_pivotpi
 update_sensors
 # arduberry no longer supported.
-# update_arduberry    
+# update_arduberry
 set_all_softlinks
 
 delete_dextered
@@ -345,7 +347,7 @@ fi
 # Install Troubleshooting Software
 # delete_file /home/pi/Desktop/Troubleshooting_Start.desktop
 
-# Change all Dexter folders to root ownership 
+# Change all Dexter folders to root ownership
 # Reason for this is to stop users from editing/creating files in there
 # And losing their work when they run DI Update
 

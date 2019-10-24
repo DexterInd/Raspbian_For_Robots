@@ -1,13 +1,20 @@
 # #########################################################################
 # This script installs or updates noVNC on Raspbian for Robots - Stretch
 #
-# It is called when creating a new image 
+# It is called when creating a new image
 #  ** AND **
 # it is also called when doing a DI UPdate in update_all.sh
 #
 # #########################################################################
 PIHOME=/home/pi
 source $PIHOME/Dexter/lib/Dexter/script_tools/functions_library.sh
+
+VERSION=$(sed 's/\..*//' /etc/debian_version)
+
+if [ $VERSION -eq '10' ]; then
+    feedback "This script is only for Stretch. You are running Buster."
+    exit
+fi
 
 # Install noVNC
 # this installation will only work if :
