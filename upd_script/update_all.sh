@@ -125,9 +125,6 @@ install_packages() {
     sudo apt-get install apache2 websockify php libapache2-mod-php -y
   fi
 
-#   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
-
-  # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
@@ -214,18 +211,10 @@ geany_setup(){
   feedback "Done with Geany setup"
 }
 
-# autodetect_setup() {
-#   # copying the file where rc.local can get it and where it's visible
-#   pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
-#   sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
-#   sudo python setup.py install
-#   sudo rm -r build
-#   sudo rm -r dist
-#   sudo rm -r Dexter_AutoDetection.egg-info/
-#   popd > /dev/null
-# }
-
 install_novnc() {
+  # novnc for Buster is handled in the buster_update folder
+  if ! [ $VERSION -eq '10' ]
+  then
     feedback "--> Set up noVNC"
     feedback "--> ======================================="
     feedback " "
@@ -261,9 +250,10 @@ install_novnc() {
     fi
     popd >/dev/null
 
-  feedback "--> Finished setting up noVNC"
-  feedback "--> ======================================="
-  feedback " "
+    feedback "--> Finished setting up noVNC"
+    feedback "--> ======================================="
+    feedback " "
+  fi
 }
 
 
