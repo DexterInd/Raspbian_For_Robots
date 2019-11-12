@@ -47,11 +47,18 @@ set_all_softlinks(){
     # auto_detect_robot now in RFR_Tools
     sudo python /home/pi/Dexter/lib/Dexter/RFR_Tools/miscellaneous/auto_detect_robot.py
     set_softlink_for "GoPiGo3"
-    set_softlink_for "GoPiGo"
     set_softlink_for "GrovePi"
-    set_softlink_for "BrickPi+"
     set_softlink_for "BrickPi3"
     set_softlink_for "PivotPi"
+
+    # old hardware - not on Buster
+    if ! [ $VERSION -eq '10' ]; then
+        set_softlink_for "GoPiGo"
+        # brickpi+ is not on Stretch either
+        if ! [ $VERSION -eq '9' ]; then
+         set_softlink_for "BrickPi+"
+        fi
+    fi
 
 }
 
@@ -98,11 +105,13 @@ update_gopigo() {
         sudo systemctl daemon-reload
         sudo systemctl restart antenna_wifi.service
 
-        # GoPiGo Update
-        feedback "--> Start GoPiGo Update."
-        feedback "##############################"
-        # curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
-        curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$selectedbranch/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
+        if [ $VERSION -eq '8' ] || [ $VERSION -eq '9']; then
+            # GoPiGo Update
+            feedback "--> Start GoPiGo Update."
+            feedback "##############################"
+            # curl -kL dexterindustries.com/update_gopigo | sudo -u pi bash
+            curl -kL https://raw.githubusercontent.com/DexterInd/GoPiGo/$selectedbranch/Setup/update_gopigo.sh | sudo -u pi bash -s -- --bypass-rfrtools  $selectedbranch
+        fi
     else
         feedback "--> GoPiGo **NOT** Updated."
         feedback "---------------------------"
