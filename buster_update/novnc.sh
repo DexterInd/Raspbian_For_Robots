@@ -21,7 +21,7 @@ sudo rm -r /var/www
 sudo mkdir -p /var/www/html
 sudo cp -rp /home/pi/di_update/Raspbian_For_Robots/www/* /var/www/html
 sudo cp /var/www/html/index_buster.php /var/www/html/index.php
-sudo cp /var/www/html/css/main_buster.css /var/www/html/css/main.css
+sudo ln -s /etc/hostname /var/www/html/hostname
 
 
 # Setup Shellinabox
