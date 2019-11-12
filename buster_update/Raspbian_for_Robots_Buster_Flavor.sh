@@ -95,6 +95,13 @@ sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparen
 
 
 ####################################
+# Put some tool icons on desktop
+####################################
+bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_desktop.sh
+
+
+
+####################################
 # DO MANUALLY
 ####################################
 
