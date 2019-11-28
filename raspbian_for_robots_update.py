@@ -1,20 +1,13 @@
 import wx
 import os
 import sys
-import pickle
 from datetime import datetime
 import subprocess
-from collections import Counter
-import threading
-import psutil
-import signal
+
 try:
     import auto_detect_robot
 except:
     pass
-
-
-
 
 #	This program runs various update programs for Raspbian for Robots, from Dexter Industries.
 #	See more about Dexter Industries at http://www.dexterindustries.com
@@ -26,7 +19,7 @@ except:
         3.  Update DI Hardware.   This will update the firmware for the GrovePi and the GoPiGo.
 
     Initially Authored:		10/1/2015
-    Last Update:			4/May/2018
+    Last Update:			24/Oct/2019
 '''
 
 # Developer Notes and References:
@@ -56,7 +49,7 @@ def detect():
     try:
         detected_robots=auto_detect_robot.autodetect()
         print (detected_robots)
-        # handling it this way to cover the cases of 
+        # handling it this way to cover the cases of
         # multiple robot detection
         if detected_robots.find("GoPiGo3") != -1:
             write_state("GoPiGo3")
@@ -75,7 +68,7 @@ def detect():
 def write_state(in_string):
     try:
         selected_robot = open(ICON_PATH+'selected_state', 'w')		# File: selected state
-        if(' ' in in_string): 
+        if(' ' in in_string):
             in_string = "dex"
         selected_robot.write(in_string)
         selected_robot.close()
@@ -104,7 +97,7 @@ def read_state():
 # 	except:
 # 		pass
 
-    
+
 def send_bash_command(bashCommand):
     # print bashCommand
     write_debug(bashCommand)
@@ -127,12 +120,13 @@ class MainPanel(wx.Panel):
         global robots
         global update_firmware_static
         global robotbitmap
+
         """Constructor"""
         wx.Panel.__init__(self, parent=parent)
-        self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
+        # self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.WHITE)
         self.frame = parent
- 
+
         Sizer = wx.BoxSizer(wx.VERTICAL)  # outside sizer. Contains 3 horizontal sizers
         topSizer = wx.BoxSizer(wx.HORIZONTAL) # top logo
         hSizer = wx.BoxSizer(wx.HORIZONTAL) # main
@@ -142,7 +136,7 @@ class MainPanel(wx.Panel):
         # hSizer contains 2 vertical sizer
         vSizerLeft = wx.BoxSizer(wx.VERTICAL)
         vSizerRight = wx.BoxSizer(wx.VERTICAL) # for robot image
- 
+
 
         # TOP SIZER WITH LOGO
 
@@ -157,7 +151,7 @@ class MainPanel(wx.Panel):
         # Update DI Software
         update_software_label = wx.StaticText(self, label="Libraries and Projects:")
         update_software = wx.Button(self, label="Update Dexter Software")
-        update_software.Bind(wx.EVT_BUTTON, self.update_software)	
+        update_software.Bind(wx.EVT_BUTTON, self.update_software)
 
         #-------------------------------------------------------------------
         # Update Firmware
@@ -178,7 +172,7 @@ class MainPanel(wx.Panel):
         else:
             print ('default drop down')
             robotDrop = wx.ComboBox(self, -1, "Choose your Robot",  choices=controls, style=wx.CB_READONLY)  # Drop down setup
-        robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.		
+        robotDrop.Bind(wx.EVT_COMBOBOX, self.robotDrop)					# Binds drop down.
         #robotDrop.Bind(wx.EVT_ENTER_WINDOW, self.hovertxt_on)
         #robotDrop.Bind(wx.EVT_LEAVE_WINDOW, self.hovertxt_off)
 
@@ -197,15 +191,16 @@ class MainPanel(wx.Panel):
         icon_sizer = wx.BoxSizer(wx.VERTICAL)
         robot = read_state()+".png"
         print(robot)
-        bmp = wx.Bitmap(ICON_PATH+robot,type=wx.BITMAP_TYPE_PNG)
-        robotbitmap=wx.StaticBitmap(self,bitmap=bmp)
-        icon_sizer.Add(robotbitmap,1,wx.RIGHT|wx.LEFT|wx.EXPAND| wx.ALIGN_TOP | wx.ALIGN_RIGHT)
+        bmp = wx.Bitmap(ICON_PATH+robot, type=wx.BITMAP_TYPE_PNG)
+        robotbitmap=wx.StaticBitmap(self, bitmap=bmp)
+        icon_sizer.Add(robotbitmap, 1, wx.RIGHT| wx.LEFT| wx.EXPAND| wx.ALIGN_TOP | wx.ALIGN_RIGHT)
 
         vSizerRight.Add(icon_sizer, 0, wx.ALIGN_RIGHT)
 
 
         # BOTTOM SIZER: static text plus exit button
-        update_firmware_static = wx.StaticText(self,-1,"Use this to update the robot firmware.  This only needs to be done occasionally!  If you have questions, please ask on our forums!")
+        update_firmware_static = wx.StaticText(self, -1,
+            "Use this to update the robot firmware.  This only needs to be done occasionally!  If you have questions, please ask on our forums!")
         bottomSizer.AddSpacer(20)
         bottomSizer.Add(update_firmware_static, 1, wx.EXPAND | wx.RESERVE_SPACE_EVEN_IF_HIDDEN)
         bottomSizer.AddSpacer(5)
@@ -228,13 +223,9 @@ class MainPanel(wx.Panel):
         Sizer.Add(bottomSizer, 1, wx.EXPAND)
         Sizer.Add(exitSizer, 0, wx.ALIGN_RIGHT)
         Sizer.AddSpacer(20)
-        
+
         self.SetSizer(Sizer)
         update_firmware_static.Hide()
-    
-        # self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)		# Sets background picture
- 
-        #send_bash_command_in_background("clear")
 
     # RobotDrop
     # This is the function called whenever the drop down box is called.
@@ -243,10 +234,10 @@ class MainPanel(wx.Panel):
         write_debug("robotDrop Selected.")
         controls = ['dex', 'GoPiGo3', 'GoPiGo', 'GrovePi', 'BrickPi3']	# Options for drop down.
         value = event.GetSelection()
-        print controls[value]
+        # print (controls[value])
         # position = 0					# Position in the key list on file
-        write_state(controls[value]) 	# print value to file.  
-        
+        write_state(controls[value]) 	# print value to file.
+
         # Update Picture
         robot = ICON_PATH+read_state()+".png"
         # robot = read_state()+".png"
@@ -261,20 +252,20 @@ class MainPanel(wx.Panel):
         if dlg.ShowModal() == wx.ID_OK:
             start_command = "sudo sh /home/pi/di_update/Raspbian_For_Robots/update_os.sh"
             send_bash_command_in_background(start_command)
-            print "Start Operating System update!"
+            print ("Start Operating System update!")
             ran_dialog = True
         else:
-            print "Cancel Operating System Update!"
+            print ("Cancel Operating System Update!")
         dlg.Destroy()
-        
+
         write_debug("Cancel Operating System Update.")
 
     # Update the Software.
     def update_software(self, event):
-        write_debug("Update Dexter Software")	
+        write_debug("Update Dexter Software")
         # write_robots_to_update() # Taking out for now.  This would update the write_robots_to_update file.
         dlg = wx.MessageDialog(self, 'Software update will start.  Please do not close the terminal window or restart the update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
-        
+
         ran_dialog = False
         if dlg.ShowModal() == wx.ID_OK:
             start_command = "sudo bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_all.sh"
@@ -284,15 +275,15 @@ class MainPanel(wx.Panel):
         else:
             print "Cancel Software Update!"
         dlg.Destroy()
-        
+
         write_debug("Update Dexter Software Finished.")
-        
+
     def update_firmware(self, event):
-    
+
         ran_dialog = False		# For the first loop of choices.
         show_dialog = False		# For the second loop of choices.
-        
-        write_debug("Update Dexter firmware")	
+
+        write_debug("Update Dexter firmware")
         folder = read_state()
         if folder == 'dex':
             dlg = wx.MessageDialog(self, 'Use the dropdown to select the hardware to update.', 'Alert!', wx.OK|wx.CANCEL|wx.ICON_INFORMATION)
@@ -332,8 +323,8 @@ class MainPanel(wx.Panel):
         else:
             print "Cancel Firmware Update!"
         dlg.Destroy()
-        
-        # Depending on what the user chose, we either cancel or complete.  
+
+        # Depending on what the user chose, we either cancel or complete.
         if ran_dialog:
             dlg = wx.MessageDialog(self, 'Firmware update is done!', 'Begin', wx.OK|wx.ICON_INFORMATION)
             dlg.ShowModal()
@@ -342,8 +333,8 @@ class MainPanel(wx.Panel):
             dlg = wx.MessageDialog(self, 'Firmware update is canceled.', 'Canceled', wx.OK|wx.ICON_HAND)
             dlg.ShowModal()
             dlg.Destroy()
-        
-        write_debug("Programming Started.")	
+
+        write_debug("Programming Started.")
 
     def hovertxt_on(self,event):
         #print("HOVERING")
@@ -354,7 +345,7 @@ class MainPanel(wx.Panel):
         #print("HOVERING")
         update_firmware_static.Hide()
         event.Skip()
-    
+
     def onClose(self, event):	# Close the entire program.
         write_debug("Close Pressed.")
         # dlg = wx.MessageDialog(self, 'The Pi will now restart.  Please save all open files before pressing OK.', 'Alert!', wx.OK|wx.ICON_INFORMATION)
@@ -364,7 +355,7 @@ class MainPanel(wx.Panel):
         if dlg.ShowModal() == wx.ID_OK:
             # Reboot
             send_bash_command('sudo reboot')
-        else: 
+        else:
             # Do nothing.
             print "No reboot."
         dlg.Destroy()
@@ -372,11 +363,11 @@ class MainPanel(wx.Panel):
         """
         self.frame.Close()
 
-  
+
 ########################################################################
 class MainFrame(wx.Frame):
     """"""
-    
+
     #----------------------------------------------------------------------
     def __init__(self):
         """Constructor"""
@@ -386,20 +377,20 @@ class MainFrame(wx.Frame):
         wx.Log.SetVerbose(False)
         wx.Frame.__init__(self, None, title="Dexter Industries Update",size=(500,550))		# Set the frame size
 
-        panel = MainPanel(self)        
+        panel = MainPanel(self)
         self.Center()
- 
+
 ########################################################################
 class Main(wx.App):
     """"""
- 
+
     #----------------------------------------------------------------------
     def __init__(self, redirect=False, filename=None):
         """Constructor"""
         wx.App.__init__(self, redirect, filename)
         dlg = MainFrame()
         dlg.Show()
- 
+
 #----------------------------------------------------------------------
 if __name__ == "__main__":
     send_bash_command_in_background("xhost +")

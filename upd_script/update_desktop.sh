@@ -32,12 +32,17 @@ chmod +x $DESKTOP_PATH/shutdown.desktop
 
 delete_file $DESKTOP_PATH/dexterindustries.desktop
 
-if [ $VERSION -eq '9' ] 
+if [ $VERSION -eq '10' ]
 then
     delete_file $DESKTOP_PATH/wpa_gui.desktop
 fi
 
-if [ $VERSION -eq '8' ] 
+if [ $VERSION -eq '9' ]
+then
+    delete_file $DESKTOP_PATH/wpa_gui.desktop
+fi
+
+if [ $VERSION -eq '8' ]
 then
     # These 3 deletes are probably remnants of Wheezy
     delete_file $DESKTOP_PATH/idle3.desktop
@@ -54,4 +59,3 @@ fi
 delete_file $DESKTOP_PATH/backup.desktop
 cp $RASPBIAN_PATH/backup/backup.desktop /home/pi/Desktop
 chmod +x $DESKTOP_PATH/backup.desktop
-

@@ -110,7 +110,7 @@ install_packages() {
                           python-picamera python3-picamera \
                           python-smbus python3-smbus \
                           python-setuptools \
-                          geany espeak autocutsel \
+                          geany espeak-ng autocutsel \
                           raspberrypi-net-mods \
                           shellinabox screen
 
@@ -121,11 +121,10 @@ install_packages() {
   elif [ $VERSION -eq '9' ]; then
   # php7 on Stretch
     sudo apt-get install apache2 websockify php libapache2-mod-php -y
+  elif [ $VERSION -eq '10' ]; then
+    sudo apt-get install apache2 websockify php libapache2-mod-php -y
   fi
 
-#   sudo apt-get purge python-rpi.gpio python3-rpi.gpio -y
-
-  # sudo apt-get install python-psutil -y     # Used in Scratch GUI, installed a few lines up
   sudo pip install -U RPi.GPIO
   sudo pip install -U future # for Python 2/3 compatibility
 
@@ -212,18 +211,10 @@ geany_setup(){
   feedback "Done with Geany setup"
 }
 
-# autodetect_setup() {
-#   # copying the file where rc.local can get it and where it's visible
-#   pushd $DEXTER_SCRIPT_TOOLS_PATH > /dev/null
-#   sudo cp auto_detect_robot.py $DEXTER_LIB_PATH/$DEXTER/.
-#   sudo python setup.py install
-#   sudo rm -r build
-#   sudo rm -r dist
-#   sudo rm -r Dexter_AutoDetection.egg-info/
-#   popd > /dev/null
-# }
-
 install_novnc() {
+  # novnc for Buster is handled in the buster_update folder
+  if ! [ $VERSION -eq '10' ]
+  then
     feedback "--> Set up noVNC"
     feedback "--> ======================================="
     feedback " "
@@ -253,12 +244,16 @@ install_novnc() {
 
     elif [ $VERSION -eq '9' ]; then
         bash $RASPBIAN_PATH/VNC/install_novnc.sh
+
+    elif [ $VERSION -eq '10' ]; then
+      bash $RASPBIAN_PATH/buster_update/novnc.sh
     fi
     popd >/dev/null
 
-  feedback "--> Finished setting up noVNC"
-  feedback "--> ======================================="
-  feedback " "
+    feedback "--> Finished setting up noVNC"
+    feedback "--> ======================================="
+    feedback " "
+  fi
 }
 
 
@@ -285,6 +280,8 @@ elif [ $VERSION -eq '8' ]; then
   # If we found Jesse, the proper location of the html files is in
 elif [ $VERSION -eq '9' ]; then
   feedback "Version 9 found! You have Stretch!"
+elif [ $VERSION -eq '10' ]; then
+  feedback "Version 10 found! You have Buster!"
 fi
 
 install_packages
@@ -318,16 +315,25 @@ sudo echo "##blacklist i2c-bcm2708" >> /etc/modprobe.d/raspi-blacklist.conf
 feedback "--> Update Config.txt file"   #dtparam=i2c_arm=on  #dtparam=spi=on
 feedback "--> ======================================="
 feedback " "
-sudo sed -i "/dtparam=i2c_arm=on/d" /boot/config.txt
-sudo sed -i "/dtparam=spi=on/d" /boot/config.txt
-sudo echo "dtparam=spi=on" >> /boot/config.txt
-sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
 
+
+if grep -q "#dtparam=i2c_arm=on" /boot/config.txt; then
+  sudo sed -i "s/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g" /boot/config.txt
+elif ! grep -q "dtparam=i2c_arm=on" /boot/config.txt; then
+  sudo echo "dtparam=i2c_arm=on" >> /boot/config.txt
+fi
+
+
+if grep -q "#dtparam=spi=on" /boot/config.txt; then
+  sudo sed -i "s/#dtparam=spi=on/dtparam=spi=on/g" /boot/config.txt
+elif ! grep -q "dtparam=spi=on" /boot/config.txt; then
+  sudo echo "dtparam=spi=on" >> /boot/config.txt
+fi
 
 # Only reset UART on Jessie as we still support the BrickPi+
 if [ $VERSION -eq '8' ]
 then
-    # This is really imprtant for the BrickPi!
+    # This is really imprtant for the BrickPi+!
     sudo sed -i "/init_uart_clock=32000000/d" /boot/config.txt
     sudo echo "init_uart_clock=32000000" >> /boot/config.txt
 
@@ -391,7 +397,11 @@ feedback "--> Update the background image on LXE Desktop."
 feedback "--> ======================================="
 feedback " "
 sudo rm /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
+if [ $VERSION -eq '10' ]; then
+sudo cp $RASPBIAN_PATH/dexter_industries_logo_transparent_bg.png /usr/share/raspberrypi-artworkdexter_industries_logo_transparent_bg.png
+else
 sudo cp $RASPBIAN_PATH/dexter_industries_logo.png /usr/share/raspberrypi-artwork/raspberry-pi-logo-small.png
+fi
 
 
 ########################################################################
@@ -546,11 +556,19 @@ if [ $VERSION -eq '8' ]; then
   feedback "Modifying Version file to reflect Jessie distro"
   sudo sed -i 's/Wheezy/Jessie/g' $DEXTER_PATH/Version
   sudo sed -i 's/Stretch/Jessie/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Buster/Jessie/g' $DEXTER_PATH/Version
 fi
 if [ $VERSION -eq '9' ]; then
   feedback "Modifying Version file to reflect Stretch distro"
   sudo sed -i 's/Wheezy/Stretch/g' $DEXTER_PATH/Version
   sudo sed -i 's/Jessie/Stretch/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Buster/Stretch/g' $DEXTER_PATH/Version
+fi
+if [ $VERSION -eq '10' ]; then
+  feedback "Modifying Version file to reflect Buster distro"
+  sudo sed -i 's/Wheezy/Buster/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Jessie/Buster/g' $DEXTER_PATH/Version
+  sudo sed -i 's/Stretch/Buster/g' $DEXTER_PATH/Version
 fi
 
 # Add Cinch Stamp in Version File
