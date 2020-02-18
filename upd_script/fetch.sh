@@ -54,7 +54,10 @@ set_all_softlinks(){
     # old hardware - not on Buster
     if ! [ $VERSION -eq '10' ]; then
         set_softlink_for "GoPiGo"
-        set_softlink_for "BrickPi+"
+        # brickpi+ is not on Stretch either
+        if ! [ $VERSION -eq '9' ]; then
+         set_softlink_for "BrickPi+"
+        fi
     fi
 
 }

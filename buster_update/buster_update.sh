@@ -73,3 +73,13 @@ sudo apt-get autoremove -y
 sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparent_bg.png  /usr/share/rpd-wallpaper
 
 bash /home/pi/di_update/Raspbian_For_Robots/buster_update/Raspbian_for_Robots_Buster_Flavor.sh
+
+
+###################################################
+# EXPAND on first boot
+###################################################
+touch /home/pi/first_boot
+if ! grep -q "sudo bash /home/pi/di_update/Rasbian_For_Robots/expand_on_first_boot.sh" /etc/rc.local
+then
+    sudo sed -i '/exit 0/i sudo bash /home/pi/di_update/Rasbian_For_Robots/expand_on_first_boot.sh' /etc/rc.local
+fi

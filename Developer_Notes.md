@@ -4,8 +4,13 @@ To change the desktop locale to the US:  run sudo dpkg-configure locales  unsele
 
 ========================================================================================
 
-When creating an image for distribution, do not forget to add
-init=/usr/lib/raspi-config/init_resize.sh  in /boot/cmdline.txt, right before the 'splash' word
+deprecated:
+_When creating an image for distribution, do not forget to add
+init=/usr/lib/raspi-config/init_resize.sh  in /boot/cmdline.txt, right before the 'splash' word_
+
+To set up the automated resizing on first boot, run :
+**rm ~/.resize_done_once**
+**sudo bash ~/di_update/Raspbian_For_Robots/resize_on_boot/resize_on_boot.sh**
 
 <!-- GKSU is used to call python GUI's.  However, GKSU does not work with command line input.  If the user needs to input information (like a y/n or a 1/2) the sh script will hangup and not move forward.  
 

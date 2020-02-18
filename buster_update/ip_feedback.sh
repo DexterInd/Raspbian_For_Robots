@@ -20,7 +20,7 @@ echo $IP_NUMBER
 
 # remove previous IP info
 sudo rm /boot/*.assigned_ip &>/dev/null
-sudo rm /home/pi/Desktop/$IP_NUMBER.assigned_ip &>/dev/null
+sudo rm /home/pi/Desktop/*.assigned_ip &>/dev/null
 
 # remove previous Failed IP
 sudo rm /home/pi/failedIP &>/dev/null
