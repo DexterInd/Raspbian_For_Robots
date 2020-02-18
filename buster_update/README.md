@@ -38,7 +38,7 @@ Note: The Raspbian first boot now has a wizard to set the card up, you can choos
 
 # Install Robots
 
-1. `bash di_update/Raspbian_For_Robots/buster_update/buster_update.sh`
+1. `bash ~/di_update/Raspbian_For_Robots/buster_update/buster_update.sh`
 
 2. go take a coffee or walk the dogs.
 

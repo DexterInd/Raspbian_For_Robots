@@ -51,8 +51,11 @@ bash novnc.sh
 
 mkdir -p /home/pi/Dexter
 
+echo "######################################################"
+echo "INSTALLING ROBOTS"
+echo "######################################################"
+
 curl -kL dexterindustries.com/update_gopigo3 | bash
-curl -kL dexterindustries.com/update_gopigo | bash
 curl -kL dexterindustries.com/update_brickpi3 | bash
 curl -kL dexterindustries.com/update_grovepi | bash
 curl -kL dexterindustries.com/update_pivotpi | bash
@@ -67,10 +70,6 @@ sudo apt-get autoremove -y
 # Samba will also be installed with password set to robots1234
 # noVNC, and Shellinabox get installed at this stage
 ###################################################
-bash /home/pi/di_update/Raspbian_For_Robots/buster_update/Raspbian_for_Robots_Buster_Flavor.sh
-
-
-
-
-
 sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparent_bg.png  /usr/share/rpd-wallpaper
+
+bash /home/pi/di_update/Raspbian_For_Robots/buster_update/Raspbian_for_Robots_Buster_Flavor.sh

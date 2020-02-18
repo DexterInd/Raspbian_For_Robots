@@ -19,7 +19,7 @@
 <html>
 <head>
     <title>Dexter Industries Raspbian for Robots</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main_buster.css">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
@@ -71,11 +71,11 @@
   </em>
 </section>
 <section class="IP">
-<?php 
+<?php
 $dexip = "";
-foreach ($ips as &$ip) { 
-   $dexip = $dexip + $ip; 
-} 
+foreach ($ips as &$ip) {
+   $dexip = $dexip + $ip;
+}
 ?>
     <ul>
         <li>Robot hostname : <?php echo $dexhostname; ?> </li>
