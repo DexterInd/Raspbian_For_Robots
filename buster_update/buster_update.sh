@@ -52,7 +52,7 @@ bash novnc.sh
 mkdir -p /home/pi/Dexter
 
 echo "######################################################"
-eho "INSTALLING ROBOTS"
+echo "INSTALLING ROBOTS"
 echo "######################################################"
 
 curl -kL dexterindustries.com/update_gopigo3 | bash

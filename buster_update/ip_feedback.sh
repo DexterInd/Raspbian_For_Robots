@@ -33,10 +33,10 @@ then
         echo $IP_NUMBER > /home/pi/Desktop/$IP_NUMBER.assigned_ip
         echo "IP info saved"
 
-        espeak-ng "WiFi IP"
-        espeak-ng $IP_NUMBER
-        espeak-ng " repeating "
-        espeak-ng $IP_NUMBER
+        su -c "espeak-ng 'WiFi IP'" pi
+        su -c "espeak-ng $IP_NUMBER" pi
+        su -c "espeak-ng repeating "  pi
+        su -c "espeak-ng $IP_NUMBER" pi
 else
 #       espeak-ng "no IP number"
         echo "no IP number"

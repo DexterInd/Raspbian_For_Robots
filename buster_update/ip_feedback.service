@@ -1,0 +1,13 @@
+[Unit]
+Description=IP Feedback on Boot
+After=syslog.target network.target novc.service
+
+
+[Service]
+Type=simple
+user=pi
+WorkingDirectory=/home/pi
+ExecStart=/bin/bash /home/pi/ip_feedback.sh
+
+[Install]
+WantedBy=multi-user.target

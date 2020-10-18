@@ -123,3 +123,8 @@ bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_desktop.sh
 # set image to dexter background, with layout as 'centre image on screen'
 # text color to #020202
 # background color to #F6F3FE
+
+# a. remove current espeak
+sudo apt-get remove -y espeak
+# b. reinstall espeak and helpers
+sudo apt install -y espeak espeak-ng python3-espeak speech-dispatcher-espeak
