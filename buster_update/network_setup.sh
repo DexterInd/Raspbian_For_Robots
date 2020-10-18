@@ -40,3 +40,6 @@ fi
 
 # copy ip_feedback.py into /home/pi
 sudo cp /home/pi/di_update/Raspbian_For_Robots/buster_update/ip_feedback.sh /home/pi/ip_feedback.sh
+sudo cp /home/pi/di_update/Raspbian_For_Robots/buster_update/ip_feedback.service /etc/systemd/system/.
+sudo systemctl daemon-reload && sudo systemctl enable ip_feedback.service
+sudo systemctl start ip_feedback.service
