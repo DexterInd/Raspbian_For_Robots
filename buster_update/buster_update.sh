@@ -6,10 +6,10 @@
 #
 ###################################################
 
-sudo apt-get update -y
-sudo apt-get upgrade -y
+sudo apt update -y
+sudo apt upgrade -y
 
-sudo apt-get install -y novnc websockify
+sudo apt install -y novnc websockify
 
 
 # To be done before running this file
@@ -18,19 +18,19 @@ sudo apt-get install -y novnc websockify
 # git clone https://github.com/dexterind/Raspbian_For_Robots
 
 # apache necessary for noVNC
-sudo apt-get -y install avahi-daemon avahi-utils
+sudo apt -y install avahi-daemon avahi-utils
 # Overwrite Avahi Config file.
 sudo cp -f /home/pi/di_update/Raspbian_For_Robots/upd_script/avahi-daemon.conf /etc/avahi 		# Copy new Avahi Config File.
 sudo chmod +x /etc/avahi/avahi-daemon.conf
-sudo apt-get install  apache2 php7.3 -y
-sudo apt-get install raspberrypi-net-mods wpagui -y
+sudo apt install  apache2 php7.3 -y
+sudo apt install raspberrypi-net-mods wpagui -y
 
 
 
 # breaking this down in four lines for readability
 # tightvncserver moved to Raspbian_For_Robots_Flavor.sh
-sudo apt-get install avahi-autoipd bc python-pil python-pexpect python-renderpm -y
-sudo apt-get install python-reportlab python-reportlab-accel  -y
+sudo apt install avahi-autoipd bc python-pil python-pexpect python-renderpm -y
+sudo apt install python-reportlab python-reportlab-accel  -y
 
 #enable php on Apache
 sudo a2enmod php7.3
@@ -62,8 +62,8 @@ curl -kL dexterindustries.com/update_pivotpi | bash
 curl -kL dexterindustries.com/update_sensors | bash
 
 
-sudo apt-get clean
-sudo apt-get autoremove -y
+sudo apt clean
+sudo apt autoremove -y
 
 ###################################################
 # give Raspbian its flavor. After this, host will be dex, and pi password will be robots1234
