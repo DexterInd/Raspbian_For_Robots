@@ -5,7 +5,7 @@
 # set the password for user Pi to robots1234
 # set samba password to robots1234
 # set hostname to dex
-# by Nicole Parrot // Dexter Industries
+# by Nicole Parrot // Modular Robotics
 #
 ###################################################
 
@@ -33,7 +33,7 @@ echo pi:$DEFAULT_PWD | sudo chpasswd
 # Installing Samba
 ####################################
 echo "********** SAMBA ***********"
-sudo apt-get install -y samba samba-common
+sudo apt install -y samba samba-common
 sudo sed -i 's/read only = yes/read only = no/g' /etc/samba/smb.conf
 sudo sed -i 's/create mask = 0700/create mask = 0775/g' /etc/samba/smb.conf
 sudo sed -i 's/directory mask = 0700/directory mask = 0775/g' /etc/samba/smb.conf
@@ -51,7 +51,7 @@ sudo smbpasswd -a pi
 # Shell in a box
 ####################################
 
-sudo apt-get install -y shellinabox
+sudo apt install -y shellinabox
 # disable requirement for SSL for shellinabox
 # adding after line 41, which is approximately where similar arguments are found.
 # it could really be anywhere in the file - NP
@@ -91,7 +91,7 @@ sudo systemctl restart antenna_wifi.service
 # background image
 ####################################
 
-sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparent_bg.png /usr/share/rpd-wallpaper/
+sudo cp /home/pi/di_update/Raspbian_For_Robots/modbot-logo-color.png /usr/share/rpd-wallpaper/
 
 
 ####################################
@@ -99,6 +99,14 @@ sudo cp /home/pi/di_update/Raspbian_For_Robots/dexter_industries_logo_transparen
 ####################################
 bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_desktop.sh
 
+
+####################################
+# Resize on first boot
+####################################
+sudo cp /home/pi/di_update/Raspbian_For_Robots/buster_update/resize_on_first_boot.service /etc/systemd/system/.
+sudo systemctl daemon-reload
+sudo systemctl enable resize_on_first_boot.service
+cp /home/pi/di_update/Raspbian_For_Robots/buster_update/resize_on_first_boot.sh /home/pi/Dexter/.
 
 
 ####################################
@@ -125,6 +133,6 @@ bash /home/pi/di_update/Raspbian_For_Robots/upd_script/update_desktop.sh
 # background color to #F6F3FE
 
 # a. remove current espeak
-sudo apt-get remove -y espeak
+sudo apt remove -y espeak
 # b. reinstall espeak and helpers
 sudo apt install -y espeak espeak-ng python3-espeak speech-dispatcher-espeak
