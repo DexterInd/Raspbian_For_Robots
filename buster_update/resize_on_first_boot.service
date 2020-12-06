@@ -1,0 +1,14 @@
+[Unit]
+    Description=Resize SD card on First Boot
+    Wants=network-online.target
+    After=update.service
+    Before=sam_start.service
+    PartOf=dexteros.target
+
+[Service]
+    User=root
+    Type=oneshot
+    ExecStart=-/bin/bash /opt/Sam_Dev/install/resize_on_first_boot.sh
+
+[Install]
+    WantedBy=dexteros.target
