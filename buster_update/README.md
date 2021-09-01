@@ -59,7 +59,7 @@ Note: The Raspbian first boot now has a wizard to set the card up, you can choos
 
     2.4 Under Connections:
 
-        Set port to 5901
+        Set port to 5900
 
     2.5 Under Privacy:
 
@@ -82,7 +82,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 User=pi
-ExecStart = /usr/share/novnc/utils/launch.sh --vnc localhost:5901 --listen 8001
+ExecStart = /usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 8001
 
 [Install]
 WantedBy=multi-user.target

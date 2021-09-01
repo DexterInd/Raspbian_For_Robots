@@ -22,9 +22,11 @@ echo $IP_NUMBER
 sudo rm /boot/*.assigned_ip &>/dev/null
 sudo rm /home/pi/Desktop/*.assigned_ip &>/dev/null
 
-# remove previous Failed IP
+# remove previous noWiFi IP
 sudo rm /home/pi/failedIP &>/dev/null
 sudo rm /home/pi/Desktop/failedIP &>/dev/null
+sudo rm /home/pi/noWiFiIP &>/dev/null
+sudo rm /home/pi/Desktop/noWiFiIP &>/dev/null
 
 if [ ! -z "$IP_NUMBER" ]
 then
@@ -38,10 +40,10 @@ then
         su -c "espeak-ng repeating "  pi
         su -c "espeak-ng $IP_NUMBER" pi
 else
-#       espeak-ng "no IP number"
-        echo "no IP number"
-        echo "no IP" > /home/pi/failedIP
-        echo "no IP" > /home/pi/Desktop/failedIP
+        su -c "espeak-ng 'No WiFi connection has been detected.'" pi
+        echo ""no WiFi IP connection has been detected."
+        echo "no WiFi IP connection has been detected." > /home/pi/noWiFiIP
+        echo "no WiFi IP connection has been detected. " > /home/pi/Desktop/noWiFiIP
 
 fi
 echo "done with IP feedback"
